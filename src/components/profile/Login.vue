@@ -22,6 +22,14 @@
 							<v-icon left class="icon-spacing">mdi-account-plus</v-icon>
 							{{ $t("userHandling.makeNewAccount") }}
 						</v-btn>
+						<br /> <br />
+						<v-divider></v-divider>
+						<br />
+
+						<v-btn class="login-btn btn-secondary" dark @click="loginWithGoogle">
+							<v-icon left class="icon-spacing">mdi-google</v-icon>
+							{{ $t("userHandling.loginWithGoogle") }}
+						</v-btn>
 					</v-form>
 				</v-card-text>
 			</v-card>
@@ -50,6 +58,15 @@
 						<v-btn class="switch-btn" color="secondary" dark @click="switchLoginRegister">
 							<v-icon left class="icon-spacing">mdi-login</v-icon>
 							{{ $t("userHandling.haveAccount") }}
+						</v-btn>
+
+						<br /> <br />
+						<v-divider></v-divider>
+						<br />
+
+						<v-btn class="login-btn btn-secondary" dark @click="loginWithGoogle">
+							<v-icon left class="icon-spacing">mdi-google</v-icon>
+							{{ $t("userHandling.loginWithGoogle") }}
 						</v-btn>
 					</v-form>
 				</v-card-text>
@@ -197,7 +214,7 @@ export default {
 .switch-btn {
 	width: 100%;
 	font-size: 16px;
-	margin-top: 10px;
+	margin: 10px auto;
 	text-transform: none;
 	/* keep text as defined */
 }
