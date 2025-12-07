@@ -26,6 +26,10 @@
 						<v-divider></v-divider>
 						<br />
 
+						<h3 class="text-center">
+							{{ $t("userHandling.loginWithGoogleTitle") }}
+						</h3>
+
 						<v-btn class="login-btn btn-secondary" dark @click="loginWithGoogle">
 							<v-icon left class="icon-spacing">mdi-google</v-icon>
 							{{ $t("userHandling.loginWithGoogle") }}
@@ -63,6 +67,10 @@
 						<br /> <br />
 						<v-divider></v-divider>
 						<br />
+
+						<h3 class="text-center">
+							{{ $t("userHandling.loginWithGoogleTitle") }}
+						</h3>
 
 						<v-btn class="login-btn btn-secondary" dark @click="loginWithGoogle">
 							<v-icon left class="icon-spacing">mdi-google</v-icon>
