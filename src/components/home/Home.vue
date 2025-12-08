@@ -17,6 +17,10 @@
 			</v-row>
 		</div>
 
+		<p class="box box-warning preserve-whitespace text-center">
+			{{ $t("common.newFeature") }}
+		</p>
+
 
 		<div class="box box-countries">
 			<WorldMap :countries="countriesToHighlight" />
