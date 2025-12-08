@@ -17,6 +17,17 @@
 									<v-avatar class="mb-4 mx-auto user-avatar" size="120" v-if="user.photoURL">
 										<img :src="user.photoURL" alt="User Photo" class="profile-img" />
 									</v-avatar>
+									<v-icon v-else size="120">mdi-account-circle</v-icon>
+									<div>
+										<div v-if="user.emailVerified" class="text-success">
+											<v-icon left>mdi-check-circle</v-icon>
+											{{ $t("userHandling.emailVerified") }}
+										</div>
+										<div v-else class="text-error">
+											<v-icon left>mdi-alert-circle</v-icon>
+											{{ $t("userHandling.emailNotVerified") }}
+										</div>
+									</div>
 								</v-col>
 								<v-col cols="12" md="8">
 									<div class="account_info">
@@ -24,10 +35,10 @@
 										<span> {{ userData.displayName }} </span> <br />
 										<strong>{{ $t("userHandling.email") }}:</strong>
 										<span>{{ user.email }}</span> <br />
-										<strong>{{ $t("database.study") }}:</strong>
-										<span>{{ userData.study }}</span> <br />
-										<strong>{{ $t("database.specialization") }}:</strong>
-										<span>{{ userData.specialization }}</span> <br />
+										<strong v-if="userData.study">{{ $t("database.study") }}:</strong>
+										<span v-if="userData.study">{{ userData.study }}</span> <br />
+										<strong v-if="userData.specialization">{{ $t("database.specialization") }}:</strong>
+										<span v-if="userData.specialization">{{ userData.specialization }}</span> <br />
 									</div>
 								</v-col>
 							</v-row>
@@ -42,10 +53,11 @@
 						<FavoriteCourses v-if="user && userData" />
 					</v-card-text>
 					<v-card-actions>
-						<!-- <<v-btn class="btn btn-primary" @click="editProfile">
-							<v-icon left>mdi-pencil</v-icon>
-							{{ $t("operations.edit") }}
-						</v-btn>> -->
+						<v-btn class="btn btn-primary" @click="editProfile">
+							<v-icon left>mdi-account-edit</v-icon>
+							{{ $t("userHandling.editProfile") }}
+						</v-btn>
+						<br />
 						<v-btn class="btn btn-red" @click="signOut">
 							<v-icon left>mdi-logout</v-icon>
 							{{ $t("operations.signOut") }}
@@ -83,16 +95,35 @@
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
+
+		<!-- Verification Dialog -->
+		<v-dialog v-model="verificationDialog" max-width="500" class="dialog">
+			<v-card>
+				<v-card-title>{{ $t("userHandling.userNotVerified") }}</v-card-title>
+				<v-card-text>
+					<v-btn class="btn btn-primary" @click="sendVerificationEmail()">
+						{{ $t("userHandling.sendVerificationEmail") }}
+					</v-btn>
+				</v-card-text>
+				<v-card-actions>
+					<v-spacer></v-spacer>
+					<v-btn class="btn-accent" text @click="toggleVerificationDialog">
+						{{ $t("operations.close") }}
+					</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 	</v-container>
 </template>
 
 <script>
 import { ref, onMounted, watch } from "vue";
 import { auth, db } from "../../js/firebaseConfig";
-import { onAuthStateChanged, signOut } from "firebase/auth";
+import { onAuthStateChanged, signOut, sendEmailVerification } from "firebase/auth";
 import { ref as dbRef, get, set, update } from "firebase/database";
 import studiesData from "../../data/studies.json";
 import FavoriteCourses from "./FavoriteCourses.vue";
+import { toast } from "vue3-toastify";
 
 export default {
 	components: { FavoriteCourses },
@@ -125,6 +156,12 @@ export default {
 			return this.localEditData.study
 				? this.studies[this.localEditData.study]
 				: [];
+		},
+		verificationDialog() {
+			if (this.user && !this.user.emailVerified) {
+				return true;
+			}
+			return false;
 		},
 	},
 	methods: {
@@ -176,6 +213,21 @@ export default {
 		},
 		handleNewStudy() {
 			this.localEditData.specialization = "";
+		},
+		toggleVerificationDialog() {
+			this.verificationDialog = !this.verificationDialog;
+		},
+		sendVerificationEmail() {
+			if (this.user) {
+				sendEmailVerification(this.user)
+					.then(() => {
+						toast.success(this.$t("userHandling.verificationEmailSent"));
+					})
+					.catch((error) => {
+						console.error("Error sending verification email: ", error);
+						toast.error(this.$t("error.verificationEmailFailed"));
+					});
+			}
 		},
 	},
 	mounted() {
