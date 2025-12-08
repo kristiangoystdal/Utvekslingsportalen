@@ -10,7 +10,8 @@
 		"topCountries": "Topp 10 destinasjonsland",
 		"topStudyPrograms": "Topp 10 studieprogrammer",
 		"count": "Antall",
-		"disclaimer": "Utvekslingsportalen driftes ikke av NTNU. Informasjonen er basert på studentrapporter og kan inneholde feil."
+		"disclaimer": "Utvekslingsportalen driftes ikke av NTNU. Informasjonen er basert på studentrapporter og kan inneholde feil.",
+		"newFeature": "Støtte for flere universiteter i Norge kommer snart! \nInkludert UiO (Oslo), UiB (Bergen), UiS (Stavanger), og UiT (Tromsø)."
 	},
 	"hints": {
 		"study": "Velg studie du går på NTNU",
