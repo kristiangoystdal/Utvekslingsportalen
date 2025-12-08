@@ -159,7 +159,13 @@
 		"registerWithGoogleTitle": "Registrer deg med Google",
 		"registerWithGoogle": "Google",
 		"makeNewAccount": "Opprett en ny konto",
-		"haveAccount": "Har du allerede en konto?"
+		"haveAccount": "Har du allerede en konto?",
+		"emailVerified": "Verifisert",
+		"emailNotVerified": "Ikke verifisert",
+		"sendVerificationEmail": "Send verifiseringsmail på nytt",
+		"updateProfile": "Oppdater profil",
+		"userNotVerified": "Brukerkontoen din er ikke verifisert.",
+		"verificationEmailSent": "En verifiseringsmail er sendt til din e-postadresse."
 	},
 	"errors": {
 		"notLoggedIn": "Profil ikke tilgjengelig. Vennligst logg inn",
@@ -169,7 +175,8 @@
 		"contactName": "Navnet må være minst 2 karakterer.",
 		"contactEmail": "Må være en gyldig e-post addresse",
 		"contactMessage": "Meldingen må være minst 10 karakterer",
-		"uploadFileRequired": "En fil må lastes opp for å fortsette."
+		"uploadFileRequired": "En fil må lastes opp for å fortsette.",
+		"verificationEmailFailed": "Kunne ikke sende verifiseringsmail"
 	},
 	"contactPage": {
 		"pageHeader": "Kontakt oss",
