@@ -2,70 +2,91 @@
 	<div>
 		<h2>{{ $t("userHandling.accountTitle") }}:</h2>
 	</div>
-	<br />
-	<v-container>
+
+	<v-container class="py-10">
 		<v-row justify="center">
 			<v-col cols="12" md="8">
-				<v-card class="pa-5 account-card">
-					<v-card-text>
-						<v-alert v-if="loading" type="info" dense>
-							{{ $t("userHandling.loadingUser") }}
-						</v-alert>
-						<template v-else-if="user && userData">
-							<v-row>
-								<v-col cols="12" md="4" class="text-center">
-									<v-avatar class="mb-4 mx-auto user-avatar" size="120" v-if="user.photoURL">
-										<img :src="user.photoURL" alt="User Photo" class="profile-img" />
-									</v-avatar>
-									<v-icon v-else size="120">mdi-account-circle</v-icon>
-									<div>
-										<div v-if="user.emailVerified" class="text-success">
-											<v-icon left>mdi-check-circle</v-icon>
-											{{ $t("userHandling.emailVerified") }}
-										</div>
-										<div v-else class="text-error">
-											<v-icon left>mdi-alert-circle</v-icon>
-											{{ $t("userHandling.emailNotVerified") }}
-										</div>
-									</div>
-								</v-col>
-								<v-col cols="12" md="8">
-									<div class="account_info">
-										<strong>{{ $t("userHandling.name") }}:</strong>
-										<span> {{ userData.displayName }} </span> <br />
-										<strong>{{ $t("userHandling.email") }}:</strong>
-										<span>{{ user.email }}</span> <br />
-										<strong v-if="userData.study">{{ $t("database.study") }}:</strong>
-										<span v-if="userData.study">{{ userData.study }}</span> <br />
-										<strong v-if="userData.specialization">{{ $t("database.specialization") }}:</strong>
-										<span v-if="userData.specialization">{{ userData.specialization }}</span> <br />
-									</div>
-								</v-col>
-							</v-row>
-							<v-row justify="end">
-								<v-col cols="12" class="text-right"> </v-col>
-							</v-row>
-						</template>
-						<v-alert v-else type="error" dense>
-							{{ $t("errors.notLoggedIn") }}
-						</v-alert>
+				<v-card v-if="user && userData" class="pa-8 profile-card" elevation="4">
+					<!-- Header -->
+					<div class="text-center mb-6">
+						<v-avatar size="120" class="mb-4">
+							<img v-if="user && user.photoURL" :src="user.photoURL" />
+							<v-icon v-else size="120">mdi-account-circle</v-icon>
+						</v-avatar>
 
-						<FavoriteCourses v-if="user && userData" />
-					</v-card-text>
-					<v-card-actions>
-						<v-btn class="btn btn-primary" @click="editProfile">
+
+						<div v-if="isVerified" class="verified-badge">
+							<v-icon color="green">mdi-check-circle</v-icon>
+							<span>{{ $t("userHandling.emailVerified") }}</span>
+						</div>
+
+						<div v-else class="unverified-badge" @click="toggleVerificationDialog">
+							<v-icon color="red">mdi-alert-circle</v-icon>
+							<span>{{ $t("userHandling.emailNotVerified") }}</span>
+						</div>
+					</div>
+
+					<!-- User info -->
+					<v-row>
+						<v-col cols="12" md="6">
+							<div class="info-block" v-if="user">
+								<strong>{{ $t("userHandling.name") }}:</strong>
+								<p>{{ userData.displayName }}</p>
+
+								<strong>{{ $t("userHandling.email") }}:</strong>
+								<p>{{ user.email }}</p>
+							</div>
+						</v-col>
+
+						<v-col cols="12" md="6">
+							<div class="info-block" v-if="user">
+								<strong>{{ $t("database.study") }}:</strong>
+								<p>{{ userData.study || "-" }}</p>
+
+								<strong>{{ $t("database.specialization") }}:</strong>
+								<p>{{ userData.specialization || "-" }}</p>
+							</div>
+						</v-col>
+					</v-row>
+					<br />
+					<!-- Buttons -->
+					<div class="button-row">
+						<v-btn color="primary" class="mr-3" @click="editProfile">
 							<v-icon left>mdi-account-edit</v-icon>
-							{{ $t("userHandling.editProfile") }}
+							<p style="margin-left: 10px;">{{ $t("operations.edit") }}</p>
 						</v-btn>
-						<br />
-						<v-btn class="btn btn-red" @click="signOut">
+
+						<v-btn color="secondary" class="mr-3" @click="togglePasswordResetDialog">
+							<v-icon left>mdi-lock-reset</v-icon>
+							<p style="margin-left: 10px;">{{ $t("operations.changePassword") }}</p>
+						</v-btn>
+
+						<v-btn color="red" @click="signOut">
 							<v-icon left>mdi-logout</v-icon>
-							{{ $t("operations.signOut") }}
+							<p style="margin-left: 10px;">{{ $t("operations.signOut") }}</p>
 						</v-btn>
-					</v-card-actions>
+					</div>
+
+					<!-- Favorite courses -->
+					<div class="mt-4">
+						<FavoriteCourses />
+					</div>
 				</v-card>
+
+				<!-- Loading state -->
+				<div v-else-if="loading" class="text-center my-10">
+					<v-progress-circular indeterminate color="primary" size="48" />
+				</div>
+
+				<!-- Not logged in -->
+				<div v-else>
+					<v-alert type="error">
+						{{ $t("errors.notLoggedIn") }}
+					</v-alert>
+				</div>
 			</v-col>
 		</v-row>
+
 
 		<!-- Edit Profile Dialog -->
 		<v-dialog v-model="dialog" persistent max-width="600px" class="dialog">
@@ -113,13 +134,32 @@
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
+
+		<!-- Password Reset Dialog -->
+		<v-dialog v-model="passwordResetDialog" max-width="500" class="dialog">
+			<v-card>
+				<v-card-title>{{ $t("userHandling.changePassword") }}</v-card-title>
+				<v-card-text>
+					<p>{{ $t("userHandling.passwordResetInstructions") }}</p>
+					<v-btn class="btn btn-primary" @click="sendPasswordResetEmail()">
+						{{ $t("userHandling.sendPasswordResetEmail") }}
+					</v-btn>
+				</v-card-text>
+				<v-card-actions>
+					<v-spacer></v-spacer>
+					<v-btn class="btn-accent" text @click="togglePasswordResetDialog">
+						{{ $t("operations.close") }}
+					</v-btn>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
 	</v-container>
 </template>
 
 <script>
 import { ref, onMounted, watch } from "vue";
 import { auth, db } from "../../js/firebaseConfig";
-import { onAuthStateChanged, signOut, sendEmailVerification } from "firebase/auth";
+import { onAuthStateChanged, signOut, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 import { ref as dbRef, get, set, update } from "firebase/database";
 import studiesData from "../../data/studies.json";
 import FavoriteCourses from "./FavoriteCourses.vue";
@@ -146,6 +186,8 @@ export default {
 				study: "",
 				specialization: "",
 			},
+			verificationDialog: false,
+			passwordResetDialog: false,
 		};
 	},
 	computed: {
@@ -157,12 +199,9 @@ export default {
 				? this.studies[this.localEditData.study]
 				: [];
 		},
-		verificationDialog() {
-			if (this.user && !this.user.emailVerified) {
-				return true;
-			}
-			return false;
-		},
+		isVerified() {
+			return this.user && this.user.emailVerified;
+		}
 	},
 	methods: {
 		loadData() {
@@ -183,6 +222,15 @@ export default {
 		},
 		async saveProfile() {
 			if (this.user) {
+				if (this.localEditData.email !== this.user.email) {
+					try {
+						await this.user.updateEmail(this.localEditData.email);
+					} catch (error) {
+						console.error("Error updating email: ", error);
+						toast.error(this.$t("error.emailUpdateFailed"));
+						return;
+					}
+				}
 				try {
 					await update(dbRef(db, `users/${this.user.uid}`), {
 						displayName: this.localEditData.displayName,
@@ -209,7 +257,17 @@ export default {
 			}
 		},
 		loadLocalData() {
-			this.localEditData = this.userData;
+			if (!this.userData) {
+				this.localEditData = {
+					displayName: "",
+					email: "",
+					study: "",
+					specialization: ""
+				};
+				return;
+			}
+
+			this.localEditData = { ...this.userData };
 		},
 		handleNewStudy() {
 			this.localEditData.specialization = "";
@@ -226,6 +284,21 @@ export default {
 					.catch((error) => {
 						console.error("Error sending verification email: ", error);
 						toast.error(this.$t("error.verificationEmailFailed"));
+					});
+			}
+		},
+		togglePasswordResetDialog() {
+			this.passwordResetDialog = !this.passwordResetDialog;
+		},
+		sendPasswordResetEmail() {
+			if (this.user) {
+				auth.sendPasswordResetEmail(this.user.email)
+					.then(() => {
+						toast.success(this.$t("userHandling.passwordResetEmailSent"));
+					})
+					.catch((error) => {
+						console.error("Error sending password reset email: ", error);
+						toast.error(this.$t("error.passwordResetEmailFailed"));
 					});
 			}
 		},
@@ -272,6 +345,13 @@ export default {
 </script>
 
 <style scoped>
+.profile-card {
+	background-color: var(--third-color);
+	border-radius: 10px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+	border: 1px solid var(--first-color);
+}
+
 #saveBtn {
 	padding: 10px 20px;
 	border-radius: 5px;
@@ -290,7 +370,7 @@ export default {
 	border: none;
 	font-size: 14px !important;
 	margin: 10px;
-	background-color: #e53935;
+	background-color: var(--alert-error);
 	/* Soft Red */
 	color: var(--fifth-color);
 }
@@ -358,9 +438,9 @@ export default {
 	}
 
 	.v-btn {
-		margin: auto;
+		/* margin: auto; */
 		font-size: 14px !important;
-		width: 50% !important;
+		/* width: 60% !important; */
 	}
 }
 </style>
