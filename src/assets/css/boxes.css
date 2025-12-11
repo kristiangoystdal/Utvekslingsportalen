@@ -53,3 +53,21 @@
   border: 1px solid #FF0000;
   /* Darker shade of alert color */
 }
+
+.box-info {
+  background-color: var(--info-blue);
+  border: 1px solid #004080;
+  /* Darker shade of info color */
+}
+
+.box-success {
+  background-color: var(--success-green);
+  border: 1px solid #006600;
+  /* Darker shade of success color */
+}
+
+.box-warning {
+  background-color: var(--alert-warning);
+  border: 1px solid #CC9900;
+  /* Darker shade of warning color */
+}

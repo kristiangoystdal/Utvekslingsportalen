@@ -10,7 +10,8 @@
 		"topCountries": "Top 10 Destination Countries",
 		"topStudyPrograms": "Top 10 Study Programs",
 		"count": "Count",
-		"disclaimer": "The Exchange Portal is not operated by NTNU. The information is based on student reports and may contain errors."
+		"disclaimer": "The Exchange Portal is not operated by NTNU. The information is based on student reports and may contain errors.",
+		"newFeature": "Support for more study programs is coming soon! Including from UiO (Oslo), UiB (Bergen), UiS (Stavanger), and UiT (Tromsø)."
 	},
 	"hints": {
 		"study": "Select the study program you are attending at NTNU",
