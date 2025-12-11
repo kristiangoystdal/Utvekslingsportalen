@@ -38,11 +38,11 @@
 								<div class="profile-content">
 									<div v-if="user != null">
 										<div class="username">{{ userData?.displayName || user?.displayName || '' }}</div>
-										<v-btn @click="goToProfile" color="info" dark class="login-btn">
+										<v-btn @click="goToProfile" color="primary" dark class="login-btn">
 											{{ $t("operations.profileBtn") }}
 										</v-btn>
 										<br><br>
-										<v-btn @click="signOut" color="error" dark class="login-btn">
+										<v-btn @click="signOut" color="red" class="login-btn">
 											{{ $t("operations.signOut") }}
 										</v-btn>
 
