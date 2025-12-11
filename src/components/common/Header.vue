@@ -64,7 +64,7 @@
 													align-items: center;
 													vertical-align: middle;
 													padding-top: 1px;
-												">{{ $t("userHandling.loginWithEmailButton") }}</span>
+												">{{ $t("operations.loginWithEmailButton") }}</span>
 										</v-btn>
 										<br>
 										<v-btn class="login-btn" @click="loginWithGoogle" color="primary" dark style="
@@ -82,7 +82,7 @@
 													align-items: center;
 													vertical-align: middle;
 													padding-top: 1px;
-												">{{ $t("userHandling.loginWithGoogle") }}</span>
+												">{{ $t("operations.loginWithGoogleButton") }}</span>
 										</v-btn>
 									</div>
 								</div>
