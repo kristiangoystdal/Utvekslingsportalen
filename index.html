@@ -36,12 +36,27 @@
 			property="og:description"
 			content="Utforsk erfaringer fra tidligere NTNU-studenter på utveksling."
 		/>
-		<meta property="og:image" content="/preview.png" />
+		<meta
+			property="og:image"
+			content="https://utvekslingsportalen.no/preview.png"
+		/>
 		<meta property="og:url" content="https://utvekslingsportalen.no" />
 		<meta property="og:type" content="website" />
 
 		<!-- Twitter -->
 		<meta name="twitter:card" content="summary_large_image" />
+
+		<script type="application/ld+json">
+			{
+				"@context": "https://schema.org",
+				"@type": "Organization",
+				"name": "Utvekslingsportalen",
+				"url": "https://utvekslingsportalen.no",
+				"logo": "https://utvekslingsportalen.no/favicon.png",
+				"image": "https://utvekslingsportalen.no/preview.png",
+				"sameAs": []
+			}
+		</script>
 	</head>
 	<body>
 		<div id="app"></div>
