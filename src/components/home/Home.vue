@@ -1,24 +1,25 @@
 <template>
 	<div>
-		<h2 class="preserve-whitespace">{{ $t("common.welcome") }}</h2>
+		<h2 class="preserve-whitespace">{{ $t("homepage.welcome") }}</h2>
 		<br />
 		<p class="box box-third-color preserve-whitespace text-center">
-			{{ $t("common.siteDescription") }}
+			{{ $t("homepage.siteDescription") }}
 		</p>
 
 		<div class="box">
 			<v-row>
 				<v-col cols="12" md="6">
-					<v-btn class="btn btn-primary" @click="goToRoute('/min_utveksling')">{{ $t("common.createExchange") }}</v-btn>
+					<v-btn class="btn btn-primary" @click="goToRoute('/min_utveksling')">{{ $t("operations.createExchange")
+					}}</v-btn>
 				</v-col>
 				<v-col cols="12" md="6">
-					<v-btn class="btn btn-primary" @click="goToRoute('/last_opp')">{{ $t("common.uploadExchange") }}</v-btn>
+					<v-btn class="btn btn-primary" @click="goToRoute('/last_opp')">{{ $t("operations.uploadExchange") }}</v-btn>
 				</v-col>
 			</v-row>
 		</div>
 
 		<p class="box box-warning preserve-whitespace text-center">
-			{{ $t("common.newFeature") }}
+			{{ $t("homepage.newFeature") }}
 		</p>
 
 
@@ -31,13 +32,13 @@
 		<br />
 
 		<div class="top-countries-and-top-study-programs">
-			<h3>{{ $t("common.topCountries") }}</h3>
-			<BarChart :items="topCountriesTranslated" :title="$t('common.topCountries')" />
+			<h3>{{ $t("homepage.topCountries") }}</h3>
+			<BarChart :items="topCountriesTranslated" />
 		</div>
 
 		<div class="top-countries-and-top-study-programs">
-			<h3>{{ $t("common.topStudyPrograms") }}</h3>
-			<BarChart :items="topStudyPrograms" :title="$t('common.topStudyPrograms')" />
+			<h3>{{ $t("homepage.topStudyPrograms") }}</h3>
+			<BarChart :items="topStudyPrograms" />
 		</div>
 
 
@@ -49,7 +50,6 @@ import WorldMap from "./WorldMap.vue";
 import BarChart from "./BarChart.vue";
 import { getDatabase, ref as dbRef, child, get } from "firebase/database";
 import countriesInformation from "../../data/countriesInformation.json";
-import { useI18n } from "vue-i18n";
 import { db, auth } from "../../js/firebaseConfig.js";
 import { getFlagUrl } from '../../js/i18nHelpers';
 
@@ -61,9 +61,8 @@ export default {
 		BarChart,
 	},
 	setup() {
-		const { t, locale } = useI18n();
 		const user = auth.currentUser;
-		return { t, locale, user };
+		return { user };
 	},
 	data() {
 		return {
