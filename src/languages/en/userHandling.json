@@ -15,7 +15,7 @@
   "makeNewAccount": "Create a New Account",
   "haveAccount": "Already have an account?",
   "emailVerified": "Verified",
-  "emailNotVerified": "Not Verified",
+  "emailNotVerified": "Not Verified. Resend verification email",
   "sendVerificationEmail": "Resend Verification Email",
   "updateProfile": "Update Profile",
   "userNotVerified": "Your user account is not verified."

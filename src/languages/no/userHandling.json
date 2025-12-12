@@ -15,7 +15,7 @@
   "makeNewAccount": "Opprett en ny konto",
   "haveAccount": "Har du allerede en konto?",
   "emailVerified": "Verifisert",
-  "emailNotVerified": "Ikke verifisert",
+  "emailNotVerified": "Ikke verifisert. Send verifiseringsmail på nytt",
   "sendVerificationEmail": "Send verifiseringsmail på nytt",
   "updateProfile": "Oppdater profil",
   "userNotVerified": "Brukerkontoen din er ikke verifisert."
