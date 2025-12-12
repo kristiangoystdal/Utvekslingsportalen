@@ -1,0 +1,17 @@
+{
+  "study": "Velg studie du går på NTNU",
+  "specialization": "Velg spesialiseringen du tar",
+  "country": "Velg landet du skal på utveksling til",
+  "university": "Velg universitet du skal gå på",
+  "studyYear": "Velg hvilket studieår du skal på utveksling",
+  "numSemesters": "Velg antall semestere du skal på utveksling",
+  "courseYear": "Skriv inn året du tok faget",
+  "courseCode": "Skriv inn fagkoden til faget du skal ta",
+  "courseName": "Skriv inn navnet på faget du skal ta",
+  "replacedCourseCode": "Skriv inn fagkoden til faget på NTNU du skal erstatte",
+  "replacedCourseName": "Skriv inn navet på faget på NTNU du skal erstatte",
+  "courseType": "Skriv inn hva slags type fag det er (O-, I-, K-emne eller blankt)",
+  "institute": "Skriv inn instituttet faget tilhører på universitetet du skal til",
+  "ECTSPoints": "Skriv inn hvor mange ECTS poeng faget gir (konverter fra universitetes enhet til ECTS)",
+  "year": "Skriv inn året du begynte på utveksling"
+}

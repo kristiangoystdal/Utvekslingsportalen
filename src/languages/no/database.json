@@ -1,0 +1,20 @@
+{
+  "study": "Studie",
+  "specialization": "Spesialisering",
+  "country": "Land",
+  "university": "Universitet",
+  "studyYear": "Studieår",
+  "numSemesters": "Antall semestre",
+  "semester": "Semester",
+  "courseCode": "Fagkode",
+  "courseName": "Fagnavn",
+  "replacedCourseName": "Erstattet fagnavn",
+  "replacedCourseCode": "Erstattet fagkode",
+  "courseType": "Fag type",
+  "institute": "Institutt",
+  "ECTSPoints": "ECTS",
+  "comments": "Kommentar",
+  "year": "År",
+  "totalCourses": "Totalt antall fag",
+  "totalECTS": "Totalt ECTS"
+}

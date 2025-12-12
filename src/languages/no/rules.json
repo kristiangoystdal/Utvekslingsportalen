@@ -1,0 +1,6 @@
+{
+  "required": "Dette feltet er påkrevd",
+  "yearFormat": "Må være et gyldig årstall",
+  "min3Chars": "Min 3 karakterer",
+  "validNumber": "Må være et tall"
+}

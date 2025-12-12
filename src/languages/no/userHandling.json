@@ -1,0 +1,22 @@
+{
+  "accountTitle": "Din profil",
+  "editProfile": "Rediger profilen din",
+  "email": "E-post",
+  "loadingUser": "Henter frem profilen din...",
+  "name": "Navn",
+  "loginTitle": "Logg inn",
+  "loginWithEmailTitle": "Logg inn med e-post",
+  "loginWithGoogleTitle": "Logg inn med Google",
+  "loginWithGoogle": "Google",
+  "registerTitle": "Registrer deg",
+  "registerWithEmailTitle": "Registrer deg med e-post",
+  "registerWithGoogleTitle": "Registrer deg med Google",
+  "registerWithGoogle": "Google",
+  "makeNewAccount": "Opprett en ny konto",
+  "haveAccount": "Har du allerede en konto?",
+  "emailVerified": "Verifisert",
+  "emailNotVerified": "Ikke verifisert",
+  "sendVerificationEmail": "Send verifiseringsmail på nytt",
+  "updateProfile": "Oppdater profil",
+  "userNotVerified": "Brukerkontoen din er ikke verifisert."
+}

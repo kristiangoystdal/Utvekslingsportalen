@@ -1,0 +1,11 @@
+{
+  "welcome": "Velkommen til Utvekslingsportalen!",
+  "goodbye": "Ha det",
+  "siteDescription": "Denne siden er en ressurs for studenter som vurderer å dra eller skal på utveksling.\n\nSe tidligere fagkombinasjoner og legg til din egen når du har valgt fagene du skal ha.",
+  "mobileWarning": "Denne siden er ikke optimalisert for mobilbruk. Vennligst bruk en datamaskin for best opplevelse.",
+  "topCountries": "Topp 10 destinasjonsland",
+  "topStudyPrograms": "Topp 10 studieprogrammer",
+  "count": "Antall",
+  "disclaimer": "Utvekslingsportalen driftes ikke av NTNU. Informasjonen er basert på studentrapporter og kan inneholde feil.",
+  "newFeature": "Støtte for flere studier kommer snart! \nBlant annet fra UiO (Oslo), UiB (Bergen), UiS (Stavanger), og UiT (Tromsø)."
+}
