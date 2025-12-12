@@ -15,7 +15,7 @@
 						<br />
 						<v-btn class="login-btn" color="primary" dark type="submit">
 							<v-icon left class="icon-spacing">mdi-login</v-icon>
-							{{ $t("userHandling.loginWithEmail") }}
+							{{ $t("operations.signIn") }}
 						</v-btn>
 						<br /><br />
 						<v-btn class="login-btn" color="secondary" dark @click="switchLoginRegister">
@@ -55,7 +55,7 @@
 
 						<v-btn class="register-btn" color="primary" dark type="submit" :disabled="!isFormValid">
 							<v-icon left class="icon-spacing">mdi-account-plus</v-icon>
-							{{ $t("userHandling.registerWithEmail") }}
+							{{ $t("operations.register") }}
 						</v-btn>
 						<br /><br />
 
