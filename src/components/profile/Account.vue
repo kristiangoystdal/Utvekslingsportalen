@@ -222,15 +222,6 @@ export default {
 		},
 		async saveProfile() {
 			if (this.user) {
-				if (this.localEditData.email !== this.user.email) {
-					try {
-						await this.user.updateEmail(this.localEditData.email);
-					} catch (error) {
-						console.error("Error updating email: ", error);
-						toast.error(this.$t("error.emailUpdateFailed"));
-						return;
-					}
-				}
 				try {
 					await update(dbRef(db, `users/${this.user.uid}`), {
 						displayName: this.localEditData.displayName,
@@ -240,8 +231,10 @@ export default {
 					});
 					this.userData = { ...this.localEditData };
 					this.closeDialog();
+					toast.success(this.$t("notifications.profileUpdateSuccess"));
 				} catch (error) {
 					console.error("Error updating profile: ", error);
+					toast.error(this.$t("notifications.profileUpdateFailure"));
 				}
 			}
 		},
