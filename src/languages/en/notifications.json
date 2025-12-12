@@ -30,5 +30,6 @@
   "passwordResetEmailSent": "Password reset email has been sent",
   "passwordResetEmailFailure": "Could not send password reset email. Please contact us if the problem persists",
   "profileUpdateSuccess": "Profile updated",
-  "profileUpdateFailure": "Failed to update profile. Please contact us if the problem persists"
+  "profileUpdateFailure": "Failed to update profile. Please contact us if the problem persists",
+  "enterEmailForPasswordReset": "Please provide your email address to reset your password"
 }

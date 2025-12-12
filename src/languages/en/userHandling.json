@@ -18,5 +18,6 @@
   "emailNotVerified": "Not Verified. Resend verification email",
   "sendVerificationEmail": "Resend Verification Email",
   "updateProfile": "Update Profile",
-  "userNotVerified": "Your user account is not verified."
+  "userNotVerified": "Your user account is not verified.",
+  "forgotPassword": "Forgot Password?"
 }

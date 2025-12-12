@@ -30,5 +30,6 @@
   "passwordResetEmailSent": "E-post for tilbakestilling av passord er sendt",
   "passwordResetEmailFailure": "Kunne ikke sende e-post for tilbakestilling av passord. Kontakt oss hvis problemet vedvarer",
   "profileUpdateSuccess": "Profil oppdatert",
-  "profileUpdateFailure": "Oppdatering av profil mislykket. Kontakt oss hvis problemet vedvarer"
+  "profileUpdateFailure": "Oppdatering av profil mislykket. Kontakt oss hvis problemet vedvarer",
+  "enterEmailForPasswordReset": "Vennligst oppgi e-postadressen din for å tilbakestille passordet"
 }
