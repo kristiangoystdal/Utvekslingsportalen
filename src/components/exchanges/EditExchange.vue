@@ -310,7 +310,7 @@
 			</div>
 			<br />
 			<v-btn class="btn-primary" :to="{ name: 'Login' }">
-				{{ $t("userHandling.loginTitle") }}
+				{{ $t("operations.signIn") }}
 			</v-btn>
 			</p>
 		</div>
