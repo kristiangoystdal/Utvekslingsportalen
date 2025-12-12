@@ -1,0 +1,12 @@
+{
+  "welcome": "Welcome to Utvekslingsportalen!",
+  "goodbye": "Goodbye",
+  "siteDescription": "This site is a tool for students at NTNU to plan and document their exchange studies. \n\n Here you can see which courses other students have taken during their exchange, and you can create your own plan for your exchange.",
+  "mobileWarning": "This site is not optimized for mobile devices. Please use a computer or tablet for the best experience.",
+  "createExchange": "Create Exchange",
+  "uploadExchange": "Upload Exchange",
+  "topCountries": "Top 10 Destination Countries",
+  "topStudyPrograms": "Top 10 Study Programs",
+  "count": "Count",
+  "newFeature": "Support for more study programs is coming soon! Including from UiO (Oslo), UiB (Bergen), UiS (Stavanger), and UiT (Tromsø)."
+}

@@ -1,0 +1,22 @@
+{
+  "accountTitle": "Your Profile",
+  "editProfile": "Edit Your Profile",
+  "email": "Email",
+  "loadingUser": "Loading your profile...",
+  "name": "Name",
+  "loginTitle": "Log In",
+  "loginWithEmailTitle": "Log in with Email",
+  "loginWithGoogleTitle": "Log in with Google",
+  "loginWithGoogle": "Google",
+  "registerTitle": "Sign Up",
+  "registerWithEmailTitle": "Sign up with Email",
+  "registerWithGoogleTitle": "Sign up with Google",
+  "registerWithGoogle": "Google",
+  "makeNewAccount": "Create a New Account",
+  "haveAccount": "Already have an account?",
+  "emailVerified": "Verified",
+  "emailNotVerified": "Not Verified",
+  "sendVerificationEmail": "Resend Verification Email",
+  "updateProfile": "Update Profile",
+  "userNotVerified": "Your user account is not verified."
+}

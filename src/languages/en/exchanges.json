@@ -1,0 +1,16 @@
+{
+  "pageHeader": "Previous Exchanges:",
+  "info": "Here you can explore the exchange courses taken by previous students. \n\nYou can see which universities they have attended, which countries they have visited, and which courses they have taken. \nCompare with others in your study and create your own plan.",
+  "showFilter": "Show Filter",
+  "hideFilter": "Hide Filter",
+  "updateTable": "Update",
+  "coursesFallHeader": "Fall Semester",
+  "coursesSpringHeader": "Spring Semester",
+  "pageText": "Exchanges per page",
+  "courseComments": "Comments for",
+  "noComments": "The student has not added any comments for this course.",
+  "courseInformation": "More information",
+  "loginToFavorite": "You need to be logged in to add or edit favorites",
+  "errorSavingFavorites": "An error occurred while saving favorites. Please contact us if the problem persists.",
+  "search": "Search for country, university, study program, or specialization"
+}

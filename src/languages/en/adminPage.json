@@ -1,0 +1,16 @@
+{
+  "pageHeader": "Admin Panel",
+  "userListTitle": "User List",
+  "faqListTitle": "FAQ",
+  "exchangeListTitle": "Exchange List",
+  "deleteUserConfirmation": "Are you sure you want to delete this user?",
+  "deleteFAQConfirmation": "Are you sure you want to delete this FAQ?",
+  "deleteExchangeConfirmation": "Are you sure you want to delete this exchange?",
+  "editFAQTitle": "Edit FAQ",
+  "addFAQTitle": "Add FAQ",
+  "question": "Question",
+  "answer": "Answer",
+  "editExchangeTitle": "Edit Exchange",
+  "addExchangeTitle": "Add Exchange",
+  "courseListTitle": "Course List"
+}
