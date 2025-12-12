@@ -16,12 +16,12 @@
 
 
 						<div v-if="isVerified" class="verified-badge">
-							<v-icon color="green">mdi-check-circle</v-icon>
+							<v-icon color="green" class="spacing">mdi-check-circle</v-icon>
 							<span>{{ $t("userHandling.emailVerified") }}</span>
 						</div>
 
 						<div v-else class="unverified-badge" @click="toggleVerificationDialog">
-							<v-icon color="red">mdi-alert-circle</v-icon>
+							<v-icon color="red" class="spacing">mdi-alert-circle</v-icon>
 							<span>{{ $t("userHandling.emailNotVerified") }}</span>
 						</div>
 					</div>
@@ -370,6 +370,33 @@ export default {
 .account_info span {
 	margin-left: 5px;
 	font-size: 16px;
+}
+
+.verified-badge,
+.unverified-badge {
+	display: flex;
+	width: fit-content;
+	justify-content: space-between;
+	margin: auto;
+	cursor: pointer;
+	align-items: center;
+}
+
+.unverified-badge {
+	border: 1px solid var(--alert-error);
+	padding: 5px 10px;
+	border-radius: 5px;
+}
+
+.verified-badge {
+	border: 1px solid var(--alert-success);
+	padding: 5px 10px;
+	border-radius: 5px;
+	cursor: default;
+}
+
+.spacing {
+	margin-right: 10px;
 }
 
 @media (max-width: 768px) {
