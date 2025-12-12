@@ -17,7 +17,7 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-            - name: Validate translation keys
+      - name: Validate translation keys
         shell: bash
         run: |
           echo "🔍 Checking translation keys..."
@@ -28,7 +28,7 @@ jobs:
           FOUND_KEYS=$(mktemp)
           MISSING=0
 
-          # Extract all $t("key.path")
+          # Extract all $t("key.path") or $t('key.path')
           grep -Rho "\$t\s*(\s*['\"][^'\"]*['\"]\s*)" src \
             | sed -E "s/.*\(['\"]([^'\"]*)['\"]\).*/\1/" \
             | sort | uniq > "$FOUND_KEYS"
@@ -54,7 +54,7 @@ jobs:
                 continue
               fi
 
-              # FIX: Use quoted key for jq so numeric keys work.
+              # Quoted jq lookup fixes numeric keys like 404button
               if ! jq -e ".[\"$SUBKEY\"]" "$NO_FILE" >/dev/null 2>&1; then
                 echo "❌ Missing NO key: $FILE → $SUBKEY"
                 MISSING=1
