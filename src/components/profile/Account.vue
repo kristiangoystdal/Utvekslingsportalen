@@ -168,7 +168,6 @@ export default {
 				specialization: "",
 			},
 			verificationDialog: false,
-			passwordResetDialog: false,
 		};
 	},
 	computed: {
@@ -261,9 +260,6 @@ export default {
 					});
 			}
 		},
-		togglePasswordResetDialog() {
-			this.passwordResetDialog = !this.passwordResetDialog;
-		},
 		sendPasswordResetEmail() {
 			if (this.user) {
 				sendPasswordResetEmail(auth, this.user.email)
@@ -319,6 +315,12 @@ export default {
 </script>
 
 <style scoped>
+.v-avatar img {
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+}
+
 .profile-card {
 	background-color: var(--third-color);
 	border-radius: 10px;
