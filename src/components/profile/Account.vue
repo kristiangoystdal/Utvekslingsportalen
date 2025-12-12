@@ -56,7 +56,7 @@
 							<p style="margin-left: 10px;">{{ $t("operations.edit") }}</p>
 						</v-btn>
 
-						<v-btn color="secondary" class="mr-3" @click="sendPasswordResetEmail">
+						<v-btn color="secondary" class="mr-3" @click="sendResetPasswordEmail">
 							<v-icon left>mdi-lock-reset</v-icon>
 							<p style="margin-left: 10px;">{{ $t("operations.changePassword") }}</p>
 						</v-btn>
@@ -260,8 +260,8 @@ export default {
 					});
 			}
 		},
-		sendPasswordResetEmail() {
-			if (this.user) {
+		sendResetPasswordEmail() {
+			if (this.user && this.user.email) {
 				sendPasswordResetEmail(auth, this.user.email)
 					.then(() => {
 						toast.success(this.$t("notifications.passwordResetEmailSent"));
