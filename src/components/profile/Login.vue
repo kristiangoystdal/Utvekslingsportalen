@@ -174,7 +174,6 @@ export default {
 				toast.error("Registration failed");
 			}
 		},
-
 		async createUserProfile(user) {
 			try {
 				const displayName = this.name;
