@@ -28,18 +28,27 @@ jobs:
           FOUND_KEYS=$(mktemp)
           MISSING=0
 
-          # Extract all $t("key.path")
-          grep -Rho "\$t([\"'][^\"']*[\"'])" src \
-            | sed -E "s/\$t\([\"']([^\"']*)[\"']\)/\1/" \
+          # Extract all $t("key.path") or $t('key.path')
+          # This safely extracts ONLY the content inside the quotes.
+          grep -Rho "\$t\s*(\s*['\"][^'\"]*['\"]\s*)" src \
+            | sed -E "s/.*\(['\"]([^'\"]*)['\"]\).*/\1/" \
             | sort | uniq > "$FOUND_KEYS"
 
+          echo "Found keys:"
+          cat "$FOUND_KEYS"
+          echo ""
+
           while read -r KEY; do
+              # Skip empty lines
+              [[ -z "$KEY" ]] && continue
+
               FILE=$(echo "$KEY" | cut -d. -f1)
               SUBKEY=$(echo "$KEY" | cut -d. -f2-)
 
               NO_FILE="$NO_DIR/$FILE.json"
               EN_FILE="$EN_DIR/$FILE.json"
 
+              # Check if translation file exists
               if [[ ! -f "$NO_FILE" ]]; then
                 echo "❌ Missing Norwegian file: $NO_FILE (for key $KEY)"
                 MISSING=1
@@ -52,13 +61,13 @@ jobs:
                 continue
               fi
 
-              # Check NO key exists
+              # Check if key exists in NO
               if ! jq -e ".$SUBKEY" "$NO_FILE" >/dev/null 2>&1; then
                 echo "❌ Missing NO key: $FILE → $SUBKEY"
                 MISSING=1
               fi
 
-              # Check EN key exists
+              # Check if key exists in EN
               if ! jq -e ".$SUBKEY" "$EN_FILE" >/dev/null 2>&1; then
                 echo "❌ Missing EN key: $FILE → $SUBKEY"
                 MISSING=1
@@ -69,6 +78,7 @@ jobs:
           rm "$FOUND_KEYS"
 
           if [[ $MISSING -eq 1 ]]; then
+            echo ""
             echo "❌ Translation check failed."
             exit 1
           else
