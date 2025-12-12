@@ -20,7 +20,7 @@
 							<span>{{ $t("userHandling.emailVerified") }}</span>
 						</div>
 
-						<div v-else class="unverified-badge" @click="toggleVerificationDialog">
+						<div v-else class="unverified-badge" @click="sendVerificationEmail">
 							<v-icon color="red" class="spacing">mdi-alert-circle</v-icon>
 							<span>{{ $t("userHandling.emailNotVerified") }}</span>
 						</div>
