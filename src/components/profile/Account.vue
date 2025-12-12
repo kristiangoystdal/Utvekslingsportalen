@@ -134,25 +134,6 @@
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
-
-		<!-- Password Reset Dialog -->
-		<!-- <v-dialog v-model="passwordResetDialog" max-width="500" class="dialog">
-			<v-card>
-				<v-card-title>{{ $t("userHandling.changePassword") }}</v-card-title>
-				<v-card-text>
-					<p>{{ $t("userHandling.passwordResetInstructions") }}</p>
-					<v-btn class="btn btn-primary" @click="sendPasswordResetEmail()">
-						{{ $t("userHandling.sendPasswordResetEmail") }}
-					</v-btn>
-				</v-card-text>
-				<v-card-actions>
-					<v-spacer></v-spacer>
-					<v-btn class="btn-accent" text @click="togglePasswordResetDialog">
-						{{ $t("operations.close") }}
-					</v-btn>
-				</v-card-actions>
-			</v-card>
-		</v-dialog> -->
 	</v-container>
 </template>
 
@@ -272,7 +253,7 @@ export default {
 			if (this.user) {
 				sendEmailVerification(this.user)
 					.then(() => {
-						toast.success(this.$t("notifications.verificationEmailSent"));
+						toast.success(this.$t("notifications.verificationEmailSuccess"));
 					})
 					.catch((error) => {
 						console.error("Error sending verification email: ", error);
