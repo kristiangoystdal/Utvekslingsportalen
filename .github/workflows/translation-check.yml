@@ -17,7 +17,7 @@ jobs:
       - name: Install jq
         run: sudo apt-get update && sudo apt-get install -y jq
 
-      - name: Validate translation keys
+            - name: Validate translation keys
         shell: bash
         run: |
           echo "🔍 Checking translation keys..."
@@ -28,18 +28,12 @@ jobs:
           FOUND_KEYS=$(mktemp)
           MISSING=0
 
-          # Extract all $t("key.path") or $t('key.path')
-          # This safely extracts ONLY the content inside the quotes.
+          # Extract all $t("key.path")
           grep -Rho "\$t\s*(\s*['\"][^'\"]*['\"]\s*)" src \
             | sed -E "s/.*\(['\"]([^'\"]*)['\"]\).*/\1/" \
             | sort | uniq > "$FOUND_KEYS"
 
-          echo "Found keys:"
-          cat "$FOUND_KEYS"
-          echo ""
-
           while read -r KEY; do
-              # Skip empty lines
               [[ -z "$KEY" ]] && continue
 
               FILE=$(echo "$KEY" | cut -d. -f1)
@@ -48,7 +42,6 @@ jobs:
               NO_FILE="$NO_DIR/$FILE.json"
               EN_FILE="$EN_DIR/$FILE.json"
 
-              # Check if translation file exists
               if [[ ! -f "$NO_FILE" ]]; then
                 echo "❌ Missing Norwegian file: $NO_FILE (for key $KEY)"
                 MISSING=1
@@ -61,14 +54,13 @@ jobs:
                 continue
               fi
 
-              # Check if key exists in NO
-              if ! jq -e ".$SUBKEY" "$NO_FILE" >/dev/null 2>&1; then
+              # FIX: Use quoted key for jq so numeric keys work.
+              if ! jq -e ".[\"$SUBKEY\"]" "$NO_FILE" >/dev/null 2>&1; then
                 echo "❌ Missing NO key: $FILE → $SUBKEY"
                 MISSING=1
               fi
 
-              # Check if key exists in EN
-              if ! jq -e ".$SUBKEY" "$EN_FILE" >/dev/null 2>&1; then
+              if ! jq -e ".[\"$SUBKEY\"]" "$EN_FILE" >/dev/null 2>&1; then
                 echo "❌ Missing EN key: $FILE → $SUBKEY"
                 MISSING=1
               fi
