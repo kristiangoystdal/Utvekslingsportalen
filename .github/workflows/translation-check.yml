@@ -1,0 +1,76 @@
+name: Translation Check
+
+on:
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  check-translations:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+      - name: Validate translation keys
+        shell: bash
+        run: |
+          echo "🔍 Checking translation keys..."
+
+          NO_DIR="src/languages/no"
+          EN_DIR="src/languages/en"
+
+          FOUND_KEYS=$(mktemp)
+          MISSING=0
+
+          # Extract all $t("key.path")
+          grep -Rho "\$t([\"'][^\"']*[\"'])" src \
+            | sed -E "s/\$t\([\"']([^\"']*)[\"']\)/\1/" \
+            | sort | uniq > "$FOUND_KEYS"
+
+          while read -r KEY; do
+              FILE=$(echo "$KEY" | cut -d. -f1)
+              SUBKEY=$(echo "$KEY" | cut -d. -f2-)
+
+              NO_FILE="$NO_DIR/$FILE.json"
+              EN_FILE="$EN_DIR/$FILE.json"
+
+              if [[ ! -f "$NO_FILE" ]]; then
+                echo "❌ Missing Norwegian file: $NO_FILE (for key $KEY)"
+                MISSING=1
+                continue
+              fi
+
+              if [[ ! -f "$EN_FILE" ]]; then
+                echo "❌ Missing English file: $EN_FILE (for key $KEY)"
+                MISSING=1
+                continue
+              fi
+
+              # Check NO key exists
+              if ! jq -e ".$SUBKEY" "$NO_FILE" >/dev/null 2>&1; then
+                echo "❌ Missing NO key: $FILE → $SUBKEY"
+                MISSING=1
+              fi
+
+              # Check EN key exists
+              if ! jq -e ".$SUBKEY" "$EN_FILE" >/dev/null 2>&1; then
+                echo "❌ Missing EN key: $FILE → $SUBKEY"
+                MISSING=1
+              fi
+
+          done < "$FOUND_KEYS"
+
+          rm "$FOUND_KEYS"
+
+          if [[ $MISSING -eq 1 ]]; then
+            echo "❌ Translation check failed."
+            exit 1
+          else
+            echo "✅ All translations exist!"
+          fi
