@@ -272,11 +272,11 @@ export default {
 			if (this.user) {
 				sendEmailVerification(this.user)
 					.then(() => {
-						toast.success(this.$t("userHandling.verificationEmailSent"));
+						toast.success(this.$t("notifications.verificationEmailSent"));
 					})
 					.catch((error) => {
 						console.error("Error sending verification email: ", error);
-						toast.error(this.$t("error.verificationEmailFailed"));
+						toast.error(this.$t("notifications.verificationEmailFailure"));
 					});
 			}
 		},
@@ -291,7 +291,7 @@ export default {
 					})
 					.catch((error) => {
 						console.error("Error sending password reset email: ", error);
-						toast.error(this.$t("error.passwordResetEmailFailed"));
+						toast.error(this.$t("notifications.passwordResetEmailFailure"));
 					});
 			}
 		},
