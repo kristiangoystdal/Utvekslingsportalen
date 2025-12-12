@@ -56,7 +56,7 @@
 							<p style="margin-left: 10px;">{{ $t("operations.edit") }}</p>
 						</v-btn>
 
-						<v-btn color="secondary" class="mr-3" @click="togglePasswordResetDialog">
+						<v-btn color="secondary" class="mr-3" @click="sendPasswordResetEmail">
 							<v-icon left>mdi-lock-reset</v-icon>
 							<p style="margin-left: 10px;">{{ $t("operations.changePassword") }}</p>
 						</v-btn>
@@ -136,7 +136,7 @@
 		</v-dialog>
 
 		<!-- Password Reset Dialog -->
-		<v-dialog v-model="passwordResetDialog" max-width="500" class="dialog">
+		<!-- <v-dialog v-model="passwordResetDialog" max-width="500" class="dialog">
 			<v-card>
 				<v-card-title>{{ $t("userHandling.changePassword") }}</v-card-title>
 				<v-card-text>
@@ -152,7 +152,7 @@
 					</v-btn>
 				</v-card-actions>
 			</v-card>
-		</v-dialog>
+		</v-dialog> -->
 	</v-container>
 </template>
 
@@ -292,9 +292,9 @@ export default {
 		},
 		sendPasswordResetEmail() {
 			if (this.user) {
-				auth.sendPasswordResetEmail(this.user.email)
+				sendPasswordResetEmail(auth, this.user.email)
 					.then(() => {
-						toast.success(this.$t("userHandling.passwordResetEmailSent"));
+						toast.success(this.$t("notifications.passwordResetEmailSent"));
 					})
 					.catch((error) => {
 						console.error("Error sending password reset email: ", error);

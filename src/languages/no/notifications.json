@@ -26,5 +26,7 @@
   "fileSendSuccess": "Filen ble lastet opp",
   "fileSendFailure": "Feil ved opplasting av fil. Kontakt oss hvis problemet vedvarer",
   "verificationEmailSuccess": "En verifiseringsmail er sendt til din e-postadresse.",
-  "verificationEmailFailure": "Kunne ikke sende verifiseringsmail. Kontakt oss hvis problemet vedvarer"
+  "verificationEmailFailure": "Kunne ikke sende verifiseringsmail. Kontakt oss hvis problemet vedvarer",
+  "passwordResetEmailSent": "E-post for tilbakestilling av passord er sendt",
+  "passwordResetEmailFailure": "Kunne ikke sende e-post for tilbakestilling av passord. Kontakt oss hvis problemet vedvarer"
 }
