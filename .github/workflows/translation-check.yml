@@ -28,10 +28,14 @@ jobs:
           FOUND_KEYS=$(mktemp)
           MISSING=0
 
-          # Extract all $t("key.path") or $t('key.path')
+          # Extract all keys inside $t('...') or $t("...")
           grep -Rho "\$t\s*(\s*['\"][^'\"]*['\"]\s*)" src \
             | sed -E "s/.*\(['\"]([^'\"]*)['\"]\).*/\1/" \
             | sort | uniq > "$FOUND_KEYS"
+
+          echo "Found translation keys:"
+          cat "$FOUND_KEYS"
+          echo ""
 
           while read -r KEY; do
               [[ -z "$KEY" ]] && continue
@@ -42,25 +46,29 @@ jobs:
               NO_FILE="$NO_DIR/$FILE.json"
               EN_FILE="$EN_DIR/$FILE.json"
 
+              # Ensure both translation files exist
               if [[ ! -f "$NO_FILE" ]]; then
-                echo "❌ Missing Norwegian file: $NO_FILE (for key $KEY)"
+                echo "❌ Missing NO file: $NO_FILE (for key $KEY)"
                 MISSING=1
                 continue
               fi
-
               if [[ ! -f "$EN_FILE" ]]; then
-                echo "❌ Missing English file: $EN_FILE (for key $KEY)"
+                echo "❌ Missing EN file: $EN_FILE (for key $KEY)"
                 MISSING=1
                 continue
               fi
 
-              # Quoted jq lookup fixes numeric keys like 404button
-              if ! jq -e ".[\"$SUBKEY\"]" "$NO_FILE" >/dev/null 2>&1; then
+              # Convert nested key a.b.c → .a.b.c
+              JQ_PATH=".$SUBKEY"
+
+              # Validate NO key
+              if ! jq -e "$JQ_PATH" "$NO_FILE" >/dev/null 2>&1; then
                 echo "❌ Missing NO key: $FILE → $SUBKEY"
                 MISSING=1
               fi
 
-              if ! jq -e ".[\"$SUBKEY\"]" "$EN_FILE" >/dev/null 2>&1; then
+              # Validate EN key
+              if ! jq -e "$JQ_PATH" "$EN_FILE" >/dev/null 2>&1; then
                 echo "❌ Missing EN key: $FILE → $SUBKEY"
                 MISSING=1
               fi
