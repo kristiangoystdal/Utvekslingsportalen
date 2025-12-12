@@ -85,7 +85,7 @@ export default {
           trigger: "item",
           confine: true,
           formatter: (params) =>
-            `${params.name}<br/>${this.$t("common.count")}: ${params.value}`,
+            `${params.name}<br/>${this.$t("homepage.count")}: ${params.value}`,
         },
         xAxis: { type: "value" },
         yAxis: {
