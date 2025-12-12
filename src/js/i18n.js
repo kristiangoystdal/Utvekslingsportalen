@@ -1,19 +1,31 @@
 // src/i18n.js
 import { createI18n } from 'vue-i18n';
 
-// Import your JSON files
-import no from '../languages/no.json';
-import en from '../languages/en.json';
+const modules = import.meta.glob("../languages/no/*.json", { eager: true });
+const modulesEn = import.meta.glob("../languages/en/*.json", { eager: true });
 
-const messages = {
-  no, // Norwegian language messages
-  en, // English language messages
-};
+const messagesNo = {};
+const messagesEn = {};
+
+for (const path in modules) {
+  const name = path.split("/").pop().replace(".json", "");
+  messagesNo[name] = modules[path].default;
+}
+
+for (const path in modulesEn) {
+  const name = path.split("/").pop().replace(".json", "");
+  messagesEn[name] = modulesEn[path].default;
+}
+
+console.log("Loaded Norwegian messages:", messagesNo);
 
 const i18n = createI18n({
-  locale: 'no', // Default locale
-  messages, // Messages for all locales
+  legacy: true,            // <-- REQUIRED for $t() in templates
+  globalInjection: true,   // <-- makes $t() + $i18n available everywhere
+  locale: 'no',
+  messages: { no: messagesNo, en: messagesEn }
 });
+
 
 // Export the global i18n instance
 export default i18n;

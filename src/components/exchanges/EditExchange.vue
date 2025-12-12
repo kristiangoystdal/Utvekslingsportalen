@@ -304,15 +304,15 @@
 			</div>
 		</div>
 		<div v-else>
-			<p class="box box-alert text-alert text-center">
-			<div>
-				{{ $t("myExchange.loginToEdit") }}
+			<div class="box box-alert text-alert text-center">
+				<div>
+					{{ $t("myExchange.loginToEdit") }}
+				</div>
+				<br />
+				<v-btn class="btn-primary" :to="{ name: 'Login' }">
+					{{ $t("operations.signIn") }}
+				</v-btn>
 			</div>
-			<br />
-			<v-btn class="btn-primary" :to="{ name: 'Login' }">
-				{{ $t("userHandling.loginTitle") }}
-			</v-btn>
-			</p>
 		</div>
 
 		<!-- Delete course dialog -->

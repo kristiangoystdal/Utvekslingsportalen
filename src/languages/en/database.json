@@ -1,0 +1,20 @@
+{
+  "study": "Study",
+  "specialization": "Specialization",
+  "country": "Country",
+  "university": "University",
+  "studyYear": "Study Year",
+  "numSemesters": "Number of Semesters",
+  "semester": "Semester",
+  "courseCode": "Course Code",
+  "courseName": "Course Name",
+  "courseType": "Course type",
+  "replacedCourseName": "Replaced Course Name",
+  "replacedCourseCode": "Replaced Course Code",
+  "institute": "Institute",
+  "ECTSPoints": "ECTS",
+  "comments": "Comments",
+  "year": "Year",
+  "totalCourses": "Total Courses",
+  "totalECTS": "Total ECTS"
+}

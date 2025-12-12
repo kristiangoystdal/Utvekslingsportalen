@@ -1,0 +1,29 @@
+{
+  "pageHeader": "Din utveksling:",
+  "info": "Opprett eller endre din oversikt over fagene du har tatt på utveksling. \n\nFagnavn og antall ECTS poeng er påkrevd, hvor ECTS poengene skal være konvertert fra universitetes lokale enhet. \n\nHvis ditt studieprogram eller spesialisering ikke finnes i listen, vennligst kontakt oss.",
+  "missingData": "Manglende data på",
+  "unsavedChanges": "Du har ulagret data. Husk å oppdatere.",
+  "noChanges": "All data er lagret og utveksling er oppdatert.",
+  "basisInformation": {
+    "basisInformationTitle": "Basis informasjon",
+    "fillExchangeInfo": "Fyll inn informasjon om din utveksling",
+    "allDataFilled": "All data er fylt inn"
+  },
+  "courseInformation": {
+    "courseFallTitle": "Fag på høstsemesteret",
+    "courseSpringTitle": "Fag på vårsemesteret",
+    "fillSemesterInfo": "Fyll inn informasjon fagene",
+    "someCoursesMissing": "Noen fag mangler nødvendig informasjon",
+    "allCoursesFilled": "Alle fag har nok informasjon",
+    "addCourse": "Legg til fag",
+    "newCourse": "Nytt fag",
+    "fillCoursesInfo": "Fyll inn informasjon faget ditt",
+    "enoughCourseDataFilled": "Nok informasjon om faget er fylt inn",
+    "numCoursesText": "fag",
+    "courseYear": "År"
+  },
+  "semestersLocation": "Er utvekslingen på samme sted begge semestere?",
+  "locationQuestion": "Hva er universitet og landet for det andre semesteret?",
+  "updateExchange": "Oppdater utveksling",
+  "loginToEdit": "Du må være logget inn for å legge til eller endre utvekslingen din"
+}

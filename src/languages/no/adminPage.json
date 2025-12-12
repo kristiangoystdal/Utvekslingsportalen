@@ -1,0 +1,16 @@
+{
+  "pageHeader": "Admin Panel",
+  "userListTitle": "Brukerliste",
+  "faqListTitle": "FAQ",
+  "exchangeListTitle": "Utvekslingsliste",
+  "deleteUserConfirmation": "Er du sikker på at du vil slette denne brukeren?",
+  "deleteFAQConfirmation": "Er du sikker på at du vil slette denne FAQen?",
+  "deleteExchangeConfirmation": "Er du sikker på at du vil slette denne utvekslingen?",
+  "editFAQTitle": "Rediger FAQ",
+  "addFAQTitle": "Legg til FAQ",
+  "question": "Spørsmål",
+  "answer": "Svar",
+  "editExchangeTitle": "Rediger utveksling",
+  "addExchangeTitle": "Legg til utveksling",
+  "courseListTitle": "Fagliste"
+}

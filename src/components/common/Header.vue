@@ -38,11 +38,11 @@
 								<div class="profile-content">
 									<div v-if="user != null">
 										<div class="username">{{ userData?.displayName || user?.displayName || '' }}</div>
-										<v-btn @click="goToProfile" color="info" dark class="login-btn">
-											{{ $t("operations.profileBtn") }}
+										<v-btn @click="goToProfile" color="primary" dark class="login-btn">
+											{{ $t("operations.profile") }}
 										</v-btn>
 										<br><br>
-										<v-btn @click="signOut" color="error" dark class="login-btn">
+										<v-btn @click="signOut" color="red" class="login-btn">
 											{{ $t("operations.signOut") }}
 										</v-btn>
 
@@ -64,7 +64,7 @@
 													align-items: center;
 													vertical-align: middle;
 													padding-top: 1px;
-												">{{ $t("userHandling.loginWithEmailButton") }}</span>
+												">{{ $t("operations.loginWithEmailButton") }}</span>
 										</v-btn>
 										<br>
 										<v-btn class="login-btn" @click="loginWithGoogle" color="primary" dark style="
@@ -82,7 +82,7 @@
 													align-items: center;
 													vertical-align: middle;
 													padding-top: 1px;
-												">{{ $t("userHandling.loginWithGoogle") }}</span>
+												">{{ $t("operations.loginWithGoogleButton") }}</span>
 										</v-btn>
 									</div>
 								</div>

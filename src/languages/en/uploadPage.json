@@ -1,0 +1,10 @@
+{
+  "pageHeader": "Upload Data",
+  "info": "Here you can upload a file with exchange data, for example Learning Agreement. \nThe file must be in the correct format for the upload to succeed (PDF or PNG). \n\nPlease contact us for more information.",
+  "name": "Name",
+  "email": "Email",
+  "file": "File",
+  "comment": "Comment (please include study program, specialization, destination country, university, and study year if not included in the file)",
+  "submit": "Upload",
+  "clear": "Reset"
+}

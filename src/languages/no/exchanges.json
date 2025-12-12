@@ -1,0 +1,16 @@
+{
+  "pageHeader": "Tidligere utvekslinger:",
+  "info": "Her kan du utforske utvekslingsfagene til tidligere studenter. \n\nDu kan se hvilke universiteter de har vært på, hvilke land de har besøkt, og hvilke fag de har tatt. \nSammenlign med andre på ditt studie og sett sammen din egen plan.",
+  "showFilter": "Vis filter",
+  "hideFilter": "Skjul filter",
+  "updateTable": "Oppdater",
+  "coursesFallHeader": "Høstsemesteret",
+  "coursesSpringHeader": "Vårsemesteret",
+  "pageText": "Utvekslinger per side",
+  "courseComments": "Kommentarer til ",
+  "noComments": "Studenten har ikke lagt inn noen kommentarer til dette faget.",
+  "courseInformation": "Mer informasjon",
+  "loginToFavorite": "Du må være logget inn for å legge til eller endre favoritter",
+  "errorSavingFavorites": "Det oppstod en feil under lagring av favoritter. Kontakt oss hvis problemet vedvarer.",
+  "search": "Søk etter land, universitet, studieprogram eller spesialisering"
+}

@@ -24,7 +24,7 @@
 				<div v-if="user != null">
 					<div class="username">{{ userData.displayName }}</div>
 					<v-btn @click="goToProfile" color="info" class="login-btn" dark>
-						{{ $t("operations.profileBtn") }}
+						{{ $t("navbar.profile") }}
 					</v-btn>
 					<v-btn @click="signOut" color="primary" class="login-btn" dark>
 						{{ $t("operations.signOut") }}
@@ -44,7 +44,7 @@
 								align-items: center;
 								vertical-align: middle;
 								padding-top: 1px;
-							">{{ $t("userHandling.loginWithEmailButton") }}</span>
+							">{{ $t("operations.loginWithEmailButton") }}</span>
 					</v-btn>
 					<br>
 
@@ -60,7 +60,7 @@
 								align-items: center;
 								vertical-align: middle;
 								padding-top: 1px;
-							">{{ $t("userHandling.loginWithGoogle") }}</span>
+							">{{ $t("operations.loginWithGoogleButton") }}</span>
 					</v-btn>
 				</div>
 			</div>

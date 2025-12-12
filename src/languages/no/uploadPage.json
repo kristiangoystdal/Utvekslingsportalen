@@ -1,0 +1,10 @@
+{
+  "pageHeader": "Last opp data",
+  "info": "Her kan du laste opp en fil med utvekslingsdata, for eksempel Learning Agreement. \nFilen må være i riktig format for at opplastingen skal lykkes (PDF eller PNG). \n\nVennligst kontakt oss for mer informasjon.",
+  "name": "Navn",
+  "email": "E-post",
+  "file": "Fil",
+  "comment": "Kommentar \n\n(skriv inn studieprogram, spesialisering, destinasjonsland, universitet og studieår hvis det ikke er oppgitt i filen)",
+  "submit": "Last opp",
+  "clear": "Nullstill"
+}

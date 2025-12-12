@@ -1,0 +1,29 @@
+{
+  "pageHeader": "Your Exchange:",
+  "info": "Create or edit your overview of the courses you have taken during your exchange. \n\nCourse name and number of ECTS credits are required, where the ECTS credits should be converted from the university's local unit. \n\nIf your study program or specialization is not listed, please contact us.",
+  "missingData": "Missing data on",
+  "unsavedChanges": "You have unsaved data. Remember to update.",
+  "noChanges": "All data is saved and the exchange is updated.",
+  "basisInformation": {
+    "basisInformationTitle": "Basic Information",
+    "fillExchangeInfo": "Fill in information about your exchange",
+    "allDataFilled": "All data is filled in"
+  },
+  "courseInformation": {
+    "courseFallTitle": "Courses for Fall Semester",
+    "courseSpringTitle": "Courses for Spring Semester",
+    "fillSemesterInfo": "Fill in the information for the courses",
+    "someCoursesMissing": "Some courses are missing necessary information",
+    "allCoursesFilled": "All courses have sufficient information",
+    "addCourse": "Add Course",
+    "newCourse": "New Course",
+    "fillCoursesInfo": "Fill in the information for your course",
+    "enoughCourseDataFilled": "Sufficient information about the course is filled in",
+    "numCoursesText": "courses",
+    "courseYear": "Year"
+  },
+  "semestersLocation": "Is the exchange in the same university both semesters?",
+  "locationQuestion": "What is the university and country for the second semester?",
+  "updateExchange": "Update Exchange",
+  "loginToEdit": "You need to be logged in to add or edit your exchange"
+}

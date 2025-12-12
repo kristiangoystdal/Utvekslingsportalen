@@ -1,0 +1,10 @@
+{
+  "notLoggedIn": "Profile not available. Please log in",
+  "missingPageTitle": "404 - Destination doesn't exist",
+  "missingPageText": "Oops! You are trying to travel to a place that does not exist. Maybe it's time to  to rethink your choices?",
+  "missingPageButton": "Head home",
+  "contactName": "The name must be at least 2 characters.",
+  "contactEmail": "Must be a valid email address.",
+  "contactMessage": "The message must be at least 10 characters.",
+  "uploadFileRequired": "A file must be uploaded to proceed."
+}

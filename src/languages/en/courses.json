@@ -1,0 +1,11 @@
+{
+  "pageHeader": "Course Overview:",
+  "info": "Here you can explore what the courses from NTNU have been replaced with at the host universities.",
+  "search": "Search for course code or course name",
+  "information": "Equivalent courses at host universities:",
+  "fall": "Fall",
+  "spring": "Spring",
+  "availableSemesters": "Available Semesters",
+  "availableCourses": "Available Courses",
+  "pageText": "Courses per page"
+}

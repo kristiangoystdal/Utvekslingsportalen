@@ -418,18 +418,16 @@
 <script>
 import { db, auth } from "../../js/firebaseConfig.js";
 import { set, get, child, ref as dbRef, update } from "firebase/database";
-import { useI18n } from "vue-i18n";
 import countriesInformation from "../../data/countriesInformation.json";
 import { toast } from "vue3-toastify";
-import countriesNameEn from "../../languages/en.json";
-import countriesNameNo from "../../languages/no.json";
+import countriesNameEn from "../../languages/en/countries.json";
+import countriesNameNo from "../../languages/no/countries.json";
 
 
 export default {
 	setup() {
-		const { t, locale } = useI18n();
 		const user = auth.currentUser;
-		return { t, locale, user };
+		return { user };
 	},
 	data() {
 		return {
@@ -506,33 +504,33 @@ export default {
 					key: "country",
 				},
 				{
-					title: this.t("database.university"),
+					title: this.$t("database.university"),
 					align: "start",
 					key: "university",
 					length: 2,
 				},
 				{
-					title: this.t("database.study"),
+					title: this.$t("database.study"),
 					align: "end",
 					key: "study",
 				},
 				{
-					title: this.t("database.specialization"),
+					title: this.$t("database.specialization"),
 					align: "end",
 					key: "specialization",
 				},
 				{
-					title: this.t("database.studyYear"),
+					title: this.$t("database.studyYear"),
 					align: "center",
 					key: "studyYear",
 				},
 				{
-					title: this.t("database.year"),
+					title: this.$t("database.year"),
 					align: "center",
 					key: "year",
 				},
 				{
-					title: this.t("database.numSemesters"),
+					title: this.$t("database.numSemesters"),
 					align: "center",
 					key: "numSemesters",
 				},
@@ -541,42 +539,42 @@ export default {
 		translatedHeadersCourses() {
 			return [
 				{
-					title: this.t("database.courseName"),
+					title: this.$t("database.courseName"),
 					align: "start",
 					key: "courseName",
 				},
 				{
-					title: this.t("database.courseCode"),
+					title: this.$t("database.courseCode"),
 					align: "end",
 					key: "courseCode",
 				},
 				{
-					title: this.t("database.replacedCourseName"),
+					title: this.$t("database.replacedCourseName"),
 					align: "end",
 					key: "replacedCourseName",
 				},
 				{
-					title: this.t("database.replacedCourseCode"),
+					title: this.$t("database.replacedCourseCode"),
 					align: "end",
 					key: "replacedCourseCode",
 				},
 				{
-					title: this.t("database.courseType"),
+					title: this.$t("database.courseType"),
 					align: "end",
 					key: "courseType",
 				},
 				{
-					title: this.t("database.institute"),
+					title: this.$t("database.institute"),
 					align: "end",
 					key: "institute",
 				},
 				{
-					title: this.t("database.ECTSPoints"),
+					title: this.$t("database.ECTSPoints"),
 					align: "end",
 					key: "ECTSPoints",
 				},
 				{
-					title: this.t("database.comments"),
+					title: this.$t("database.comments"),
 					align: "end",
 					key: "comment",
 				},
@@ -594,12 +592,12 @@ export default {
 					key: "country",
 				},
 				{
-					title: this.t("database.university"),
+					title: this.$t("database.university"),
 					align: "start",
 					key: "university",
 				},
 				{
-					title: this.t("database.study"),
+					title: this.$t("database.study"),
 					align: "end",
 					key: "study",
 				},
@@ -608,47 +606,50 @@ export default {
 		translatedMobileHeadersCourses() {
 			return [
 				{
-					title: this.t("database.courseName"),
+					title: this.$t("database.courseName"),
 					align: "start",
 					key: "courseName",
 				},
 				{
-					title: this.t("database.courseCode"),
+					title: this.$t("database.courseCode"),
 					align: "end",
 					key: "courseCode",
 				},
 				{
-					title: this.t("database.replacedCourseName"),
+					title: this.$t("database.replacedCourseName"),
 					align: "end",
 					key: "replacedCourseName",
 				},
 				{
-					title: this.t("database.replacedCourseCode"),
+					title: this.$t("database.replacedCourseCode"),
 					align: "end",
 					key: "replacedCourseCode",
 				},
 				{
-					title: this.t("database.courseType"),
+					title: this.$t("database.courseType"),
 					align: "end",
 					key: "courseType",
 				},
 				{
-					title: this.t("database.institute"),
+					title: this.$t("database.institute"),
 					align: "end",
 					key: "institute",
 				},
 				{
-					title: this.t("database.ECTSPoints"),
+					title: this.$t("database.ECTSPoints"),
 					align: "end",
 					key: "ECTSPoints",
 				},
 				{
-					title: this.t("database.comments"),
+					title: this.$t("database.comments"),
 					align: "end",
 					key: "comment",
 				},
 			];
 		},
+		locale() {
+			return this.$i18n.locale;
+		}
 	},
 	methods: {
 		updateScreenWidth() {
@@ -833,7 +834,7 @@ export default {
 		showComments(course) {
 			this.currentCourseName = course.courseName;
 			this.currentComments =
-				course.comments || this.t("exchanges.noComments");
+				course.comments || this.$t("exchanges.noComments");
 			this.commentDialog = true;
 		},
 		closeCommentDialog() {
@@ -942,16 +943,16 @@ export default {
 		getCountryKeyFromUserInput(word) {
 			const lowerWord = word.toLowerCase();
 
-			const countryKeysEn = Object.keys(countriesNameEn.countries);
+			const countryKeysEn = Object.keys(countriesNameEn);
 
 			for (const key of countryKeysEn) {
 				if (this.locale === "en") {
-					const countryNameEn = countriesNameNo.countries[key].toLowerCase();
+					const countryNameEn = countriesNameNo[key].toLowerCase();
 					if (countryNameEn === lowerWord) {
 						return key;
 					}
 				} else {
-					const countryNameEn = countriesNameEn.countries[key].toLowerCase();
+					const countryNameEn = countriesNameEn[key].toLowerCase();
 					if (countryNameEn === lowerWord) {
 						return key;
 					}
