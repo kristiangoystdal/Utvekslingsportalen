@@ -420,8 +420,8 @@ import { db, auth } from "../../js/firebaseConfig.js";
 import { set, get, child, ref as dbRef, update } from "firebase/database";
 import countriesInformation from "../../data/countriesInformation.json";
 import { toast } from "vue3-toastify";
-import countriesNameEn from "../../languages/en.json";
-import countriesNameNo from "../../languages/no.json";
+import countriesNameEn from "../../languages/en/countries.json";
+import countriesNameNo from "../../languages/no/countries.json";
 
 
 export default {
@@ -943,16 +943,16 @@ export default {
 		getCountryKeyFromUserInput(word) {
 			const lowerWord = word.toLowerCase();
 
-			const countryKeysEn = Object.keys(countriesNameEn.countries);
+			const countryKeysEn = Object.keys(countriesNameEn);
 
 			for (const key of countryKeysEn) {
 				if (this.locale === "en") {
-					const countryNameEn = countriesNameNo.countries[key].toLowerCase();
+					const countryNameEn = countriesNameNo[key].toLowerCase();
 					if (countryNameEn === lowerWord) {
 						return key;
 					}
 				} else {
-					const countryNameEn = countriesNameEn.countries[key].toLowerCase();
+					const countryNameEn = countriesNameEn[key].toLowerCase();
 					if (countryNameEn === lowerWord) {
 						return key;
 					}
