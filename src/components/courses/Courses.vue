@@ -222,9 +222,7 @@ import "vue3-toastify/dist/index.css";
 
 export default {
   setup() {
-    const { t, locale } = useI18n();
     const user = auth.currentUser;
-    return { t, locale, user };
   },
   data() {
     return {
@@ -273,25 +271,25 @@ export default {
           sortable: false,
         },
         {
-          title: this.t("database.courseCode"),
+          title: this.$t("database.courseCode"),
           align: "start",
           key: "courseCode",
           width: "12%",
         },
         {
-          title: this.t("database.courseName"),
+          title: this.$t("database.courseName"),
           align: "start",
           key: "courseName",
           width: "45%",
         },
         {
-          title: this.t("courses.availableCourses"),
+          title: this.$t("courses.availableCourses"),
           key: "count",
           align: "center",
           width: "15%",
         },
         {
-          title: this.t("courses.availableSemesters"),
+          title: this.$t("courses.availableSemesters"),
           key: "semesters",
           align: "end",
           width: "40%",
@@ -301,32 +299,32 @@ export default {
     translatedHeadersCourses() {
       return [
         {
-          title: this.t("database.courseCode"),
+          title: this.$t("database.courseCode"),
           align: "start",
           key: "courseCode",
         },
         {
-          title: this.t("database.courseName"),
+          title: this.$t("database.courseName"),
           align: "start",
           key: "courseName",
         },
         {
-          title: this.t("database.country"),
+          title: this.$t("database.country"),
           align: "end",
           key: "country",
         },
         {
-          title: this.t("database.university"),
+          title: this.$t("database.university"),
           align: "end",
           key: "university",
         },
         {
-          title: this.t("database.ECTSPoints"),
+          title: this.$t("database.ECTSPoints"),
           align: "end",
           key: "ECTSPoints",
         },
         {
-          title: this.t("database.comments"),
+          title: this.$t("database.comments"),
           align: "end",
           key: "comment",
         },
@@ -352,13 +350,13 @@ export default {
           sortable: false,
         },
         {
-          title: this.t("database.courseCode"),
+          title: this.$t("database.courseCode"),
           align: "start",
           key: "courseCode",
           length: 1,
         },
         {
-          title: this.t("database.courseName"),
+          title: this.$t("database.courseName"),
           align: "end",
           key: "courseName",
         },
@@ -367,32 +365,32 @@ export default {
     translatedMobileHeadersCourses() {
       return [
         {
-          title: this.t("database.courseCode"),
+          title: this.$t("database.courseCode"),
           align: "start",
           key: "courseCode",
         },
         {
-          title: this.t("database.courseName"),
+          title: this.$t("database.courseName"),
           align: "start",
           key: "courseName",
         },
         {
-          title: this.t("database.country"),
+          title: this.$t("database.country"),
           align: "end",
           key: "country",
         },
         {
-          title: this.t("database.university"),
+          title: this.$t("database.university"),
           align: "end",
           key: "university",
         },
         {
-          title: this.t("database.ECTSPoints"),
+          title: this.$t("database.ECTSPoints"),
           align: "end",
           key: "ECTSPoints",
         },
         {
-          title: this.t("database.comments"),
+          title: this.$t("database.comments"),
           align: "end",
           key: "comment",
         },
@@ -448,10 +446,10 @@ export default {
 
             const semesters = [];
             if (host.includes(course)) {
-              semesters.push(this.t("courses.fall"));
+              semesters.push(this.$t("courses.fall"));
             }
             if (vaar.includes(course)) {
-              semesters.push(this.t("courses.spring"));
+              semesters.push(this.$t("courses.spring"));
             }
 
             if (!grouped[code.trim()]) {
@@ -500,7 +498,7 @@ export default {
               grouped[code].semesters = semesters.join(", ");
             }
             // Sort semesters
-            const semesterOrder = [this.t("courses.fall"), this.t("courses.spring")];
+            const semesterOrder = [this.$t("courses.fall"), this.$t("courses.spring")];
             grouped[code].semesters = grouped[code].semesters
               .split(", ")
               .sort((a, b) => semesterOrder.indexOf(a) - semesterOrder.indexOf(b))
@@ -525,7 +523,7 @@ export default {
     showComments(course) {
       this.currentCourseName = course.courseName;
       this.currentComments =
-        course.comments || this.t("exchanges.noComments");
+        course.comments || this.$t("exchanges.noComments");
       this.commentDialog = true;
     },
     closeCommentDialog() {
