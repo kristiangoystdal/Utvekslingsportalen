@@ -1,12 +1,12 @@
 <template>
 	<div class="box box-fourth-color not-found-container center">
-		<h1>{{ $t("errors.404title") }}</h1>
+		<h1>{{ $t("errors.missingPageTitle") }}</h1>
 		<p class="preserve-whitespace">
-			{{ $t("errors.404text") }}
+			{{ $t("errors.missingPageText") }}
 		</p>
 		<img src="../../assets/images/airport.gif" alt="Page Not Found GIF" class="not-found-gif" />
 		<v-btn to="/" class="btn btn-primary hover">
-			{{ $t("errors.404button") }}
+			{{ $t("errors.missingPageButton") }}
 		</v-btn>
 	</div>
 </template>

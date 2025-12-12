@@ -1,8 +1,8 @@
 {
   "notLoggedIn": "Profil ikke tilgjengelig. Vennligst logg inn",
-  "404title": "404 - Destinasjonen finnes ikke",
-  "404text": "Oops! Du prøver å reise til et sted som ikke finnes. Kanskje på tide å for å revurdere valgene dine?",
-  "404button": "Dra hjem",
+  "missingPageTitle": "404 - Destinasjonen finnes ikke",
+  "missingPageText": "Oops! Du prøver å reise til et sted som ikke finnes. Kanskje på tide å for å revurdere valgene dine?",
+  "missingPageButton": "Dra hjem",
   "contactName": "Navnet må være minst 2 karakterer.",
   "contactEmail": "Må være en gyldig e-post addresse",
   "contactMessage": "Meldingen må være minst 10 karakterer",
