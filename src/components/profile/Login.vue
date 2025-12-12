@@ -22,7 +22,12 @@
 							<v-icon left class="icon-spacing">mdi-account-plus</v-icon>
 							{{ $t("userHandling.makeNewAccount") }}
 						</v-btn>
-						<br /> <br />
+						<div class="text-center" style="margin-top: 15px;">
+							<span @click.prevent="sendResetPasswordEmail" class="forgot-password-link">
+								{{ $t("userHandling.forgotPassword") }}
+							</span>
+						</div>
+						<br />
 						<v-divider></v-divider>
 						<br />
 
@@ -85,7 +90,7 @@
 
 <script>
 import { auth, provider } from "../../js/firebaseConfig";
-import { signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { signInWithPopup, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, sendPasswordResetEmail } from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database"; // ✅ new imports for Realtime Database
 
 import { toast } from "vue3-toastify";
@@ -188,6 +193,20 @@ export default {
 				console.error("Error creating user profile:", error);
 			}
 		},
+		async sendResetPasswordEmail() {
+			if (this.email) {
+				sendPasswordResetEmail(auth, this.email)
+					.then(() => {
+						toast.success(this.$t("notifications.passwordResetEmailSent"));
+					})
+					.catch((error) => {
+						console.error("Error sending password reset email: ", error);
+						toast.error(this.$t("notifications.passwordResetEmailFailure"));
+					});
+			} else {
+				toast.error(this.$t("notifications.enterEmailForPasswordReset"));
+			}
+		},
 	},
 };
 </script>
@@ -239,6 +258,14 @@ export default {
 	overflow: hidden;
 	clip: rect(0, 0, 0, 0);
 	border: 0;
+}
+
+.forgot-password-link {
+	color: #1976d2;
+	/* Vuetify primary color */
+	text-decoration: none;
+	cursor: pointer;
+	font-size: 1vw;
 }
 
 
