@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite --host",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:unit": "vitest run",
+    "test:unit:ui": "vitest --ui"
   },
   "dependencies": {
     "@mdi/font": "^7.4.47",
@@ -35,9 +37,14 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
+    "@types/node": "^25.0.1",
     "@vitejs/plugin-vue": "^5.0.4",
+    "@vitest/ui": "^3.2.4",
+    "@vue/test-utils": "^2.4.6",
+    "jsdom": "^26.1.0",
     "raw-loader": "^4.0.2",
     "vite": "^5.2.8",
-    "vite-plugin-prerender": "^1.0.8"
+    "vite-plugin-prerender": "^1.0.8",
+    "vitest": "^3.2.4"
   }
 }
