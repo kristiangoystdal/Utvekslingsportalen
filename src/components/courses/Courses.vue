@@ -647,6 +647,11 @@ export default {
         }
       });
 
+      if (!exchange) {
+        console.error("routeToExchange: exchange not found for course", item);
+        return;
+      }
+
       const translatedCountry = this.$t(`countries.${exchange.country}`);
 
       const searchString = translatedCountry + " " + exchange.university + " " + exchange.study + " " + exchange.specialization + " " + exchange.studyYear + " " + exchange.year;
