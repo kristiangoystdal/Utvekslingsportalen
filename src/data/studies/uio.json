@@ -1,0 +1,676 @@
+{
+  "studies": {
+    "Allmenn litteraturvitenskap (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Allmenn litteraturvitenskap (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Antikkens kultur (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Arkeologi (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Arkeologi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Asia- og Midtøsten-studier (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Assessment, Measurement and Evaluation (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Astrofysikk (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Barn og unges læring og utvikling (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Biovitenskap (biologi Master)": [
+      "Ingen spesialisering"
+    ],
+    "Biovitenskap (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Computational Science (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Culture, Languages and Social Sciences at bachelor's level (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Culture, Languages and Social Sciences at master's level (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Data Science (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Development, Environment and Cultural Change (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Digitalisering i helsesektoren (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Digitalisering og ledelse (Erfaringsbasert master)": [
+      "Ingen spesialisering"
+    ],
+    "Economics (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Education (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Elektronikk, informatikk og teknologi (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Elektronikk, informatikk og teknologi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Engelsk (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Entreprenørskap og innovasjonsledelse (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "ESST - Society, Science and Technology in Europe (Master 1.5 år)": [
+      "Ingen spesialisering"
+    ],
+    "Estetiske studier og allmenn litteraturvitenskap (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "European history master (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "European Master in Health Economics and Management (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Europeisk idéhistorie og kunnskapshistorie (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Europeiske språk (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Europeiske språk (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Farmasi (Master 5 år)": [
+      "Ingen spesialisering"
+    ],
+    "Filosofi (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Filosofi (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Filosofi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Filosofi, politikk og økonomi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Fluidmekanikk (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Folkehelsevitenskap og epidemiologi (Folkehelse, epidemiologi, helse Master)": [
+      "Ingen spesialisering"
+    ],
+    "Fornybar energi og nanoteknologi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Fornybare energisystemer (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Forvaltningsinformatikk (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Fransk (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Fysikk (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Fysikk og astronomi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Gender Studies (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Geofag (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Geofysikk og klima (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Geologi og geografi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Gründerskolen (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Health Economics, Policy and Management (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Helseadministrasjon (Erfaringsbasert master)": [
+      "Ingen spesialisering"
+    ],
+    "Helseledelse og helseøkonomi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Helseøkonomi og administrasjon (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Historie (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Historie (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Historie (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Honours-programmet (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Human Geography (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Ibsen Studies (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Idéhistorie (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Idéhistorie (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Informatikk (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Informatikk: design, bruk, interaksjon (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Informatikk: design, bruk, interaksjon (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Informatikk: digital økonomi og ledelse (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Informatikk: digital økonomi og ledelse (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Informatikk: informasjonssikkerhet (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Informatikk: maskinlæring og kunstig intelligens (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Informatikk: programmering og systemarkitektur (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Informatikk: programmering og systemarkitektur (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Informatikk: robotikk og intelligente systemer (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Informatikk: robotikk og intelligente systemer (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Informatikk: språkteknologi (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Information and Communication Technology Law (Master 1.5 år)": [
+      "Ingen spesialisering"
+    ],
+    "Internasjonale studier (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "International Community Health (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Italiensk (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Japan-studier med japansk (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Kina-studier med kinesisk (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Kjemi (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Kjemi og biokjemi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Kjernefysikk og nukleærteknologi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Klassiske språk (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Klassiske språk (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Klima, miljø og menneske (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Klinisk ernæring (Ernæring, kosthold, helse Master)": [
+      "Ingen spesialisering"
+    ],
+    "Klinisk farmasi (Erfaringsbasert master)": [
+      "Ingen spesialisering"
+    ],
+    "Konservering (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Kriminologi (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Kriminologi (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Kriminologi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Kristendom og islam (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Kultur og kommunikasjon (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Kulturarv- og konserveringsstudier (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Kulturhistorie (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Kulturhistorie, museologi og kulturarv (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Kunsthistorie og visuelle studier (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Kunsthistorie og visuelle studier (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Kunsthistorie og visuelle studier (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Laveregradsemner i realfag for flyktninger (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Lederskap, etikk og samtalepraksis (Erfaringsbasert master)": [
+      "Ingen spesialisering"
+    ],
+    "Lektorprogrammet (Master 5 år)": [
+      "Ingen spesialisering"
+    ],
+    "Lingvistikk (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Lingvistikk (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Lærevansker og særskilte behov i et system- og individperspektiv (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Maritime Law (Master 1.5 år)": [
+      "Ingen spesialisering"
+    ],
+    "Masteremner i realfag for flyktninger (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Matematikk (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Matematikk (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Matematikk: data, modellering og beregninger (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Matematikk: finans, forsikring og økonomi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Matematikk: teoretisk og anvendt matematikk (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Materialvitenskap for energi- og nanoteknologi (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Medier og kommunikasjon (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Medier og kommunikasjon (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Medier og kommunikasjon (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Medisin (Profesjonsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Midtøsten-studier med arabisk, persisk og tyrkisk (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Modern International and Transnational History (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Multilingualism (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Music, Communication and Technology (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Musikkvitenskap (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Musikkvitenskap (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Nordisk litteratur (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Nordisk språk (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Nordisk, særlig norsk, språk og litteratur (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Nordiske studier (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Norrøn og keltisk filologi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Norsk som andrespråk (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "North Sea Energy Law (Erfaringsbasert master)": [
+      "Ingen spesialisering"
+    ],
+    "Nukleærteknologi (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Odontologi (Master 5 år)": [
+      "Ingen spesialisering"
+    ],
+    "Offentlig administrasjon og ledelse (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Organisasjon, ledelse og arbeid (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Peace and Conflict Studies (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Pedagogikk (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Pedagogikk (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Ph.d. ved Det humanistiske fakultet (Forskerutdanning: ph.d. 3 år)": [
+      "Ingen spesialisering"
+    ],
+    "Ph.d. ved Det juridiske fakultet (Forskerutdanning: ph.d. 3 år)": [
+      "Ingen spesialisering"
+    ],
+    "Ph.d. ved Det matematisk-naturvitenskapelige fakultet (Forskerutdanning: ph.d. 3 år)": [
+      "Ingen spesialisering"
+    ],
+    "Ph.d. ved Det medisinske fakultet (Forskerutdanning: ph.d. 3 år)": [
+      "Ingen spesialisering"
+    ],
+    "Ph.d. ved Det odontologiske fakultet (Forskerutdanning: ph.d. 3 år)": [
+      "Ingen spesialisering"
+    ],
+    "Ph.d. ved Det samfunnsvitenskapelige fakultet (Forskerutdanning: ph.d. 3 år)": [
+      "Ingen spesialisering"
+    ],
+    "Ph.d. ved Det teologiske fakultet (Forskerutdanning: ph.d. 3 år)": [
+      "Ingen spesialisering"
+    ],
+    "Ph.d. ved Det utdanningsvitenskapelige fakultet (Forskerutdanning: ph.d. 3 år)": [
+      "Ingen spesialisering"
+    ],
+    "Politisk kommunikasjon (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Praktisk teologi (Erfaringsbasert master)": [
+      "Ingen spesialisering"
+    ],
+    "Praktisk-pedagogisk utdanning, deltid (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Praktisk-pedagogisk utdanning, ettårig studium (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Profesjonsrettet master med integrert praktisk-pedagogisk utdanning (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Psykologi (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Psykologi (Profesjonsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Psykologi (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Psykologi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Public International Law (Master 1.5 år)": [
+      "Ingen spesialisering"
+    ],
+    "Realfag (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Religion og samfunn (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Religion og samfunn (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Religionsvitenskap (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Religionsvitenskap (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Religionsvitenskap (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Religious Roots of Europe (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Research in Special Needs Education (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Retorikk og språklig kommunikasjon (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Rettssosiologi (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Rettsvitenskap (jus) (Master 5 år)": [
+      "Ingen spesialisering"
+    ],
+    "Romsystemer (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Russisk (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Samfunnsgeografi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Samfunnsøkonomi (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Samfunnsøkonomi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Samfunnsøkonomisk analyse (Master 5 år)": [
+      "Ingen spesialisering"
+    ],
+    "Screen Cultures (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Social Anthropology (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Sosialantropologi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Sosialt entreprenørskap (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Sosiologi (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Sosiologi (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Sosiologi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Spansk (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Spesialistutdanninga i odontologi (Profesjonsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Spesialpedagogikk (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Spesialpedagogikk (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Språk og samfunn (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Statsvitenskap (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Statsvitenskap (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Statsvitenskap (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Stokastisk modellering, statistikk og risikoanalyse (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Tannpleie (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Teknologi, innovasjon og kunnskap (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Teologi (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Teologi (Profesjonsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Teologi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Teologi og pastoral praksis (Erfaringsbasert master)": [
+      "Ingen spesialisering"
+    ],
+    "The Psychology of Global Mobility, Inclusion and Diversity in Society (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "The Theory and Practice of Human Rights (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Tverrfaglige kjønnsstudier (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Tverrfaglige kjønnsstudier (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Tysk (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Utdanningsledelse (Erfaringsbasert master)": [
+      "Ingen spesialisering"
+    ],
+    "Utviklingsstudier og bærekraft (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Viking and Medieval Norse Studies (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Viking and Medieval Studies (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Økonomi og datavitenskap (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Økonomi og finans (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Øst-Europa-studier (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Årsstudium i IT-arkitektur (Årsstudium)": [
+      "Ingen spesialisering"
+    ],
+    "Arkeologi og konservering (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Arkeologi og konservering (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Asia- og Midtøsten-studier (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Biodiversity and Systematics (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Estetiske studier og allmenn litteraturvitenskap (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Higher Education (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Informatikk: programmering og nettverk (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Informatikk: språk og kommunikasjon (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Informatikk: språkteknologi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Journalistikk (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Klart språk (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Matematikk med informatikk (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Matematikk og økonomi (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Nordiske studier (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Religion og Diversity: Conflict and Coexistence (Master 2 år)": [
+      "Ingen spesialisering"
+    ],
+    "Religionshistorie og kulturhistorie (Bachelor)": [
+      "Ingen spesialisering"
+    ],
+    "Tverrfaglig helseforskning (Master 2 år)": [
+      "Ingen spesialisering"
+    ]
+  }
+}
