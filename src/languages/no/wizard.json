@@ -13,7 +13,8 @@
     "missingFields": "Manglende felt",
     "previous": "Tilbake til grunnleggende informasjon",
     "next": "Gå til gjennomgang",
-    "incompleteCourse": "Ufullstendig fag"
+    "incompleteCourse": "Ufullstendig fag",
+    "noCourses": "Ingen fag lagt til ennå."
   },
   "review": {
     "title": "Gjennomgå utveksling",

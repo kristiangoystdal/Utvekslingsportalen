@@ -13,7 +13,8 @@
     "missingFields": "Missing Fields",
     "previous": "Back to Basic Information",
     "next": "Go to Review",
-    "incompleteCourse": "Incomplete Course"
+    "incompleteCourse": "Incomplete Course",
+    "noCourses": "No courses added yet."
   },
   "review": {
     "title": "Review Exchange",

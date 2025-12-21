@@ -28,5 +28,7 @@
   "loginToEdit": "You need to be logged in to add or edit your exchange",
   "editExchangeInfo": "You can now change the information about your exchange.",
   "editMyExchange": "Edit My Exchange",
-  "deleteMyExchange": "Delete My Exchange"
+  "deleteMyExchange": "Delete My Exchange",
+  "coursesMissingData": "Some courses are missing necessary information",
+  "leaveWithUnsavedChanges": "You have unsaved data. Remember to update."
 }
