@@ -223,6 +223,8 @@ export default {
 			step: 1,
 			editExchange: false,
 			dataLoaded: false,
+			isInitializingExchange: false,
+
 		};
 	},
 	watch: {
@@ -233,20 +235,30 @@ export default {
 				this.dismissUnsavedChangesToast(); // Dismiss the toast when unsavedChanges becomes false
 			}
 		},
-		'userExchange.numSemesters'(newVal) {
+		'userExchange.numSemesters'(newVal, oldVal) {
+			// don't run on initial load / programmatic assignment
+			if (this.isInitializingExchange) return;
+
+			// only react to user changes while editing
+			if (!this.editExchange) return;
+
 			if (!newVal) {
 				this.semesters = [];
 				return;
 			}
 
 			if (newVal === 2) {
-				this.semesters = ['Høst', 'Vår'];
-				this.ensureSemesterCourses(['Høst', 'Vår']);
+				this.semesters = ["Høst", "Vår"];
+				this.ensureSemesterCourses(["Høst", "Vår"]);
+				return;
 			}
 
 			if (newVal === 1) {
+				// keep courses until user picks the semester in BasicInfoStep
 				this.semesters = [];
-				this.userExchange.courses = {}; // wait for semester choice
+				// IMPORTANT: do NOT wipe existing courses here
+				// just wait for updateSemesters to tell you which one to keep
+				return;
 			}
 		},
 	},
@@ -405,7 +417,7 @@ export default {
 			return Object.keys(this.userExchange.courses["Vår"] || {}).length;
 		},
 		unsavedChanges() {
-			if (!this.dataLoaded) return false;
+			if (!this.dataLoaded || !this.editExchange) return false;
 			return JSON.stringify(this.remoteExchange) !==
 				JSON.stringify(this.userExchange);
 		},
@@ -433,6 +445,28 @@ export default {
 				default:
 					return true;
 			}
+		},
+		semesters() {
+			if (!this.userExchange?.courses) return [];
+
+			const semesters = [];
+
+			if (this.userExchange.courses.Høst &&
+				Object.keys(this.userExchange.courses.Høst).length >= 0) {
+				semesters.push("Høst");
+			}
+
+			if (this.userExchange.courses.Vår &&
+				Object.keys(this.userExchange.courses.Vår).length >= 0) {
+				semesters.push("Vår");
+			}
+
+			// Respect numSemesters
+			if (this.userExchange.numSemesters === 1) {
+				return semesters.slice(0, 1);
+			}
+
+			return semesters;
 		},
 	},
 	methods: {
@@ -473,62 +507,31 @@ export default {
 						}
 					};
 
-					// Apply transformation to both userExchange and remoteExchange
+					this.isInitializingExchange = true;
+
 					this.remoteExchange = JSON.parse(JSON.stringify(this.userData));
 					transformCourses(this.remoteExchange);
 					this.userExchange = JSON.parse(JSON.stringify(this.remoteExchange));
 
-					// Set the country name based on the country key
-					this.userExchange.country = this.getCountryName(true);
-					this.remoteExchange.country = this.userExchange.country;
-
-					// Set second country based on the country key
-					this.userExchange.secondCountry = this.getCountryName(false);
-					this.remoteExchange.secondCountry = this.userExchange.secondCountry;
-
-					// If the user has the same university for both semesters, clear second university and country
-					if (this.userExchange.sameUniversity) {
-						this.userExchange.secondUniversity = null;
-						this.userExchange.secondCountry = null;
-						this.remoteExchange.secondUniversity =
-							this.userExchange.secondUniversity;
-						this.remoteExchange.secondCountry =
-							this.userExchange.secondCountry;
-					} else {
-						this.userExchange.secondCountry = this.getCountryName();
-						this.remoteExchange.secondCountry =
-							this.userExchange.secondCountry;
-					}
-
-					// Set the university name based on the university key
-					this.userExchange.university = this.remoteExchange.university;
-
-					// If the user has no courses, create empty courses objects
-					if (!this.userExchange.courses) {
-						this.userExchange.courses = {
-							Høst: {},
-							Vår: {},
-						};
-						this.remoteExchange.courses = {
-							Høst: {},
-							Vår: {},
-						};
-					}
-
-					// Set the semesters array based on the number of semesters
-					const hasFall = "Høst" in this.userExchange.courses;
-					const hasSpring = "Vår" in this.userExchange.courses;
-					if (this.userExchange.numSemesters == 1) {
-						if (hasFall) {
-							this.semesters = ["Høst"];
-						} else if (hasSpring) {
-							this.semesters = ["Vår"];
-						}
-					} else if (this.userExchange.numSemesters == 2) {
+					// set semesters based on stored courses keys
+					this.semesters = [];
+					if (this.userExchange.numSemesters === 2) {
 						this.semesters = ["Høst", "Vår"];
-					}
-					this.dataLoaded = true;
+					} else if (this.userExchange.numSemesters === 1) {
+						// pick the one that actually exists in db
+						const hasFall = this.userExchange.courses && ("Høst" in this.userExchange.courses);
+						const hasSpring = this.userExchange.courses && ("Vår" in this.userExchange.courses);
 
+						if (hasFall && !hasSpring) this.semesters = ["Høst"];
+						else if (!hasFall && hasSpring) this.semesters = ["Vår"];
+						else {
+							// fallback if db contains both keys
+							this.semesters = ["Høst"]; // or choose based on a saved field if you add one later
+						}
+					}
+
+					this.isInitializingExchange = false;
+					this.dataLoaded = true;
 				} else {
 					console.warn("User does not exist in database");
 
