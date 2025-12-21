@@ -24,6 +24,7 @@
     "previous": "Tilbake til faginformasjon",
     "Høst": "Høst",
     "Vår": "Vår",
-    "submit": "Send inn utveksling"
+    "submit": "Send inn utveksling",
+    "noCourses": "Ingen fag lagt til ennå."
   }
 }

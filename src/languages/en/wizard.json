@@ -24,6 +24,7 @@
     "previous": "Back to Course Information",
     "Høst": "Fall",
     "Vår": "Spring",
-    "submit": "Submit Exchange"
+    "submit": "Submit Exchange",
+    "noCourses": "No courses added yet."
   }
 }
