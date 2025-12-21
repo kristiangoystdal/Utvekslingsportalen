@@ -17,8 +17,6 @@ for (const path in modulesEn) {
   messagesEn[name] = modulesEn[path].default;
 }
 
-console.log("Loaded Norwegian messages:", messagesNo);
-
 const i18n = createI18n({
   legacy: true,            // <-- REQUIRED for $t() in templates
   globalInjection: true,   // <-- makes $t() + $i18n available everywhere
