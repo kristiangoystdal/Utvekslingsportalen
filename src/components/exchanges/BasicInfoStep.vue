@@ -106,7 +106,7 @@ import uis_studies from "../../data/studies/uis.json";
 
 export default {
   props: {
-    userExchange: Object,
+    userExchange: { Object, default: () => ({}) },
     countryNamesTranslated: Array,
     universityNames: Array,
     secondUniversityNames: Array,
@@ -157,10 +157,20 @@ export default {
   },
   data() {
     return {
-      rules: {
-        required: v => !!v || this.$t("validation.required"),
+      rules: { required: v => !!v || this.$t("rules.required") },
+      localExchange: {
+        homeUniversity: null,
+        study: null,
+        specialization: null,
+        studyYear: null,
+        year: null,
+        country: null,
+        university: null,
+        numSemesters: null,
+        sameUniversity: true,
+        secondCountry: null,
+        secondUniversity: null,
       },
-      localExchange: null,
       isInitialized: false,
     };
   },
@@ -172,23 +182,13 @@ export default {
       handler(val) {
         if (!val) return;
 
-        // ⛔️ Ignore empty shell objects
-        const hasRealData =
-          val.country ||
-          val.study ||
-          val.university ||
-          val.numSemesters;
-
-        if (!this.isInitialized && hasRealData) {
+        // init ONCE, even if everything is null
+        if (!this.isInitialized) {
           this.localExchange = JSON.parse(JSON.stringify(val));
-
-          this.$nextTick(() => {
-            this.isInitialized = true;
-          });
+          this.isInitialized = true;
         }
       },
     },
-
     localExchange: {
       deep: true,
       handler(val) {

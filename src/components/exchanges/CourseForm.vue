@@ -41,10 +41,6 @@
 			<v-textarea v-model="localCourse.comments" :label="$t('database.comments')"></v-textarea>
 
 			<div style="display: flex; justify-content: space-between">
-				<!-- Save Button -->
-				<v-btn @click="submit" class="btn-primary" :disabled="!unsavedChanges">
-					{{ $t("operations.save") }}
-				</v-btn>
 				<!-- Reset Button -->
 				<v-btn @click="resetForm" class="btn-accent">
 					{{ $t("operations.reset") }}
@@ -103,7 +99,9 @@ export default {
 			}
 		},
 		resetForm() {
-			this.localCourse = { ...this.course };
+			for (const key in this.course) {
+				this.localCourse[key] = "";
+			}
 		},
 	},
 };

@@ -11,297 +11,89 @@
 	<br />
 	<div>
 		<div v-if="this.user">
-			<!-- Expansion panels -->
-			<v-expansion-panels v-model="panel">
-				<!-- Basis informasjon -->
-				<v-expansion-panel class="bg-light">
-					<v-expansion-panel-title>
-						<template v-slot:default="{ expanded }">
-							<v-row no-gutters>
-								<v-col class="d-flex justify-start" cols="6">
-									{{ $t("myExchange.basisInformation.basisInformationTitle") }}
-								</v-col>
-								<v-col class="text-grey" cols="6">
-									<v-fade-transition leave-absolute>
-										<span v-if="expanded" key="0">
-											{{ $t("myExchange.basisInformation.fillExchangeInfo") }}
-										</span>
-										<span v-else-if="missingBasicDataBool">
-											{{ missingBasicDataString }}
-										</span>
-										<span v-else>
-											{{ $t("myExchange.basisInformation.allDataFilled") }}
-										</span>
-									</v-fade-transition>
-								</v-col>
-							</v-row>
-							<v-icon :color="!expanded ? (!missingBasicDataBool ? 'teal' : 'red') : ''
-								" :icon="expanded
-									? 'mdi-pencil'
-									: !missingBasicDataBool
-										? 'mdi-thumb-up'
-										: 'mdi-thumb-down'
-									"></v-icon>
-						</template>
-					</v-expansion-panel-title>
+			<!-- Show current exchange data here -->
+			<div v-if="!editExchange">
+				<div class="mt-4">
+					<ReviewStep :userExchange="userExchange" :semesters="semesters" :canSubmit="true" :showSubmitButton="false" />
+				</div>
 
-					<v-expansion-panel-text class="zero-padding">
-						<v-container class="zero-padding">
-							<!-- Studie & Spesialisering -->
-							<v-row>
-								<v-col cols="12" md="6">
-									<v-autocomplete :items="Object.keys(studies)" v-model="userExchange.study"
-										:label="$t('database.study')" required :hint="$t('hints.study')" persistent-hint
-										clearable></v-autocomplete>
-								</v-col>
-								<v-col cols="12" md="6">
-									<v-autocomplete :items="specializations" v-model="userExchange.specialization"
-										:label="$t('database.specialization')" required :hint="$t('hints.specialization')"
-										persistent-hint></v-autocomplete>
-								</v-col>
-							</v-row>
-
-							<!-- Land & Universitet -->
-							<v-row>
-								<v-col cols="12" md="6">
-									<v-autocomplete v-model="userExchange.country" :items="countryNamesTranslated"
-										:label="$t('database.country')" required clearable :hint="$t('hints.country')"
-										persistent-hint></v-autocomplete>
-								</v-col>
-								<v-col cols="12" md="6">
-									<v-autocomplete v-model="userExchange.university" :items="universityNames"
-										:label="$t('database.university')" required @update:modelValue="setUniversity"
-										:hint="$t('hints.university')" persistent-hint></v-autocomplete>
-								</v-col>
-							</v-row>
-
-							<!-- Studieår & Hvilket år -->
-							<v-row>
-								<v-col cols="12" md="6">
-									<v-autocomplete v-model="userExchange.studyYear" :items="['1.', '2.', '3.', '4.', '5.']"
-										:label="$t('database.studyYear')" required clearable :hint="$t('hints.studyYear')"
-										persistent-hint></v-autocomplete>
-								</v-col>
-								<v-col cols="12" md="6">
-									<v-text-field v-model="userExchange.year" :label="$t('database.year')" type="number" clearable
-										required :hint="$t('hints.year')" @update:model-value="handleYearChange" persistent-hint />
-								</v-col>
-							</v-row>
-
-							<!-- Antall semestre & Velg semester -->
-							<v-row>
-								<v-col cols="12" md="6">
-									<v-autocomplete v-model="userExchange.numSemesters" :items="[1, 2]"
-										:label="$t('database.numSemesters')" required clearable
-										@update:modelValue="handleNumSemestersChange" :hint="$t('hints.numSemesters')"
-										persistent-hint></v-autocomplete>
-								</v-col>
-								<v-col cols="12" md="6" v-if="userExchange.numSemesters == 1">
-									<v-autocomplete v-model="semesters" :items="['Høst', 'Vår']" :label="$t('database.semester')" required
-										clearable @update:modelValue="handleSemesterChange"></v-autocomplete>
-								</v-col>
-							</v-row>
-
-							<!-- Andre universitet & land for 2 semestre -->
-							<div v-if="userExchange.numSemesters == 2">
-								<v-checkbox :label="$t('myExchange.semestersLocation')"
-									v-model="userExchange.sameUniversity"></v-checkbox>
-								<div v-if="!userExchange.sameUniversity">
-									{{ $t("myExchange.locationQuestion") }}
-									<v-row>
-										<v-col cols="12" md="6">
-											<v-autocomplete v-model="userExchange.secondCountry" :items="countryNamesTranslated"
-												:label="$t('database.country')" required clearable :hint="$t('hints.country')"
-												persistent-hint></v-autocomplete>
-										</v-col>
-										<v-col cols="12" md="6">
-											<v-autocomplete v-model="userExchange.secondUniversity" :items="secondUniversityNames"
-												:label="$t('database.university')" required :hint="$t('hints.university')"
-												persistent-hint></v-autocomplete>
-										</v-col>
-									</v-row>
-								</div>
-							</div>
-
-							<!-- Buttons -->
-							<v-row>
-								<!-- Save Button -->
-								<v-col xs="12" md="2">
-									<v-btn @click="updateExchange" class="btn-primary" :disabled="!canSaveExchange || !unsavedChanges">{{
-										$t("operations.save")
-									}}</v-btn>
-								</v-col>
-								<!-- Delete Button -->
-								<v-col xs="12" md="4">
-									<v-btn @click="toggleExchangeDialog" class="btn-red">{{
-										$t("operations.deleteExchange") }}</v-btn>
-								</v-col>
-							</v-row>
-						</v-container>
-					</v-expansion-panel-text>
-				</v-expansion-panel>
-
-				<!-- Fag Katalog -->
-				<v-expansion-panel v-if="this.semesters.length > 0" v-for="(semester, index) in semesters" :key="index"
-					class="bg-light">
-					<v-expansion-panel-title>
-						<template v-slot:default="{ expanded }">
-							<v-row no-gutters>
-								<v-col class="d-flex justify-start" cols="6">
-									<span v-if="semester.includes('Høst')">
-										{{ $t("myExchange.courseInformation.courseFallTitle") }}
-										({{ numFallCourses }}
-										{{ $t("myExchange.courseInformation.numCoursesText") }})
-									</span>
-									<span v-else>
-										{{ $t("myExchange.courseInformation.courseSpringTitle") }}
-										({{ numSpringCourses }}
-										{{ $t("myExchange.courseInformation.numCoursesText") }})
-									</span>
-								</v-col>
-								<v-col class="text-grey" cols="6">
-									<v-fade-transition leave-absolute>
-										<span v-if="expanded" key="0">
-											{{ $t("myExchange.courseInformation.fillSemesterInfo") }}
-										</span>
-										<span v-else-if="
-											semester.includes('Høst') &&
-											missingFallCoursesDataTotalBool
-										">
-											{{
-												$t("myExchange.courseInformation.someCoursesMissing")
-											}}
-										</span>
-										<span v-else-if="
-											semester.includes('Vår') &&
-											missingSpringCoursesDataTotalBool
-										">
-											{{
-												$t("myExchange.courseInformation.someCoursesMissing")
-											}}
-										</span>
-										<span v-else>
-											{{ $t("myExchange.courseInformation.allCoursesFilled") }}
-										</span>
-									</v-fade-transition>
-								</v-col>
-							</v-row>
-							<v-icon :color="!expanded
-								? semester.includes('Høst')
-									? !missingFallCoursesDataTotalBool
-										? 'teal'
-										: 'red'
-									: !missingSpringCoursesDataTotalBool
-										? 'teal'
-										: 'red'
-								: ''
-								" :icon="expanded
-									? 'mdi-pencil'
-									: semester.includes('Høst')
-										? !missingFallCoursesDataTotalBool
-											? 'mdi-thumb-up'
-											: 'mdi-thumb-down'
-										: !missingSpringCoursesDataTotalBool
-											? 'mdi-thumb-up'
-											: 'mdi-thumb-down'
-									"></v-icon>
-						</template>
-					</v-expansion-panel-title>
-					<v-expansion-panel-text class="zero-padding">
-						<v-btn @click="addCourse(semester)" class="btn btn-primary">
-							{{ $t("myExchange.courseInformation.addCourse") }}
-						</v-btn>
-						<br />
-						<br />
-						<v-expansion-panels :v-model="coursePanel" class="zero-padding">
-							<v-expansion-panel v-for="(course, cIndex) in getCourses(semester)" :key="cIndex">
-								<v-expansion-panel-title>
-									<template v-slot:default="{ expanded }">
-										<v-row no-gutters>
-											<v-col class="d-flex justify-start mb-1" cols="12">
-												{{ course.courseName || "Nytt fag" }}
-											</v-col>
-											<v-col class="text-grey mt-1" cols="10">
-												<v-fade-transition leave-absolute>
-													<span v-if="expanded" key="0">
-														{{
-															$t("myExchange.courseInformation.fillCoursesInfo")
-														}}
-													</span>
-													<span v-else-if="
-														semester.includes('Høst') &&
-														missingFallCourseDataBool(semester, cIndex)
-													">
-														{{ missingCourseDataString(semester, cIndex) }}
-													</span>
-													<span v-else-if="
-														semester.includes('Vår') &&
-														missingSpringCourseDataBool(semester, cIndex)
-													">
-														{{ missingCourseDataString(semester, cIndex) }}
-													</span>
-													<span v-else>
-														{{
-															$t(
-																"myExchange.courseInformation.enoughCourseDataFilled"
-															)
-														}}
-													</span>
-												</v-fade-transition>
-											</v-col>
-										</v-row>
-										<v-icon :icon="'mdi mdi-trash-can-outline'" class="course-icons"
-											@click.stop="toggleDialog(semester, cIndex)">
-										</v-icon>
-
-										<v-icon :color="!expanded
-											? semester.includes('Høst')
-												? !missingFallCourseDataBool(semester, cIndex)
-													? 'teal'
-													: 'red'
-												: !missingSpringCourseDataBool(semester, cIndex)
-													? 'teal'
-													: 'red'
-											: ''
-											" :icon="expanded
-												? 'mdi-pencil'
-												: semester.includes('Høst')
-													? !missingFallCourseDataBool(semester, cIndex)
-														? 'mdi-thumb-up'
-														: 'mdi-thumb-down'
-													: !missingSpringCourseDataBool(semester, cIndex)
-														? 'mdi-thumb-up'
-														: 'mdi-thumb-down'
-												" class="course-icons"></v-icon>
-									</template>
-								</v-expansion-panel-title>
-								<v-expansion-panel-text class="zero-padding">
-									<course-form :course="course" :update-exchange="updateExchange" :unsavedChanges="unsavedChanges &&
-										!(
-											missingFallCoursesDataTotalBool ||
-											missingSpringCoursesDataTotalBool ||
-											missingBasicDataBool
-										)
-										" @submit-course="updateCourse(semester, cIndex, $event)"
-										:removeCourse="() => removeCourse(semester, cIndex)" />
-								</v-expansion-panel-text>
-							</v-expansion-panel>
-						</v-expansion-panels>
-					</v-expansion-panel-text>
-				</v-expansion-panel>
-			</v-expansion-panels>
-
-			<!-- Unsaved changes -->
-			<div>
-				<div v-if="unsavedChanges" class="box">
-					<v-btn :disabled="missingFallCoursesDataTotalBool ||
-						missingSpringCoursesDataTotalBool ||
-						missingBasicDataBool
-						" @click="updateExchange" class="btn btn-primary">
-						{{ $t("myExchange.updateExchange") }}
+				<div class="box text-info text-center">
+					<v-btn class="btn-primary" @click="editExchange = true">
+						{{ $t("myExchange.editMyExchange") }}
+					</v-btn>
+					<v-btn class="btn btn-danger ml-4" @click="toggleExchangeDialog()">
+						{{ $t("myExchange.deleteMyExchange") }}
 					</v-btn>
 				</div>
 			</div>
+
+			<!-- Stepper -->
+			<v-stepper v-if="editExchange" v-model="step" elevation="1">
+				<v-stepper-header>
+					<v-stepper-item :value="1" :complete="!missingBasicDataBool">
+						{{ $t("wizard.basic.title") }}
+					</v-stepper-item>
+
+					<v-divider />
+
+					<v-stepper-item :value="2" :complete="!missingCoursesBool">
+						{{ $t("wizard.courses.title") }}
+					</v-stepper-item>
+
+					<v-divider />
+
+					<v-stepper-item :value="3">
+						{{ $t("wizard.review.title") }}
+					</v-stepper-item>
+				</v-stepper-header>
+
+				<v-stepper-window>
+					<v-stepper-window-item :value="1">
+						<BasicInfoStep :userExchange="userExchange" :studies="studies"
+							:countryNamesTranslated="countryNamesTranslated" :universityNames="universityNames"
+							:secondUniversityNames="secondUniversityNames" :semesters="semesters" @update="userExchange = $event"
+							@updateSemesters="semesters = $event" />
+					</v-stepper-window-item>
+
+					<v-stepper-window-item :value="2">
+						<CoursesStep :userExchange="userExchange" :semesters="semesters" @update="userExchange = $event" />
+					</v-stepper-window-item>
+
+					<v-stepper-window-item :value="3">
+						<ReviewStep :userExchange="userExchange" :semesters="semesters" :canSubmit="canSaveExchange"
+							@submit="updateExchange" />
+					</v-stepper-window-item>
+				</v-stepper-window>
+			</v-stepper>
+
+			<v-divider v-if="editExchange" class="my-4" />
+
+			<v-row v-if="editExchange" class="px-4 pb-4">
+				<v-col cols="6">
+					<v-btn v-if="step > 1" class="btn" color="secondary" @click="prevStep">
+						{{ step == 2 ? $t("wizard.courses.previous") : $t("wizard.review.previous") }}
+					</v-btn>
+				</v-col>
+
+				<v-col v-if="editExchange" cols="6" class="text-right">
+					<v-tooltip>
+						<template #activator="{ props }">
+							<v-icon v-bind="props" color="warning" class="mr-2" v-if="nextDisabled">
+								mdi-alert-circle
+							</v-icon>
+						</template>
+						<span v-if="step == 1 && missingBasicDataBool">
+							{{ missingBasicDataString }}
+						</span>
+						<span v-else-if="step == 2 && missingCoursesBool">
+							{{ $t("myExchange.coursesMissingData") }}
+						</span>
+					</v-tooltip>
+					<v-btn v-if="step < 3" class="btn" color="primary" :disabled="nextDisabled" @click="nextStep">
+						{{ step == 1 ? $t("wizard.basic.next") : $t("wizard.courses.next") }}
+					</v-btn>
+				</v-col>
+			</v-row>
 		</div>
 		<div v-else>
 			<div class="box box-alert text-alert text-center">
@@ -315,26 +107,7 @@
 			</div>
 		</div>
 
-		<!-- Delete course dialog -->
-		<v-dialog v-model="deleteCourseDialog" class="dialog">
-			<v-card>
-				<v-card-title class="headline">
-					{{ $t("operations.confirmDelete") }}
-				</v-card-title>
-				<v-card-text>
-					{{ $t("operations.confirmCourseDelete") }}
-				</v-card-text>
-				<v-card-actions>
-					<v-spacer></v-spacer>
-					<v-btn id="noBtn" @click="toggleDialog">
-						{{ $t("operations.no") }}
-					</v-btn>
-					<v-btn id="yesBtn" @click="removeCourse(currentSemester, currentCourse)">
-						{{ $t("operations.yes") }}
-					</v-btn>
-				</v-card-actions>
-			</v-card>
-		</v-dialog>
+
 
 		<!-- Delete exchange dialog -->
 		<v-dialog v-model="deleteExchangeDialog" class="dialog">
@@ -362,15 +135,40 @@
 <script>
 import { db, auth } from "../../js/firebaseConfig";
 import { ref as dbRef, get, set, update } from "firebase/database";
+import { onAuthStateChanged } from "firebase/auth";
 import studiesData from "../../data/studies.json";
 import universitiesData from "../../data/universities.json";
 import { toast } from "vue3-toastify";
 
+import BasicInfoStep from "./BasicInfoStep.vue";
+import CoursesStep from "./CoursesStep.vue";
+import ReviewStep from "./ReviewStep.vue";
+
 import CourseForm from "./CourseForm.vue";
 
 export default {
+	beforeRouteLeave(to, from, next) {
+		if (!this.unsavedChanges) {
+			next()
+			return
+		}
+
+		const answer = window.confirm(
+			this.$t("myExchange.leaveWithUnsavedChanges")
+		)
+
+		if (answer) {
+			next()
+		} else {
+			next(false)
+		}
+	},
+
 	components: {
-		CourseForm
+		CourseForm,
+		BasicInfoStep,
+		CoursesStep,
+		ReviewStep,
 	},
 	data() {
 		return {
@@ -421,7 +219,10 @@ export default {
 			currentCourse: null,
 			currentSemester: null,
 			isToastVisible: false,
-			toastId: null
+			toastId: null,
+			step: 1,
+			editExchange: false,
+			dataLoaded: false,
 		};
 	},
 	watch: {
@@ -430,35 +231,6 @@ export default {
 				this.showUnsavedChangesToast(); // Show the toast when unsavedChanges becomes true
 			} else {
 				this.dismissUnsavedChangesToast(); // Dismiss the toast when unsavedChanges becomes false
-			}
-		},
-		"userExchange.study"(newStudy) {
-			if (newStudy != this.remoteExchange.study) {
-				this.userExchange.specialization = null;
-			} else {
-				this.userExchange.specialization = this.remoteExchange.specialization;
-			}
-		},
-		"userExchange.country"(newCountry) {
-			if (newCountry != this.remoteExchange.country) {
-				this.userExchange.university = null;
-			} else {
-				this.userExchange.university = this.remoteExchange.university;
-			}
-		},
-		"userExchange.secondCountry"(newCountry) {
-			if (newCountry != this.remoteExchange.secondCountry) {
-				this.userExchange.secondUniversity = null;
-			} else {
-				this.userExchange.secondUniversity =
-					this.remoteExchange.secondUniversity;
-			}
-		},
-		"userExchange.numSemesters"(newNumber) {
-			if (newNumber == 2 && this.semesters.length !== 2) {
-				this.semesters = ["Høst", "Vår"];
-			} else if (newNumber == 1 && this.semesters.length !== 1) {
-				this.semesters = [];
 			}
 		},
 		semesters(newSemesters) {
@@ -593,6 +365,12 @@ export default {
 				return !course.courseName || !course.ECTSPoints;
 			};
 		},
+		missingCoursesBool() {
+			return (
+				this.missingFallCoursesDataTotalBool ||
+				this.missingSpringCoursesDataTotalBool
+			);
+		},
 		missingFallCoursesDataTotalBool() {
 			const fallSemester = "Høst";
 			if (this.semesters.includes(fallSemester)) {
@@ -626,11 +404,9 @@ export default {
 			return Object.keys(this.userExchange.courses["Vår"] || {}).length;
 		},
 		unsavedChanges() {
-			const hasUnsavedChanges =
-				JSON.stringify(this.remoteExchange) !==
+			if (!this.dataLoaded) return false;
+			return JSON.stringify(this.remoteExchange) !==
 				JSON.stringify(this.userExchange);
-
-			return hasUnsavedChanges;
 		},
 		canSaveExchange() {
 			return (
@@ -638,7 +414,25 @@ export default {
 				!this.missingFallCoursesDataTotalBool &&
 				!this.missingSpringCoursesDataTotalBool
 			);
-		}
+		},
+		nextDisabled() {
+			switch (this.step) {
+				case 1:
+					// Basic info step
+					return this.missingBasicDataBool;
+
+				case 2:
+					// Courses step
+					return this.missingCoursesBool;
+
+				case 3:
+					// Review step (nothing to validate)
+					return false;
+
+				default:
+					return true;
+			}
+		},
 	},
 	methods: {
 		loadData() {
@@ -705,8 +499,6 @@ export default {
 							this.userExchange.secondCountry;
 					}
 
-					this.loadData();
-
 					// Set the university name based on the university key
 					this.userExchange.university = this.remoteExchange.university;
 
@@ -734,8 +526,35 @@ export default {
 					} else if (this.userExchange.numSemesters == 2) {
 						this.semesters = ["Høst", "Vår"];
 					}
+					this.dataLoaded = true;
+
 				} else {
-					console.error("User does not exist in database");
+					console.warn("User does not exist in database");
+
+					const emptyExchange = {
+						university: null,
+						country: null,
+						studyYear: null,
+						year: null,
+						study: null,
+						specialization: null,
+						numSemesters: null,
+						courses: {
+							Høst: {},
+							Vår: {},
+						},
+						sameUniversity: true,
+						secondUniversity: null,
+						secondCountry: null,
+					};
+
+					this.userExchange = JSON.parse(JSON.stringify(emptyExchange));
+					this.remoteExchange = JSON.parse(JSON.stringify(emptyExchange));
+
+					this.semesters = [];
+					this.editExchange = true;
+					this.dataLoaded = true;
+
 				}
 			} else {
 				console.error("No user is signed in");
@@ -835,6 +654,9 @@ export default {
 				return translatedCountryName;
 			}
 			else {
+				if (this.userExchange.sameUniversity) {
+					return null;
+				}
 				const countryKey = this.userExchange.secondCountry;
 				const translatedCountryName = this.$t(`countries.${countryKey}`);
 				return translatedCountryName;
@@ -871,6 +693,7 @@ export default {
 					this.userExchange = tempUserExchange;
 
 					toast.success(this.$t("notifications.exchangeUpdated"));
+					this.toggleEditExchange();
 				} catch (error) {
 					console.error("Error updating user exchange data: ", error);
 					toast.error(this.$t("notifications.exchangeUpdateFailure"));
@@ -976,19 +799,47 @@ export default {
 				}
 			}
 		},
-		handleDeleteConfirmation() {
-
-
+		nextStep() {
+			if (this.step < 4) {
+				this.step++;
+			}
+		},
+		prevStep() {
+			if (this.step > 1) {
+				this.step--;
+			}
+		},
+		handleBeforeUnload(event) {
+			if (!this.unsavedChanges) return
+			event.preventDefault()
+			event.returnValue = "" // Required for Chrome
+		},
+		toggleEditExchange() {
+			this.editExchange = !this.editExchange
 		},
 	},
 	mounted() {
-		if (auth.currentUser) {
-			this.user = auth.currentUser;
-			this.loadUser();
-		}
-		this.retriveUserExchange();
-		this.loadData();
+		window.addEventListener("beforeunload", this.handleBeforeUnload);
+
+		onAuthStateChanged(auth, async (user) => {
+			if (!user) {
+				this.user = null;
+				this.dataLoaded = true;
+				return;
+			}
+
+			this.user = user;
+			await this.loadUser();
+			this.loadData(); // ✅ load universities FIRST
+
+			await this.retriveUserExchange(); // ✅ NOW SAFE
+		});
 	},
+	beforeUnmount() {
+		window.removeEventListener("beforeunload", this.handleBeforeUnload)
+	},
+
+
 };
 </script>
 
@@ -1026,41 +877,5 @@ export default {
 .course-icons {
 	margin: 0 8px;
 	/* Adjust the margin value as needed */
-}
-
-#yesBtn {
-	padding: 10px 20px;
-	border-radius: 5px;
-	cursor: pointer;
-	border: none;
-	font-size: 14px !important;
-	margin: 10px;
-	background-color: #e53935;
-	/* Soft Red */
-	color: var(--fifth-color);
-}
-
-#yesBtn:hover {
-	background-color: #d32f2f;
-	/* Darker Soft Red */
-	color: var(--fifth-color);
-}
-
-#noBtn {
-	padding: 10px 20px;
-	border-radius: 5px;
-	cursor: pointer;
-	border: none;
-	font-size: 14px !important;
-	margin: 10px;
-	background-color: #4caf50;
-	/* Soft Green */
-	color: var(--fifth-color);
-}
-
-#noBtn:hover {
-	background-color: #388e3c;
-	/* Darker Soft Green */
-	color: var(--fifth-color);
 }
 </style>
