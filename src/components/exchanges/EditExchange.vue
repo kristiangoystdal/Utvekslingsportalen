@@ -233,19 +233,20 @@ export default {
 				this.dismissUnsavedChangesToast(); // Dismiss the toast when unsavedChanges becomes false
 			}
 		},
-		semesters(newSemesters) {
-			if (this.userExchange.numSemesters == 1) {
-				if (newSemesters.includes("Høst")) {
-					this.userExchange.courses = JSON.parse(
-						JSON.stringify(this.remoteExchange.courses)
-					); // Deep copy
-					delete this.userExchange.courses["Vår"];
-				} else if (newSemesters.includes("Vår")) {
-					this.userExchange.courses = JSON.parse(
-						JSON.stringify(this.remoteExchange.courses)
-					); // Deep copy
-					delete this.userExchange.courses["Høst"];
-				}
+		'userExchange.numSemesters'(newVal) {
+			if (!newVal) {
+				this.semesters = [];
+				return;
+			}
+
+			if (newVal === 2) {
+				this.semesters = ['Høst', 'Vår'];
+				this.ensureSemesterCourses(['Høst', 'Vår']);
+			}
+
+			if (newVal === 1) {
+				this.semesters = [];
+				this.userExchange.courses = {}; // wait for semester choice
 			}
 		},
 	},
@@ -816,6 +817,16 @@ export default {
 		},
 		toggleEditExchange() {
 			this.editExchange = !this.editExchange
+		},
+		ensureSemesterCourses(validSemesters) {
+			const newCourses = {};
+
+			validSemesters.forEach((semester) => {
+				newCourses[semester] =
+					this.userExchange.courses?.[semester] ?? {};
+			});
+
+			this.userExchange.courses = newCourses;
 		},
 	},
 	mounted() {
