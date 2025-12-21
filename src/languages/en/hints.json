@@ -1,4 +1,5 @@
 {
+  "homeUniversity": "Select your home university",
   "study": "Select the study program you are attending at NTNU",
   "specialization": "Select your specialization",
   "country": "Select the country you will go on exchange to",
@@ -13,5 +14,8 @@
   "courseType": "Select the type of course you will take (mandatory, elective, etc.)",
   "institute": "Enter the institute the course belongs to at the university you will attend",
   "ECTSPoints": "Enter the number of ECTS points the course provides (convert from the university's units if necessary)",
-  "year": "Enter the year you started your exchange"
+  "year": "Enter the year you started your exchange",
+  "selectHomeUniversityFirst": "Select your home university first",
+  "selectStudyFirst": "Select study program first",
+  "selectCountryFirst": "Select country first"
 }

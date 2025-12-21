@@ -21,5 +21,6 @@
   "changePassword": "Change Password",
   "loginWithEmailButton": "Email",
   "loginWithGoogleButton": "Google",
-  "profile": "My Profile"
+  "profile": "My Profile",
+  "next": "Next"
 }

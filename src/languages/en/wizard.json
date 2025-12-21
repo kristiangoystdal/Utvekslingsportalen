@@ -1,0 +1,28 @@
+{
+  "basic": {
+    "title": "Basic Information",
+    "info": "Fill in basic information about your exchange here.",
+    "next": "Go to Course Information"
+  },
+  "courses": {
+    "title": "Course Information",
+    "info": "Fill in information about the courses you took during your exchange here. ECTS points and course name are required for each course.",
+    "courses": "Courses",
+    "addCourse": "Add Course",
+    "newCourse": "New Course",
+    "missingFields": "Missing Fields",
+    "previous": "Back to Basic Information",
+    "next": "Go to Review",
+    "incompleteCourse": "Incomplete Course"
+  },
+  "review": {
+    "title": "Review Exchange",
+    "info": "Review the information you have filled in before submitting your exchange.",
+    "basic": "Basic Information",
+    "courses": "Course Information",
+    "previous": "Back to Course Information",
+    "Høst": "Fall",
+    "Vår": "Spring",
+    "submit": "Submit Exchange"
+  }
+}
