@@ -21,5 +21,6 @@
   "changePassword": "Endre passord",
   "loginWithEmailButton": "E-post",
   "loginWithGoogleButton": "Google",
-  "profile": "Min Profil"
+  "profile": "Min Profil",
+  "next": "Neste"
 }

@@ -25,5 +25,10 @@
   "semestersLocation": "Er utvekslingen på samme sted begge semestere?",
   "locationQuestion": "Hva er universitet og landet for det andre semesteret?",
   "updateExchange": "Oppdater utveksling",
-  "loginToEdit": "Du må være logget inn for å legge til eller endre utvekslingen din"
+  "loginToEdit": "Du må være logget inn for å legge til eller endre utvekslingen din",
+  "editExchangeInfo": "Du kan nå endre informasjonen om din utveksling.",
+  "editMyExchange": "Endre min utveksling",
+  "deleteMyExchange": "Slett min utveksling",
+  "coursesMissingData": "Noen fag mangler nødvendig informasjon",
+  "leaveWithUnsavedChanges": "Du har ulagret data. Husk å oppdatere."
 }

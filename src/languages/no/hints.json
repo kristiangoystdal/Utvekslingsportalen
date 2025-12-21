@@ -1,4 +1,5 @@
 {
+  "homeUniversity": "Velg ditt hjemuniversitet",
   "study": "Velg studie du går på NTNU",
   "specialization": "Velg spesialiseringen du tar",
   "country": "Velg landet du skal på utveksling til",
@@ -13,5 +14,8 @@
   "courseType": "Skriv inn hva slags type fag det er (O-, I-, K-emne eller blankt)",
   "institute": "Skriv inn instituttet faget tilhører på universitetet du skal til",
   "ECTSPoints": "Skriv inn hvor mange ECTS poeng faget gir (konverter fra universitetes enhet til ECTS)",
-  "year": "Skriv inn året du begynte på utveksling"
+  "year": "Skriv inn året du begynte på utveksling",
+  "selectHomeUniversityFirst": "Velg ditt hjemuniversitet først",
+  "selectStudyFirst": "Velg studie først",
+  "selectCountryFirst": "Velg land først"
 }

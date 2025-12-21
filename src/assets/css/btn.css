@@ -33,6 +33,30 @@
   color: var(--first-color);
 }
 
+.btn-warning {
+  background-color: var(--alert-warning);
+  /* Amber */
+  color: var(--fifth-color);
+}
+
+.btn-success {
+  background-color: var(--alert-success);
+  /* Green */
+  color: var(--fifth-color);
+}
+
+.btn-danger {
+  background-color: var(--alert-error);
+  /* Red */
+  color: var(--fifth-color);
+}
+
+.btn-info {
+  background-color: var(--alert-info);
+  /* Bright Blue */
+  color: var(--fifth-color);
+}
+
 /* Better color for the sign-out button */
 .btn-red {
   background-color: #E53935;
@@ -43,5 +67,77 @@
 .btn-red:hover {
   background-color: #D32F2F;
   /* Darker Soft Red */
+  color: var(--fifth-color);
+}
+
+.btn-yes {
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  font-size: 14px !important;
+  margin: 10px;
+  background-color: #e53935;
+  /* Soft Red */
+  color: var(--fifth-color);
+}
+
+.btn-yes:hover {
+  background-color: #d32f2f;
+  /* Darker Soft Red */
+  color: var(--fifth-color);
+}
+
+.btn-no {
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  font-size: 14px !important;
+  margin: 10px;
+  background-color: #4caf50;
+  /* Soft Green */
+  color: var(--fifth-color);
+}
+
+.btn-no:hover {
+  background-color: #388e3c;
+  /* Darker Soft Green */
+  color: var(--fifth-color);
+}
+
+#yesBtn {
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  font-size: 14px !important;
+  margin: 10px;
+  background-color: #e53935;
+  /* Soft Red */
+  color: var(--fifth-color);
+}
+
+#yesBtn:hover {
+  background-color: #d32f2f;
+  /* Darker Soft Red */
+  color: var(--fifth-color);
+}
+
+#noBtn {
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  font-size: 14px !important;
+  margin: 10px;
+  background-color: #4caf50;
+  /* Soft Green */
+  color: var(--fifth-color);
+}
+
+#noBtn:hover {
+  background-color: #388e3c;
+  /* Darker Soft Green */
   color: var(--fifth-color);
 }
