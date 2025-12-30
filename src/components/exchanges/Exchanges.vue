@@ -115,10 +115,34 @@
 			show-expand class="main-table" id="main-table-width" :search="exchangeSearch" :custom-filter="rowSearchFilter"
 			:items-per-page="exchangesPerPage" v-model:page="currentPage"
 			:items-per-page-text="this.$t('exchanges.pageText')">
+
 			<template v-slot:item.country="{ item }">
-				<div style="display: flex; align-items: center">
-					<img :src="getFlagUrl(item.country)" alt="Flag" width="20" height="15" style="margin-left: 4px" />
-				</div>
+				<v-tooltip>
+					<template #activator="{ props }">
+						<div v-bind="props" style="display: flex; align-items: center">
+							<img :src="getFlagUrl(item.country)" alt="Flag" width="20" height="15" style="margin-left: 4px" />
+						</div>
+					</template>
+
+					<span>
+						{{ item.country }}
+					</span>
+				</v-tooltip>
+			</template>
+
+			<template v-slot:item.homeUniversity="{ item }">
+				<v-tooltip>
+					<template #activator="{ props }">
+						<span v-bind="props">
+							{{ item.homeUniversity ? (item.homeUniversity.match(/\(([^)]+)\)/) || [])[1] : '' }}
+						</span>
+					</template>
+
+					<span>
+						{{ item.homeUniversity ? item.homeUniversity.replace(/\s*\([^)]*\)\s*/g, '') : '' }}
+					</span>
+				</v-tooltip>
+
 			</template>
 
 			<template v-slot:expanded-row="{ columns, item }">
@@ -226,6 +250,14 @@
 									</v-row>
 									<v-row no-gutters>
 										<v-col cols="6" class="text-bold">
+											{{ $t("database.homeUniversity") }}:
+										</v-col>
+										<v-col cols="6">
+											{{ item.homeUniversity }}
+										</v-col>
+									</v-row>
+									<v-row no-gutters>
+										<v-col cols="6" class="text-bold">
 											{{ $t("database.specialization") }}:
 										</v-col>
 										<v-col cols="6">
@@ -251,27 +283,33 @@
 									<br />
 									<div v-if="item.courses.Høst && item.courses.Høst.length > 0">
 										<v-row no-gutters class="text-bold" style="font-size: 15px; text-decoration: underline">
-											{{ $t("exchanges.coursesFallHeader") }}
+											{{ $t("exchanges.coursesFallHeader") }} ({{ $t("database.totalECTS") }}:
+											{{
+												item.courses.Høst
+													.reduce((sum, course) => sum + parseFloat(course.ECTSPoints || 0), 0)
+													.toFixed(1)
+											}}
+											)
 										</v-row>
 										<v-row no-gutters style="margin-bottom: 5px">
-											<v-col cols="5" class="text-bold" style="padding-right: 5px">
+											<v-col cols="5" class="text-bold" style="padding-right: 10px">
 												{{ $t("database.courseName") }}
 											</v-col>
-											<v-col cols="3" class="text-bold" style="padding-right: 5px">
+											<v-col cols="3" class="text-bold" style="padding-right: 10px">
 												{{ $t("database.courseCode") }}
 											</v-col>
-											<v-col cols="2" class="text-bold" style="padding-right: 5px">
+											<v-col cols="2" class="text-bold" style="padding-right: 10px">
 												{{ $t("database.ECTSPoints") }}
 											</v-col>
 										</v-row>
 										<v-row v-for="(course, index) in item.courses.Høst" :key="index" class="mb-3" no-gutters>
-											<v-col cols="5">
+											<v-col cols="5" style="padding-right: 10px">
 												{{ course.courseName }}
 											</v-col>
-											<v-col cols="3">
+											<v-col cols="3" style="padding-right: 10px">
 												{{ course.courseCode }}
 											</v-col>
-											<v-col cols="2">
+											<v-col cols="2" style="padding-right: 10px">
 												{{ course.ECTSPoints }}
 											</v-col>
 											<v-col cols="1">
@@ -291,27 +329,33 @@
 									</div>
 									<div v-if="item.courses.Vår && item.courses.Vår.length > 0">
 										<v-row no-gutters class="text-bold" style="font-size: 15px; text-decoration: underline">
-											{{ $t("exchanges.coursesSpringHeader") }}
+											{{ $t("exchanges.coursesSpringHeader") }} ({{ $t("database.totalECTS") }}:
+											{{
+												item.courses.Vår
+													.reduce((sum, course) => sum + parseFloat(course.ECTSPoints || 0), 0)
+													.toFixed(1)
+											}}
+											)
 										</v-row>
 										<v-row no-gutters style="margin-bottom: 5px">
-											<v-col cols="5" class="text-bold" style="padding-right: 5px">
+											<v-col cols="5" class="text-bold" style="padding-right: 10px">
 												{{ $t("database.courseName") }}
 											</v-col>
-											<v-col cols="3" class="text-bold" style="padding-right: 5px">
+											<v-col cols="3" class="text-bold" style="padding-right: 10px">
 												{{ $t("database.courseCode") }}
 											</v-col>
-											<v-col cols="2" class="text-bold" style="padding-right: 5px">
+											<v-col cols="2" class="text-bold" style="padding-right: 10px">
 												{{ $t("database.ECTSPoints") }}
 											</v-col>
 										</v-row>
 										<v-row v-for="(course, index) in item.courses.Vår" :key="index" class="mb-3" no-gutters>
-											<v-col cols="5">
+											<v-col cols="5" style="padding-right: 10px">
 												{{ course.courseName }}
 											</v-col>
-											<v-col cols="3">
+											<v-col cols="3" style="padding-right: 10px">
 												{{ course.courseCode }}
 											</v-col>
-											<v-col cols="2">
+											<v-col cols="2" style="padding-right: 10px">
 												{{ course.ECTSPoints }}
 											</v-col>
 											<v-col cols="1">
@@ -508,6 +552,12 @@ export default {
 					align: "start",
 					key: "university",
 					length: 2,
+					width: "15vw",
+				},
+				{
+					title: this.$t("database.homeUniversity"),
+					align: "center",
+					key: "homeUniversity",
 				},
 				{
 					title: this.$t("database.study"),
@@ -524,6 +574,7 @@ export default {
 					align: "center",
 					key: "studyYear",
 				},
+
 				{
 					title: this.$t("database.year"),
 					align: "center",
@@ -1038,6 +1089,7 @@ export default {
 				"studyYear",
 				"year",
 				"numSemesters",
+				"homeUniversity",
 			];
 
 			const rowText = fieldsToSearch
