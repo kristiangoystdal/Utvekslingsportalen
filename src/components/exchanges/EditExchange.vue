@@ -17,11 +17,11 @@
 					<ReviewStep :userExchange="userExchange" :semesters="semesters" :canSubmit="true" :showSubmitButton="false" />
 				</div>
 
-				<div class="box text-info text-center">
-					<v-btn class="btn-primary" @click="editExchange = true">
+				<div class="box text-info text-center my-4 d-flex flex-wrap justify-center ga-8">
+					<v-btn class="btn btn-primary" @click="editExchange = true">
 						{{ $t("myExchange.editMyExchange") }}
 					</v-btn>
-					<v-btn class="btn btn-danger ml-4" @click="toggleExchangeDialog()">
+					<v-btn class="btn btn-danger" @click="toggleExchangeDialog()">
 						{{ $t("myExchange.deleteMyExchange") }}
 					</v-btn>
 				</div>
@@ -68,28 +68,38 @@
 
 			<v-divider v-if="editExchange" class="my-4" />
 
-			<v-row v-if="editExchange" class="px-4 pb-4">
-				<v-col cols="6">
-					<v-btn v-if="step > 1" class="btn" color="secondary" @click="prevStep">
+			<v-row v-if="editExchange" class="px-4 pb-4" align="center" no-gutters>
+				<!-- Left: Previous -->
+				<v-col cols="12" sm="4" class="d-flex justify-center">
+					<v-btn v-if="step > 1" class="btn btn-third" @click="prevStep">
 						{{ step == 2 ? $t("wizard.courses.previous") : $t("wizard.review.previous") }}
 					</v-btn>
 				</v-col>
 
-				<v-col v-if="editExchange" cols="6" class="text-right">
+				<v-spacer />
+
+				<v-col cols="12" sm="4" class="d-flex justify-center">
+					<v-btn class="btn btn-danger" @click="toggleEditExchange">
+						{{ $t("operations.cancel") }}
+					</v-btn>
+				</v-col>
+
+				<v-spacer />
+
+				<!-- Right: Warning icon + Next -->
+				<v-col cols="12" sm="4" class="d-flex align-center">
 					<v-tooltip>
 						<template #activator="{ props }">
-							<v-icon v-bind="props" color="warning" class="mr-2" v-if="nextDisabled">
+							<v-icon v-bind="props" color="warning" v-if="nextDisabled">
 								mdi-alert-circle
 							</v-icon>
 						</template>
-						<span v-if="step == 1 && missingBasicDataBool">
-							{{ missingBasicDataString }}
-						</span>
-						<span v-else-if="step == 2 && missingCoursesBool">
-							{{ $t("myExchange.coursesMissingData") }}
-						</span>
+
+						<span v-if="step == 1 && missingBasicDataBool">{{ missingBasicDataString }}</span>
+						<span v-else-if="step == 2 && missingCoursesBool">{{ $t("myExchange.coursesMissingData") }}</span>
 					</v-tooltip>
-					<v-btn v-if="step < 3" class="btn" color="primary" :disabled="nextDisabled" @click="nextStep">
+
+					<v-btn v-if="step < 3" class="btn btn-primary" :disabled="nextDisabled" @click="nextStep">
 						{{ step == 1 ? $t("wizard.basic.next") : $t("wizard.courses.next") }}
 					</v-btn>
 				</v-col>
@@ -446,28 +456,6 @@ export default {
 					return true;
 			}
 		},
-		semesters() {
-			if (!this.userExchange?.courses) return [];
-
-			const semesters = [];
-
-			if (this.userExchange.courses.Høst &&
-				Object.keys(this.userExchange.courses.Høst).length >= 0) {
-				semesters.push("Høst");
-			}
-
-			if (this.userExchange.courses.Vår &&
-				Object.keys(this.userExchange.courses.Vår).length >= 0) {
-				semesters.push("Vår");
-			}
-
-			// Respect numSemesters
-			if (this.userExchange.numSemesters === 1) {
-				return semesters.slice(0, 1);
-			}
-
-			return semesters;
-		},
 	},
 	methods: {
 		loadData() {
@@ -669,6 +657,8 @@ export default {
 		async updateExchange() {
 			if (auth.currentUser) {
 				try {
+					this.ensureSemesterCourses(this.semesters);
+
 					const tempUserExchange = JSON.parse(
 						JSON.stringify(this.userExchange)
 					);
@@ -698,6 +688,7 @@ export default {
 
 					toast.success(this.$t("notifications.exchangeUpdated"));
 					this.toggleEditExchange();
+					this.step = 1;
 				} catch (error) {
 					console.error("Error updating user exchange data: ", error);
 					toast.error(this.$t("notifications.exchangeUpdateFailure"));
@@ -819,7 +810,18 @@ export default {
 			event.returnValue = "" // Required for Chrome
 		},
 		toggleEditExchange() {
+			if (this.unsavedChanges) {
+				const confirmLeave = window.confirm(
+					this.$t("operations.confirmLeavePage")
+				)
+				if (!confirmLeave) {
+					return
+				}
+				// revert changes
+				this.userExchange = JSON.parse(JSON.stringify(this.remoteExchange))
+			}
 			this.editExchange = !this.editExchange
+			this.step = 1
 		},
 		ensureSemesterCourses(validSemesters) {
 			const newCourses = {};
@@ -891,5 +893,10 @@ export default {
 .course-icons {
 	margin: 0 8px;
 	/* Adjust the margin value as needed */
+}
+
+.step-btn {
+	min-width: 120px !important;
+	width: 80% !important;
 }
 </style>

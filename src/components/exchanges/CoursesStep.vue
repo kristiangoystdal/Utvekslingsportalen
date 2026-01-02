@@ -54,7 +54,7 @@
           </v-expansion-panel-title>
 
           <!-- BODY -->
-          <v-expansion-panel-text>
+          <v-expansion-panel-text class="zero-padding">
             <CourseForm :course="course" :unsavedChanges="true"
               @submit-course="updateCourse(semester, index, $event)" />
           </v-expansion-panel-text>

@@ -29,7 +29,9 @@
         <v-list>
           <v-list-item v-for="(course, index) in coursesForSemester(semester)" :key="index">
             <v-list-item-title>
-              {{ course.courseName }} {{ course.courseCode ? `(${course.courseCode})` : "" }}
+              <div class="wrap-title">
+                {{ course.courseName }} {{ course.courseCode ? `(${course.courseCode})` : "" }}
+              </div>
             </v-list-item-title>
             <v-list-item-subtitle>
               {{ course.ECTSPoints }} ECTS
@@ -74,3 +76,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.wrap-title {
+  white-space: normal !important;
+  word-break: normal;
+  overflow-wrap: break-word;
+  /* fallback only */
+}
+</style>

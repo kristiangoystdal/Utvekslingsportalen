@@ -5,9 +5,9 @@
   cursor: pointer;
   border: none;
   font-size: 14px !important;
-  margin: 10px;
+  margin: 10px auto;
+  width: auto !important;
 }
-
 
 .btn {
   padding: 10px 20px;
@@ -15,7 +15,8 @@
   cursor: pointer;
   border: none;
   font-size: 14px !important;
-  margin: 10px;
+  margin: 10px auto;
+  width: auto !important;
 }
 
 .btn-primary {
@@ -31,6 +32,11 @@
 .btn-accent {
   background-color: var(--third-color);
   color: var(--first-color);
+}
+
+.btn-third {
+  background-color: var(--green-color);
+  color: var(--fifth-color);
 }
 
 .btn-warning {

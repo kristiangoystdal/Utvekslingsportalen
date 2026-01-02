@@ -11,7 +11,7 @@
     "addCourse": "Legg til fag",
     "newCourse": "Nytt fag",
     "missingFields": "Manglende felt",
-    "previous": "Tilbake til grunnleggende informasjon",
+    "previous": "Tilbake",
     "next": "Gå til gjennomgang",
     "incompleteCourse": "Ufullstendig fag",
     "noCourses": "Ingen fag lagt til ennå."
@@ -21,7 +21,7 @@
     "info": "Se gjennom informasjonen du har fylt inn før du sender inn utvekslingen din.",
     "basic": "Grunnleggende informasjon",
     "courses": "Faginformasjon",
-    "previous": "Tilbake til faginformasjon",
+    "previous": "Tilbake",
     "Høst": "Høst",
     "Vår": "Vår",
     "submit": "Send inn utveksling",
