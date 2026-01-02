@@ -21,7 +21,7 @@ const routes = [
     name: 'Home',
     component: Home,
     meta: {
-      title: "Utvekslingsportalen - Utforsk utvekslingsrapporter fra NTNU-studenter",
+      title: "Utvekslingsportalen",
       description: "Finn ekte erfaringer fra NTNU-studenter som har vært på utveksling. Søk etter land, universitet, fag og studieprogram."
     }
   },
@@ -31,7 +31,7 @@ const routes = [
     name: 'Exchanges',
     component: Exchanges,
     meta: {
-      title: "Utvekslinger - Sammenlign erfaringer fra tidligere NTNU-studenter",
+      title: "Utvekslinger",
       description: "Les detaljerte utvekslingsrapporter, fagvalg, vurderinger og anbefalinger fra studenter som har reist ut gjennom NTNU."
     }
   },
@@ -41,7 +41,7 @@ const routes = [
     name: 'EditExchange',
     component: EditExchange,
     meta: {
-      title: "Min utveksling - Rediger og oppdater din rapport",
+      title: "Min utveksling",
       description: "Rediger din utvekslingsrapport og del verdifulle erfaringer for å hjelpe kommende studenter."
     }
   },
@@ -51,7 +51,7 @@ const routes = [
     name: 'Contact',
     component: Contact,
     meta: {
-      title: "Kontakt oss - Utvekslingsportalen",
+      title: "Kontakt oss",
       description: "Ta kontakt for spørsmål, tilbakemeldinger eller hjelp relatert til utvekslingsrapporter og portalen."
     }
   },
@@ -62,7 +62,7 @@ const routes = [
     component: Account,
     meta: {
       requiresAuth: true,
-      title: "Min profil - Administrer kontoen din",
+      title: "Min profil",
       description: "Se og administrer kontoinformasjon, innstillinger og dine utvekslingsdata."
     }
   },
@@ -72,7 +72,7 @@ const routes = [
     name: 'Login',
     component: Login,
     meta: {
-      title: "Logg inn - Utvekslingsportalen",
+      title: "Logg inn",
       description: "Logg inn for å administrere din profil, legge inn erfaringer eller redigere utvekslingsrapporter."
     }
   },
@@ -83,7 +83,7 @@ const routes = [
     component: Admin,
     meta: {
       requiresAuth: true,
-      title: "Adminpanel - Utvekslingsportalen",
+      title: "Adminpanel",
       description: "Administrer utvekslingsdata, brukere og innhold. Kun tilgjengelig for administratorer."
     }
   },
@@ -93,7 +93,7 @@ const routes = [
     name: 'FAQ',
     component: FAQ,
     meta: {
-      title: "FAQ - Ofte stilte spørsmål",
+      title: "FAQ",
       description: "Finn svar på vanlige spørsmål om utveksling, fagvalg, innsendte rapporter og bruk av portalen."
     }
   },
@@ -103,7 +103,7 @@ const routes = [
     name: 'Upload',
     component: Upload,
     meta: {
-      title: "Last opp rapport - Bidra med dine erfaringer",
+      title: "Last opp rapport",
       description: "Last opp din utvekslingsrapport og hjelp andre NTNU-studenter med å finne riktig universitet."
     }
   },
@@ -113,7 +113,7 @@ const routes = [
     name: 'Courses',
     component: Courses,
     meta: {
-      title: "Kurs - Fag tatt av NTNU-studenter på utveksling",
+      title: "Kurs",
       description: "Utforsk fag NTNU-studenter har tatt på utveksling, og se hvilke emner som kan godkjennes."
     }
   },
