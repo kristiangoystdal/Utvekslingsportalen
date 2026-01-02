@@ -9,6 +9,8 @@
 	/* Very Light Grey */
 	--fifth-color: #ffffff;
 	/* White for text (added for better contrast) */
+	--green-color: #48A9A6;
+	/* Teal Green */
 
 	/* RGB versions */
 	--first-color-rgb: 17, 45, 78;
