@@ -6,6 +6,7 @@
   "university": "Velg universitet du skal gå på",
   "studyYear": "Velg hvilket studieår du skal på utveksling",
   "numSemesters": "Velg antall semestere du skal på utveksling",
+  "semester": "Velg semesteret du skal på utveksling",
   "courseYear": "Skriv inn året du tok faget",
   "courseCode": "Skriv inn fagkoden til faget du skal ta",
   "courseName": "Skriv inn navnet på faget du skal ta",
@@ -17,5 +18,7 @@
   "year": "Skriv inn året du begynte på utveksling",
   "selectHomeUniversityFirst": "Velg ditt hjemuniversitet først",
   "selectStudyFirst": "Velg studie først",
-  "selectCountryFirst": "Velg land først"
+  "selectCountryFirst": "Velg land først",
+  "secondCountry": "Velg det andre landet du skal på utveksling til",
+  "secondUniversity": "Velg det andre universitetet du skal gå på"
 }

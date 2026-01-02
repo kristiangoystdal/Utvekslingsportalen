@@ -6,6 +6,7 @@
   "university": "Select the university you will attend",
   "studyYear": "Select the academic year you will go on exchange",
   "numSemesters": "Select the number of semesters you will be on exchange",
+  "semester": "Select the semester you will be on exchange",
   "courseYear": "Enter the year you took the course",
   "courseCode": "Enter the course code of the course you will take",
   "courseName": "Enter the name of the course you will take",
@@ -17,5 +18,7 @@
   "year": "Enter the year you started your exchange",
   "selectHomeUniversityFirst": "Select your home university first",
   "selectStudyFirst": "Select study program first",
-  "selectCountryFirst": "Select country first"
+  "selectCountryFirst": "Select country first",
+  "secondCountry": "Select the second country you will go on exchange to",
+  "secondUniversity": "Select the second university you will attend"
 }
