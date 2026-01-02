@@ -1,15 +1,15 @@
 {
   "studies": {
-    "Arkitektur": [
+    "Arkitektur (Master 5 år)": [
       "Ingen spesialisering"
     ],
-    "Bioteknologi": [
+    "Bioteknologi (Master 5 år)": [
       "Biokjemi og biopolymerkjemi",
       "Molekylærbiologi",
       "Systembiologi",
       "Ingen spesialisering"
     ],
-    "Bygg- og miljøteknikk": [
+    "Bygg- og miljøteknikk (Master 5 år)": [
       "Bygg og anlegg",
       "Konstruksjon",
       "Kyst og arktisk",
@@ -17,7 +17,7 @@
       "Veg, transport og geomatikk",
       "Ingen spesialisering"
     ],
-    "Cybersikkerhet og datakommunikasjon": [
+    "Cybersikkerhet og datakommunikasjon (Master 5 år)": [
       "Nettverksteknologi",
       "Design av sikre systemer",
       "Nettsikkerhet",
@@ -26,7 +26,7 @@
       "Menneskesentrert cybersikkerhet og datakommunikasjon",
       "Ingen spesialisering"
     ],
-    "Datateknologi": [
+    "Datateknologi (Master 5 år)": [
       "Algoritmer og datamaskiner",
       "Databaser og søk",
       "Effektive datasystemer",
@@ -35,7 +35,7 @@
       "Visuell databehandling",
       "Ingen spesialisering"
     ],
-    "Elektronisk systemdesign og innovasjon": [
+    "Elektronisk systemdesign og innovasjon (Master 5 år)": [
       "Akustikk for kommunikasjon, miljø og fjernmåling",
       "Analog kretsdesign og radioteknikk",
       "Design av digitale og innvevde system",
@@ -44,61 +44,61 @@
       "Signalbehandling og kommunikasjon",
       "Ingen spesialisering"
     ],
-    "Energi og miljø": [
+    "Energi og miljø (Master 5 år)": [
       "Elektrisk energiteknikk og smarte nett",
       "Energi- og prosessteknikk",
       "Energiplanlegging og miljøanalyse",
       "Ingen spesialisering"
     ],
-    "Fysikk og matematikk": [
+    "Fysikk og matematikk (Master 5 år)": [
       "Biofysikk og medisinsk teknologi",
       "Industriell matematikk",
       "Teknisk fysikk",
       "Ingen spesialisering"
     ],
-    "Georessurser og geoteknologi": [
+    "Georessurser og geoteknologi (Master 5 år)": [
       "Anvendt geofysikk",
       "Mineralproduksjon",
       "Petroleums- og reservoarteknologi",
       "Ressursgeologi",
       "Ingen spesialisering"
     ],
-    "Industriell design": [
+    "Industriell design (Master 5 år)": [
       "Interaksjonsdesign",
       "Produktdesign",
       "Ingen spesialisering"
     ],
-    "Industriell kjemi og bioteknologi": [
+    "Industriell kjemi og bioteknologi (Master 5 år)": [
       "Bioteknologi",
       "Kjemi",
       "Kjemisk prosessteknologi",
       "Materialkjemi og energiteknologi",
       "Ingen spesialisering"
     ],
-    "Industriell økonomi og teknologiledelse - Datateknologi": [
+    "Industriell økonomi og teknologiledelse - Datateknologi (Master 5 år)": [
       "Kunstig intelligens",
       "Programvaresystemer",
       "Ingen spesialisering"
     ],
-    "Industriell økonomi og teknologiledelse - Energi og miljø": [
+    "Industriell økonomi og teknologiledelse - Energi og miljø (Master 5 år)": [
       "Elektrisk energiteknikk",
       "Energi- og prosessteknikk",
       "Ingen spesialisering"
     ],
-    "Industriell økonomi og teknologiledelse - Marin": [
+    "Industriell økonomi og teknologiledelse - Marin (Master 5 år)": [
       "Ingen spesialisering"
     ],
-    "Industriell økonomi og teknologiledelse - Produktutvikling og produksjon": [
+    "Industriell økonomi og teknologiledelse - Produktutvikling og produksjon (Master 5 år)": [
       "Ledelse og systemfag",
       "Energi- og prosessteknikk",
       "Ingen spesialisering"
     ],
-    "Ingeniørgeologi": [
+    "Ingeniørgeologi (Master 5 år)": [
       "Ingeniørgeologi og bergmekanikk",
       "Miljø- og hydrogeologi",
       "Ingen spesialisering"
     ],
-    "Ingeniørvitenskap og IKT": [
+    "Ingeniørvitenskap og IKT (Master 5 år)": [
       "Geomatikk",
       "IKT og konstruksjonsteknikk",
       "IKT og marin teknikk",
@@ -107,14 +107,14 @@
       "IKT og maskinteknikk",
       "Ingen spesialisering"
     ],
-    "Kybernetikk og robotikk": [
+    "Kybernetikk og robotikk (Master 5 år)": [
       "Tilpassede datasystemer",
       "Energi og prosesstyring",
       "Roboter og fartøystyring",
       "Medisinske og biologiske systemer",
       "Ingen spesialisering"
     ],
-    "Lektorutdanning i realfag for trinn 8–13": [
+    "Lektorutdanning i realfag for trinn 8–13 (Master 5 år)": [
       "Matematikk og fysikk",
       "Kjemi og biologi",
       "Matematikk og kjemi",
@@ -122,7 +122,7 @@
       "Matematikk og biologi",
       "Ingen spesialisering"
     ],
-    "Marin teknikk": [
+    "Marin teknikk (Master 5 år)": [
       "Marin konstruksjonsteknikk",
       "Marin kybernetikk",
       "Marin hydrodynamikk",
@@ -130,7 +130,7 @@
       "Marin prosjektering og logistikk",
       "Ingen spesialisering"
     ],
-    "Maskin- og energiteknologi": [
+    "Maskin- og energiteknologi (Master 5 år)": [
       "Energi i vind og vann",
       "Industriell mekanikk",
       "Inneklima og energi for bygninger",
@@ -142,28 +142,28 @@
       "Robotteknikk og automatisering",
       "Ingen spesialisering"
     ],
-    "Materialteknologi": [
+    "Materialteknologi (Master 5 år)": [
       "Materialutvikling og -bruk",
       "Materialer for energiteknologi",
       "Ressurser, energi og miljø",
       "Ingen spesialisering"
     ],
-    "Medisin": [
+    "Medisin (Profesjonsstudium)": [
       "Ingen spesialisering"
     ],
-    "Nanoteknologi": [
+    "Nanoteknologi (Master 5 år)": [
       "Bionanoteknologi",
       "Nanoelektronikk",
       "Nanoteknologi for materialer, energi og miljø",
       "Ingen spesialisering"
     ],
-    "Psykologutdanning": [
+    "Psykologutdanning (Profesjonsstudium)": [
       "Ingen spesialisering"
     ],
-    "Samfunnsøkonomi – integrert master": [
+    "Samfunnsøkonomi – integrert master (Master 5 år)": [
       "Ingen spesialisering"
     ],
-    "Økonomi og administrasjon": [
+    "Økonomi og administrasjon (Master 5 år)": [
       "Business Analytics",
       "Finansiering og investering",
       "Markedsføring",
@@ -250,6 +250,11 @@
       "Ingen spesialisering"
     ],
     "Europastudier (Bachelor)": [
+      "Europastudier med statsvitenskap",
+      "Europastudier med engelsk",
+      "Europastudier med fransk",
+      "Europastudier med spansk",
+      "Europastudier med tysk",
       "Ingen spesialisering"
     ],
     "Film- og videoproduksjon (Bachelor)": [
