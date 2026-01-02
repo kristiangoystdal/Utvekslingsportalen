@@ -18,7 +18,7 @@
 				</div>
 
 				<div class="box text-info text-center">
-					<v-btn class="btn-primary" @click="editExchange = true">
+					<v-btn class="btn btn-primary" @click="editExchange = true">
 						{{ $t("myExchange.editMyExchange") }}
 					</v-btn>
 					<v-btn class="btn btn-danger ml-4" @click="toggleExchangeDialog()">
@@ -68,32 +68,35 @@
 
 			<v-divider v-if="editExchange" class="my-4" />
 
-			<v-row v-if="editExchange" class="px-4 pb-4">
-				<v-col cols="6">
-					<v-btn v-if="step > 1" class="btn" color="secondary" @click="prevStep">
+			<v-row v-if="editExchange" class="px-4 pb-4" align="center" no-gutters>
+				<!-- Left: Previous -->
+				<v-col cols="auto">
+					<v-btn v-if="step > 1" class="btn btn-third" @click="prevStep">
 						{{ step == 2 ? $t("wizard.courses.previous") : $t("wizard.review.previous") }}
 					</v-btn>
 				</v-col>
 
-				<v-col v-if="editExchange" cols="6" class="text-right">
+				<v-spacer />
+
+				<!-- Right: Warning icon + Next -->
+				<v-col cols="auto" class="d-flex align-center">
 					<v-tooltip>
 						<template #activator="{ props }">
 							<v-icon v-bind="props" color="warning" class="mr-2" v-if="nextDisabled">
 								mdi-alert-circle
 							</v-icon>
 						</template>
-						<span v-if="step == 1 && missingBasicDataBool">
-							{{ missingBasicDataString }}
-						</span>
-						<span v-else-if="step == 2 && missingCoursesBool">
-							{{ $t("myExchange.coursesMissingData") }}
-						</span>
+
+						<span v-if="step == 1 && missingBasicDataBool">{{ missingBasicDataString }}</span>
+						<span v-else-if="step == 2 && missingCoursesBool">{{ $t("myExchange.coursesMissingData") }}</span>
 					</v-tooltip>
-					<v-btn v-if="step < 3" class="btn" color="primary" :disabled="nextDisabled" @click="nextStep">
+
+					<v-btn v-if="step < 3" class="btn btn-primary" :disabled="nextDisabled" @click="nextStep">
 						{{ step == 1 ? $t("wizard.basic.next") : $t("wizard.courses.next") }}
 					</v-btn>
 				</v-col>
 			</v-row>
+
 		</div>
 		<div v-else>
 			<div class="box box-alert text-alert text-center">
@@ -891,5 +894,10 @@ export default {
 .course-icons {
 	margin: 0 8px;
 	/* Adjust the margin value as needed */
+}
+
+.step-btn {
+	min-width: 120px !important;
+	width: 80% !important;
 }
 </style>
