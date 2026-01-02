@@ -200,6 +200,7 @@ export default {
 			exchangeSearch: '',
 			courseSearch: '',
 			courseHeaders: [
+				{ title: 'ID', value: 'exchangeID', width: '10%' },
 				{ title: this.$t("database.courseCode"), value: 'code', width: '5%' },
 				{ title: this.$t("database.courseName"), value: 'name', width: '10%' },
 				{ title: this.$t("database.replacedCourseCode"), value: 'replacedCourseCode', width: '10%', align: 'center' },
@@ -486,6 +487,7 @@ export default {
 						}
 
 						courseList.push({
+							exchangeID: exchangeID,
 							code: course.courseCode ?? "",
 							name: course.courseName ?? "",
 							replacedCourseCode: course.replacedCourseCode ?? "",
