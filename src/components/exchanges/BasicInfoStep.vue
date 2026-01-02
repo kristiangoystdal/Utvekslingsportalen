@@ -6,11 +6,11 @@
 
     <v-container class="zero-padding">
       <!-- Universitet i norge -->
-      <v-row>
+      <v-row no-gutters>
         <v-col cols="12" md="6">
           <v-autocomplete :items="homeUniversities" v-model="localExchange.homeUniversity"
-            :label="$t('database.homeUniversity')" :rules="[rules.required]" clearable persistent-hint
-            autocomplete="off" />
+            :label="$t('database.homeUniversity')" clearable persistent-hint autocomplete="off"
+            :hint="$t('hints.homeUniversity')" />
         </v-col>
       </v-row>
 
@@ -18,15 +18,15 @@
       <v-row>
         <v-col cols="12" md="6">
           <v-autocomplete :items="Object.keys(studies?.studies || {})" v-model="localExchange.study"
-            :label="$t('database.study')" :rules="[rules.required]" clearable persistent-hint
-            :disabled="!localExchange.homeUniversity"
-            :hint="!localExchange.homeUniversity ? $t('hints.selectHomeUniversityFirst') : ''" autocomplete="off" />
+            :label="$t('database.study')" clearable persistent-hint :disabled="!localExchange.homeUniversity"
+            :hint="!localExchange.homeUniversity ? $t('hints.selectHomeUniversityFirst') : $t('hints.study')"
+            autocomplete="off" />
         </v-col>
 
         <v-col cols="12" md="6">
           <v-autocomplete :items="specializations" v-model="localExchange.specialization"
-            :label="$t('database.specialization')" :rules="[rules.required]" persistent-hint
-            :disabled="!localExchange.study" :hint="!localExchange.study ? $t('hints.selectStudyFirst') : ''"
+            :label="$t('database.specialization')" clearable persistent-hint :disabled="!localExchange.study"
+            :hint="!localExchange.study ? $t('hints.selectStudyFirst') : $t('hints.specialization')"
             autocomplete="off" />
         </v-col>
       </v-row>
@@ -35,12 +35,13 @@
       <v-row>
         <v-col cols="12" md="6">
           <v-autocomplete v-model="localExchange.studyYear" :items="['1.', '2.', '3.', '4.', '5.']"
-            :label="$t('database.studyYear')" :rules="[rules.required]" clearable persistent-hint autocomplete="off" />
+            :label="$t('database.studyYear')" clearable persistent-hint autocomplete="off"
+            :hint="$t('hints.studyYear')" />
         </v-col>
 
         <v-col cols="12" md="6">
-          <v-text-field v-model="localExchange.year" type="number" :label="$t('database.year')"
-            :rules="[rules.required]" persistent-hint autocomplete="off" />
+          <v-text-field v-model="localExchange.year" type="number" :label="$t('database.year')" clearable
+            persistent-hint autocomplete="off" :hint="$t('hints.year')" />
         </v-col>
       </v-row>
 
@@ -50,13 +51,14 @@
       <v-row>
         <v-col cols="12" md="6">
           <v-autocomplete v-model="localExchange.country" :items="countryNamesTranslated"
-            :label="$t('database.country')" :rules="[rules.required]" clearable persistent-hint autocomplete="off" />
+            :label="$t('database.country')" clearable persistent-hint autocomplete="off" :hint="$t('hints.country')" />
         </v-col>
 
         <v-col cols="12" md="6">
           <v-autocomplete v-model="localExchange.university" :items="universityNames" :label="$t('database.university')"
-            :disabled="!localExchange.country" :hint="!localExchange.country ? $t('hints.selectCountryFirst') : ''"
-            persistent-hint autocomplete="off" />
+            :disabled="!localExchange.country"
+            :hint="!localExchange.country ? $t('hints.selectCountryFirst') : $t('hints.university')" persistent-hint
+            autocomplete="off" />
 
         </v-col>
       </v-row>
@@ -65,12 +67,12 @@
       <v-row>
         <v-col cols="12" md="6">
           <v-autocomplete v-model="localExchange.numSemesters" :items="[1, 2]" :label="$t('database.numSemesters')"
-            :rules="[rules.required]" clearable persistent-hint autocomplete="off" />
+            clearable persistent-hint autocomplete="off" :hint="$t('hints.numSemesters')" />
         </v-col>
 
         <v-col cols="12" md="6" v-if="localExchange.numSemesters === 1">
           <v-autocomplete v-model="localSemester" :items="['Høst', 'Vår']" :label="$t('database.semester')"
-            :rules="[rules.required]" clearable autocomplete="off" />
+            clearable persistent-hint autocomplete="off" :hint="$t('hints.semester')" />
         </v-col>
       </v-row>
 
@@ -81,12 +83,14 @@
         <v-row v-if="!localExchange.sameUniversity">
           <v-col cols="12" md="6">
             <v-autocomplete v-model="localExchange.secondCountry" :items="countryNamesTranslated"
-              :label="$t('database.country')" :rules="[rules.required]" clearable autocomplete="off" />
+              :label="$t('database.country')" clearable persistent-hint autocomplete="off"
+              :hint="$t('hints.secondCountry')" />
           </v-col>
 
           <v-col cols="12" md="6">
             <v-autocomplete v-model="localExchange.secondUniversity" :items="secondUniversityNames"
-              :label="$t('database.university')" :rules="[rules.required]" autocomplete="off" />
+              :label="$t('database.university')" persistent-hint autocomplete="off"
+              :hint="$t('hints.secondUniversity')" />
           </v-col>
         </v-row>
       </div>
