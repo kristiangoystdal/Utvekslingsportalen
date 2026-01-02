@@ -21,7 +21,7 @@
 					<v-btn class="btn btn-primary" @click="editExchange = true">
 						{{ $t("myExchange.editMyExchange") }}
 					</v-btn>
-					<v-btn class="btn btn-danger ml-4" @click="toggleExchangeDialog()">
+					<v-btn class="btn btn-danger" @click="toggleExchangeDialog()">
 						{{ $t("myExchange.deleteMyExchange") }}
 					</v-btn>
 				</div>
