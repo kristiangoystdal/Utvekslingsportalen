@@ -22,18 +22,17 @@
 		<div v-if="showProfileDropDown" class="profile-dropdown">
 			<div class="profile-content">
 				<div v-if="user != null">
-					<div class="username">{{ userData.displayName }}</div>
-					<v-btn @click="goToProfile" color="info" class="login-btn" dark>
+					<div class=" username">{{ userData.displayName }}</div>
+					<v-btn @click="goToProfile" class="btn btn-primary" :style="{ width: '100% !important' }">
 						{{ $t("navbar.profile") }}
 					</v-btn>
-					<v-btn @click="signOut" color="primary" class="login-btn" dark>
+					<v-btn @click="signOut" class="btn btn-danger" :style="{ width: '100% !important' }">
 						{{ $t("operations.signOut") }}
 					</v-btn>
 				</div>
 				<div v-else>
 					<div class="username">{{ $t("operations.signIn") }}</div>
-					<v-btn class="login-btn" @click="goToLogin" color="primary" dark
-						style="display: flex; align-items: center; justify-content: center">
+					<v-btn class="btn btn-primary" @click="goToLogin" :style="{ width: '100% !important', marginBottom: '10px' }">
 						<v-icon left class="icon-spacing" style="
 								display: inline-flex;
 								vertical-align: middle;
@@ -46,10 +45,7 @@
 								padding-top: 1px;
 							">{{ $t("operations.loginWithEmailButton") }}</span>
 					</v-btn>
-					<br>
-
-					<v-btn class="login-btn" @click="loginWithGoogle" color="primary" dark
-						style="display: flex; align-items: center; justify-content: center">
+					<v-btn class="btn btn-third" @click="loginWithGoogle" :style="{ width: '100% !important' }">
 						<v-icon left class="icon-spacing" style="
 								display: inline-flex;
 								vertical-align: middle;
@@ -81,6 +77,10 @@
 					<router-link class="footer-icon" to="/kontakt" @click="showMenuDropdown = false">
 						<v-icon size="30px">mdi-card-account-mail</v-icon>
 						<span>{{ $t("navbar.contactHeader") }}</span>
+					</router-link>
+					<router-link class="footer-icon" to="/legal" @click="showMenuDropdown = false">
+						<v-icon size="30px">mdi-gavel</v-icon>
+						<span>{{ $t("navbar.legalHeader") }}</span>
 					</router-link>
 				</div>
 			</div>
@@ -236,11 +236,6 @@ export default {
 .username {
 	font-weight: bold;
 	margin-bottom: 10px;
-}
-
-.login-btn {
-	width: 100%;
-	margin: 10px auto;
 }
 
 .menu-dropdown {
