@@ -28,10 +28,16 @@
 	/* Red for error alerts */
 	--alert-warning: #ffecb3;
 	/* Orange for warning alerts */
-	--alert-success: #28a745;
-	/* Green for success alerts */
-	--alert-info: #17a2b8;
-	/* Bright Blue for info alerts */
+	--alert-success-text: #2e7d32;
+	/* calm green */
+	--alert-success: #e6f4ea;
+	/* very light green */
+	--alert-info-text: #1e5aa8;
+	--alert-info: #eaf2fb;
+
+
+
+
 }
 
 a,
