@@ -55,13 +55,15 @@
 }
 
 .box-info {
-  background-color: var(--info-blue);
+  background-color: var(--alert-info);
+  color: var(--alert-info-text);
   border: 1px solid #004080;
   /* Darker shade of info color */
 }
 
 .box-success {
-  background-color: var(--success-green);
+  background-color: var(--alert-success);
+  color: var(--alert-success-text);
   border: 1px solid #006600;
   /* Darker shade of success color */
 }

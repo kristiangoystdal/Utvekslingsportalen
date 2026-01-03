@@ -34,62 +34,43 @@
 						</li>
 						<li ref="profileSwitcher">
 							<a @click="toggleProfileDropdown">{{ authButtonText }}</a>
-							<div v-if="showProfileDropDown" class="profile-dropdown">
-								<div class="profile-content">
-									<div v-if="user != null">
-										<div class="username">{{ userData?.displayName || user?.displayName || '' }}</div>
-										<v-btn @click="goToProfile" color="primary" dark class="login-btn">
-											{{ $t("operations.profile") }}
-										</v-btn>
-										<br><br>
-										<v-btn @click="signOut" color="red" class="login-btn">
-											{{ $t("operations.signOut") }}
-										</v-btn>
 
-									</div>
-									<div v-else>
-										<div class="username">{{ $t("operations.signIn") }}</div>
-										<v-btn class="login-btn" @click="goToLogin" color="primary" dark style="
-												display: flex;
-												align-items: center;
-												justify-content: center;
-											">
-											<v-icon left class="icon-spacing" style="
-													display: inline-flex;
-													vertical-align: middle;
-													margin-right: 8px;
-												">mdi-email</v-icon>
-											<span style="
-													display: inline-flex;
-													align-items: center;
-													vertical-align: middle;
-													padding-top: 1px;
-												">{{ $t("operations.loginWithEmailButton") }}</span>
-										</v-btn>
-										<br>
-										<v-btn class="login-btn" @click="loginWithGoogle" color="primary" dark style="
-												display: flex;
-												align-items: center;
-												justify-content: center;
-											">
-											<v-icon left class="icon-spacing" style="
-													display: inline-flex;
-													vertical-align: middle;
-													margin-right: 8px;
-												">mdi-google</v-icon>
-											<span style="
-													display: inline-flex;
-													align-items: center;
-													vertical-align: middle;
-													padding-top: 1px;
-												">{{ $t("operations.loginWithGoogleButton") }}</span>
-										</v-btn>
-									</div>
-								</div>
-							</div>
 						</li>
 					</ul>
 				</nav>
+
+				<div v-if="showProfileDropDown" class="profile-dropdown">
+					<div class="profile-content">
+						<div v-if="user != null">
+							<div class="username">{{ userData?.displayName || user?.displayName || '' }}</div>
+							<v-btn @click="goToProfile" class="btn btn-primary" :style="{ width: '100% !important' }">
+								{{ $t("operations.profile") }}
+							</v-btn>
+							<v-btn @click="signOut" class="btn btn-danger" :style="{ width: '100% !important' }">
+								{{ $t("operations.signOut") }}
+							</v-btn>
+						</div>
+						<div v-else>
+							<div class="username">{{ $t("operations.signIn") }}</div>
+							<v-btn class="btn btn-primary" @click="goToLogin" :style="{ width: '100% !important' }">
+								<v-icon left class="icon-spacing"
+									style="display: inline-flex;vertical-align: middle;margin-right: 8px;">mdi-email</v-icon>
+								<span style="display: inline-flex;	align-items: center;	vertical-align: middle;	padding-top: 1px;">
+									{{ $t("operations.loginWithEmailButton") }}
+								</span>
+							</v-btn>
+							<v-btn class="btn btn-third" @click="loginWithGoogle" :style="{ width: '100% !important' }">
+								<v-icon left class="icon-spacing"
+									style="display: inline-flex; vertical-align: middle; margin-right: 8px;">
+									mdi-google
+								</v-icon>
+								<span style="display: inline-flex;align-items: center;	vertical-align: middle;padding-top: 1px;">
+									{{ $t("operations.loginWithGoogleButton") }}
+								</span>
+							</v-btn>
+						</div>
+					</div>
+				</div>
 
 				<div ref="languageSwitcher" @click="toggleLanguageDropdown" class="language-switcher">
 					<img :src="currentFlagUrl" width="20" height="14" alt="flag" />
@@ -431,8 +412,8 @@ nav a {
 	top: 60px;
 	right: 50px;
 	background-color: #fff;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	border-radius: 4px;
+	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+	border-radius: 10px;
 	padding: 1rem;
 	width: 200px;
 	display: flex;
@@ -445,6 +426,7 @@ nav a {
 	display: flex;
 	flex-direction: column;
 	width: 100%;
+	border-radius: 10px;
 }
 
 .profile-content .username {
@@ -455,27 +437,6 @@ nav a {
 	text-align: left;
 	white-space: pre-wrap;
 	word-wrap: break-word;
-}
-
-.profile-content button {
-	width: 100%;
-	background-color: var(--third-color);
-	border: none;
-	color: white;
-	padding: 0.5rem 1rem;
-	border-radius: 4px;
-	cursor: pointer;
-	transition: background-color 0.3s;
-	text-align: center;
-}
-
-.profile-content button:hover {
-	background-color: var(--second-color);
-}
-
-.login-btn {
-	width: 90%;
-	margin: auto;
 }
 
 .language-switcher img,

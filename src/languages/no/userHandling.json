@@ -19,5 +19,8 @@
   "sendVerificationEmail": "Send verifiseringsmail på nytt",
   "updateProfile": "Oppdater profil",
   "userNotVerified": "Brukerkontoen din er ikke verifisert.",
-  "forgotPassword": "Glemt passord?"
+  "forgotPassword": "Glemt passord?",
+  "resetPassword": "Tilbakestill passord",
+  "acceptTermsLabel": "Jeg godtar",
+  "termsAndConditions": "vilkårene og betingelsene"
 }

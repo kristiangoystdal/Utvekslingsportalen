@@ -19,5 +19,8 @@
   "sendVerificationEmail": "Resend Verification Email",
   "updateProfile": "Update Profile",
   "userNotVerified": "Your user account is not verified.",
-  "forgotPassword": "Forgot Password?"
+  "forgotPassword": "Forgot Password?",
+  "resetPassword": "Reset Password",
+  "acceptTermsLabel": "I accept the",
+  "termsAndConditions": "Terms and Conditions"
 }

@@ -11,9 +11,9 @@ import Admin from '../components/admin/Admin.vue';
 import NotFound from '../components/error/NotFound.vue';
 import Upload from '../components/windows/Upload.vue';
 import Courses from '../components/courses/Courses.vue';
+import Legal from '../components/docs/Legal.vue'
 
 import store from './store.js';
-import { translate } from './i18n';
 
 const routes = [
   {
@@ -115,6 +115,15 @@ const routes = [
     meta: {
       title: "Kurs",
       description: "Utforsk fag NTNU-studenter har tatt på utveksling, og se hvilke emner som kan godkjennes."
+    }
+  },
+  {
+    path: '/terms_and_conditions',
+    name: 'Terms and Conditions',
+    component: Legal,
+    meta: {
+      title: "Juridisk informasjon",
+      description: "Les juridisk informasjon og bruksvilkår for Utvekslingsportalen."
     }
   },
 

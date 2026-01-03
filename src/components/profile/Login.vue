@@ -58,6 +58,18 @@
 							autocomplete="new-password" />
 						<br />
 
+						<v-checkbox v-model="acceptTerms" required>
+							<template #label>
+								<span>
+									{{ $t("userHandling.acceptTermsLabel") }}
+									<a href="/terms_and_conditions" target="_blank" rel="noopener noreferrer">
+										{{ $t("userHandling.termsAndConditions") }}
+									</a>
+								</span>
+							</template>
+						</v-checkbox>
+						<br />
+
 						<v-btn class="register-btn" color="primary" dark type="submit" :disabled="!isFormValid">
 							<v-icon left class="icon-spacing">mdi-account-plus</v-icon>
 							{{ $t("operations.register") }}
@@ -103,6 +115,7 @@ export default {
 			email: "",
 			password: "",
 			login: true,
+			acceptTerms: false,
 		};
 	},
 	computed: {
@@ -110,7 +123,7 @@ export default {
 			const isPasswordValid = this.password.length >= 6 && this.password.length <= 50;
 			const isEmailValid = this.email.includes("@") && this.email.length <= 100;
 			const isNameValid = this.name.length <= 50 && this.name.length > 0;
-			return isPasswordValid && isEmailValid && isNameValid;
+			return isPasswordValid && isEmailValid && isNameValid && this.acceptTerms;
 		},
 	},
 	methods: {
@@ -292,5 +305,11 @@ export default {
 	.icon-spacing {
 		margin-right: 4px;
 	}
+}
+
+.v-checkbox a {
+	color: rgb(var(--v-theme-primary));
+	font-weight: 600;
+	text-decoration: underline;
 }
 </style>
