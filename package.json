@@ -21,6 +21,7 @@
     "firebase": "^10.12.0",
     "flag-icons": "^7.2.2",
     "jspdf": "^3.0.3",
+    "markdown-it": "^14.1.0",
     "primeflex": "^3.3.1",
     "primeicons": "^7.0.0",
     "primevue": "^4.0.4",
