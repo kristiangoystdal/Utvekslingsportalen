@@ -31,7 +31,7 @@ export default {
 			{ name: "navbar.loginHeader", link: "/logg_inn" },
 			{ name: "navbar.contactHeader", link: "/kontakt" },
 			{ name: "navbar.faqHeader", link: "/faq" },
-			{ name: "navbar.legalHeader", link: "/legal" },
+			{ name: "navbar.legalHeader", link: "/terms_and_conditions" },
 		],
 	}),
 	computed: {

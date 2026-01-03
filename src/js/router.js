@@ -118,12 +118,12 @@ const routes = [
     }
   },
   {
-    path: '/legal',
-    name: 'Legal',
+    path: '/terms_and_conditions',
+    name: 'Terms and Conditions',
     component: Legal,
     meta: {
-      title: "Legal Information",
-      description: "Read the legal information and terms of use for the exchange portal."
+      title: "Juridisk informasjon",
+      description: "Les juridisk informasjon og bruksvilkår for Utvekslingsportalen."
     }
   },
 

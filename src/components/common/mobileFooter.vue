@@ -78,7 +78,7 @@
 						<v-icon size="30px">mdi-card-account-mail</v-icon>
 						<span>{{ $t("navbar.contactHeader") }}</span>
 					</router-link>
-					<router-link class="footer-icon" to="/legal" @click="showMenuDropdown = false">
+					<router-link class="footer-icon" to="/terms_and_conditions" @click="showMenuDropdown = false">
 						<v-icon size="30px">mdi-gavel</v-icon>
 						<span>{{ $t("navbar.legalHeader") }}</span>
 					</router-link>
