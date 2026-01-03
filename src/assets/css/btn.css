@@ -6,7 +6,7 @@
   border: none;
   font-size: 14px !important;
   margin: 10px auto;
-  width: auto !important;
+  padding: 10px 20px !important;
 }
 
 .btn {
@@ -16,7 +16,7 @@
   border: none;
   font-size: 14px !important;
   margin: 10px auto;
-  width: auto !important;
+  padding: 10px 20px !important;
 }
 
 .btn-primary {
