@@ -18,7 +18,7 @@
 			</v-row>
 		</div>
 
-		<p class="box box-warning preserve-whitespace text-center">
+		<p class="box box-success preserve-whitespace text-center">
 			{{ $t("homepage.newFeature") }}
 		</p>
 
