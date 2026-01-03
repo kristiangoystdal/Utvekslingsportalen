@@ -1,0 +1,202 @@
+name: Link Check
+
+on:
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build app
+        run: npm run build
+
+      - name: Install Playwright (Chromium)
+        run: npx playwright install --with-deps chromium
+
+      - name: Start preview server
+        shell: bash
+        run: |
+          # Vite preview (adjust if you use something else)
+          nohup npx vite preview --host 127.0.0.1 --port 4173 >/tmp/preview.log 2>&1 &
+          echo "Waiting for server..."
+          for i in {1..30}; do
+            if curl -sSf http://127.0.0.1:4173 >/dev/null; then
+              echo "Server is up!"
+              break
+            fi
+            sleep 1
+          done
+
+      - name: Check all links (internal + external)
+        shell: bash
+        run: |
+          cat > /tmp/check-links.mjs << 'EOF'
+          import fs from "node:fs";
+          import path from "node:path";
+          import { execSync } from "node:child_process";
+          import { chromium } from "playwright";
+
+          const BASE_URL = "http://127.0.0.1:4173";
+          const NOTFOUND_TITLE = "404 - Siden finnes ikke";
+
+          // --- Collect files to scan ---
+          // You can add/remove patterns here.
+          const fileList = execSync(
+            "git ls-files",
+            { encoding: "utf8" }
+          )
+            .split("\n")
+            .filter(Boolean)
+            .filter(f =>
+              f.match(/\.(vue|js|ts|jsx|tsx|md|html)$/i)
+            );
+
+          const links = new Set();
+
+          function addLink(raw) {
+            if (!raw) return;
+            const s = raw.trim();
+
+            if (!s) return;
+            if (s.startsWith("#")) return;
+            if (s.startsWith("mailto:")) return;
+            if (s.startsWith("tel:")) return;
+            if (s.startsWith("javascript:")) return;
+
+            // Ignore Vue/Vite asset aliases
+            if (s.startsWith("@/") || s.startsWith("~")) return;
+
+            links.add(s);
+          }
+
+          // Regexes:
+          const hrefRe = /href\s*=\s*["']([^"']+)["']/g;
+          const routerToRe = /\bto\s*=\s*["']([^"']+)["']/g; // <router-link to="/x">
+          const mdLinkRe = /\[[^\]]*\]\(([^)]+)\)/g;         // [text](url)
+
+          for (const file of fileList) {
+            const content = fs.readFileSync(file, "utf8");
+
+            for (const re of [hrefRe, routerToRe, mdLinkRe]) {
+              let m;
+              while ((m = re.exec(content)) !== null) {
+                addLink(m[1]);
+              }
+              re.lastIndex = 0;
+            }
+          }
+
+          // Split internal vs external
+          const internal = [];
+          const external = [];
+
+          for (const l of links) {
+            // treat //example.com as external
+            if (l.startsWith("http://") || l.startsWith("https://") || l.startsWith("//")) {
+              external.push(l.startsWith("//") ? "https:" + l : l);
+            } else if (l.startsWith("/")) {
+              internal.push(l);
+            } else {
+              // Relative links in markdown etc. (e.g. ./docs/foo.md)
+              // Not a "hyperlink route" — skip, or handle as needed.
+            }
+          }
+
+          internal.sort();
+          external.sort();
+
+          let failed = false;
+
+          // --- External check (HTTP status) ---
+          async function checkExternal(url) {
+            // Many sites block HEAD; do GET fallback.
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 15000);
+
+            try {
+              let res = await fetch(url, { method: "HEAD", redirect: "follow", signal: controller.signal });
+              if (res.status === 405 || res.status === 403) {
+                res = await fetch(url, { method: "GET", redirect: "follow", signal: controller.signal });
+              }
+              if (res.status >= 400) {
+                console.error(`❌ External link failed (${res.status}): ${url}`);
+                failed = true;
+              } else {
+                console.log(`✅ External (${res.status}): ${url}`);
+              }
+            } catch (e) {
+              console.error(`❌ External link error: ${url}\n   ${e}`);
+              failed = true;
+            } finally {
+              clearTimeout(timeout);
+            }
+          }
+
+          // --- Internal check (Playwright) ---
+          async function checkInternal(page, route) {
+            const url = BASE_URL + route;
+
+            try {
+              await page.goto(url, { waitUntil: "networkidle" });
+              const title = await page.title();
+
+              // Your Vue NotFound route sets title: "404 - Siden finnes ikke"
+              if (title.trim() === NOTFOUND_TITLE) {
+                console.error(`❌ Internal route goes to 404 page: ${route}`);
+                failed = true;
+              } else {
+                console.log(`✅ Internal OK: ${route} (title: "${title}")`);
+              }
+            } catch (e) {
+              console.error(`❌ Internal route error: ${route}\n   ${e}`);
+              failed = true;
+            }
+          }
+
+          console.log(`\nFound ${internal.length} internal links and ${external.length} external links.\n`);
+
+          // Run checks
+          // External first
+          for (const url of external) {
+            await checkExternal(url);
+          }
+
+          // Internal (Playwright)
+          const browser = await chromium.launch();
+          const page = await browser.newPage();
+
+          for (const route of internal) {
+            await checkInternal(page, route);
+          }
+
+          await browser.close();
+
+          if (failed) {
+            console.error("\n❌ Link check failed.");
+            process.exit(1);
+          } else {
+            console.log("\n✅ All links look good!");
+          }
+          EOF
+
+          node /tmp/check-links.mjs
+
+      - name: Print preview log on failure
+        if: failure()
+        run: |
+          echo "---- preview log ----"
+          cat /tmp/preview.log || true
