@@ -1,6 +1,21 @@
 // src/i18n.js
 import { createI18n } from 'vue-i18n';
 
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    return decodeURIComponent(parts.pop().split(";").shift());
+  }
+  return null;
+}
+
+const savedLocale =
+  getCookie("locale") ||
+  localStorage.getItem("language") ||
+  "no";
+
+
 const modules = import.meta.glob("../languages/no/*.json", { eager: true });
 const modulesEn = import.meta.glob("../languages/en/*.json", { eager: true });
 
@@ -18,11 +33,16 @@ for (const path in modulesEn) {
 }
 
 const i18n = createI18n({
-  legacy: true,            // <-- REQUIRED for $t() in templates
-  globalInjection: true,   // <-- makes $t() + $i18n available everywhere
-  locale: 'no',
-  messages: { no: messagesNo, en: messagesEn }
+  legacy: true,           // REQUIRED for $t()
+  globalInjection: true,  // makes $t() + $i18n available everywhere
+  locale: savedLocale,
+  fallbackLocale: "no",
+  messages: {
+    no: messagesNo,
+    en: messagesEn
+  }
 });
+
 
 
 // Export the global i18n instance
