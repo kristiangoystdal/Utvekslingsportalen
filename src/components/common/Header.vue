@@ -144,7 +144,7 @@ export default {
 		},
 		changeLanguage(lang) {
 			this.$i18n.locale = lang;
-			localStorage.setItem("language", lang);
+			document.cookie = `locale=${encodeURIComponent(lang)}; Path=/; Max-Age=31536000; SameSite=Lax`;
 			this.showLanguageDropdown = false;
 		},
 		handleClickOutside(event) {
