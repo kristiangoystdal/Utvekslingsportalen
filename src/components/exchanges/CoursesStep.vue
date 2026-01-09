@@ -46,6 +46,10 @@
                   </span>
                 </v-tooltip>
 
+                <v-icon v-if="semesters.length == 2" @click.stop="moveToOtherSemester(semester, index)" class="ml-2">
+                  mdi-swap-horizontal
+                </v-icon>
+
                 <v-icon color="error" @click.stop="toggleDialog(semester, index)" class="ml-2">
                   mdi-trash-can
                 </v-icon>
@@ -152,7 +156,7 @@ export default {
 
       this.userExchange.courses[semester] = reindexed;
       this.emitUpdate();
-      this.toggleDialog();
+      this.deleteCourseDialog = false;
     },
     missingFields(course) {
       const missing = [];
@@ -178,6 +182,26 @@ export default {
       this.deleteCourseDialog = !this.deleteCourseDialog;
       this.currentSemester = semester;
       this.currentCourse = index;
+    },
+    moveToOtherSemester(currentSemester, courseIndex) {
+      const otherSemester = this.semesters.find(
+        (sem) => sem !== currentSemester
+      );
+
+      const courseToMove =
+        this.userExchange.courses[currentSemester][courseIndex];
+
+      // Remove from current semester
+      this.removeCourse(currentSemester, courseIndex);
+
+      // Add to other semester
+      const coursesInOtherSemester =
+        this.userExchange.courses[otherSemester] || {};
+      const newIndex = Object.keys(coursesInOtherSemester).length;
+
+      this.userExchange.courses[otherSemester][newIndex] = courseToMove;
+
+      this.emitUpdate();
     },
   },
 };
