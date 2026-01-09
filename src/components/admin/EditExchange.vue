@@ -132,6 +132,8 @@
                     {{ course.courseName || 'Nytt fag' }}
                   </v-col>
                 </v-row>
+                <v-icon icon="mdi-swap-horizontal" class="course-icons"
+                  @click.stop="moveToOtherSemester(semester, cIndex)" />
                 <v-icon icon="mdi-delete-outline" class="course-icons" @click.stop="removeCourse(semester, cIndex)" />
                 <v-icon :icon="expanded ? 'mdi-pencil' : 'mdi-book-open-variant'" class="course-icons" color="teal" />
               </template>
@@ -275,6 +277,57 @@ export default {
     saveExchange() {
       this.$emit("save", this.localExchange);
     },
+    moveToOtherSemester(semester, index) {
+      if (this.localExchange.numSemesters !== 2) return;
+
+      const otherSemester = semester === "Høst" ? "Vår" : "Høst";
+
+      // Ensure structure exists
+      if (!this.localExchange.courses) this.localExchange.courses = {};
+      if (!this.localExchange.courses[semester]) this.localExchange.courses[semester] = {};
+      if (!this.localExchange.courses[otherSemester]) this.localExchange.courses[otherSemester] = {};
+
+      const fromObj = this.localExchange.courses[semester];
+      const toObj = this.localExchange.courses[otherSemester];
+
+      // Map Object.values() index -> real key
+      const keys = Object.keys(fromObj)
+        .sort((a, b) => Number(a) - Number(b));
+
+      const realKey = keys[index];
+      if (realKey === undefined) return;
+
+      const courseToMove = fromObj[realKey];
+      if (!courseToMove) return;
+
+      // Add to other semester
+      const toKeys = Object.keys(toObj)
+        .map(Number)
+        .filter(n => !Number.isNaN(n));
+
+      const newKey = toKeys.length ? Math.max(...toKeys) + 1 : 0;
+      toObj[String(newKey)] = courseToMove;
+
+      // Remove from original semester
+      delete fromObj[realKey];
+
+      // Renumber helper (0..N-1)
+      const renumber = (obj) => {
+        const ordered = Object.keys(obj)
+          .sort((a, b) => Number(a) - Number(b))
+          .map(k => obj[k])
+          .filter(Boolean);
+
+        Object.keys(obj).forEach(k => delete obj[k]);
+        ordered.forEach((c, i) => {
+          obj[String(i)] = c;
+        });
+      };
+
+      renumber(fromObj);
+      renumber(toObj);
+    }
+
   },
   mounted() {
     this.localExchange = JSON.parse(JSON.stringify(this.exchangeData));
