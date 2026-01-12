@@ -14,6 +14,14 @@
     style="width: 95%; margin: 10px auto; border-radius: 5px;"></v-text-field>
   <br />
 
+  <!-- University Chips -->
+  <div>
+    <v-chip v-for="university in this.homeUniversities" size="large" class="mr-2" @click="toggleChip(university)"
+      :class="selectedUniversity === university ? 'selected' : ''">
+      {{ university.split('(')[1].split(')')[0] }}
+    </v-chip>
+  </div>
+  <br />
   <!-- Data Table -->
   <div v-if="!isMobile">
     <v-data-table v-model:expanded="expanded" :headers="translatedHeaders" :items="courseList" item-value="id"
@@ -59,6 +67,7 @@
   </div>
 
   <div v-else>
+
     <v-data-table :headers="translatedMobileHeaders" v-model:expanded="expanded" :items="courseList" item-value="id"
       show-expand class="main-table fixed-table" id="main-table-width" :fixed-header="false" :style="{ width: '100%' }"
       item-class="custom-item-class" header-class="custom-header-class" :search="courseSearch"
@@ -219,6 +228,7 @@ import { getCode } from "country-list";
 import countriesInformation from "../../data/countriesInformation.json";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
+import { filter } from "d3";
 
 export default {
   setup() {
@@ -239,6 +249,8 @@ export default {
       currentCourse: null,
       favoriteCourses: [],
       courseSearch: "",
+      homeUniversities: [],
+      selectedUniversity: "",
     };
   },
   created() {
@@ -267,8 +279,14 @@ export default {
         {
           align: "center",
           key: "",
-          width: "8%",
+          width: "2%",
           sortable: false,
+        },
+        {
+          title: this.$t("database.homeUniversity"),
+          align: "start",
+          key: "homeUniversity",
+          width: "25%",
         },
         {
           title: this.$t("database.courseCode"),
@@ -352,8 +370,7 @@ export default {
         {
           title: this.$t("database.courseCode"),
           align: "start",
-          key: "courseCode",
-          length: 1,
+          key: "courseCode"
         },
         {
           title: this.$t("database.courseName"),
@@ -455,10 +472,15 @@ export default {
             if (!grouped[code.trim()]) {
               grouped[code] = {
                 id: code,
+                homeUniversity: exchange.homeUniversity,
                 courseCode: code,
                 courseName: name,
                 courses: [],
               };
+            }
+
+            if (exchange.homeUniversity && !this.homeUniversities.includes(exchange.homeUniversity)) {
+              this.homeUniversities.push(exchange.homeUniversity);
             }
 
             const countryTranslated = this.$t(`countries.${exchange.country}`);
@@ -664,8 +686,24 @@ export default {
       if (exchange) {
         this.$router.push({ name: "Exchanges", query: { search: searchString, r: hiddenId } });
       }
+    },
+    toggleChip(university) {
+      if (this.selectedUniversity === university) {
+        // Deselect if already selected
+        this.selectedUniversity = "";
+        this.fetchExchangeData(); // Reset to full list
+        return;
+      }
+
+      this.courseList = this.courseList.filter(course => {
+        return course.homeUniversity === university;
+      });
+
+      this.selectedUniversity = university;
+
     }
   },
+
 
 };
 </script>
@@ -674,5 +712,10 @@ export default {
 .v-data-table table tr th,
 .v-data-table table tr td {
   padding: 0 8px !important;
+}
+
+.selected {
+  background-color: #1976d2 !important;
+  color: white !important;
 }
 </style>
