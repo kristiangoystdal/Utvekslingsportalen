@@ -28,7 +28,7 @@ Dersom du sender inn en utvekslingserfaring, kan vi lagre:
 
 - Universitet, land, år/semester
 - Studieprogram og eventuell studieretning
-- Faginformasjon (emnekoder, emnenavn, studiepoeng, erstattede NTNU-emner)
+- Faginformasjon (emnekoder, emnenavn, studiepoeng, erstattede emner)
 - Kommentarer du selv velger å dele
 
 Ikke send inn sensitive personopplysninger eller unødvendig personlig informasjon.
