@@ -34,7 +34,7 @@ Prosjekteier forbeholder seg retten til å redigere, skjule eller fjerne innhold
 ## 6. Ingen garantier
 
 Informasjonen kan være utdatert eller ufullstendig.  
-Brukere må selv verifisere fag-/kursgodkjenninger og utvekslingskrav med NTNU og partnerinstitusjoner.
+Brukere må selv verifisere fag-/kursgodkjenninger og utvekslingskrav med universitetet ditt og partnerinstitusjoner.
 
 ## 7. Ansvarsbegrensning
 
