@@ -34,7 +34,7 @@ The project owner may edit, hide, or remove content that is:
 ## 6. No guarantees
 
 Information may be outdated or incomplete.  
-Users must verify course approvals and exchange requirements with NTNU and partner institutions.
+Users must verify course approvals and exchange requirements with your home university and partner institutions.
 
 ## 7. Limitation of liability
 

@@ -10,4 +10,4 @@ Du er selv ansvarlig for å verifisere:
 - Fag- og kursgodkjenninger
 - Krav i studieprogrammet
 
-Bekreft alltid informasjonen med NTNU og den aktuelle partnerinstitusjonen.
+Bekreft alltid informasjonen med universitetet ditt og den aktuelle partnerinstitusjonen.

@@ -13,7 +13,7 @@
             </div>
 
             <v-chip size="small" variant="tonal" color="primary">
-              {{ $t("legal.updatedDate") }} 04-01-2026
+              {{ $t("legal.updatedDate") }} 19-01-2026
             </v-chip>
           </div>
 

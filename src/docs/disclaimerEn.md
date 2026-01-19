@@ -10,4 +10,4 @@ You are responsible for verifying:
 - Course approvals and equivalencies
 - Degree requirements
 
-Always confirm with NTNU and the partner institution.
+Always confirm with your home university and the partner institution.

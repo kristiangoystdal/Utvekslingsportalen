@@ -28,7 +28,7 @@ If you submit an exchange experience, we may store:
 
 - University, country, year/semester
 - Study program and specialization
-- Course information (course codes, names, ECTS, replaced NTNU courses)
+- Course information (course codes, names, ECTS, replaced courses)
 - Comments you choose to provide
 
 Do **not** submit sensitive personal data or unnecessary personal information.
