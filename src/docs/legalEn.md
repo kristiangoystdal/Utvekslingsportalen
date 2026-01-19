@@ -1,6 +1,6 @@
 # Legal overview
 
-Utvekslingsportalen is a student-driven, non-commercial platform created to help NTNU students explore and share exchange experiences. The platform is **not an official NTNU service**.
+Utvekslingsportalen is a student-driven, non-commercial platform created to help students explore and share exchange experiences. The platform is **not an official NTNU service**.
 
 This folder contains the following documents:
 

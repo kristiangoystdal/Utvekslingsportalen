@@ -1,6 +1,6 @@
 # Juridisk informasjon
 
-Utvekslingsportalen er en studentdrevet, ikke-kommersiell plattform laget for å hjelpe NTNU-studenter med å utforske og dele erfaringer fra utveksling. Plattformen er **ikke en offisiell NTNU-tjeneste**.
+Utvekslingsportalen er en studentdrevet, ikke-kommersiell plattform laget for å hjelpe studenter med å utforske og dele erfaringer fra utveksling. Plattformen er **ikke en offisiell NTNU-tjeneste**.
 
 Denne siden gir tilgang til følgende dokumenter:
 
