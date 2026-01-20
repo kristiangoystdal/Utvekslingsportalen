@@ -390,7 +390,8 @@ export default {
 				}
 				const exchangeRef = dbRef(db, `exchanges/${exchangeData.id}`);
 				await update(exchangeRef, exchangeData);
-				this.loadExchangeData(); // Reload exchange data after saving
+				await this.loadExchangeData(); // Reload exchange data after saving
+				await this.fetchCourseData(); // Refresh course data
 				this.closeExchangeDialog(); // Close the dialog
 				toast.success(this.$t("notifications.exchangeUpdated"));
 			} catch (error) {
@@ -411,7 +412,7 @@ export default {
 			try {
 				const exchangeRef = dbRef(db, `exchanges/${this.localExchangeData.id}`);
 				await set(exchangeRef, null); // Delete the exchange
-				this.loadExchangeData(); // Reload exchanges after deletion
+				await this.loadExchangeData(); // Reload exchanges after deletion
 				toast.success(this.$t("notifications.exchangeDeleted"));
 			} catch (error) {
 				toast.error(this.$t("notifications.exchangeDeleteFailure"));
@@ -512,23 +513,11 @@ export default {
 					}
 				}
 
-				// Remove duplicate entries based on the course code + name
-				const unique = [];
-				const seen = new Set();
-
-				for (const c of courseList) {
-					const key = `${c.code}__${c.name}`;
-					if (!seen.has(key)) {
-						seen.add(key);
-						unique.push(c);
-					}
-				}
-
 				// Sort alphabetically
-				unique.sort((a, b) => a.code.localeCompare(b.code));
+				courseList.sort((a, b) => a.code.localeCompare(b.code));
 
 				// Assign final data to table
-				this.courseData = unique;
+				this.courseData = courseList;
 
 			} catch (error) {
 				console.error("Error fetching course data:", error);
