@@ -59,6 +59,9 @@
 			<!-- Course list content goes here -->
 			<v-data-table :headers="courseHeaders" :items="courseData" :items-per-page="5" :search="courseSearch"
 				density="compact">
+				<template v-slot:item.actions="{ item }">
+					<v-icon @click="editExchangeCourse(item.exchangeID)">mdi-pencil</v-icon>
+				</template>
 			</v-data-table>
 		</v-card>
 
@@ -209,6 +212,7 @@ export default {
 				{ title: this.$t("database.semester"), value: 'semester', width: '10%', align: 'center' },
 				{ title: this.$t("database.year"), value: 'year', width: '5%', align: 'center' },
 				{ title: this.$t("database.ECTSPoints"), value: 'ECTSPoints', width: '5%', align: 'center' },
+				{ title: "", value: 'actions', sortable: false, width: '5%', align: 'end' },
 			],
 			courseData: [],
 		};
@@ -364,6 +368,14 @@ export default {
 			this.exchangeDialog = true;
 		},
 		editExchange(exchange) {
+			// Implement exchange editing logic here
+			this.localUserExchange = { ...exchange };
+			this.exchangeDialogTitle = this.$t("adminPage.editExchangeTitle");
+			this.exchangeDialog = true;
+		},
+		editExchangeCourse(exchangeID) {
+			const exchange = this.exchanges.find(ex => ex.id === exchangeID);
+
 			// Implement exchange editing logic here
 			this.localUserExchange = { ...exchange };
 			this.exchangeDialogTitle = this.$t("adminPage.editExchangeTitle");
