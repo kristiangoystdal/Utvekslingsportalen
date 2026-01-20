@@ -33,72 +33,95 @@
 
       <v-expansion-panel-text class="zero-padding">
         <v-container class="zero-padding">
-          <!-- Study & Specialization -->
+          <!-- Universitet i norge -->
+          <v-row no-gutters>
+            <v-col cols="12" md="6">
+              <v-autocomplete :items="homeUniversities" v-model="localExchange.homeUniversity"
+                :label="$t('database.homeUniversity')" clearable persistent-hint autocomplete="off"
+                :hint="$t('hints.homeUniversity')" />
+            </v-col>
+          </v-row>
+
+          <!-- Study & specialization -->
           <v-row>
             <v-col cols="12" md="6">
-              <v-autocomplete :items="Object.keys(studies)" v-model="localExchange.study" :label="$t('database.study')"
-                clearable :hint="$t('hints.study')" persistent-hint />
+              <v-autocomplete :items="Object.keys(studies?.studies || {})" v-model="localExchange.study"
+                :label="$t('database.study')" clearable persistent-hint :disabled="!localExchange.homeUniversity"
+                :hint="!localExchange.homeUniversity ? $t('hints.selectHomeUniversityFirst') : $t('hints.study')"
+                autocomplete="off" />
             </v-col>
+
             <v-col cols="12" md="6">
               <v-autocomplete :items="specializations" v-model="localExchange.specialization"
-                :label="$t('database.specialization')" clearable :hint="$t('hints.specialization')" persistent-hint />
+                :label="$t('database.specialization')" clearable persistent-hint :disabled="!localExchange.study"
+                :hint="!localExchange.study ? $t('hints.selectStudyFirst') : $t('hints.specialization')"
+                autocomplete="off" />
             </v-col>
           </v-row>
 
-          <!-- Country & University -->
+          <!-- Study year & calendar year -->
           <v-row>
             <v-col cols="12" md="6">
-              <v-autocomplete v-model="localExchange.country" :items="countryNames" :label="$t('database.country')"
-                clearable :hint="$t('hints.country')" persistent-hint />
+              <v-autocomplete v-model="localExchange.studyYear" :items="['1.', '2.', '3.', '4.', '5.']"
+                :label="$t('database.studyYear')" clearable persistent-hint autocomplete="off"
+                :hint="$t('hints.studyYear')" />
             </v-col>
+
+            <v-col cols="12" md="6">
+              <v-text-field v-model="localExchange.year" type="number" :label="$t('database.year')" clearable
+                persistent-hint autocomplete="off" :hint="$t('hints.year')" />
+            </v-col>
+          </v-row>
+
+          <v-divider class="my-6" />
+
+          <!-- Country & university -->
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-autocomplete v-model="localExchange.country" :items="countryNamesTranslated"
+                :label="$t('database.country')" clearable persistent-hint autocomplete="off"
+                :hint="$t('hints.country')" />
+            </v-col>
+
             <v-col cols="12" md="6">
               <v-autocomplete v-model="localExchange.university" :items="universityNames"
-                :label="$t('database.university')" clearable :hint="$t('hints.university')" persistent-hint />
+                :label="$t('database.university')" :disabled="!localExchange.country"
+                :hint="!localExchange.country ? $t('hints.selectCountryFirst') : $t('hints.university')" persistent-hint
+                autocomplete="off" />
+
             </v-col>
           </v-row>
 
-          <!-- Study Year & Which Year -->
-          <v-row>
-            <v-col cols="12" md="6">
-              <v-autocomplete v-model="localExchange.studyYear" :items="[1, 2, 3, 4, 5]"
-                :label="$t('database.studyYear')" required clearable :hint="$t('hints.studyYear')"
-                persistent-hint></v-autocomplete>
-            </v-col>
-            <v-col cols="12" md="6">
-              <v-text-field v-model="localExchange.year" :label="$t('database.year')" type="number" clearable required
-                :hint="$t('hints.year')" persistent-hint />
-            </v-col>
-          </v-row>
-
-          <!-- Number of Semesters & Semester(s) -->
+          <!-- Number of semesters -->
           <v-row>
             <v-col cols="12" md="6">
               <v-autocomplete v-model="localExchange.numSemesters" :items="[1, 2]" :label="$t('database.numSemesters')"
-                required clearable @update:modelValue="handleNumSemestersChange" :hint="$t('hints.numSemesters')"
-                persistent-hint></v-autocomplete>
+                clearable persistent-hint autocomplete="off" :hint="$t('hints.numSemesters')" />
             </v-col>
-            <v-col cols="12" md="6" v-if="localExchange.numSemesters == 1">
-              <v-autocomplete v-model="semesters" :items="['Høst', 'Vår']" :label="$t('database.semester')" required
-                clearable @update:modelValue="handleSemesterChange"></v-autocomplete>
+
+            <v-col cols="12" md="6" v-if="localExchange.numSemesters === 1">
+              <v-autocomplete v-model="localSemester" :items="['Høst', 'Vår']" :label="$t('database.semester')"
+                clearable persistent-hint autocomplete="off" :hint="$t('hints.semester')" />
             </v-col>
           </v-row>
 
-          <!-- Two-semester setup -->
+          <!-- Second university -->
           <div v-if="localExchange.numSemesters === 2">
-            <v-checkbox :label="$t('myExchange.semestersLocation')" v-model="localExchange.sameUniversity" />
-            <div v-if="!localExchange.sameUniversity">
-              {{ $t("myExchange.locationQuestion") }}
-              <v-row>
-                <v-col cols="12" md="6">
-                  <v-autocomplete v-model="localExchange.secondCountry" :items="countryNames"
-                    :label="$t('database.country')" clearable />
-                </v-col>
-                <v-col cols="12" md="6">
-                  <v-autocomplete v-model="localExchange.secondUniversity" :items="universityNames"
-                    :label="$t('database.university')" clearable />
-                </v-col>
-              </v-row>
-            </div>
+            <v-checkbox v-model="localExchange.sameUniversity" :label="$t('myExchange.semestersLocation')" />
+
+            <v-row v-if="!localExchange.sameUniversity">
+              <v-col cols="12" md="6">
+                <v-autocomplete v-model="localExchange.secondCountry" :items="countryNamesTranslated"
+                  :label="$t('database.country')" clearable persistent-hint autocomplete="off"
+                  :hint="$t('hints.secondCountry')" />
+              </v-col>
+
+              <v-col cols="12" md="6">
+                <v-autocomplete v-model="localExchange.secondUniversity" :items="secondUniversityNames"
+                  :label="$t('database.university')" persistent-hint autocomplete="off"
+                  :hint="$t('hints.secondUniversity')" />
+              </v-col>
+            </v-row>
           </div>
         </v-container>
       </v-expansion-panel-text>
@@ -164,7 +187,13 @@
 </template>
 
 <script>
-import studiesData from "../../data/studies.json";
+import homeUniversityJson from "../../data/homeUniversities.json";
+
+import ntnu_studies from "../../data/studies/ntnu.json";
+import uio_studies from "../../data/studies/uio.json";
+import uib_studies from "../../data/studies/uib.json";
+import uit_studies from "../../data/studies/uit.json";
+import uis_studies from "../../data/studies/uis.json";
 import universitiesData from "../../data/universities.json";
 import CourseForm from "../exchanges/CourseForm.vue";
 
@@ -179,7 +208,6 @@ export default {
       panel: null,
       semesters: [],
       localExchange: {},
-      studies: {},
       universities: {},
       selectedSemester: null,
     };
@@ -229,6 +257,32 @@ export default {
         JSON.stringify(this.exchangeData)
       );
     },
+    homeUniversities() {
+      return Object.values(homeUniversityJson);
+    },
+    studies() {
+      if (!this.localExchange.homeUniversity) {
+        return {};
+      }
+
+      if (this.localExchange.homeUniversity === homeUniversityJson["NTNU"]) {
+        return ntnu_studies;
+      }
+      if (this.localExchange.homeUniversity === homeUniversityJson["UiO"]) {
+        return uio_studies;
+      }
+      if (this.localExchange.homeUniversity === homeUniversityJson["UiB"]) {
+        return uib_studies;
+      }
+      if (this.localExchange.homeUniversity === homeUniversityJson["UiT"]) {
+        return uit_studies;
+      }
+      if (this.localExchange.homeUniversity === homeUniversityJson["UiS"]) {
+        return uis_studies;
+      }
+
+      return {};
+    }
   },
   watch: {
     exchangeData: {
@@ -331,7 +385,6 @@ export default {
   },
   mounted() {
     this.localExchange = JSON.parse(JSON.stringify(this.exchangeData));
-    this.studies = studiesData.studies;
     this.universities = universitiesData.universities;
     const n = this.localExchange.numSemesters;
     if (n === 1) {
