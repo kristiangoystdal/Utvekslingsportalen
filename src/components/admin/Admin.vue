@@ -3,7 +3,6 @@
 		<h2>{{ $t("adminPage.pageHeader") }}:</h2>
 	</div>
 	<br />
-	{{ this.exchanges[0] }}
 	<v-container>
 		<!-- User List -->
 		<v-card style="padding: 20px ;">
