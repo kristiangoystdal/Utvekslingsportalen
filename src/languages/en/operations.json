@@ -22,5 +22,6 @@
   "loginWithEmailButton": "Email",
   "loginWithGoogleButton": "Google",
   "profile": "My Profile",
-  "next": "Next"
+  "next": "Next",
+  "viewExchanges": "View Exchanges"
 }

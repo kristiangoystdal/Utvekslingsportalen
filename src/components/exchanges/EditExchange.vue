@@ -351,7 +351,6 @@ export default {
 				this.userExchange.country == null ||
 				this.userExchange.university == null ||
 				this.userExchange.study == null ||
-				this.userExchange.specialization == null ||
 				this.userExchange.studyYear == null ||
 				this.userExchange.numSemesters == null ||
 				this.userExchange.year == null ||

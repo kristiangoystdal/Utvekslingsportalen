@@ -9,10 +9,11 @@
   <br />
 
   <!-- Search Field -->
-  <v-text-field v-model="courseSearch" :label="$t('courses.search')" prepend-inner-icon="mdi-magnify" variant="outlined"
-    hide-details single-line density="compact" @blur="updateSearchQuery"
-    style="width: 95%; margin: 10px auto; border-radius: 5px;"></v-text-field>
-  <br />
+  <div class="search-wrap">
+    <v-text-field v-model="courseSearch" :label="$t('courses.search')" prepend-inner-icon="mdi-magnify" clearable
+      variant="solo" density="comfortable" rounded="xl" hide-details single-line @blur="updateSearchQuery"
+      class="search-field" />
+  </div>
 
   <!-- University Chips -->
   <div>
@@ -24,7 +25,7 @@
   <br />
   <!-- Data Table -->
   <div v-if="!isMobile">
-    <v-data-table v-model:expanded="expanded" :headers="translatedHeaders" :items="courseList" item-value="id"
+    <v-data-table v-model:expanded="expanded" :headers="translatedHeaders" :items="filteredCourseList" item-value="id"
       show-expand class="main-table dense-table" id="main-table-width" :search="courseSearch"
       :custom-filter="rowSearchFilter" :items-per-page-text="this.$t('courses.pageText')">
 
@@ -67,11 +68,10 @@
   </div>
 
   <div v-else>
-
-    <v-data-table :headers="translatedMobileHeaders" v-model:expanded="expanded" :items="courseList" item-value="id"
-      show-expand class="main-table fixed-table" id="main-table-width" :fixed-header="false" :style="{ width: '100%' }"
-      item-class="custom-item-class" header-class="custom-header-class" :search="courseSearch"
-      :items-per-page-text="this.$t('courses.pageText')">
+    <v-data-table :headers="translatedMobileHeaders" v-model:expanded="expanded" :items="filteredCourseList"
+      item-value="id" show-expand class="main-table fixed-table" id="main-table-width" :fixed-header="false"
+      :style="{ width: '100%' }" item-class="custom-item-class" header-class="custom-header-class"
+      :search="courseSearch" :items-per-page-text="this.$t('courses.pageText')">
       <template v-slot:item.country="{ item }">
         <div style="display: flex; align-items: center">
           <img :src="getFlagUrl(item.country)" alt="Flag" width="20" height="15" style="margin-left: 8px" />
@@ -241,6 +241,7 @@ export default {
       expanded: [],
       exchanges: {},
       courseList: [],
+      filteredCourseList: [],
       commentDialog: false,
       currentComments: "",
       currentCourseName: "",
@@ -530,9 +531,10 @@ export default {
 
         // Convert dict → array (Vuetify requires array)
         this.courseList = Object.values(grouped);
+        this.filteredCourseList = this.courseList;
 
         // Sort by course code
-        this.courseList.sort((a, b) => {
+        this.filteredCourseList.sort((a, b) => {
           if (a.courseCode < b.courseCode) return -1;
           if (a.courseCode > b.courseCode) return 1;
           return 0;
@@ -676,7 +678,7 @@ export default {
 
       const translatedCountry = this.$t(`countries.${exchange.country}`);
 
-      const searchString = translatedCountry + " " + exchange.university + " " + exchange.homeUniversity + " " + exchange.study + " " + exchange.specialization + " " + exchange.studyYear + " " + exchange.year;
+      const searchString = translatedCountry + " " + exchange.university + " " + exchange.homeUniversity + " " + exchange.study + " " + exchange.studyYear + " " + exchange.year;
 
       if (!exchange.id) {
         exchange.id = this.exchanges && Object.keys(this.exchanges).find(key => this.exchanges[key] === exchange);
@@ -691,16 +693,14 @@ export default {
       if (this.selectedUniversity === university) {
         // Deselect if already selected
         this.selectedUniversity = "";
-        this.fetchExchangeData(); // Reset to full list
+        this.filteredCourseList = this.courseList; // Reset filter
         return;
       }
 
-      this.courseList = this.courseList.filter(course => {
-        return course.homeUniversity === university;
-      });
-
+      // Apply filter
       this.selectedUniversity = university;
 
+      this.filteredCourseList = this.courseList.filter(course => course.homeUniversity === university);
     }
   },
 

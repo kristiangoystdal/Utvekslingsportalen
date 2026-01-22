@@ -33,28 +33,19 @@
 
       <v-expansion-panel-text class="zero-padding">
         <v-container class="zero-padding">
-          <!-- Universitet i norge -->
-          <v-row no-gutters>
+
+          <!-- Universitet i norge & Studie -->
+          <v-row>
             <v-col cols="12" md="6">
               <v-autocomplete :items="homeUniversities" v-model="localExchange.homeUniversity"
                 :label="$t('database.homeUniversity')" clearable persistent-hint autocomplete="off"
                 :hint="$t('hints.homeUniversity')" />
             </v-col>
-          </v-row>
 
-          <!-- Study & specialization -->
-          <v-row>
             <v-col cols="12" md="6">
               <v-autocomplete :items="Object.keys(studies?.studies || {})" v-model="localExchange.study"
                 :label="$t('database.study')" clearable persistent-hint :disabled="!localExchange.homeUniversity"
                 :hint="!localExchange.homeUniversity ? $t('hints.selectHomeUniversityFirst') : $t('hints.study')"
-                autocomplete="off" />
-            </v-col>
-
-            <v-col cols="12" md="6">
-              <v-autocomplete :items="specializations" v-model="localExchange.specialization"
-                :label="$t('database.specialization')" clearable persistent-hint :disabled="!localExchange.study"
-                :hint="!localExchange.study ? $t('hints.selectStudyFirst') : $t('hints.specialization')"
                 autocomplete="off" />
             </v-col>
           </v-row>
@@ -232,7 +223,6 @@ export default {
         !e.country ||
         !e.university ||
         !e.study ||
-        !e.specialization ||
         !e.studyYear ||
         !e.numSemesters ||
         (e.numSemesters === 1 && (!this.semesters || this.semesters.length === 0))
@@ -244,8 +234,6 @@ export default {
       if (!e.country) missing.push(this.$t("database.country"));
       if (!e.university) missing.push(this.$t("database.university"));
       if (!e.study) missing.push(this.$t("database.study"));
-      if (!e.specialization)
-        missing.push(this.$t("database.specialization"));
       if (!e.studyYear) missing.push(this.$t("database.studyYear"));
       if (!e.numSemesters)
         missing.push(this.$t("database.numSemesters"));
