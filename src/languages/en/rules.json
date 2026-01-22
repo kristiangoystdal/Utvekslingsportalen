@@ -2,5 +2,6 @@
   "required": "This field is required",
   "yearFormat": "Must be a valid year",
   "min3Chars": "Minimum 3 characters",
-  "validNumber": "Must be a number"
+  "validNumber": "Must be a number",
+  "validEcts": "Must be a valid ECTS point (0-60)"
 }

@@ -62,20 +62,11 @@ export default {
 			courseNameRules: [
 				(v) => (v && v.length >= 3) || this.$t("rules.min3Chars"),
 			],
-			ectsRules() {
-				return [
-					(v) => !!String(v ?? "").trim() || this.$t("rules.required"),
-					(v) => {
-						const n = this.parseEcts(v);
-						return Number.isFinite(n) || this.$t("rules.validNumber");
-					},
-					(v) => {
-						const n = this.parseEcts(v);
-						if (!Number.isFinite(n)) return true;
-						return (n > 0 && n <= 60) || "ECTS må være mellom 0 og 60";
-					},
-				];
-			},
+			ectsRules: [
+				(v) =>
+					(!v || (!isNaN(v) && Number(v) >= 0 && Number(v) <= 60)) ||
+					this.$t("rules.validEcts"),
+			],
 		};
 	},
 	watch: {
