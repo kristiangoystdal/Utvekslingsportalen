@@ -5,28 +5,18 @@
     </v-alert>
 
     <v-container class="zero-padding">
-      <!-- Universitet i norge -->
-      <v-row no-gutters>
+      <!-- Hjemuniversitet & Studie -->
+      <v-row>
         <v-col cols="12" md="6">
           <v-autocomplete :items="homeUniversities" v-model="localExchange.homeUniversity"
             :label="$t('database.homeUniversity')" clearable persistent-hint autocomplete="off"
             :hint="$t('hints.homeUniversity')" />
         </v-col>
-      </v-row>
 
-      <!-- Study & specialization -->
-      <v-row>
         <v-col cols="12" md="6">
           <v-autocomplete :items="Object.keys(studies?.studies || {})" v-model="localExchange.study"
             :label="$t('database.study')" clearable persistent-hint :disabled="!localExchange.homeUniversity"
             :hint="!localExchange.homeUniversity ? $t('hints.selectHomeUniversityFirst') : $t('hints.study')"
-            autocomplete="off" />
-        </v-col>
-
-        <v-col cols="12" md="6">
-          <v-autocomplete :items="specializations" v-model="localExchange.specialization"
-            :label="$t('database.specialization')" clearable persistent-hint :disabled="!localExchange.study"
-            :hint="!localExchange.study ? $t('hints.selectStudyFirst') : $t('hints.specialization')"
             autocomplete="off" />
         </v-col>
       </v-row>
@@ -71,8 +61,8 @@
         </v-col>
 
         <v-col cols="12" md="6" v-if="localExchange.numSemesters === 1">
-          <v-autocomplete v-model="localSemester" :items="['Høst', 'Vår']" :label="$t('database.semester')"
-            clearable persistent-hint autocomplete="off" :hint="$t('hints.semester')" />
+          <v-autocomplete v-model="localSemester" :items="['Høst', 'Vår']" :label="$t('database.semester')" clearable
+            persistent-hint autocomplete="off" :hint="$t('hints.semester')" />
         </v-col>
       </v-row>
 
@@ -126,12 +116,6 @@ export default {
         this.$emit("updateSemesters", val ? [val] : []);
       },
     },
-    specializations() {
-      const study = this.localExchange?.study;
-      if (!study) return [];
-
-      return this.studies?.studies?.[study] ?? [];
-    },
     homeUniversities() {
       return Object.values(homeUniversityJson);
     },
@@ -165,7 +149,6 @@ export default {
       localExchange: {
         homeUniversity: null,
         study: null,
-        specialization: null,
         studyYear: null,
         year: null,
         country: null,
@@ -205,14 +188,6 @@ export default {
       if (!this.isInitialized) return;
       if (newVal !== oldVal) {
         this.localExchange.study = null;
-        this.localExchange.specialization = null;
-      }
-    },
-
-    'localExchange.study'(newVal, oldVal) {
-      if (!this.isInitialized) return;
-      if (newVal !== oldVal) {
-        this.localExchange.specialization = null;
       }
     },
 
