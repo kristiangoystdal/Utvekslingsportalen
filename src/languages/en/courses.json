@@ -7,5 +7,10 @@
   "spring": "Spring",
   "availableSemesters": "Available Semesters",
   "availableCourses": "Available Courses",
-  "pageText": "Courses per page"
+  "pageText": "Courses per page",
+  "searchInfo": "Search among {groups} {groupWord} with {exchanges} {exchangeWord}",
+  "subject_one": "subject",
+  "subject_other": "subjects",
+  "exchange_one": "exchange option",
+  "exchange_other": "exchange options"
 }
