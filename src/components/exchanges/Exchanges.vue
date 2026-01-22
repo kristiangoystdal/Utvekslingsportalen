@@ -167,14 +167,6 @@
 									</v-row>
 									<v-row no-gutters>
 										<v-col cols="6" class="text-bold">
-											{{ $t("database.specialization") }}:
-										</v-col>
-										<v-col cols="6">
-											{{ item.specialization }}
-										</v-col>
-									</v-row>
-									<v-row no-gutters>
-										<v-col cols="6" class="text-bold">
 											{{ $t("database.numSemesters") }}:
 										</v-col>
 										<v-col cols="6">
@@ -397,9 +389,6 @@ export default {
 			studyList: [],
 			studyValues: [],
 			studySearch: "",
-			specializationList: [],
-			specializationValues: [],
-			specializationSearch: "",
 			numSemestersList: [1, 2],
 			numSemestersValues: [],
 			numSemestersSearch: "",
@@ -473,11 +462,6 @@ export default {
 					align: "start",
 					key: "study",
 				},
-				// {
-				// 	title: this.$t("database.specialization"),
-				// 	align: "end",
-				// 	key: "specialization",
-				// },
 				{
 					title: this.$t("database.studyYear"),
 					align: "center",
@@ -626,7 +610,6 @@ export default {
 					const countriesSet = new Set();
 					const universitiesSet = new Set();
 					const studiesSet = new Set();
-					const specializationsSet = new Set();
 
 					for (const exchangeKey in exchanges) {
 						const exchange = exchanges[exchangeKey];
@@ -651,16 +634,12 @@ export default {
 							if (exchange.study) {
 								studiesSet.add(exchange.study);
 							}
-							if (exchange.specialization) {
-								specializationsSet.add(exchange.specialization);
-							}
 						}
 					}
 
 					this.countryList = Array.from(countriesSet);
 					this.universityList = Array.from(universitiesSet);
 					this.studyList = Array.from(studiesSet);
-					this.specializationList = Array.from(specializationsSet);
 				} else {
 					console.error("No data available");
 				}
@@ -734,11 +713,6 @@ export default {
 			if (this.studyValues.length > 0) {
 				exchanges = exchanges.filter((exchange) =>
 					this.studyValues.includes(exchange.study)
-				);
-			}
-			if (this.specializationValues.length > 0) {
-				exchanges = exchanges.filter((exchange) =>
-					this.specializationValues.includes(exchange.specialization)
 				);
 			}
 			if (this.numSemestersValues.length > 0) {
@@ -994,7 +968,6 @@ export default {
 				"secondCountry",
 				"university",
 				"study",
-				"specialization",
 				"studyYear",
 				"year",
 				"homeUniversity",
