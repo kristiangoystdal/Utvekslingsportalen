@@ -9,9 +9,8 @@
       <v-card-title>{{ $t("wizard.review.basic") }}</v-card-title>
       <v-card-text>
         <div><strong>{{ $t("database.study") }}:</strong> {{ userExchange.study }}</div>
-        <div><strong>{{ $t("database.specialization") }}:</strong> {{ userExchange.specialization }}</div>
-        <div><strong>{{ $t("database.university") }}:</strong> {{ userExchange.university }}</div>
         <div><strong>{{ $t("database.country") }}:</strong> {{ userExchange.country }}</div>
+        <div><strong>{{ $t("database.university") }}:</strong> {{ userExchange.university }}</div>
         <div><strong>{{ $t("database.year") }}:</strong> {{ userExchange.year }}</div>
       </v-card-text>
     </v-card>
