@@ -7,5 +7,10 @@
   "spring": "Vår",
   "availableSemesters": "Tilgjengelige semestre",
   "availableCourses": "Tilgjengelige fag",
-  "pageText": "Fag per side"
+  "pageText": "Fag per side",
+  "searchInfo": "Søk blant {groups} {groupWord} med {exchanges} {exchangeWord}",
+  "subject_one": "emne",
+  "subject_other": "emner",
+  "exchange_one": "emnebytte",
+  "exchange_other": "emnebytter"
 }
