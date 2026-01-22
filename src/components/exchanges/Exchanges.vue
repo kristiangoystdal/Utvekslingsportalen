@@ -6,107 +6,16 @@
 			{{ $t("exchanges.info") }}
 		</p>
 	</div>
-	<br />
-	<!-- Filters -->
-	<div v-if="false">
-		<v-btn @click="toggleFilters" class="btn btn-primary">
-			{{ showFilters ? t("exchanges.hideFilter") : t("exchanges.showFilter") }}
-		</v-btn>
-		<v-btn @click="fetchExchangeData" class="btn btn-accent">
-			{{ $t("exchanges.updateTable") }}
-		</v-btn>
 
-		<v-slide-y-transition>
-			<div class="filter-container" v-if="showFilters">
-				<br />
-				<h4>Filter:</h4>
-				<v-container>
-					<v-row>
-						<v-col cols="12" md="4">
-							<!-- Country Filter -->
-							<v-autocomplete v-model="countryValues" :items="countryList" :label="$t('database.country')" multiple
-								chips clearable :search-input.sync="countrySearch">
-								<template v-slot:selection="{ item, index }">
-									<v-chip v-if="index < 2" close @click:close="remove(item)">
-										<span>{{ item }}</span>
-									</v-chip>
-									<span v-if="index === 2" class="text-grey text-caption align-self-center">
-										(+{{ countryValues.length - 2 }} others)
-									</span>
-								</template>
-							</v-autocomplete>
-						</v-col>
-						<v-col cols="12" md="4">
-							<!-- University Filter -->
-							<v-autocomplete v-model="universityValues" :items="universityList" :label="$t('database.university')"
-								multiple chips clearable :search-input.sync="universitySearch">
-								<template v-slot:selection="{ item, index }">
-									<v-chip v-if="index < 2" close @click:close="remove(item)">
-										<span>{{ item }}</span>
-									</v-chip>
-									<span v-if="index === 2" class="text-grey text-caption align-self-center">
-										(+{{ universityValues.length - 2 }} others)
-									</span>
-								</template>
-							</v-autocomplete>
-						</v-col>
-						<v-col cols="12" md="4">
-							<!-- Study Filter -->
-							<v-autocomplete v-model="studyValues" :items="studyList" :label="$t('database.study')" multiple chips
-								clearable :search-input.sync="studySearch">
-								<template v-slot:selection="{ item, index }">
-									<v-chip v-if="index < 2" close @click:close="remove(item)">
-										<span>{{ item }}</span>
-									</v-chip>
-									<span v-if="index === 2" class="text-grey text-caption align-self-center">
-										(+{{ studyValues.length - 2 }} others)
-									</span>
-								</template>
-							</v-autocomplete>
-						</v-col>
-					</v-row>
-					<v-row justify="center">
-						<v-col cols="12" md="4">
-							<!-- Specialization Filter -->
-							<v-autocomplete v-model="specializationValues" :items="specializationList"
-								:label="$t('database.specialization')" multiple chips clearable
-								:search-input.sync="specializationSearch">
-								<template v-slot:selection="{ item, index }">
-									<v-chip v-if="index < 2" close @click:close="remove(item)">
-										<span>{{ item }}</span>
-									</v-chip>
-									<span v-if="index === 2" class="text-grey text-caption align-self-center">
-										(+{{ specializationValues.length - 2 }} others)
-									</span>
-								</template>
-							</v-autocomplete>
-						</v-col>
-						<v-col cols="12" md="4">
-							<!-- Number of Semesters Filter -->
-							<v-autocomplete v-model="numSemestersValues" :items="numSemestersList"
-								:label="$t('database.numSemesters')" multiple chips clearable :search-input.sync="numSemestersSearch">
-								<template v-slot:selection="{ item, index }">
-									<v-chip v-if="index < 2" close @click:close="remove(item)">
-										<span>{{ item }}</span>
-									</v-chip>
-									<span v-if="index === 2" class="text-grey text-caption align-self-center">
-										(+{{ numSemestersValues.length - 2 }} others)
-									</span>
-								</template>
-							</v-autocomplete>
-						</v-col>
-					</v-row>
-				</v-container>
-				<div></div>
-			</div>
-		</v-slide-y-transition>
-	</div>
 	<br />
 
 	<!-- Search Field -->
-	<v-text-field v-model="exchangeSearch" :label="$t('exchanges.search')" prepend-inner-icon="mdi-magnify"
-		variant="outlined" hide-details single-line density="compact" @blur="updateSearchQuery"
-		style="width: 95%; margin: 10px auto; border-radius: 5px;"></v-text-field>
+	<div class="search-wrap">
+		<v-text-field v-model="exchangeSearch" :label="$t('exchanges.search')" prepend-inner-icon="mdi-magnify" clearable
+			variant="solo" density="comfortable" rounded="xl" hide-details single-line @blur="updateSearchQuery"
+			class="search-field" />
+	</div>
+
 	<br />
 
 	<!-- Data Table -->
@@ -556,19 +465,19 @@ export default {
 				},
 				{
 					title: this.$t("database.homeUniversity"),
-					align: "center",
+					align: "start",
 					key: "homeUniversity",
 				},
 				{
 					title: this.$t("database.study"),
-					align: "end",
+					align: "start",
 					key: "study",
 				},
-				{
-					title: this.$t("database.specialization"),
-					align: "end",
-					key: "specialization",
-				},
+				// {
+				// 	title: this.$t("database.specialization"),
+				// 	align: "end",
+				// 	key: "specialization",
+				// },
 				{
 					title: this.$t("database.studyYear"),
 					align: "center",
@@ -609,16 +518,16 @@ export default {
 					align: "end",
 					key: "replacedCourseCode",
 				},
-				{
-					title: this.$t("database.courseType"),
-					align: "end",
-					key: "courseType",
-				},
-				{
-					title: this.$t("database.institute"),
-					align: "end",
-					key: "institute",
-				},
+				// {
+				// 	title: this.$t("database.courseType"),
+				// 	align: "end",
+				// 	key: "courseType",
+				// },
+				// {
+				// 	title: this.$t("database.institute"),
+				// 	align: "end",
+				// 	key: "institute",
+				// },
 				{
 					title: this.$t("database.ECTSPoints"),
 					align: "end",
@@ -1088,7 +997,6 @@ export default {
 				"specialization",
 				"studyYear",
 				"year",
-				"numSemesters",
 				"homeUniversity",
 			];
 
@@ -1157,5 +1065,121 @@ body {
 .v-data-table table tr th,
 .v-data-table table tr td {
 	padding: 0 8px !important;
+}
+
+.search-wrap {
+	margin: 10px auto 18px;
+}
+
+/* Base */
+.search-field .v-field {
+	border-radius: 999px;
+	/* pill */
+	background: rgba(255, 255, 255, 0.85);
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+	transition: box-shadow 180ms ease, transform 180ms ease, background 180ms ease;
+}
+
+/* Hover */
+.search-field .v-field:hover {
+	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+	transform: translateY(-1px);
+	background: rgba(255, 255, 255, 0.92);
+}
+
+/* Focus ring (Vuetify adds .v-field--focused) */
+.search-field .v-field.v-field--focused {
+	box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.18), 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+/* Tighten vertical spacing a bit */
+.search-field .v-field__input {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+/* Optional: icon styling */
+.search-field .v-field__prepend-inner .v-icon {
+	opacity: 0.75;
+}
+
+.page-wrap {
+	width: min(1100px, 95%);
+	margin: 0 auto;
+}
+
+/* Card surface */
+.hero-card {
+	border-radius: 18px;
+	background: rgba(255, 255, 255, 0.72);
+	border: 1px solid rgba(0, 0, 0, 0.06);
+	backdrop-filter: blur(10px);
+}
+
+/* Layout inside card */
+.hero-inner {
+	padding: 22px 22px 18px;
+	display: grid;
+	gap: 14px;
+}
+
+.hero-title {
+	margin: 0;
+	font-size: 28px;
+	line-height: 1.15;
+}
+
+.hero-sub {
+	margin: 8px 0 0;
+	max-width: 70ch;
+	opacity: 0.85;
+	line-height: 1.45;
+}
+
+/* Search styling */
+.hero-search .v-field {
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.9);
+	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+	transition: box-shadow 180ms ease, transform 180ms ease, background 180ms ease;
+}
+
+.hero-search .v-field:hover {
+	transform: translateY(-1px);
+	box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+	background: rgba(255, 255, 255, 0.95);
+}
+
+.hero-search .v-field.v-field--focused {
+	box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.18), 0 14px 30px rgba(0, 0, 0, 0.12);
+}
+
+.hero-search .v-field__input {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+/* Desktop layout: title/info left, search right */
+@media (min-width: 900px) {
+	.hero-inner {
+		grid-template-columns: 1fr 420px;
+		align-items: end;
+		gap: 18px;
+	}
+
+	.hero-search {
+		margin-top: 0;
+	}
+}
+
+/* Mobile: tighter */
+@media (max-width: 600px) {
+	.hero-inner {
+		padding: 18px 16px 14px;
+	}
+
+	.hero-title {
+		font-size: 22px;
+	}
 }
 </style>
