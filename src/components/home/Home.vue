@@ -9,18 +9,19 @@
 		<div class="box">
 			<v-row>
 				<v-col cols="12" md="6">
-					<v-btn class="btn btn-primary" @click="goToRoute('/min_utveksling')">{{ $t("operations.createExchange")
+					<v-btn class="btn btn-primary" @click="goToRoute('/utvekslinger')">{{ $t("operations.viewExchanges")
 					}}</v-btn>
 				</v-col>
 				<v-col cols="12" md="6">
-					<v-btn class="btn btn-primary" @click="goToRoute('/last_opp')">{{ $t("operations.uploadExchange") }}</v-btn>
+					<v-btn class="btn btn-third" @click="goToRoute('/min_utveksling')">{{ $t("operations.createExchange")
+						}}</v-btn>
 				</v-col>
 			</v-row>
 		</div>
 
-		<p class="box box-success preserve-whitespace text-center">
+		<!-- <p class="box box-success preserve-whitespace text-center">
 			{{ $t("homepage.newFeature") }}
-		</p>
+		</p> -->
 
 
 		<div class="box box-countries">
