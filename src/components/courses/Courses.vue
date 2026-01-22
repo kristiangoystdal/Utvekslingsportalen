@@ -2,11 +2,20 @@
   <div>
     <h2>{{ $t("courses.pageHeader") }}</h2>
     <br />
-    <p class="box box-third-color preserve-whitespace text-center">
+    <!-- <p class="box box-third-color preserve-whitespace text-center">
       {{ $t("courses.info") }}
-    </p>
+    </p> -->
   </div>
-  <br />
+  <!-- <br /> -->
+
+  <div class="search-summary">
+    {{ $t("courses.searchInfo", {
+      groups: totalSearchGroups,
+      groupWord,
+      exchanges: totalSearchedCourses,
+      exchangeWord
+    }) }}
+  </div>
 
   <!-- Search Field -->
   <div class="search-wrap">
@@ -420,6 +429,53 @@ export default {
         },
       ];
     },
+    totalSearchedCourses() {
+      const search = (this.courseSearch || "").trim();
+
+      // Ingen søk: totalen er bare summen av alle underkurs i alle grupper
+      if (!search) {
+        return (this.filteredCourseList || []).reduce((total, group) => {
+          return total + (Array.isArray(group.courses) ? group.courses.length : 0);
+        }, 0);
+      }
+
+      // Søk: bruk samme filter-logikk som v-data-table bruker (rowSearchFilter)
+      return (this.filteredCourseList || []).reduce((total, group) => {
+        const matchesGroupRow = this.rowSearchFilter(null, search, { raw: group });
+        if (!matchesGroupRow) return total;
+
+        return total + (Array.isArray(group.courses) ? group.courses.length : 0);
+      }, 0);
+    },
+    totalSearchGroups() {
+      const search = (this.courseSearch || "").trim();
+
+      // Ingen søk: totalen er bare antall grupper
+      if (!search) {
+        return this.filteredCourseList.length;
+      }
+
+      // Søk: bruk samme filter-logikk som v-data-table bruker (rowSearchFilter)
+      return this.filteredCourseList.filter(group => {
+        return this.rowSearchFilter(null, search, { raw: group });
+      }).length;
+    },
+    totalExchanges() {
+      return this.filteredCourseList.reduce(
+        (sum, g) => sum + (g.courses?.length || 0),
+        0
+      );
+    },
+    groupWord() {
+      return this.totalSearchGroups === 1
+        ? this.$t("courses.subject_one")
+        : this.$t("courses.subject_other");
+    },
+    exchangeWord() {
+      return this.totalSearchedCourses === 1
+        ? this.$t("courses.exchange_one")
+        : this.$t("courses.exchange_other");
+    }
   },
   methods: {
     updateScreenWidth() {
@@ -717,5 +773,11 @@ export default {
 .selected {
   background-color: #1976d2 !important;
   color: white !important;
+}
+
+.search-summary {
+  margin: 8px 0 12px;
+  font-size: 0.95rem;
+  color: #555;
 }
 </style>
