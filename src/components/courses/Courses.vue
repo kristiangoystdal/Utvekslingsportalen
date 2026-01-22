@@ -676,7 +676,7 @@ export default {
 
       const translatedCountry = this.$t(`countries.${exchange.country}`);
 
-      const searchString = translatedCountry + " " + exchange.university + " " + exchange.homeUniversity + " " + exchange.study + " " + exchange.specialization + " " + exchange.studyYear + " " + exchange.year;
+      const searchString = translatedCountry + " " + exchange.university + " " + exchange.homeUniversity + " " + exchange.study + " " + exchange.studyYear + " " + exchange.year;
 
       if (!exchange.id) {
         exchange.id = this.exchanges && Object.keys(this.exchanges).find(key => this.exchanges[key] === exchange);
