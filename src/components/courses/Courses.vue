@@ -1,10 +1,10 @@
 <template>
   <div>
     <h2>{{ $t("courses.pageHeader") }}</h2>
-    <br />
-    <!-- <p class="box box-third-color preserve-whitespace text-center">
+    <p class="page-summary">
       {{ $t("courses.info") }}
-    </p> -->
+    </p>
+    <br />
   </div>
   <!-- <br /> -->
 

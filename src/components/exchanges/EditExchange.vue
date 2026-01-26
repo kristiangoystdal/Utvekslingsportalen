@@ -2,8 +2,7 @@
 	<!-- Title and infobox -->
 	<div>
 		<h2>{{ $t("myExchange.pageHeader") }}</h2>
-		<br />
-		<p class="box box-third-color preserve-whitespace text-center">
+		<p class="page-summary">
 			{{ $t("myExchange.info") }}
 		</p>
 	</div>
