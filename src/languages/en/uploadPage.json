@@ -1,10 +1,14 @@
 {
   "pageHeader": "Upload Data",
-  "info": "Here you can upload a file with exchange data, for example Learning Agreement. \nThe file must be in the correct format for the upload to succeed (PDF or PNG). \n\nPlease contact us for more information.",
+  "info": "Here you can upload a file with exchange data, for example Learning Agreement. \n\nPlease contact us for more information.",
   "name": "Name",
   "email": "Email",
   "file": "File",
-  "comment": "Comment (please include study program, specialization, destination country, university, and study year if not included in the file)",
+  "comment": "Please include study program, destination country, university, and study year if not included in the file",
   "submit": "Upload",
-  "clear": "Reset"
+  "clear": "Reset",
+  "label": "Select file (PDF or PNG)",
+  "commentLabel": "Comment",
+  "clickToSelect": "Click to select file",
+  "fileTypesAndMax": "PDF or PNG, max 10MB"
 }

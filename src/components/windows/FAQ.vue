@@ -1,6 +1,8 @@
 <template>
 	<h2>{{ $t("faqPage.pageHeader") }}</h2>
-	<p class="box box-third-color preserve-whitespace text-center" v-html="$t('faqPage.info')"></p>
+	<p class="page-summary">
+		{{ $t("faqPage.info") }}
+	</p>
 
 	<v-container style="padding: 20px; max-width: 80%; margin: 10px auto">
 		<v-text-field v-model="searchQuery" :label="$t('faqPage.search')" append-icon="mdi-magnify"

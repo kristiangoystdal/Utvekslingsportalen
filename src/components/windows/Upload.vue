@@ -2,7 +2,7 @@
   <div>
     <h2>{{ $t("uploadPage.pageHeader") }}</h2>
     <br />
-    <p class="box box-third-color preserve-whitespace text-center">
+    <p class="page-summary">
       {{ $t("uploadPage.info") }}
     </p>
 

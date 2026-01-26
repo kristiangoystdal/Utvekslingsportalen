@@ -1,8 +1,7 @@
 <template>
 	<div>
 		<h2>{{ $t("contactPage.pageHeader") }}</h2>
-		<br />
-		<p class="box box-third-color preserve-whitespace text-center">
+		<p class="page-summary">
 			{{ $t("contactPage.info") }}
 		</p>
 		<v-container style="padding: 20px; max-width: 80%; margin: 10px auto">

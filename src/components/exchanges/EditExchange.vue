@@ -2,12 +2,12 @@
 	<!-- Title and infobox -->
 	<div>
 		<h2>{{ $t("myExchange.pageHeader") }}</h2>
-		<br />
-		<p class="box box-third-color preserve-whitespace text-center">
+		<p class="page-summary">
 			{{ $t("myExchange.info") }}
 		</p>
 	</div>
 	<br />
+	<v-btn class="btn btn-third" @click="toggleUploadModal">{{ $t("myExchange.uploadLearningAgreement") }}</v-btn>
 	<br />
 	<div>
 		<div v-if="this.user">
@@ -28,6 +28,7 @@
 			</div>
 
 			<!-- Stepper -->
+			<br />
 			<v-stepper v-if="editExchange" v-model="step" elevation="1">
 				<v-stepper-header>
 					<v-stepper-item :value="1" :complete="!missingBasicDataBool">
@@ -140,6 +141,69 @@
 			</v-card>
 		</v-dialog>
 	</div>
+
+	<!-- Custom modal (no v-dialog) -->
+	<div v-if="uploadModalActive" class="modal-overlay" @click.self="toggleUploadModal">
+		<div class="modal-card" role="dialog" aria-modal="true">
+			<!-- Header -->
+			<div class="modal-header">
+				<div class="modal-title">
+					<v-icon class="mr-2" size="22">mdi-upload</v-icon>
+					{{ $t("uploadPage.pageHeader") }}
+				</div>
+
+				<button class="modal-close" type="button" @click="toggleUploadModal" aria-label="Close">
+					<v-icon size="20">mdi-close</v-icon>
+				</button>
+			</div>
+
+			<!-- Body -->
+			<div class="modal-body">
+				<p class="modal-info">{{ $t("uploadPage.info") }}</p>
+
+				<!-- Dropzone -->
+				<div class="upload-dropzone" @click="triggerFilePicker" role="button" tabindex="0"
+					@keydown.enter.prevent="triggerFilePicker" @keydown.space.prevent="triggerFilePicker">
+					<div class="upload-icon">
+						<v-icon size="52">mdi-file-upload-outline</v-icon>
+					</div>
+
+					<div class="upload-text">
+						<div class="upload-file-title">
+							{{ selectedFile ? selectedFile.name : $t('uploadPage.clickToSelect') }}
+						</div>
+						<div class="upload-subtitle">
+							{{ $t('uploadPage.fileTypesAndMax') }}
+						</div>
+					</div>
+
+					<input ref="fileInput" type="file" class="sr-only"
+						accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+						@change="onFileChange" />
+				</div>
+
+				<!-- Comment -->
+				<div class="upload-section">
+					<div class="field-title">{{ $t("uploadPage.comment") }}</div>
+
+					<v-textarea outlined rows="3" dense class="upload-input preserve" :label="$t('uploadPage.commentLabel')"
+						v-model="comment" />
+				</div>
+			</div>
+
+			<!-- Footer -->
+			<div class="modal-actions">
+				<v-btn class="btn btn-danger" @click="toggleUploadModal">
+					{{ $t("operations.cancel") }}
+				</v-btn>
+				<v-btn class="btn-no" @click="uploadLearningAgreement" :loading="isSubmitting"
+					:disabled="isSubmitting || !selectedFile">
+					{{ $t("uploadPage.submit") }}
+				</v-btn>
+			</div>
+		</div>
+	</div>
+
 </template>
 
 <script>
@@ -149,6 +213,7 @@ import { onAuthStateChanged } from "firebase/auth";
 import studiesData from "../../data/studies.json";
 import universitiesData from "../../data/universities.json";
 import { toast } from "vue3-toastify";
+import emailjs from "emailjs-com";
 
 import BasicInfoStep from "./BasicInfoStep.vue";
 import CoursesStep from "./CoursesStep.vue";
@@ -234,7 +299,10 @@ export default {
 			editExchange: false,
 			dataLoaded: false,
 			isInitializingExchange: false,
-
+			uploadModalActive: false,
+			selectedFile: null,
+			comment: "",
+			isSubmitting: false,
 		};
 	},
 	watch: {
@@ -832,6 +900,68 @@ export default {
 
 			this.userExchange.courses = newCourses;
 		},
+		toggleUploadModal() {
+			this.uploadModalActive = !this.uploadModalActive;
+			this.selectedFile = null;
+			this.comment = "";
+		},
+		triggerFilePicker() {
+			this.$refs.fileInput?.click();
+		},
+		onFileChange(e) {
+			const file = e.target.files?.[0] || null;
+			this.selectedFile = file;
+		},
+		async uploadLearningAgreement() {
+			this.isSubmitting = true;
+			if (!this.selectedFile) {
+				this.isSubmitting = false;
+				return;
+			}
+
+			try {
+				const file = this.selectedFile;
+				const formData = new FormData();
+				formData.append("file", file);
+
+				// === Upload to tmpfiles.org ===
+				const uploadResponse = await fetch("https://tmpfiles.org/api/v1/upload", {
+					method: "POST",
+					body: formData,
+				});
+
+				if (!uploadResponse.ok) {
+					throw new Error("File upload failed with status " + uploadResponse.status);
+				}
+
+				const result = await uploadResponse.json();
+				if (!result.data || !result.data.url) throw new Error("Unexpected response format");
+
+				// Extract clean link
+				const fileLink = result.data.url.replace("/api/v1", "").trim();
+
+				// === Send notification via EmailJS ===
+				const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+				const templateID = import.meta.env.VITE_EMAILJS_FILE_TEMPLATE_ID;
+				const userID = import.meta.env.VITE_EMAILJS_USER_ID;
+
+				const templateParams = {
+					comment: this.comment || "No comment provided.",
+					filename: file.name,
+					file_url: fileLink,
+				};
+
+				await emailjs.send(serviceID, templateID, templateParams, userID);
+				this.toggleUploadModal();
+				toast.success(this.$t("notifications.fileSendSuccess"));
+
+			} catch (error) {
+				console.error("Upload or email error:", error);
+				toast.error(this.$t("notifications.fileSendFailure"));
+			} finally {
+				this.isSubmitting = false;
+			}
+		},
 	},
 	mounted() {
 		window.addEventListener("beforeunload", this.handleBeforeUnload);
@@ -897,5 +1027,174 @@ export default {
 .step-btn {
 	min-width: 120px !important;
 	width: 80% !important;
+}
+
+/* Overlay */
+.modal-overlay {
+	position: fixed;
+	inset: 0;
+	background: rgba(15, 23, 42, 0.45);
+	/* nice dark blur-ish overlay */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 18px;
+	z-index: 9999;
+}
+
+/* Card */
+.modal-card {
+	width: min(640px, 100%);
+	background: #fff;
+	border-radius: 18px;
+	box-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
+	overflow: hidden;
+}
+
+/* Header */
+.modal-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 18px 20px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.modal-title {
+	display: flex;
+	align-items: center;
+	font-weight: 800;
+	font-size: 1.15rem;
+	color: rgba(0, 0, 0, 0.86);
+}
+
+.modal-close {
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+	padding: 8px;
+	border-radius: 10px;
+	display: grid;
+	place-items: center;
+	transition: background 0.15s ease;
+}
+
+.modal-close:hover {
+	background: rgba(0, 0, 0, 0.06);
+}
+
+/* Body */
+.modal-body {
+	padding: 18px 20px 6px;
+}
+
+.modal-info {
+	margin: 0 0 12px 0;
+	color: rgba(0, 0, 0, 0.65);
+	line-height: 1.45;
+	font-size: 0.95rem;
+}
+
+/* Sections */
+.upload-section {
+	margin-top: 14px;
+}
+
+.field-title {
+	font-size: 0.85rem;
+	font-weight: 700;
+	color: rgba(0, 0, 0, 0.72);
+	margin-bottom: 6px;
+}
+
+/* Inputs */
+.upload-input .v-field {
+	border-radius: 12px;
+}
+
+.upload-input .v-field__input {
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
+/* Footer */
+.modal-actions {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
+	padding: 14px 20px 18px;
+	border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Dropzone */
+.upload-dropzone {
+	width: 100%;
+	min-height: 170px;
+	border: 2px dashed rgba(0, 0, 0, 0.16);
+	border-radius: 16px;
+	background: rgba(0, 0, 0, 0.02);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 10px;
+	cursor: pointer;
+	user-select: none;
+	padding: 18px;
+	text-align: center;
+	transition: border-color 0.18s ease, background 0.18s ease, transform 0.06s ease;
+}
+
+.upload-dropzone:hover {
+	border-color: rgba(0, 0, 0, 0.30);
+	background: rgba(0, 0, 0, 0.03);
+}
+
+.upload-dropzone:active {
+	transform: scale(0.995);
+}
+
+.upload-icon {
+	opacity: 0.72;
+}
+
+.upload-file-title {
+	font-weight: 800;
+	font-size: 0.95rem;
+	color: rgba(0, 0, 0, 0.82);
+}
+
+.upload-subtitle {
+	margin-top: 2px;
+	font-size: 0.82rem;
+	opacity: 0.68;
+}
+
+/* SR only */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+/* Small screens */
+@media (max-width: 480px) {
+
+	.modal-header,
+	.modal-body,
+	.modal-actions {
+		padding-left: 14px;
+		padding-right: 14px;
+	}
+
+	.modal-title {
+		font-size: 1.05rem;
+	}
 }
 </style>

@@ -1,8 +1,7 @@
 <template>
 	<div>
 		<h2 class="preserve-whitespace">{{ $t("homepage.welcome") }}</h2>
-		<br />
-		<p class="box box-third-color preserve-whitespace text-center">
+		<p class="page-summary">
 			{{ $t("homepage.siteDescription") }}
 		</p>
 
@@ -14,7 +13,7 @@
 				</v-col>
 				<v-col cols="12" md="6">
 					<v-btn class="btn btn-third" @click="goToRoute('/min_utveksling')">{{ $t("operations.createExchange")
-						}}</v-btn>
+					}}</v-btn>
 				</v-col>
 			</v-row>
 		</div>
