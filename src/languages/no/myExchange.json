@@ -30,5 +30,6 @@
   "editMyExchange": "Endre min utveksling",
   "deleteMyExchange": "Slett min utveksling",
   "coursesMissingData": "Noen fag mangler nødvendig informasjon",
-  "leaveWithUnsavedChanges": "Du har ulagret data. Husk å oppdatere."
+  "leaveWithUnsavedChanges": "Du har ulagret data. Husk å oppdatere.",
+  "uploadLearningAgreement": "Last opp Learning Agreement"
 }

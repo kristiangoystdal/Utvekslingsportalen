@@ -7,7 +7,7 @@
 		</p>
 	</div>
 	<br />
-	<v-btn class="btn btn-third" @click="toggleUploadModal">Last opp Learning Agreement</v-btn>
+	<v-btn class="btn btn-third" @click="toggleUploadModal">{{ $t("myExchange.uploadLearningAgreement") }}</v-btn>
 	<br />
 	<div>
 		<div v-if="this.user">
