@@ -12,5 +12,10 @@
   "courseInformation": "Mer informasjon",
   "loginToFavorite": "Du må være logget inn for å legge til eller endre favoritter",
   "errorSavingFavorites": "Det oppstod en feil under lagring av favoritter. Kontakt oss hvis problemet vedvarer.",
-  "search": "Søk etter land, universitet, studieprogram eller spesialisering"
+  "search": "Søk etter land, universitet, studieprogram eller spesialisering",
+  "searchInfo": "Søk blant {groups} {groupWord} i {location} {locationWord}",
+  "exchange_one": "utveksling",
+  "exchange_other": "utvekslinger",
+  "country_one": "land",
+  "country_other": "land"
 }

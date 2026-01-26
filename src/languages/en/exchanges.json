@@ -12,5 +12,10 @@
   "courseInformation": "More information",
   "loginToFavorite": "You need to be logged in to add or edit favorites",
   "errorSavingFavorites": "An error occurred while saving favorites. Please contact us if the problem persists.",
-  "search": "Search for country, university, study program, or specialization"
+  "search": "Search for country, university, study program, or specialization",
+  "searchInfo": "Search among {groups} {groupWord} in {location} {locationWord}",
+  "exchange_one": "exchange",
+  "exchange_other": "exchanges",
+  "country_one": "country",
+  "country_other": "countries"
 }
