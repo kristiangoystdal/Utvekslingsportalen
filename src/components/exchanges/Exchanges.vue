@@ -1,13 +1,24 @@
 <template>
 	<div>
 		<h2>{{ $t("exchanges.pageHeader") }}</h2>
-		<br />
-		<p class="box box-third-color preserve-whitespace text-center">
+		<p class="page-summary">
 			{{ $t("exchanges.info") }}
 		</p>
 	</div>
 
 	<br />
+
+	<!-- Search Summary -->
+	<div class="search-summary">
+		{{ $t("exchanges.searchInfo", {
+			groups: totalSearchExchanges,
+			groupWord,
+			location: totalSearchCountries,
+			locationWord
+		}) }}
+	</div>
+
+
 
 	<!-- Search Field -->
 	<div class="search-wrap">
@@ -593,7 +604,45 @@ export default {
 		},
 		locale() {
 			return this.$i18n.locale;
-		}
+		},
+		totalSearchExchanges() {
+			const search = (this.exchangeSearch || "").trim();
+
+			// Ingen søk: return total lengde
+			if (!search) {
+				return this.exchangeList.length;
+			}
+
+			// Søk: bruk samme filter-logikk som v-data-table bruker (rowSearchFilter)
+			return this.exchangeList.filter(group => {
+				return this.rowSearchFilter(null, search, { raw: group });
+			}).length;
+		},
+		groupWord() {
+			return this.totalSearchExchanges === 1 ? this.$t("exchanges.exchange_one") : this.$t("exchanges.exchange_other");
+		},
+		totalSearchCountries() {
+			const countries = new Set();
+
+			const search = (this.exchangeSearch || "").trim().toLowerCase();
+
+			this.exchangeList.forEach(group => {
+				// Ingen søk: legg til alle land
+				if (!search) {
+					countries.add(group.country);
+				} else {
+					// Søk: bruk samme filter-logikk som v-data-table bruker (rowSearchFilter)
+					if (this.rowSearchFilter(null, search, { raw: group })) {
+						countries.add(group.country);
+					}
+				}
+			});
+
+			return countries.size;
+		},
+		locationWord() {
+			return this.totalSearchCountries === 1 ? this.$t("exchanges.country_one") : this.$t("exchanges.country_other");
+		},
 	},
 	methods: {
 		updateScreenWidth() {
