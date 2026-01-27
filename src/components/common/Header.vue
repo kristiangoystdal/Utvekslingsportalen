@@ -229,11 +229,14 @@ export default {
 
 <style scoped>
 header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 2000;
+
 	background-color: var(--fourth-color) !important;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-	width: 100% !important;
-	top: 0 !important;
-	left: 0;
 	border-radius: 0 0 10px 10px;
 }
 
