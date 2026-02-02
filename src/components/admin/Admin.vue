@@ -474,8 +474,12 @@ export default {
 						c => c && typeof c === "object"
 					);
 
+					const sommer = toArray(exchange.courses.Sommer).filter(
+						c => c && typeof c === "object"
+					);
+
 					// Combine them
-					const all = [...host, ...vaar];
+					const all = [...host, ...vaar, ...sommer];
 
 					for (const course of all) {
 						let semester = "";
@@ -494,6 +498,14 @@ export default {
 							const vaarList = toArray(exchange.courses.Vår);
 							if (vaarList.some(c => JSON.stringify(c) === JSON.stringify(course))) {
 								semester = "Vår";
+							}
+						}
+
+						// Check if semester is inside Sommer
+						if (!semester && exchange.courses.Sommer) {
+							const sommerList = toArray(exchange.courses.Sommer);
+							if (sommerList.some(c => JSON.stringify(c) === JSON.stringify(course))) {
+								semester = "Sommer";
 							}
 						}
 

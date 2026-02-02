@@ -70,6 +70,7 @@
 					<td :colspan="columns.length" id="coursesStyle">
 						<div>
 							<br />
+							<!-- Høst -->
 							<h3 v-if="
 								item.courses && item.courses.Høst && item.courses.Høst.length
 							">
@@ -99,7 +100,8 @@
 									</v-icon>
 								</template>
 							</v-data-table-virtual>
-							<br />
+							<br v-if="item.courses && item.courses.Høst && item.courses.Høst.length" />
+							<!-- Vår -->
 							<h3 v-if="
 								item.courses && item.courses.Vår && item.courses.Vår.length
 							">
@@ -131,7 +133,41 @@
 									</v-icon>
 								</template>
 							</v-data-table-virtual>
-							<br />
+							<br v-if="item.courses && item.courses.Vår && item.courses.Vår.length" />
+							<!-- Sommer -->
+							<h3 v-if="
+								item.courses && item.courses.Sommer && item.courses.Sommer.length
+							">
+								{{ $t("exchanges.coursesSummerHeader") }}
+								({{ $t("database.totalECTS") }}:
+								{{
+									item.courses.Sommer
+										.reduce((sum, course) => sum + parseFloat(course.ECTSPoints || 0), 0)
+										.toFixed(1)
+								}}
+								)
+							</h3>
+							<v-data-table-virtual v-if="
+								item.courses && item.courses.Sommer && item.courses.Sommer.length
+							" :headers="translatedHeadersCourses" :items="item.courses.Sommer" item-value="name" dense
+								class="virtual-table">
+								<template v-slot:item.comment="{ item }">
+									<v-icon v-if="item.comments && item.comments.trim() !== ''" small class="mr-2"
+										@click="showComments(item)">
+										mdi-comment
+									</v-icon>
+									<v-icon v-else small class="mr-2"> mdi-comment-off </v-icon>
+								</template>
+								<template v-slot:item.favorite="{ item }">
+									<v-icon v-if="!checkIfFavorite(item)" small class="mr-2" @click="toggleFavorite(item)">
+										mdi-heart-outline
+									</v-icon>
+									<v-icon v-else small class="mr-2" color="red" @click="toggleFavorite(item)">
+										mdi-heart
+									</v-icon>
+								</template>
+							</v-data-table-virtual>
+							<br v-if="item.courses && item.courses.Sommer && item.courses.Sommer.length" />
 						</div>
 					</td>
 				</tr>

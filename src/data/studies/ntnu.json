@@ -114,12 +114,33 @@
       "Medisinske og biologiske systemer",
       "Ingen spesialisering"
     ],
+    "Grunnskolelærerutdanning 1.-7. trinn (Master 5 år)": [
+      "Ingen spesialisering"
+    ],
+    "Grunnskolelærerutdanning 5.-10. trinn (Master 5 år)": [
+      "Ingen spesialisering"
+    ],
     "Lektorutdanning i realfag for trinn 8–13 (Master 5 år)": [
       "Matematikk og fysikk",
       "Kjemi og biologi",
       "Matematikk og kjemi",
       "Matematikk og informatikk",
       "Matematikk og biologi",
+      "Ingen spesialisering"
+    ],
+    "Lektorutdanning i samfunnsfag for trinn 8-13 (Master 5 år)": [
+      "Historie og filosofi",
+      "Samfunnsgeografi og økonomi",
+      "Sosiologi og politikk",
+      "Ingen spesialisering"
+    ],
+    "Lektorutdanning i språkfag for trinn 8-13 (Master 5 år)": [
+      "Engelsk og tysk",
+      "Engelsk og fransk",
+      "Engelsk og spansk",
+      "Tysk og fransk",
+      "Tysk og spansk",
+      "Fransk og spansk",
       "Ingen spesialisering"
     ],
     "Marin teknikk (Master 5 år)": [
@@ -160,7 +181,7 @@
     "Psykologutdanning (Profesjonsstudium)": [
       "Ingen spesialisering"
     ],
-    "Samfunnsøkonomi – integrert master (Master 5 år)": [
+    "Samfunnsøkonomi - integrert master (Master 5 år)": [
       "Ingen spesialisering"
     ],
     "Økonomi og administrasjon (Master 5 år)": [
