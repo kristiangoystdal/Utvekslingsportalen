@@ -61,8 +61,8 @@
         </v-col>
 
         <v-col cols="12" md="6" v-if="localExchange.numSemesters === 1">
-          <v-autocomplete v-model="localSemester" :items="['Høst', 'Vår']" :label="$t('database.semester')" clearable
-            persistent-hint autocomplete="off" :hint="$t('hints.semester')" />
+          <v-autocomplete v-model="localSemester" :items="['Høst', 'Vår', 'Sommer']" :label="$t('database.semester')"
+            clearable persistent-hint autocomplete="off" :hint="$t('hints.semester')" />
         </v-col>
       </v-row>
 
