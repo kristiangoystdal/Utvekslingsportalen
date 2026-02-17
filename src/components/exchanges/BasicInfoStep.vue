@@ -100,7 +100,7 @@ import uis_studies from "../../data/studies/uis.json";
 
 export default {
   props: {
-    userExchange: { Object, default: () => ({}) },
+    userExchange: { type: Object, default: () => ({}) },
     countryNamesTranslated: Array,
     universityNames: Array,
     secondUniversityNames: Array,
@@ -169,10 +169,32 @@ export default {
       handler(val) {
         if (!val) return;
 
-        // init ONCE, even if everything is null
         if (!this.isInitialized) {
           this.localExchange = JSON.parse(JSON.stringify(val));
           this.isInitialized = true;
+
+          // ✅ FIX: default semester i UI (admin + user) når numSemesters=1
+          if (
+            this.localExchange.numSemesters === 1 &&
+            (!this.semesters || this.semesters.length === 0)
+          ) {
+            const courses = val.courses || {};
+
+            // IMPORTANT: sjekk "in", ikke lengde (tomt objekt skal fortsatt telle)
+            const hasFall = "Høst" in courses;
+            const hasSpring = "Vår" in courses;
+            const hasSummer = "Sommer" in courses;
+
+            let picked = null;
+            if (hasFall && !hasSpring && !hasSummer) picked = "Høst";
+            else if (!hasFall && hasSpring && !hasSummer) picked = "Vår";
+            else if (!hasFall && !hasSpring && hasSummer) picked = "Sommer";
+            else if (hasFall) picked = "Høst";       // fallback
+            else if (hasSpring) picked = "Vår";
+            else if (hasSummer) picked = "Sommer";
+
+            if (picked) this.$emit("updateSemesters", [picked]);
+          }
         }
       },
     },
@@ -183,7 +205,6 @@ export default {
         this.$emit("update", JSON.parse(JSON.stringify(val)));
       },
     },
-
     'localExchange.homeUniversity'(newVal, oldVal) {
       if (!this.isInitialized) return;
       if (newVal !== oldVal) {
