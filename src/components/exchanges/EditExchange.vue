@@ -1,18 +1,20 @@
 <template>
 	<!-- Title and infobox -->
-	<div>
+	<div v-if="!adminMode">
 		<h2>{{ $t("myExchange.pageHeader") }}</h2>
 		<p class="page-summary">
 			{{ $t("myExchange.info") }}
 		</p>
 	</div>
-	<br />
-	<v-btn class="btn btn-third" @click="toggleUploadModal">{{ $t("myExchange.uploadLearningAgreement") }}</v-btn>
-	<br />
+	<br v-if="!adminMode" />
+	<v-btn v-if="!adminMode" class="btn btn-third" @click="toggleUploadModal">
+		{{ $t("myExchange.uploadLearningAgreement") }}
+	</v-btn>
+	<br v-if="!adminMode" />
 	<div>
-		<div v-if="this.user">
+		<div v-if="user || adminMode">
 			<!-- Show current exchange data here -->
-			<div v-if="!editExchange">
+			<div v-if="!adminMode && !editExchange">
 				<div class="mt-4">
 					<ReviewStep :userExchange="userExchange" :semesters="semesters" :canSubmit="true" :showSubmitButton="false" />
 				</div>
@@ -121,7 +123,7 @@
 
 
 		<!-- Delete exchange dialog -->
-		<v-dialog v-model="deleteExchangeDialog" class="dialog">
+		<v-dialog v-if="!adminMode" v-model="deleteExchangeDialog" class="dialog">
 			<v-card>
 				<v-card-title class="headline">
 					{{ $t("operations.confirmDelete") }}
@@ -222,6 +224,20 @@ import ReviewStep from "./ReviewStep.vue";
 import CourseForm from "./CourseForm.vue";
 
 export default {
+
+	props: {
+		// brukes både av admin og user-visning
+		exchangeToEdit: {
+			type: Object,
+			default: null,
+		},
+		// hvis true: ikke bruk auth/currentUser path, bare emit save/close
+		adminMode: {
+			type: Boolean,
+			default: false,
+		},
+	},
+	emits: ["save", "close"],
 	beforeRouteLeave(to, from, next) {
 		if (!this.unsavedChanges) {
 			next()
@@ -238,7 +254,6 @@ export default {
 			next(false)
 		}
 	},
-
 	components: {
 		CourseForm,
 		BasicInfoStep,
@@ -313,11 +328,8 @@ export default {
 				this.dismissUnsavedChangesToast(); // Dismiss the toast when unsavedChanges becomes false
 			}
 		},
-		'userExchange.numSemesters'(newVal, oldVal) {
-			// don't run on initial load / programmatic assignment
+		'userExchange.numSemesters'(newVal) {
 			if (this.isInitializingExchange) return;
-
-			// only react to user changes while editing
 			if (!this.editExchange) return;
 
 			if (!newVal) {
@@ -332,12 +344,73 @@ export default {
 			}
 
 			if (newVal === 1) {
-				// keep courses until user picks the semester in BasicInfoStep
+				// ✅ IKKE slett hvis vi allerede har et semester (typisk admin-load)
+				if (this.semesters && this.semesters.length > 0) {
+					this.ensureSemesterCourses(this.semesters);
+					return;
+				}
+
+				// ellers: user har nettopp valgt "1", og vi venter på semester-valg i BasicInfoStep
 				this.semesters = [];
-				// IMPORTANT: do NOT wipe existing courses here
-				// just wait for updateSemesters to tell you which one to keep
 				return;
 			}
+		},
+		exchangeToEdit: {
+			immediate: true,
+			deep: true,
+			handler(val) {
+				if (!this.adminMode) return;
+				if (!val) return;
+
+				this.isInitializingExchange = true;
+
+				const incoming = JSON.parse(JSON.stringify(val));
+
+				// sørg for at courses alltid er object, ikke array
+				const semesters = ["Høst", "Vår", "Sommer"];
+				incoming.courses = incoming.courses || {};
+				semesters.forEach((s) => {
+					if (Array.isArray(incoming.courses[s])) {
+						const obj = {};
+						incoming.courses[s].forEach((c, i) => (obj[i] = c));
+						incoming.courses[s] = obj;
+					} else {
+						incoming.courses[s] = incoming.courses[s] || {};
+					}
+				});
+
+				this.remoteExchange = JSON.parse(JSON.stringify(incoming));
+				this.userExchange = JSON.parse(JSON.stringify(incoming));
+
+				// semesters-array for UI
+				if (this.userExchange.numSemesters === 2) {
+					this.semesters = ["Høst", "Vår"];
+				} else if (this.userExchange.numSemesters === 1) {
+					const hasFall =
+						this.userExchange.courses?.Høst &&
+						Object.keys(this.userExchange.courses.Høst).length > 0;
+
+					const hasSpring =
+						this.userExchange.courses?.Vår &&
+						Object.keys(this.userExchange.courses.Vår).length > 0;
+
+					console.log("hasFall:", hasFall, "hasSpring:", hasSpring);
+					if (hasFall && !hasSpring) this.semesters = ['Høst'];
+					else if (!hasFall && hasSpring) this.semesters = ['Vår'];
+					else if (this.userExchange.semesters?.length) this.semesters = [...this.userExchange.semesters];
+					else this.semesters = []; // fallback
+
+					console.log("Initial semesters set to:", this.semesters);
+				} else {
+					this.semesters = [];
+				}
+
+				this.editExchange = true;
+				this.step = 1;
+				this.dataLoaded = true;
+
+				this.isInitializingExchange = false;
+			},
 		},
 	},
 	computed: {
@@ -495,8 +568,8 @@ export default {
 		},
 		unsavedChanges() {
 			if (!this.dataLoaded || !this.editExchange) return false;
-			return JSON.stringify(this.remoteExchange) !==
-				JSON.stringify(this.userExchange);
+			return JSON.stringify(this.normalizeExchange(this.remoteExchange)) !==
+				JSON.stringify(this.normalizeExchange(this.userExchange));
 		},
 		canSaveExchange() {
 			return (
@@ -632,11 +705,16 @@ export default {
 				newCourseIndex = Object.keys(courses).length;
 			}
 
+			const exchangeId =
+				this.adminMode
+					? (this.userExchange.id ?? this.exchangeToEdit?.id ?? null)
+					: auth.currentUser?.uid;
+
 			// Add the new course to the courses object
 			this.userExchange.courses[semesterString] = {
 				...courses,
 				[newCourseIndex]: {
-					exchangeID: auth.currentUser.uid, // Set the current user's ID
+					exchangeID: exchangeId, // Set the exchange ID
 					year: "",
 					courseCode: "",
 					courseName: "",
@@ -722,6 +800,14 @@ export default {
 			}
 		},
 		async updateExchange() {
+			this.ensureSemesterCourses(this.semesters);
+
+			if (this.adminMode) {
+				const payload = JSON.parse(JSON.stringify(this.userExchange));
+				this.$emit("save", payload);
+				return;
+			}
+
 			if (auth.currentUser) {
 				try {
 					this.ensureSemesterCourses(this.semesters);
@@ -877,6 +963,15 @@ export default {
 			event.returnValue = "" // Required for Chrome
 		},
 		toggleEditExchange() {
+			if (this.adminMode) {
+				if (this.unsavedChanges) {
+					const ok = window.confirm(this.$t("operations.confirmLeavePage"));
+					if (!ok) return;
+				}
+				this.$emit("close");
+				return;
+			}
+
 			if (this.unsavedChanges) {
 				const confirmLeave = window.confirm(
 					this.$t("operations.confirmLeavePage")
@@ -962,9 +1057,36 @@ export default {
 				this.isSubmitting = false;
 			}
 		},
+		normalizeExchange(ex) {
+			const x = JSON.parse(JSON.stringify(ex || {}));
+
+			// stabiliser null/"null"
+			["secondUniversity", "secondCountry"].forEach(k => {
+				if (x[k] === "null") x[k] = null;
+			});
+
+			// numSemesters til number
+			if (x.numSemesters != null) x.numSemesters = Number(x.numSemesters);
+
+			// sørg for at courses alltid har samme keys
+			x.courses = x.courses || {};
+			["Høst", "Vår", "Sommer"].forEach(s => {
+				x.courses[s] = x.courses[s] || {};
+			});
+
+			return x;
+		}
 	},
 	mounted() {
 		window.addEventListener("beforeunload", this.handleBeforeUnload);
+
+		this.loadData();
+
+
+		if (this.adminMode) {
+			// data kommer via props + watcher
+			return;
+		}
 
 		onAuthStateChanged(auth, async (user) => {
 			if (!user) {
@@ -983,8 +1105,6 @@ export default {
 	beforeUnmount() {
 		window.removeEventListener("beforeunload", this.handleBeforeUnload)
 	},
-
-
 };
 </script>
 

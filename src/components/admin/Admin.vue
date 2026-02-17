@@ -99,13 +99,9 @@
 					<span class=" headline">{{ exchangeDialogTitle }}</span>
 				</v-card-title>
 				<v-card-text>
-					<EditExchange :exchangeData="localUserExchange" @close="closeExchangeDialog" @save="saveExchange" />
+					<EditExchange :exchangeToEdit="localUserExchange" :adminMode="true" @close="closeExchangeDialog"
+						@save="saveExchange" />
 				</v-card-text>
-				<!-- <v-card-actions>
-					<v-spacer></v-spacer>
-					<v-btn class="btn-red" text @click="closeExchangeDialog">Cancel</v-btn>
-					<v-btn class="btn-primary" text @click="saveExchange">Save</v-btn>
-				</v-card-actions> -->
 			</v-card>
 		</v-dialog>
 	</v-container>
@@ -132,8 +128,8 @@ import { ref as dbRef, get, set, update } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { toast } from "vue3-toastify";
 import Confirmation from "../common/Confirmation.vue";
-import EditExchange from "./EditExchange.vue";
-import { count } from "d3";
+import EditExchange from "../exchanges/EditExchange.vue";
+
 
 export default {
 	components: { Confirmation, EditExchange },
@@ -355,6 +351,7 @@ export default {
 				studyYear: null,
 				study: null,
 				numSemesters: null,
+				semesters: [],
 				courses: {
 					Høst: {},
 					Vår: {},
@@ -533,7 +530,6 @@ export default {
 				console.error("Error fetching course data:", error);
 			}
 		}
-
 	},
 	mounted() {
 		this.onAuthStateChanged();
