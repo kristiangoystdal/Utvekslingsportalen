@@ -9,8 +9,8 @@
 			<h3>{{ $t("adminPage.userListTitle") }} ({{ users.length }})</h3>
 			<v-text-field v-model="userSearch" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
 				single-line density="compact" style="width: 95%; margin: 10px auto; border-radius: 5px;"></v-text-field>
-			<v-data-table :headers="headers" :items="users" :items-per-page="5" :search="userSearch" density="compact"
-				item-key="uid">
+			<v-data-table :headers="headers" :items="users" :items-per-page="5" :search="userSearch"
+				:custom-filter="makeRowFilter(headers)" density="compact" item-key="uid">
 				<template v-slot:item.actions="{ item }">
 					<v-icon @click="deleteUser(item)">mdi-delete</v-icon>
 				</template>
@@ -40,7 +40,7 @@
 				style="width: 95%; margin: 10px auto; border-radius: 5px;"></v-text-field>
 			<!-- Exchange list content goes here -->
 			<v-data-table :headers="exchangeHeaders" :items="exchanges" :items-per-page="5" :search="exchangeSearch"
-				density="compact">
+				:custom-filter="makeRowFilter(exchangeHeaders)" density="compact">
 				<template v-slot:item.actions="{ item }">
 					<v-icon @click="editExchange(item)">mdi-pencil</v-icon>
 					<v-icon @click="deleteExchange(item)">mdi-delete</v-icon>
@@ -58,7 +58,7 @@
 				style="width: 95%; margin: 10px auto; border-radius: 5px;"></v-text-field>
 			<!-- Course list content goes here -->
 			<v-data-table :headers="courseHeaders" :items="courseData" :items-per-page="5" :search="courseSearch"
-				density="compact">
+				:custom-filter="makeRowFilter(courseHeaders)" density="compact">
 				<template v-slot:item.actions="{ item }">
 					<v-icon @click="editExchangeCourse(item.exchangeID)">mdi-pencil</v-icon>
 				</template>
@@ -529,7 +529,38 @@ export default {
 			} catch (error) {
 				console.error("Error fetching course data:", error);
 			}
-		}
+		},
+		// Turns any value into searchable text
+		toSearchText(v) {
+			if (v == null) return "";
+			if (Array.isArray(v)) return v.map(this.toSearchText).join(" ");
+			if (typeof v === "object") return Object.values(v).map(this.toSearchText).join(" ");
+			return String(v);
+		},
+
+		// Factory that returns a Vuetify custom-filter which searches the whole row,
+		// using the provided headers' "value" keys.
+		makeRowFilter(headers) {
+			// Capture keys once
+			const keys = (headers || [])
+				.map(h => h?.value)
+				.filter(v => typeof v === "string" && v.length > 0 && v !== "actions");
+
+			return (value, search, item) => {
+				const q = String(search || "").toLowerCase().trim();
+				if (!q) return true;
+
+				const words = q.split(/\s+/).filter(Boolean);
+				const raw = item?.raw ?? item ?? {};
+
+				const rowText = keys
+					.map(k => this.toSearchText(raw[k]))
+					.join(" ")
+					.toLowerCase();
+
+				return words.every(w => rowText.includes(w));
+			};
+		},
 	},
 	mounted() {
 		this.onAuthStateChanged();
