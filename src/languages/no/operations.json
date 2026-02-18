@@ -14,14 +14,16 @@
   "signIn": "Logg inn",
   "signOut": "Logg ut",
   "register": "Registrer deg",
-  "close": " Lukk",
-  "confirmLeavePage": "Du har ulagrete endringer. Sikker på at du vil forlate siden?",
+  "close": "Lukk",
+  "confirmLeavePage": "Du har ulagrede endringer. Er du sikker på at du vil forlate siden?",
   "deleteExchange": "Slett utveksling",
   "confirmExchangeDelete": "Er du sikker på at du vil slette denne utvekslingen?",
   "changePassword": "Endre passord",
   "loginWithEmailButton": "E-post",
   "loginWithGoogleButton": "Google",
-  "profile": "Min Profil",
+  "profile": "Min profil",
   "next": "Neste",
-  "viewExchanges": "Se utvekslinger"
+  "viewExchanges": "Se utvekslinger",
+  "scrollToZoomHint": "Scroll for å zoome",
+  "dragToPanHint": "Dra for å flytte kartet"
 }

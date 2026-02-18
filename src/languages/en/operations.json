@@ -23,5 +23,7 @@
   "loginWithGoogleButton": "Google",
   "profile": "My Profile",
   "next": "Next",
-  "viewExchanges": "View Exchanges"
+  "viewExchanges": "View Exchanges",
+  "scrollToZoomHint": "Scroll to Zoom",
+  "dragToPanHint": "Drag to Pan"
 }
