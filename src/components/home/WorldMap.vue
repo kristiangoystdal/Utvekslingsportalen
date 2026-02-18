@@ -1,6 +1,25 @@
 <template>
-	<div ref="mapContainer" class="map-container"></div>
+	<div ref="mapContainer" class="map-container">
+		<div ref="svgHost" class="svg-host"></div>
+
+		<v-fade-transition>
+			<v-card v-if="showZoomHint" class="zoom-hint" density="compact" elevation="6" rounded="lg">
+				<v-card-text class="pa-3">
+					<div class="d-flex align-center ga-2">
+						<v-icon size="15">mdi-magnify-plus-outline</v-icon>
+						<div>
+							<div class="text-caption">
+								{{ this.$t("operations.scrollToZoomHint") }} • {{ this.$t("operations.dragToPanHint") }}
+							</div>
+						</div>
+					</div>
+				</v-card-text>
+			</v-card>
+		</v-fade-transition>
+	</div>
 </template>
+
+
 
 <script>
 import * as d3 from "d3";
@@ -19,15 +38,21 @@ export default {
 	data() {
 		return {
 			resizeTimeout: null,
+			showZoomHint: true,
 		};
 	},
 	mounted() {
 		this.createMap();
 		window.addEventListener("resize", this.debouncedCreateMap);
+
+		this.zoomHintTimer = setTimeout(() => {
+			this.showZoomHint = false;
+		}, 5000);
 	},
 	beforeUnmount() {
 		window.removeEventListener("resize", this.debouncedCreateMap);
 		if (this.resizeTimeout) clearTimeout(this.resizeTimeout);
+		if (this.zoomHintTimer) clearTimeout(this.zoomHintTimer);
 		this.removeTooltip();
 	},
 	watch: {
@@ -41,11 +66,14 @@ export default {
 	},
 	methods: {
 		createMap() {
-			const container = this.$refs.mapContainer;
+			const container = this.$refs.svgHost;
 			if (!container) return;
 
-			const width = container.clientWidth || 600;
-			const height = container.clientHeight || width * 0.5625;
+			const parent = this.$refs.mapContainer; // only for width/height
+
+			const width = parent.clientWidth || 600;
+			const height = parent.clientHeight || width * 0.5625;
+
 
 			const tooltip = this.ensureTooltip();
 
@@ -123,6 +151,8 @@ export default {
 				.style("stroke-width", "0.5px")
 				.style("cursor", "pointer")
 				.on("click", (event, d) => {
+					if (!adjustedSet.has(d.properties.name)) return;
+
 					this.routeToCountry(d.properties.name);
 				})
 				.on("mouseover", (event, d) => {
@@ -165,6 +195,7 @@ export default {
 				])
 				.on("zoom", (event) => {
 					g.attr("transform", event.transform);
+					this.hideZoomHint();
 				});
 
 			svg.call(zoom);
@@ -198,8 +229,9 @@ export default {
 		removeTooltip() {
 			d3.select("body").select("#worldmap-tooltip").remove();
 		},
-		translateCountryName(name) {
-
+		hideZoomHint() {
+			if (!this.showZoomHint) return;
+			this.showZoomHint = false;
 		},
 		routeToCountry(name) {
 			this.$router.push({ name: "Exchanges", query: { search: name } });
@@ -238,5 +270,26 @@ export default {
 
 .highlighted {
 	fill: var(--first-color);
+}
+
+.zoom-hint {
+	position: absolute;
+	right: 14px;
+	bottom: 14px;
+	pointer-events: none;
+	/* don't block map interaction */
+	background: rgba(0, 0, 0, 0.55);
+	color: white;
+	backdrop-filter: blur(4px);
+}
+
+.svg-host {
+	position: absolute;
+	inset: 0;
+}
+
+.svg-host svg {
+	width: 100%;
+	height: 100%;
 }
 </style>
