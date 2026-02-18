@@ -149,11 +149,11 @@ export default {
 				)
 				.style("stroke", "#fff")
 				.style("stroke-width", "0.5px")
-				.style("cursor", "pointer")
+				.style("cursor", (d) => (adjustedSet.has(d.properties.name) ? "pointer" : "default"))
+				.style("pointer-events", (d) => (adjustedSet.has(d.properties.name) ? "all" : "none"))
 				.on("click", (event, d) => {
-					if (!adjustedSet.has(d.properties.name)) return;
-
-					this.routeToCountry(d.properties.name);
+					const key = topoNameToKey.get(d.properties.name) || d.properties.name;
+					this.routeToCountry(key);
 				})
 				.on("mouseover", (event, d) => {
 					if (!adjustedSet.has(d.properties.name)) return;
