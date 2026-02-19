@@ -20,5 +20,6 @@
   "selectStudyFirst": "Velg studie først",
   "selectCountryFirst": "Velg land først",
   "secondCountry": "Velg det andre landet du skal på utveksling til",
-  "secondUniversity": "Velg det andre universitetet du skal gå på"
+  "secondUniversity": "Velg det andre universitetet du skal gå på",
+  "exportSelected": "Eksporter valgte fagene i ønsket format"
 }
