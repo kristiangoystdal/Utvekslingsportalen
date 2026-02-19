@@ -33,44 +33,15 @@
 							}}</router-link>
 						</li>
 						<li ref="profileSwitcher">
-							<a @click="toggleProfileDropdown">{{ authButtonText }}</a>
-
+							<router-link v-if="isAuthenticated" to="/profil">{{
+								$t("navbar.profileHeader")
+							}}</router-link>
+							<router-link v-else to="/logg_inn">{{
+								$t("navbar.loginHeader")
+							}}</router-link>
 						</li>
 					</ul>
 				</nav>
-
-				<div v-if="showProfileDropDown" class="profile-dropdown">
-					<div class="profile-content">
-						<div v-if="user != null">
-							<div class="username">{{ userData?.displayName || user?.displayName || '' }}</div>
-							<v-btn @click="goToProfile" class="btn btn-primary" :style="{ width: '100% !important' }">
-								{{ $t("operations.profile") }}
-							</v-btn>
-							<v-btn @click="signOut" class="btn btn-danger" :style="{ width: '100% !important' }">
-								{{ $t("operations.signOut") }}
-							</v-btn>
-						</div>
-						<div v-else>
-							<div class="username">{{ $t("operations.signIn") }}</div>
-							<v-btn class="btn btn-primary" @click="goToLogin" :style="{ width: '100% !important' }">
-								<v-icon left class="icon-spacing"
-									style="display: inline-flex;vertical-align: middle;margin-right: 8px;">mdi-email</v-icon>
-								<span style="display: inline-flex;	align-items: center;	vertical-align: middle;	padding-top: 1px;">
-									{{ $t("operations.loginWithEmailButton") }}
-								</span>
-							</v-btn>
-							<v-btn class="btn btn-third" @click="loginWithGoogle" :style="{ width: '100% !important' }">
-								<v-icon left class="icon-spacing"
-									style="display: inline-flex; vertical-align: middle; margin-right: 8px;">
-									mdi-google
-								</v-icon>
-								<span style="display: inline-flex;align-items: center;	vertical-align: middle;padding-top: 1px;">
-									{{ $t("operations.loginWithGoogleButton") }}
-								</span>
-							</v-btn>
-						</div>
-					</div>
-				</div>
 
 				<div ref="languageSwitcher" @click="toggleLanguageDropdown" class="language-switcher">
 					<img :src="currentFlagUrl" width="20" height="14" alt="flag" />
@@ -111,7 +82,6 @@ export default {
 		return {
 			showLanguageDropdown: false,
 			showMobileMenu: false,
-			showProfileDropDown: false,
 			userData: null,
 			user: null,
 		};
@@ -130,17 +100,8 @@ export default {
 		}
 	},
 	methods: {
-		toggleProfileDropdown() {
-			this.showProfileDropDown = !this.showProfileDropDown;
-			if (this.showProfileDropDown) {
-				this.showLanguageDropdown = false;
-			}
-		},
 		toggleLanguageDropdown() {
 			this.showLanguageDropdown = !this.showLanguageDropdown;
-			if (this.showLanguageDropdown) {
-				this.showProfileDropDown = false;
-			}
 		},
 		changeLanguage(lang) {
 			this.$i18n.locale = lang;
@@ -155,7 +116,6 @@ export default {
 				!this.$refs.profileSwitcher.contains(event.target)
 			) {
 				this.showLanguageDropdown = false;
-				this.showProfileDropDown = false;
 			}
 		},
 		async signOut() {
@@ -172,22 +132,13 @@ export default {
 			try {
 				const result = await signInWithPopup(auth, provider);
 				this.user = result.user;
-				this.showProfileDropDown = false;
 				this.$router.go();
 			} catch (error) {
 				console.error("Error during sign-in:", error);
 			}
 		},
-		goToProfile() {
-			this.showProfileDropDown = false;
-			this.$router.push({ name: "Account" });
-		},
 		checkAdminUser() {
 			return this.user && this.user.uid === import.meta.env.VITE_ADMIN_USER_ID;
-		},
-		goToLogin() {
-			this.showProfileDropDown = false;
-			this.$router.push({ name: "Login" });
 		},
 	},
 	mounted() {
