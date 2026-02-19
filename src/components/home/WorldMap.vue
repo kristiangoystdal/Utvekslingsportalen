@@ -153,7 +153,7 @@ export default {
 				.style("pointer-events", (d) => (adjustedSet.has(d.properties.name) ? "all" : "none"))
 				.on("click", (event, d) => {
 					const key = topoNameToKey.get(d.properties.name) || d.properties.name;
-					this.routeToCountry(key);
+					this.routeToCountry(this.$t(`countries.${key}`));
 				})
 				.on("mouseover", (event, d) => {
 					if (!adjustedSet.has(d.properties.name)) return;
@@ -199,9 +199,6 @@ export default {
 				});
 
 			svg.call(zoom);
-
-			// (Optional) disable double-click zoom if you don't want it:
-			// svg.on("dblclick.zoom", null);
 		},
 		ensureTooltip() {
 			const id = "worldmap-tooltip";
