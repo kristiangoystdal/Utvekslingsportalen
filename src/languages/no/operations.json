@@ -25,5 +25,10 @@
   "next": "Neste",
   "viewExchanges": "Se utvekslinger",
   "scrollToZoomHint": "Scroll for å zoome",
-  "dragToPanHint": "Dra for å flytte kartet"
+  "dragToPanHint": "Dra for å flytte kartet",
+  "exportFavorites": "Eksporter favorittfag:",
+  "exportAsPDF": "PDF",
+  "exportAsCSV": "CSV",
+  "selectAll": "Velg alle",
+  "clearSelection": "Tøm valg"
 }

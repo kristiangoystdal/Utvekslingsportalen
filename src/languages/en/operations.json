@@ -25,5 +25,10 @@
   "next": "Next",
   "viewExchanges": "View Exchanges",
   "scrollToZoomHint": "Scroll to Zoom",
-  "dragToPanHint": "Drag to Pan"
+  "dragToPanHint": "Drag to Pan",
+  "exportFavorites": "Export Favorite Courses:",
+  "exportAsPDF": "PDF",
+  "exportAsCSV": "CSV",
+  "selectAll": "Select All",
+  "clearSelection": "Clear Selection"
 }
