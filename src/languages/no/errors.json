@@ -11,5 +11,6 @@
   "selectUniversityForPDF": "Vennligst velg minst ett universitet for å eksportere som PDF.",
   "couldNotFindExchange": "Kunne ikke finne utveksling for dette kurset.",
   "noExchangeLinked": "Ingen utveksling knyttet til dette kurset.",
-  "noFavoriteCourses": "Du har ingen favorittkurs ennå. Gå til et kurs og klikk på hjerte-ikonet for å legge det til i favorittene dine!"
+  "noFavoriteCourses": "Du har ingen favorittkurs ennå. Gå til et kurs og klikk på hjerte-ikonet for å legge det til i favorittene dine!",
+  "noMatchesFor": "Ingen resultater for"
 }

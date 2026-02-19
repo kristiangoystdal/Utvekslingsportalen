@@ -11,5 +11,6 @@
   "selectUniversityForPDF": "Please select at least one university to export as PDF.",
   "couldNotFindExchange": "Could not find exchange for this course.",
   "noExchangeLinked": "No exchange linked to this course.",
-  "noFavoriteCourses": "You don't have any favorite courses yet. Go to a course and click the heart icon to add it to your favorites!"
+  "noFavoriteCourses": "You don't have any favorite courses yet. Go to a course and click the heart icon to add it to your favorites!",
+  "noMatchesFor": "No results for"
 }
