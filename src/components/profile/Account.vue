@@ -4,89 +4,77 @@
 	</div>
 
 	<v-container class="py-10">
-		<v-row justify="center">
-			<v-col cols="12" md="8">
-				<v-card v-if="user && userData" class="pa-8 profile-card" elevation="4">
-					<!-- Header -->
-					<div class="text-center mb-6">
-						<v-avatar size="120" class="mb-4">
-							<img v-if="user && user.photoURL" :src="user.photoURL" />
-							<v-icon v-else size="120">mdi-account-circle</v-icon>
-						</v-avatar>
+		<div v-if="user && userData" class="profile-grid">
+			<v-card class="pa-8 profile-card left" elevation="4">
+				<div class="text-center mb-6">
+					<v-avatar size="120" class="mb-4">
+						<img v-if="user && user.photoURL" :src="user.photoURL" />
+						<v-icon v-else size="120">mdi-account-circle</v-icon>
+					</v-avatar>
 
-
-						<div v-if="isVerified" class="verified-badge">
-							<v-icon color="green" class="spacing">mdi-check-circle</v-icon>
-							<span>{{ $t("userHandling.emailVerified") }}</span>
-						</div>
-
-						<div v-else class="unverified-badge" @click="sendVerificationEmail">
-							<v-icon color="red" class="spacing">mdi-alert-circle</v-icon>
-							<span>{{ $t("userHandling.emailNotVerified") }}</span>
-						</div>
+					<div v-if="isVerified" class="verified-badge">
+						<v-icon color="green" class="spacing">mdi-check-circle</v-icon>
+						<span>{{ $t("userHandling.emailVerified") }}</span>
 					</div>
 
-					<!-- User info -->
-					<v-row>
-						<v-col cols="12" md="6">
-							<div class="info-block" v-if="user">
-								<strong>{{ $t("userHandling.name") }}:</strong>
-								<p>{{ userData.displayName }}</p>
-
-								<strong>{{ $t("userHandling.email") }}:</strong>
-								<p>{{ user.email }}</p>
-							</div>
-						</v-col>
-
-						<v-col cols="12" md="6">
-							<div class="info-block" v-if="user">
-								<strong>{{ $t("database.study") }}:</strong>
-								<p>{{ userData.study || "-" }}</p>
-
-								<strong>{{ $t("database.specialization") }}:</strong>
-								<p>{{ userData.specialization || "-" }}</p>
-							</div>
-						</v-col>
-					</v-row>
-					<br />
-					<!-- Buttons -->
-					<div class="button-row">
-						<v-btn color="primary" class="mr-3" @click="editProfile">
-							<v-icon left>mdi-account-edit</v-icon>
-							<p style="margin-left: 10px;">{{ $t("operations.edit") }}</p>
-						</v-btn>
-
-						<v-btn color="secondary" class="mr-3" @click="sendResetPasswordEmail">
-							<v-icon left>mdi-lock-reset</v-icon>
-							<p style="margin-left: 10px;">{{ $t("operations.changePassword") }}</p>
-						</v-btn>
-
-						<v-btn color="red" @click="signOut">
-							<v-icon left>mdi-logout</v-icon>
-							<p style="margin-left: 10px;">{{ $t("operations.signOut") }}</p>
-						</v-btn>
+					<div v-else class="unverified-badge" @click="sendVerificationEmail">
+						<v-icon color="red" class="spacing">mdi-alert-circle</v-icon>
+						<span>{{ $t("userHandling.emailNotVerified") }}</span>
 					</div>
-
-					<!-- Favorite courses -->
-					<div class="mt-4">
-						<FavoriteCourses />
-					</div>
-				</v-card>
-
-				<!-- Loading state -->
-				<div v-else-if="loading" class="text-center my-10">
-					<v-progress-circular indeterminate color="primary" size="48" />
 				</div>
 
-				<!-- Not logged in -->
-				<div v-else>
-					<v-alert type="error">
-						{{ $t("errors.notLoggedIn") }}
-					</v-alert>
-				</div>
-			</v-col>
-		</v-row>
+				<!-- User info -->
+				<v-row>
+					<v-col cols="12">
+						<div class="info-block" v-if="user">
+							<strong>{{ $t("userHandling.name") }}:</strong>
+							<p>{{ userData.displayName }}</p>
+							<br />
+							<strong>{{ $t("userHandling.email") }}:</strong>
+							<p>{{ user.email }}</p>
+							<br />
+							<strong>{{ $t("database.study") }}:</strong>
+							<p>{{ userData.study || "-" }}</p>
+						</div>
+					</v-col>
+				</v-row>
 
+				<!-- Buttons -->
+				<div class="button-row mt-2">
+					<v-btn color="primary" class="mr-3" @click="editProfile">
+						<v-icon left>mdi-account-edit</v-icon>
+						<p style="margin-left: 10px;">{{ $t("operations.edit") }}</p>
+					</v-btn>
+
+					<v-btn color="secondary" class="mr-3" @click="sendResetPasswordEmail">
+						<v-icon left>mdi-lock-reset</v-icon>
+						<p style="margin-left: 10px;">{{ $t("operations.changePassword") }}</p>
+					</v-btn>
+
+					<v-btn color="red" @click="signOut">
+						<v-icon left>mdi-logout</v-icon>
+						<p style="margin-left: 10px;">{{ $t("operations.signOut") }}</p>
+					</v-btn>
+				</div>
+			</v-card>
+
+			<v-card class="pa-8 profile-card main" elevation="4">
+				<FavoriteCourses />
+			</v-card>
+
+		</div>
+
+		<!-- Loading state -->
+		<div v-else-if="loading" class="text-center my-10">
+			<v-progress-circular indeterminate color="primary" size="48" />
+		</div>
+
+		<!-- Not logged in -->
+		<div v-else>
+			<v-alert type="error">
+				{{ $t("errors.notLoggedIn") }}
+			</v-alert>
+		</div>
 
 		<!-- Edit Profile Dialog -->
 		<v-dialog v-model="dialog" persistent max-width="600px" class="dialog">
@@ -135,10 +123,10 @@
 			</v-card>
 		</v-dialog>
 	</v-container>
+
 </template>
 
 <script>
-import { ref, onMounted, watch } from "vue";
 import { auth, db } from "../../js/firebaseConfig";
 import { onAuthStateChanged, signOut, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 import { ref as dbRef, get, set, update } from "firebase/database";
@@ -322,10 +310,10 @@ export default {
 }
 
 .profile-card {
-	background-color: var(--third-color);
+	/* background-color: var(--third-color); */
 	border-radius: 10px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	border: 1px solid var(--first-color);
+	/* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+	/* border: 1px solid var(--first-color); */
 }
 
 #saveBtn {
@@ -337,6 +325,7 @@ export default {
 	margin: 10px;
 	background-color: var(--second-color);
 	color: var(--fifth-color);
+	/* width: 100%; */
 }
 
 #closeBtn {
@@ -445,5 +434,46 @@ export default {
 		font-size: 14px !important;
 		/* width: 60% !important; */
 	}
+}
+
+.profile-grid {
+	display: grid;
+	gap: 16px;
+
+	/* left + main */
+	grid-template-columns: 320px 1fr;
+
+	/* rows: content + footer */
+	grid-template-areas:
+		"left main"
+		"footer footer";
+
+	align-items: start;
+}
+
+.left {
+	grid-area: left;
+}
+
+.main {
+	grid-area: main;
+}
+
+.footer {
+	grid-area: footer;
+}
+
+@media (max-width: 960px) {
+	.profile-grid {
+		grid-template-columns: 1fr;
+		grid-template-areas:
+			"left"
+			"main"
+			"footer";
+	}
+}
+
+.button-row .v-btn {
+	width: 100%;
 }
 </style>
