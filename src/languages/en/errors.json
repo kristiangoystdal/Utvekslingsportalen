@@ -6,5 +6,10 @@
   "contactName": "The name must be at least 2 characters.",
   "contactEmail": "Must be a valid email address.",
   "contactMessage": "The message must be at least 10 characters.",
-  "uploadFileRequired": "A file must be uploaded to proceed."
+  "uploadFileRequired": "A file must be uploaded to proceed.",
+  "noFavoriteCoursesToExport": "No favorite courses to export.",
+  "selectUniversityForPDF": "Please select at least one university to export as PDF.",
+  "couldNotFindExchange": "Could not find exchange for this course.",
+  "noExchangeLinked": "No exchange linked to this course.",
+  "noFavoriteCourses": "You don't have any favorite courses yet. Go to a course and click the heart icon to add it to your favorites!"
 }
