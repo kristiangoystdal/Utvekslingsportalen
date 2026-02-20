@@ -1,9 +1,9 @@
 <template>
   <h2>{{ $t("userHandling.favoriteCourses") }}</h2>
   <div class="favorite-courses">
-    <div class="d-flex align-center mb-2">
+    <div class="d-flex flex-column flex-md-row align-start align-md-center mb-2">
       <!-- Left: label + hint -->
-      <div class="mr-10">
+      <div class="mr-md-10 mb-2 mb-md-0">
         <strong>{{ $t("operations.exportFavorites") }}</strong>
         <div class="text-caption">
           {{ $t("hints.exportSelected") }}
@@ -11,20 +11,19 @@
       </div>
 
       <!-- Right: format buttons -->
-      <div class="d-flex align-center ga-10">
-        <v-btn color="primary" @click="exportAsPDF">
+      <div class="d-flex flex-column flex-sm-row align-stretch align-sm-center ga-2 ga-md-10 w-100 w-md-auto">
+        <v-btn color="primary" class="w-100 w-sm-auto" @click="exportAsPDF">
           <v-icon start>mdi-file-pdf-box</v-icon>
           {{ $t("operations.exportAsPDF") }}
         </v-btn>
 
-        <v-btn color="secondary" @click="exportAsCSV">
+        <v-btn color="secondary" class="w-100 w-sm-auto" @click="exportAsCSV">
           <v-icon start>mdi-file-document-outline</v-icon>
           {{ $t("operations.exportAsCSV") }}
         </v-btn>
       </div>
     </div>
 
-    <!-- Sub-actions -->
     <!-- Sub-actions -->
     <div class="d-flex align-center ga-2">
       <v-chip size="small" prepend-icon="mdi-select-all" @click="selectAllUnis" class="cursor-pointer">
@@ -420,5 +419,16 @@ export default {
 
 .border-b {
   border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  width: 100%;
+}
+
+/* Remove default padding inside expansion panel content */
+:deep(.v-expansion-panel-text__wrapper) {
+  padding: 0 !important;
+}
+
+/* Optional: also remove outer margin if present */
+:deep(.v-expansion-panel-text) {
+  margin: 0 !important;
 }
 </style>
