@@ -361,7 +361,7 @@ export default {
 
       const exchangeId = item.exchangeID;
       if (!exchangeId) {
-        toast.info(this.$t("exchanges.noExchangeLinked"));
+        toast.info(this.$t("errors.noExchangeLinked"));
         return;
       }
 
