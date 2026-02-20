@@ -370,7 +370,7 @@ export default {
         Object.values(this.exchanges).find((e) => e?.id === exchangeId);
 
       if (!exchange) {
-        toast.warning(this.$t("profile.couldNotFindExchange"));
+        toast.warning(this.$t("errors.couldNotFindExchange"));
         return;
       }
 
