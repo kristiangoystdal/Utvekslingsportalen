@@ -20,5 +20,6 @@
   "selectStudyFirst": "Select study program first",
   "selectCountryFirst": "Select country first",
   "secondCountry": "Select the second country you will go on exchange to",
-  "secondUniversity": "Select the second university you will attend"
+  "secondUniversity": "Select the second university you will attend",
+  "exportSelected": "Export selected courses in desired format"
 }

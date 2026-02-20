@@ -6,5 +6,11 @@
   "contactName": "Navnet må være minst 2 karakterer.",
   "contactEmail": "Må være en gyldig e-post addresse",
   "contactMessage": "Meldingen må være minst 10 karakterer",
-  "uploadFileRequired": "En fil må lastes opp for å fortsette."
+  "uploadFileRequired": "En fil må lastes opp for å fortsette.",
+  "noFavoriteCoursesToExport": "Ingen favorittkurs å eksportere.",
+  "selectUniversityForPDF": "Vennligst velg minst ett universitet for å eksportere som PDF.",
+  "couldNotFindExchange": "Kunne ikke finne utveksling for dette kurset.",
+  "noExchangeLinked": "Ingen utveksling knyttet til dette kurset.",
+  "noFavoriteCourses": "Du har ingen favorittkurs ennå. Gå til et kurs og klikk på hjerte-ikonet for å legge det til i favorittene dine!",
+  "noMatchesFor": "Ingen resultater for"
 }

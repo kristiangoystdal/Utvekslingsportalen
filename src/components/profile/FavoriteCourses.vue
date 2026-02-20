@@ -1,36 +1,93 @@
 <template>
+  <h2>{{ $t("userHandling.favoriteCourses") }}</h2>
   <div class="favorite-courses">
-    <h2>Favorite Courses</h2>
-    <div>
-      <v-btn color="primary" class="btn mb-4" @click="exportAsPDF"> Export as PDF </v-btn>
-      <v-btn color="secondary" class="btn mb-4" @click="exportAsCSV"> Export as CSV </v-btn>
-    </div>
-    <ul v-if="favoriteCourses.length">
-      <li v-for="course in favoriteCourses" :key="course.id" class="favorite-course-item">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            <strong>{{ course.courseName }}</strong> ({{ course.courseCode }})<br />
-            {{ course.replacedCourseName }} – {{ course.replacedCourseCode }}<br />
-            {{ course.institute }}<br />
-            {{ course.ECTSPoints }} ECTS – {{ course.courseType }} – {{ course.year }} <br />
-            {{ course.country ? course.country : '' }}
-            {{ course.university ? '– ' + course.university : '' }}<br />
-            <span v-if="course.comments"><em>{{ $t('database.comments') }}: {{ course.comments }}</em></span><br />
-          </div>
-          <div>
-            <v-icon @click="toggleFavorite(course)" :color="checkIfFavorite(course) ? 'red' : 'grey'"
-              style="cursor: pointer;">
-              mdi-heart
-            </v-icon>
-            <v-icon @click="routeToExchange(course)" style="cursor: pointer; margin-left: 10px;">
-              mdi-airplane-search
-            </v-icon>
-          </div>
+    <div class="d-flex flex-column flex-md-row align-start align-md-center mb-2">
+      <!-- Left: label + hint -->
+      <div class="mr-md-10 mb-2 mb-md-0">
+        <strong>{{ $t("operations.exportFavorites") }}</strong>
+        <div class="text-caption">
+          {{ $t("hints.exportSelected") }}
         </div>
-        <hr />
-      </li>
-    </ul>
-    <p v-else>No courses favorited yet</p>
+      </div>
+
+      <!-- Right: format buttons -->
+      <div class="d-flex flex-column flex-sm-row align-stretch align-sm-center ga-2 ga-md-10 w-100 w-md-auto">
+        <v-btn color="primary" class="w-100 w-sm-auto" @click="exportAsPDF">
+          <v-icon start>mdi-file-pdf-box</v-icon>
+          {{ $t("operations.exportAsPDF") }}
+        </v-btn>
+
+        <v-btn color="secondary" class="w-100 w-sm-auto" @click="exportAsCSV">
+          <v-icon start>mdi-file-document-outline</v-icon>
+          {{ $t("operations.exportAsCSV") }}
+        </v-btn>
+      </div>
+    </div>
+
+    <!-- Sub-actions -->
+    <div class="d-flex align-center ga-2">
+      <v-chip size="small" prepend-icon="mdi-select-all" @click="selectAllUnis" class="cursor-pointer">
+        {{ $t("operations.selectAll") }}
+      </v-chip>
+
+      <v-chip size="small" prepend-icon="mdi-close-circle-outline" @click="clearUniSelection" class="cursor-pointer">
+        {{ $t("operations.clearSelection") }}
+      </v-chip>
+    </div>
+
+    <br />
+
+    <p v-if="!favoriteCourses.length">{{ $t("errors.noFavoriteCourses") }}</p>
+
+    <div v-else>
+      <v-text-field v-model="q" label="Search favorites" prepend-inner-icon="mdi-magnify" variant="outlined"
+        density="compact" hide-details class="mb-3" clearable />
+
+      <p v-if="q && totalMatches === 0" class="text-caption">
+        {{ $t("errors.noMatchesFor") }} “{{ q }}”
+      </p>
+
+      <v-expansion-panels v-else multiple>
+        <v-expansion-panel v-for="uni in visibleUniversityKeys" :key="uni">
+          <v-expansion-panel-title>
+            <div class="d-flex align-center justify-space-between w-100">
+              <span>{{ uni }}</span>
+              <div class="d-flex align-center">
+                <v-checkbox-btn class="ml-2" density="compact" :model-value="isUniSelected(uni)" @click.stop
+                  @update:model-value="toggleUniSelected(uni)" />
+
+                <v-chip size="small" class="ml-3">
+                  {{ filteredByUni(uni).length }}
+                </v-chip>
+              </div>
+            </div>
+          </v-expansion-panel-title>
+
+          <v-expansion-panel-text>
+            <div v-for="course in filteredByUni(uni)" :key="course.courseKey"
+              class="d-flex align-center justify-space-between py-2 px-2 border-b">
+              <p class="mb-0">
+                <strong>{{ course.courseName }}</strong>
+                <span v-if="course.courseCode"> ({{ course.courseCode }})</span>
+                <span v-if="course.ECTSPoints"> – {{ course.ECTSPoints }} ECTS</span>
+              </p>
+
+              <div class="d-flex align-center">
+                <v-icon @click.stop="toggleFavorite(course)" :color="checkIfFavorite(course) ? 'red' : 'grey'"
+                  class="mr-3" style="cursor:pointer">
+                  mdi-heart
+                </v-icon>
+
+                <v-icon @click.stop="routeToExchange(course)" style="cursor:pointer">
+                  mdi-airplane-search
+                </v-icon>
+              </div>
+            </div>
+
+          </v-expansion-panel-text>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </div>
   </div>
 </template>
 
@@ -44,153 +101,61 @@ export default {
   name: "FavoriteCourses",
   data() {
     return {
+      q: "",
       favoriteCourses: [],
       exchanges: {},
+      selectedUnis: [],
     };
   },
+
   async created() {
-    const user = auth.currentUser;
-    if (user) {
-      const snapshot = await get(dbRef(db, `users/${user.uid}/favoriteCourses`));
-      const courses = snapshot.val();
-      this.favoriteCourses = courses
-        ? Object.keys(courses).map((key) => ({ id: key, ...courses[key] }))
-        : [];
-    } else {
-      this.favoriteCourses = [];
-    }
+    await this.loadFavoriteCourses();
     this.fetchExchangeData();
   },
+
+  computed: {
+    groupFavoriteCourses() {
+      const grouped = {};
+      for (const course of this.favoriteCourses) {
+        const university = course.university || "Unknown University";
+        if (!grouped[university]) grouped[university] = [];
+        grouped[university].push(course);
+      }
+      return grouped;
+    },
+    groupedUniversityKeys() {
+      return Object.keys(this.groupFavoriteCourses).sort((a, b) =>
+        a.localeCompare(b)
+      );
+    },
+    visibleUniversityKeys() {
+      return this.groupedUniversityKeys.filter((uni) => this.filteredByUni(uni).length > 0);
+    },
+    totalMatches() {
+      return this.visibleUniversityKeys.reduce(
+        (sum, uni) => sum + this.filteredByUni(uni).length,
+        0
+      );
+    },
+  },
   methods: {
+    makeCourseKey(course) {
+      if (course.courseKey) return course.courseKey;
+      if (course.id) return String(course.id);
+
+      const code = course.courseCode || "NO_CODE";
+      const exch = course.exchangeID || "NO_EXCHANGE";
+      const inst = course.institute || "NO_INST";
+      return `${exch}__${code}__${inst}`;
+    },
     async fetchExchangeData() {
       try {
         const snapshot = await get(child(dbRef(db), "exchanges"));
-        if (!snapshot.exists()) {
-          console.error("No data available");
-          return;
-        }
-
-        const exchanges = snapshot.val();
-        this.exchanges = exchanges;
+        if (!snapshot.exists()) return;
+        this.exchanges = snapshot.val() || {};
       } catch (error) {
         console.error("Error fetching exchange data:", error);
       }
-    },
-    exportAsCSV() {
-      if (this.favoriteCourses.length === 0) {
-        toast.warning("No favorite courses to export.");
-        return;
-      }
-
-      const header = [
-        "Course Name",
-        "Course Code",
-        "Replaced Course Name",
-        "Replaced Course Code",
-        "Institute",
-        "ECTS Points",
-        "Course Type",
-        "Year",
-        "Comments",
-      ];
-      const rows = this.favoriteCourses.map((course) => [
-        course.courseName,
-        course.courseCode,
-        course.replacedCourseName,
-        course.replacedCourseCode,
-        course.institute,
-        course.ECTSPoints,
-        course.courseType,
-        course.year,
-        course.comments || "",
-      ]);
-
-      const csvContent =
-        "data:text/csv;charset=utf-8," +
-        [header, ...rows].map((e) => e.join(",")).join("\n");
-
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "favorite_courses.csv");
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    },
-    exportAsPDF() {
-      if (this.favoriteCourses.length === 0) {
-        toast.warning("No favorite courses to export.");
-        return;
-      }
-
-      import("jspdf").then(({ jsPDF }) => {
-        const doc = new jsPDF();
-        let yOffset = 10;
-
-        this.favoriteCourses.forEach((course, index) => {
-          const wrapText = (text, x, y, maxWidth) => {
-            const lines = doc.splitTextToSize(text, maxWidth);
-            lines.forEach((line) => {
-              if (y > 270) { // Check if yOffset exceeds page height
-                doc.addPage();
-                y = 10; // Reset yOffset for the new page
-              }
-              doc.text(line, x, y);
-              y += 10;
-            });
-            return y;
-          };
-
-          yOffset = wrapText(`Course Name: ${course.courseName}`, 10, yOffset, 180);
-          yOffset = wrapText(`Course Code: ${course.courseCode}`, 10, yOffset, 180);
-          yOffset = wrapText(
-            `Replaced Course: ${course.replacedCourseName} – ${course.replacedCourseCode}`,
-            10,
-            yOffset,
-            180
-          );
-          yOffset = wrapText(`Institute: ${course.institute}`, 10, yOffset, 180);
-          yOffset = wrapText(`ECTS Points: ${course.ECTSPoints}`, 10, yOffset, 180);
-          yOffset = wrapText(`Course Type: ${course.courseType}`, 10, yOffset, 180);
-          yOffset = wrapText(`Year: ${course.year}`, 10, yOffset, 180);
-          yOffset = wrapText(`Comments: ${course.comments || "N/A"}`, 10, yOffset, 180);
-          yOffset += 10;
-
-          if (yOffset > 270) {
-            doc.addPage();
-            yOffset = 10;
-          }
-        });
-
-        doc.save("favorite_courses.pdf");
-      });
-    },
-    checkIfFavorite(course) {
-      return this.favoriteCourses.some(favCourse =>
-        Object.keys(course).every(key => course[key] === favCourse[key])
-      );
-    },
-    toggleFavorite(course) {
-      const user = auth.currentUser;
-
-      if (!user) {
-        toast.info(this.$t("exchanges.loginToFavorite"));
-        return;
-      }
-
-      // Add course to favorites if not already favorited, else remove it
-      if (!this.checkIfFavorite(course)) {
-        this.favoriteCourses.push(course);
-      } else {
-        this.favoriteCourses = this.favoriteCourses.filter(favCourse =>
-          !Object.keys(course).every(key => course[key] === favCourse[key])
-        );
-      }
-
-      this.saveFavoriteCourses().catch(error => {
-        toast.error(this.$t("exchanges.errorSavingFavorites"));
-        console.error("Error saving favorite courses:", error);
-      });
     },
     async loadFavoriteCourses() {
       const user = auth.currentUser;
@@ -198,11 +163,19 @@ export default {
         this.favoriteCourses = [];
         return;
       }
+
       const snapshot = await get(dbRef(db, `users/${user.uid}/favoriteCourses`));
-      const courses = snapshot.val();
-      this.favoriteCourses = courses
-        ? Object.keys(courses).map((key) => ({ id: key, ...courses[key] }))
-        : [];
+      const coursesObj = snapshot.val();
+
+      if (!coursesObj) {
+        this.favoriteCourses = [];
+        return;
+      }
+
+      this.favoriteCourses = Object.keys(coursesObj).map((courseKey) => ({
+        courseKey,
+        ...coursesObj[courseKey],
+      }));
     },
     async saveFavoriteCourses() {
       const user = auth.currentUser;
@@ -211,55 +184,251 @@ export default {
       const userRef = dbRef(db, `users/${user.uid}/favoriteCourses`);
       const updates = {};
 
-      this.favoriteCourses.forEach((course, index) => {
-        updates[index] = course;
-      });
+      for (const course of this.favoriteCourses) {
+        const courseKey = this.makeCourseKey(course);
+        updates[courseKey] = { ...course, courseKey };
+      }
 
       await set(userRef, updates);
     },
+    checkIfFavorite(course) {
+      const key = this.makeCourseKey(course);
+      return this.favoriteCourses.some((c) => this.makeCourseKey(c) === key);
+    },
+    async toggleFavorite(course) {
+      const user = auth.currentUser;
+      if (!user) {
+        toast.info(this.$t("exchanges.loginToFavorite"));
+        return;
+      }
+
+      const key = this.makeCourseKey(course);
+
+      if (!this.checkIfFavorite(course)) {
+        this.favoriteCourses.push({ ...course, courseKey: key });
+      } else {
+        this.favoriteCourses = this.favoriteCourses.filter(
+          (c) => this.makeCourseKey(c) !== key
+        );
+      }
+
+      try {
+        await this.saveFavoriteCourses();
+      } catch (e) {
+        toast.error(this.$t("exchanges.errorSavingFavorites"));
+        console.error("Error saving favorite courses:", e);
+      }
+    },
+    filteredByUni(uni) {
+      const list = this.groupFavoriteCourses[uni] || [];
+      const q = (this.q || "").trim().toLowerCase();
+      if (!q) return list;
+
+      return list.filter((c) =>
+        (c.courseName || "").toLowerCase().includes(q) ||
+        (c.courseCode || "").toLowerCase().includes(q) ||
+        (c.institute || "").toLowerCase().includes(q)
+      );
+    },
+    exportAsCSV() {
+      if (!this.favoriteCourses.length) {
+        toast.warning(this.$t("errors.noFavoriteCoursesToExport"));
+        return;
+      }
+
+      if (this.selectedUnis.length === 0) {
+        toast.warning(this.$t("errors.selectUniversityForPDF"));
+        return;
+      }
+
+      for (const uni of this.selectedUnis) {
+        let coursesToExport = this.filteredByUni(uni);
+
+        const header = [
+          "Course Name",
+          "Course Code",
+          "Replaced Course Name",
+          "Replaced Course Code",
+          "ECTS Points",
+          "Year",
+          "Comments",
+          "University",
+          "Country",
+        ];
+
+        const esc = (v) => {
+          const s = (v ?? "").toString();
+          if (/[",\n]/.test(s)) return `"${s.replaceAll('"', '""')}"`;
+          return s;
+        };
+
+        const rows = coursesToExport.map((course) => [
+          esc(course.courseName),
+          esc(course.courseCode),
+          esc(course.replacedCourseName),
+          esc(course.replacedCourseCode),
+          esc(course.ECTSPoints),
+          esc(course.comments || ""),
+          esc(course.university || ""),
+          esc(course.country || ""),
+        ]);
+
+        const csv = [header.map(esc).join(","), ...rows.map((r) => r.join(","))].join("\n");
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = (coursesToExport[0].university || "favorite_courses") + ".csv";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      }
+    },
+    exportAsPDF() {
+      if (!this.favoriteCourses.length) {
+        toast.warning(this.$t("errors.noFavoriteCoursesToExport"));
+        return;
+      }
+
+      if (this.selectedUnis.length === 0) {
+        toast.warning(this.$t("errors.selectUniversityForPDF"));
+        return;
+      }
+
+      for (const uni of this.selectedUnis) {
+        let fileName = `${uni}_favorite_courses.pdf`;
+        let coursesToExport = this.filteredByUni(uni);
+
+        import("jspdf").then(({ jsPDF }) => {
+          const doc = new jsPDF();
+          let y = 12;
+
+          const writeLine = (text) => {
+            const lines = doc.splitTextToSize(text, 180);
+            for (const line of lines) {
+              if (y > 285) {
+                doc.addPage();
+                y = 12;
+              }
+              doc.text(line, 10, y);
+              y += 7;
+            }
+          };
+
+          // Write header info (using first course as reference)
+          const firstCourse = coursesToExport[0];
+          writeLine(`University: ${firstCourse.university || ""}`);
+          writeLine(`Country: ${firstCourse.country || ""}`);
+          y += 5;
+          writeLine(`Total Courses: ${coursesToExport.length}`);
+          y += 10;
+
+          for (const course of coursesToExport) {
+            writeLine(`Course Name: ${course.courseName || ""}`);
+            writeLine(`Course Code: ${course.courseCode || ""}`);
+            if (course.replacedCourseName && course.replacedCourseCode) {
+              writeLine(`Replaced Course: ${(course.replacedCourseName || "")} – ${(course.replacedCourseCode || "")}`);
+            }
+            else if (course.replacedCourseName) {
+              writeLine(`Replaced Course Name: ${course.replacedCourseName || ""}`);
+            }
+            else if (course.replacedCourseCode) {
+              writeLine(`Replaced Course Code: ${course.replacedCourseCode || ""}`);
+            }
+            writeLine(`ECTS Points: ${course.ECTSPoints || ""}`);
+            if (course.comments) {
+              writeLine(`Comments: ${course.comments || "N/A"}`);
+            }
+            y += 6;
+
+            if (y > 285) {
+              doc.addPage();
+              y = 12;
+            }
+          }
+
+          fileName = firstCourse.university
+            ? `${firstCourse.university}_favorite_courses.pdf`
+            : "favorite_courses.pdf";
+          doc.save(fileName);
+        });
+      }
+    },
     routeToExchange(item) {
-      const exchange = this.exchanges && Object.values(this.exchanges).find((exch) => {
-        if (!exch.courses) return false;
-        if (exch.id && item.exchangeID && exch.id === item.exchangeID) {
+      if (!this.exchanges) return;
 
-          return true;
-        }
-      });
-
-      const translatedCountry = this.$t(`countries.${exchange.country}`);
-
-      const searchString = translatedCountry + " " + exchange.university + " " + exchange.study + " " + exchange.specialization + " " + exchange.studyYear + " " + exchange.year;
-
-      if (!exchange.id) {
-        exchange.id = this.exchanges && Object.keys(this.exchanges).find(key => this.exchanges[key] === exchange);
+      const exchangeId = item.exchangeID;
+      if (!exchangeId) {
+        toast.info(this.$t("errors.noExchangeLinked"));
+        return;
       }
-      const hiddenId = btoa(exchange.id);
 
-      if (exchange) {
-        this.$router.push({ name: "Exchanges", query: { search: searchString, r: hiddenId } });
+      const exchange =
+        this.exchanges[exchangeId] ||
+        Object.values(this.exchanges).find((e) => e?.id === exchangeId);
+
+      if (!exchange) {
+        toast.warning(this.$t("errors.couldNotFindExchange"));
+        return;
       }
-    }
+
+      const translatedCountry = exchange.country
+        ? this.$t(`countries.${exchange.country}`)
+        : "";
+
+      const searchString = [
+        translatedCountry,
+        exchange.university,
+        exchange.study,
+        exchange.specialization,
+        exchange.studyYear,
+        exchange.year,
+      ]
+        .filter(Boolean)
+        .join(" ");
+
+      const hiddenId = btoa(exchangeId);
+      this.$router.push({ name: "Exchanges", query: { search: searchString, r: hiddenId } });
+    },
+    isUniSelected(uni) {
+      return this.selectedUnis.includes(uni);
+    },
+    toggleUniSelected(uni) {
+      if (this.isUniSelected(uni)) {
+        this.selectedUnis = this.selectedUnis.filter((u) => u !== uni);
+      } else {
+        this.selectedUnis = [...this.selectedUnis, uni];
+      }
+    },
+    selectAllUnis() {
+      this.selectedUnis = [...this.groupedUniversityKeys];
+    },
+    clearUniSelection() {
+      this.selectedUnis = [];
+    },
   },
 };
 </script>
-
 
 <style scoped>
 .favorite-courses {
   margin-top: 20px;
 }
 
-.favorite-courses h2 {
-  font-size: 1.5em;
-  margin-bottom: 10px;
+.border-b {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  width: 100%;
 }
 
-.favorite-courses ul {
-  list-style-type: none;
-  padding: 0;
+/* Remove default padding inside expansion panel content */
+:deep(.v-expansion-panel-text__wrapper) {
+  padding: 0 !important;
 }
 
-.favorite-courses li {
-  padding: 5px 0;
+/* Optional: also remove outer margin if present */
+:deep(.v-expansion-panel-text) {
+  margin: 0 !important;
 }
 </style>
