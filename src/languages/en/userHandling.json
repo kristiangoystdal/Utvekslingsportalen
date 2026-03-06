@@ -23,5 +23,6 @@
   "resetPassword": "Reset Password",
   "acceptTermsLabel": "I accept the",
   "termsAndConditions": "Terms and Conditions",
-  "favoriteCourses": "Favorite Courses"
+  "favoriteCourses": "Favorite Courses",
+  "searchFavorites": "Search in Favorite Courses"
 }

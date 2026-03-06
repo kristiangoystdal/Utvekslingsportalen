@@ -40,8 +40,8 @@
     <p v-if="!favoriteCourses.length">{{ $t("errors.noFavoriteCourses") }}</p>
 
     <div v-else>
-      <v-text-field v-model="q" label="Search favorites" prepend-inner-icon="mdi-magnify" variant="outlined"
-        density="compact" hide-details class="mb-3" clearable />
+      <v-text-field v-model="q" :label="$t('userHandling.searchFavorites')" prepend-inner-icon="mdi-magnify"
+        variant="outlined" density="compact" hide-details class="mb-3" clearable />
 
       <p v-if="q && totalMatches === 0" class="text-caption">
         {{ $t("errors.noMatchesFor") }} “{{ q }}”
@@ -51,7 +51,7 @@
         <v-expansion-panel v-for="uni in visibleUniversityKeys" :key="uni">
           <v-expansion-panel-title>
             <div class="d-flex align-center justify-space-between w-100">
-              <span>{{ uni }}</span>
+              <span>{{ uni.split("(")[0] }}</span>
               <div class="d-flex align-center">
                 <v-checkbox-btn class="ml-2" density="compact" :model-value="isUniSelected(uni)" @click.stop
                   @update:model-value="toggleUniSelected(uni)" />
@@ -110,7 +110,7 @@ export default {
 
   async created() {
     await this.loadFavoriteCourses();
-    this.fetchExchangeData();
+    await this.fetchExchangeData();
   },
 
   computed: {
@@ -230,7 +230,7 @@ export default {
         (c.institute || "").toLowerCase().includes(q)
       );
     },
-    exportAsCSV() {
+    async exportAsCSV() {
       if (!this.favoriteCourses.length) {
         toast.warning(this.$t("errors.noFavoriteCoursesToExport"));
         return;
@@ -253,6 +253,7 @@ export default {
           "Year",
           "Comments",
           "University",
+          "Town",
           "Country",
         ];
 
@@ -262,14 +263,19 @@ export default {
           return s;
         };
 
+        const university = uni.split("(")[0].trim();
+        const town = uni.split("-")[1]?.trim();
+
         const rows = coursesToExport.map((course) => [
           esc(course.courseName),
           esc(course.courseCode),
           esc(course.replacedCourseName),
           esc(course.replacedCourseCode),
           esc(course.ECTSPoints),
+          esc(course.year),
           esc(course.comments || ""),
-          esc(course.university || ""),
+          esc(university || ""),
+          esc(town || ""),
           esc(course.country || ""),
         ]);
 
@@ -279,14 +285,14 @@ export default {
 
         const link = document.createElement("a");
         link.href = url;
-        link.download = (coursesToExport[0].university || "favorite_courses") + ".csv";
+        link.download = (university || "favorite_courses") + ".csv";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
       }
     },
-    exportAsPDF() {
+    async exportAsPDF() {
       if (!this.favoriteCourses.length) {
         toast.warning(this.$t("errors.noFavoriteCoursesToExport"));
         return;
@@ -296,6 +302,7 @@ export default {
         toast.warning(this.$t("errors.selectUniversityForPDF"));
         return;
       }
+
 
       for (const uni of this.selectedUnis) {
         let fileName = `${uni}_favorite_courses.pdf`;
@@ -319,7 +326,11 @@ export default {
 
           // Write header info (using first course as reference)
           const firstCourse = coursesToExport[0];
-          writeLine(`University: ${firstCourse.university || ""}`);
+          const clean_uni = firstCourse.university.split("(")[0].trim();
+          const town = firstCourse.university.split("-")[1]?.trim();
+
+          writeLine(`University: ${clean_uni || ""}`);
+          writeLine(`Town: ${town || ""}`);
           writeLine(`Country: ${firstCourse.country || ""}`);
           y += 5;
           writeLine(`Total Courses: ${coursesToExport.length}`);
@@ -349,15 +360,15 @@ export default {
             }
           }
 
-          fileName = firstCourse.university
-            ? `${firstCourse.university}_favorite_courses.pdf`
+          fileName = clean_uni
+            ? `${clean_uni}_favorite_courses.pdf`
             : "favorite_courses.pdf";
           doc.save(fileName);
         });
       }
     },
     routeToExchange(item) {
-      if (!this.exchanges) return;
+      if (!this.exchanges || Object.keys(this.exchanges).length === 0) return;
 
       const exchangeId = item.exchangeID;
       if (!exchangeId) {
@@ -403,7 +414,7 @@ export default {
       }
     },
     selectAllUnis() {
-      this.selectedUnis = [...this.groupedUniversityKeys];
+      this.selectedUnis = [...this.visibleUniversityKeys];
     },
     clearUniSelection() {
       this.selectedUnis = [];

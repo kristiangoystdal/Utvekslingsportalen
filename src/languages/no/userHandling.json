@@ -23,5 +23,6 @@
   "resetPassword": "Tilbakestill passord",
   "acceptTermsLabel": "Jeg godtar",
   "termsAndConditions": "vilkårene og betingelsene",
-  "favoriteCourses": "Favorittfag"
+  "favoriteCourses": "Favorittfag",
+  "searchFavorites": "Søk i favorittfag"
 }
