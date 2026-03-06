@@ -1011,23 +1011,92 @@ export default {
 		getCountryKeyFromUserInput(word) {
 			const lowerWord = word.toLowerCase();
 
-			const countryKeysEn = Object.keys(countriesNameEn);
+			const countryKeys = Object.keys(countriesNameEn);
 
-			for (const key of countryKeysEn) {
-				if (this.locale === "no") {
-					const countryNameEn = countriesNameNo[key].toLowerCase();
-					if (countryNameEn === lowerWord) {
-						return key;
-					}
-				} else {
-					const countryNameEn = countriesNameEn[key].toLowerCase();
-					if (countryNameEn === lowerWord) {
-						return key;
-					}
+			for (const key of countryKeys) {
+				const nameEn = countriesNameEn[key]?.toLowerCase();
+				const nameNo = countriesNameNo[key]?.toLowerCase();
+
+				if (nameEn === lowerWord || nameNo === lowerWord) {
+					return key;
 				}
 			}
 
 			return null;
+		},
+		normalizeCountrySearchWord(words, index) {
+			const current = words[index]?.toLowerCase();
+			const next1 = words[index + 1]?.toLowerCase();
+			const next2 = words[index + 2]?.toLowerCase();
+
+			// English / Norwegian multi-word aliases
+			if (current === "south" && next1 === "korea") {
+				words.splice(index + 1, 1);
+				return this.locale === "no" ? "Sør-Korea" : "South Korea";
+			}
+
+			if (current === "south" && next1 === "africa") {
+				words.splice(index + 1, 1);
+				return this.locale === "no" ? "Sør-Afrika" : "South Africa";
+			}
+
+			if (current === "north" && next1 === "macedonia") {
+				words.splice(index + 1, 1);
+				return this.locale === "no" ? "Nord-Makedonia" : "North Macedonia";
+			}
+
+			if (current === "czech" && next1 === "republic") {
+				words.splice(index + 1, 1);
+				return this.locale === "no" ? "Tsjekkia" : "Czech Republic";
+			}
+
+			if (current === "faroe" && next1 === "islands") {
+				words.splice(index + 1, 1);
+				return this.locale === "no" ? "Færøyene" : "Faroe Islands";
+			}
+
+			if (current === "bosnia" && next1 === "and" && next2 === "herzegovina") {
+				words.splice(index + 1, 2);
+				return this.locale === "no" ? "Bosnia-Hercegovina" : "Bosnia and Herzegovina";
+			}
+
+			// Norwegian forms already combined
+			if (current === "sør-korea") {
+				return this.locale === "no" ? "Sør-Korea" : "South Korea";
+			}
+
+			if (current === "sør-afrika") {
+				return this.locale === "no" ? "Sør-Afrika" : "South Africa";
+			}
+
+			if (current === "nord-makedonia") {
+				return this.locale === "no" ? "Nord-Makedonia" : "North Macedonia";
+			}
+
+			if (current === "bosnia-hercegovina") {
+				return this.locale === "no" ? "Bosnia-Hercegovina" : "Bosnia and Herzegovina";
+			}
+
+			if (current === "færøyene") {
+				return this.locale === "no" ? "Færøyene" : "Faroe Islands";
+			}
+
+			// Normal translations
+			if (current === "afrika") {
+				return this.locale === "no" ? "Afrika" : "Africa";
+			}
+			if (current === "africa") {
+				return this.locale === "no" ? "Afrika" : "Africa";
+			}
+			if (current === "makedonia") {
+				return this.locale === "no" ? "Makedonia" : "Macedonia";
+			}
+			if (current === "macedonia") {
+				return this.locale === "no" ? "Makedonia" : "Macedonia";
+			}
+
+			// Fallback: leave word unchanged
+			return words[index];
 		},
 		checkRouterParams() {
 			if (!this.$route || !this.$route.query) return;
@@ -1036,7 +1105,18 @@ export default {
 			if (search) {
 				const words = search.trim().split(/\s+/);
 				for (const [index, word] of words.entries()) {
-					const canonicalKey = this.getCountryKeyFromUserInput(words[index]);
+					if (!isNaN(word)) continue; // skip numbers
+
+					// Skip very short words to avoid false positives (e.g., "in", "at", "on")
+					if (word.length <= 3) {
+						// But keep them in the search query as they might be relevant for course names or other fields
+						this.exchangeSearch = search;
+						continue;
+					}
+
+					let current_word = this.normalizeCountrySearchWord(words, index);
+
+					const canonicalKey = this.getCountryKeyFromUserInput(current_word);
 
 					if (canonicalKey) {
 						const translated = this.$t(`countries.${canonicalKey}`);
@@ -1044,7 +1124,10 @@ export default {
 						this.exchangeSearch = words.join(" ");
 						break;
 					} else {
-						this.exchangeSearch = search; // fallback
+						// If no country match, just set the search query as is (after processing special cases)
+						words[index] = current_word;
+						this.exchangeSearch = words.join(" ");
+						break;
 					}
 				}
 				this.updateSearchQuery();
