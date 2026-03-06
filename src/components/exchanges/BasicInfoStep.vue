@@ -40,8 +40,9 @@
       <!-- Country & university -->
       <v-row>
         <v-col cols="12" md="6">
-          <v-autocomplete v-model="localExchange.country" :items="countryNamesTranslated"
-            :label="$t('database.country')" clearable persistent-hint autocomplete="off" :hint="$t('hints.country')" />
+          <v-autocomplete v-model="localExchange.country" :items="countryNamesTranslated" item-title="name"
+            item-value="key" :label="$t('database.country')" clearable persistent-hint autocomplete="off"
+            :hint="$t('hints.country')" />
         </v-col>
 
         <v-col cols="12" md="6">
