@@ -36,7 +36,11 @@
   <div v-if="!isMobile">
     <v-data-table v-model:expanded="expanded" :headers="translatedHeaders" :items="filteredCourseList" item-value="id"
       show-expand class="main-table dense-table" id="main-table-width" :search="courseSearch"
-      :custom-filter="rowSearchFilter" :items-per-page-text="this.$t('courses.pageText')">
+      :custom-filter="rowSearchFilter" :items-per-page-text="this.$t('courses.pageText')" :loading="coursetableLoading">
+
+      <template v-slot:loading>
+        <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
+      </template>
 
       <template v-slot:expanded-row="{ columns, item }">
         <tr>
@@ -80,7 +84,13 @@
     <v-data-table :headers="translatedMobileHeaders" v-model:expanded="expanded" :items="filteredCourseList"
       item-value="id" show-expand class="main-table fixed-table" id="main-table-width" :fixed-header="false"
       :style="{ width: '100%' }" item-class="custom-item-class" header-class="custom-header-class"
-      :search="courseSearch" :items-per-page-text="this.$t('courses.pageText')">
+      :search="courseSearch" :items-per-page-text="this.$t('courses.pageText')" :loading="coursetableLoading"
+      :custom-filter="rowSearchFilter">
+
+      <template v-slot:loading>
+        <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
+      </template>
+
       <template v-slot:item.country="{ item }">
         <div style="display: flex; align-items: center">
           <img :src="getFlagUrl(item.country)" alt="Flag" width="20" height="15" style="margin-left: 8px" />
@@ -232,17 +242,11 @@
 <script>
 import { db, auth } from "../../js/firebaseConfig.js";
 import { set, get, child, ref as dbRef } from "firebase/database";
-import { useI18n } from "vue-i18n";
-import { getCode } from "country-list";
 import countriesInformation from "../../data/countriesInformation.json";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
-import { filter } from "d3";
 
 export default {
-  setup() {
-    const user = auth.currentUser;
-  },
   data() {
     return {
       countriesInfo: countriesInformation,
@@ -261,6 +265,7 @@ export default {
       courseSearch: "",
       homeUniversities: [],
       selectedUniversity: "",
+      coursetableLoading: false,
     };
   },
   created() {
@@ -486,6 +491,8 @@ export default {
     },
     async fetchExchangeData() {
       try {
+        this.coursetableLoading = true;
+
         const snapshot = await get(child(dbRef(db), "exchanges"));
         if (!snapshot.exists()) {
           console.error("No data available");
@@ -598,6 +605,9 @@ export default {
 
       } catch (error) {
         console.error("Error fetching exchange data:", error);
+      }
+      finally {
+        this.coursetableLoading = false;
       }
     },
     showComments(course) {
