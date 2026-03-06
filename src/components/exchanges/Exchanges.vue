@@ -774,7 +774,7 @@ export default {
 							id: key,
 							...exchanges[key],
 							country: this.$t(`countries.${exchanges[key].country}`),
-							secondCountry: exchanges[key].secondCountry !== "null"
+							secondCountry: exchanges[key].secondCountry !== "null" && exchanges[key].secondCountry
 								? this.$t(`countries.${exchanges[key].secondCountry}`)
 								: null,
 						}))
