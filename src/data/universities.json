@@ -42,8 +42,8 @@
         "original_name": "The University of Queensland",
         "english_name": "University of Queensland",
         "abbreviation": "UQ",
-        "original_city": "St Lucia",
-        "english_city": "St Lucia"
+        "original_city": "Brisbane",
+        "english_city": "Brisbane"
       },
       "University of Newcastle": {
         "original_name": "University of Newcastle",
@@ -679,8 +679,8 @@
         "original_name": "UCL Erhvervsakademi og Professionshøjskole",
         "english_name": "UCL University College",
         "abbreviation": "UCL",
-        "original_city": "Roskilde",
-        "english_city": "Roskilde"
+        "original_city": "Odense",
+        "english_city": "Odense"
       },
       "VIA University College": {
         "original_name": "VIA University College",
@@ -1096,8 +1096,8 @@
         "original_name": "École centrale de Lyon",
         "english_name": "Central School of Lyon",
         "abbreviation": "ECL",
-        "original_city": "Écully",
-        "english_city": "Ecully"
+        "original_city": "Lyon",
+        "english_city": "Lyon"
       },
       "Ecole Supérieure d'Ingénieurs des Travaux de la Construction": {
         "original_name": "Ecole Supérieure d'Ingénieurs des Travaux de la Construction",
@@ -1120,8 +1120,8 @@
         "original_name": "CentraleSupélec",
         "english_name": "CentraleSupélec",
         "abbreviation": "CentraleSupélec",
-        "original_city": "Gif-sur-Yvette",
-        "english_city": "Gif-sur-Yvette"
+        "original_city": "Paris",
+        "english_city": "Paris"
       },
       "École Nationale Supérieure d'Architecture de Grenoble": {
         "original_name": "École Nationale Supérieure d'Architecture de Grenoble",
@@ -1240,8 +1240,8 @@
         "original_name": "Université Paris Nanterre",
         "english_name": "Paris Nanterre University",
         "abbreviation": "Nanterre",
-        "original_city": "Nanterre",
-        "english_city": "Nanterre"
+        "original_city": "Paris",
+        "english_city": "Paris"
       },
       "Ecole centrale de Nantes": {
         "original_name": "Ecole centrale de Nantes",
@@ -1279,8 +1279,8 @@
         "original_name": "Université Paris-Saclay",
         "english_name": "Paris-Saclay University",
         "abbreviation": "Paris-Saclay",
-        "original_city": "Saclay",
-        "english_city": "Saclay"
+        "original_city": "Paris",
+        "english_city": "Paris"
       },
       "École Nationale Supérieure d'Architecture de Paris-Belleville": {
         "original_name": "École Nationale Supérieure d'Architecture de Paris-Belleville",
