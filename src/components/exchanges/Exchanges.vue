@@ -33,8 +33,12 @@
 	<div v-if="!isMobile">
 		<v-data-table v-model:expanded="expanded" :headers="translatedHeaders" :items="exchangeList" item-value="id"
 			show-expand class="main-table" id="main-table-width" :search="exchangeSearch" :custom-filter="rowSearchFilter"
-			:items-per-page="exchangesPerPage" v-model:page="currentPage"
-			:items-per-page-text="this.$t('exchanges.pageText')">
+			:items-per-page="exchangesPerPage" v-model:page="currentPage" :items-per-page-text="this.$t('exchanges.pageText')"
+			:loading="datatableLoading">
+
+			<template v-slot:loading>
+				<v-skeleton-loader type="table-row@10"></v-skeleton-loader>
+			</template>
 
 			<template v-slot:item.country="{ item }">
 				<v-tooltip>
@@ -48,6 +52,21 @@
 						{{ item.country }}
 					</span>
 				</v-tooltip>
+			</template>
+
+			<template v-slot:item.university="{ item }">
+				<v-tooltip>
+					<template #activator="{ props }">
+						<span v-bind="props">
+							{{ item.university ? item.university.split('(')[0].trim() : '' }}
+						</span>
+					</template>
+
+					<span>
+						{{ item.university ? (item.university.split("-")[1]) : '' }}
+					</span>
+				</v-tooltip>
+
 			</template>
 
 			<template v-slot:item.homeUniversity="{ item }">
@@ -180,7 +199,12 @@
 			show-expand class="main-table fixed-table" id="main-table-width" :fixed-header="false" :style="{ width: '100%' }"
 			item-class="custom-item-class" header-class="custom-header-class" :search="exchangeSearch"
 			:custom-filter="rowSearchFilter" :items-per-page="exchangesPerPage" v-model:page="currentPage"
-			:items-per-page-text="this.$t('exchanges.pageText')">
+			:items-per-page-text="this.$t('exchanges.pageText')" :loading="datatableLoading">
+
+			<template v-slot:loading>
+				<v-skeleton-loader type="table-row@10"></v-skeleton-loader>
+			</template>
+
 			<template v-slot:item.country="{ item }">
 				<div style="display: flex; align-items: center">
 					<img :src="getFlagUrl(item.country)" alt="Flag" width="20" height="15" style="margin-left: 8px" />
@@ -414,6 +438,7 @@ import countriesInformation from "../../data/countriesInformation.json";
 import { toast } from "vue3-toastify";
 import countriesNameEn from "../../languages/en/countries.json";
 import countriesNameNo from "../../languages/no/countries.json";
+import universitiesInformation from "../../data/universities.json";
 
 
 export default {
@@ -424,6 +449,7 @@ export default {
 	data() {
 		return {
 			countriesInfo: countriesInformation,
+			universitiesInfo: universitiesInformation,
 			showFilters: false,
 			expanded: [],
 			exchangeList: [],
@@ -449,6 +475,7 @@ export default {
 			exchangeSearch: "",
 			exchangesPerPage: 10,
 			currentPage: 1,
+			datatableLoading: false,
 		};
 	},
 	created() {
@@ -736,6 +763,7 @@ export default {
 			this.countryValues = this.countryValues.filter((i) => i !== item);
 		},
 		async fetchExchangeData() {
+			this.datatableLoading = true;
 			try {
 				const snapshot = await get(child(dbRef(db), "exchanges"));
 				if (snapshot.exists()) {
@@ -757,6 +785,8 @@ export default {
 
 					// Reformat exchanges
 					let reformattedExchanges = this.reformatExchanges(exchanges);
+
+					// 
 
 					// Apply filters
 					reformattedExchanges = this.applyFilters(reformattedExchanges);
@@ -782,6 +812,8 @@ export default {
 				}
 			} catch (error) {
 				console.error("Error fetching exchange data:", error);
+			} finally {
+				this.datatableLoading = false;
 			}
 		},
 		applyFilters(exchanges) {
@@ -832,6 +864,8 @@ export default {
 							Vår: exchange.courses.Vår,
 						}
 					);
+
+
 					result.push(firstExchange);
 					result.push(newExchange);
 				} else {
@@ -840,6 +874,18 @@ export default {
 					}
 					result.push(exchange);
 				}
+
+				// Find the university data in the JSON file based on country and university name
+				const universityData = this.universitiesInfo.universities[exchange.country]?.[exchange.university];
+				if (!universityData) {
+					console.warn(`No university data found for ${exchange.university} in ${exchange.country}`);
+					return result;
+				}
+
+				let full_uni_string = universityData.english_name + "(" + universityData.original_name + " " + universityData.original_city + " " + universityData.abbreviation + ") -" + " " + universityData.english_city;
+
+				exchange.university = full_uni_string;
+
 				return result;
 			}, []);
 		},
