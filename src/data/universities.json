@@ -24,9 +24,9 @@
         "original_city": "Gold Coast",
         "english_city": "Gold Coast"
       },
-      "Royal Melbourne Institute of Technology (RMIT University)": {
+      "Royal Melbourne Institute of Technology": {
         "original_name": "Royal Melbourne Institute of Technology",
-        "english_name": "RMIT University",
+        "english_name": "Royal Melbourne Institute of Technology",
         "abbreviation": "RMIT",
         "original_city": "Melbourne",
         "english_city": "Melbourne"
@@ -1033,6 +1033,13 @@
       }
     },
     "France": {
+      "Institut d'études politiques d'Aix-en-Provence": {
+        "original_name": "Institut d'études politiques d'Aix-en-Provence",
+        "english_name": "Aix Institute of Political Studies",
+        "abbreviation": "Sciences Po Aix",
+        "original_city": "Aix-en-Provence",
+        "english_city": "Aix-en-Provence"
+      },
       "Université de Picardie Jules Verne": {
         "original_name": "Université de Picardie Jules Verne",
         "english_name": "University of Picardy Jules Verne",
