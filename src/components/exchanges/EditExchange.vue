@@ -271,6 +271,7 @@ export default {
 			universities: {},
 			semesters: [],
 			remoteExchange: {
+				id: null,
 				university: null,
 				country: null,
 				studyYear: null,
@@ -287,6 +288,7 @@ export default {
 				secondCountry: "null",
 			},
 			userExchange: {
+				id: null,
 				university: null,
 				country: null,
 				studyYear: null,
@@ -821,6 +823,8 @@ export default {
 					} else {
 						this.userExchange.secondCountry = this.getCountryKey(this.userExchange.secondCountry);
 					}
+
+					this.userExchange.id = auth.currentUser.uid;
 
 					await update(
 						dbRef(db, `exchanges/${auth.currentUser.uid}`),
