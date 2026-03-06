@@ -394,13 +394,10 @@ export default {
 						this.userExchange.courses?.Vår &&
 						Object.keys(this.userExchange.courses.Vår).length > 0;
 
-					console.log("hasFall:", hasFall, "hasSpring:", hasSpring);
 					if (hasFall && !hasSpring) this.semesters = ['Høst'];
 					else if (!hasFall && hasSpring) this.semesters = ['Vår'];
 					else if (this.userExchange.semesters?.length) this.semesters = [...this.userExchange.semesters];
 					else this.semesters = []; // fallback
-
-					console.log("Initial semesters set to:", this.semesters);
 				} else {
 					this.semesters = [];
 				}
@@ -414,44 +411,36 @@ export default {
 		},
 	},
 	computed: {
-		specializations() {
-			if (this.userExchange.study) {
-				return this.studies[this.userExchange.study];
-			} else {
-				return [];
-			}
-		},
 		countryNames() {
-			return Object.keys(this.universities);
+			return Object.keys(this.universities || {});
 		},
 		countryNamesTranslated() {
-			return Object.keys(this.universities).map((country) =>
-				this.$t(`countries.${country}`)
-			);
+			return Object.keys(this.universities || {}).map((country) => ({
+				key: country,
+				name: this.$t(`countries.${country}`)
+			}));
 		},
 		universityNames() {
-			if (this.userExchange.country) {
-				return this.universities[
-					this.countryNames[this.getCountryIndex(this.userExchange.country)]
-				];
-			} else {
-				return [];
-			}
+			if (!this.userExchange.country) return [];
+
+			const countryKey = this.getCountryKey(this.userExchange.country);
+			return Object.keys(this.universities?.[countryKey] || {});
 		},
 		secondUniversityNames() {
-			if (this.userExchange.secondCountry) {
-				return this.universities[this.userExchange.secondCountry];
-			} else {
-				return [];
-			}
+			if (!this.userExchange.secondCountry || this.userExchange.sameUniversity) return [];
+
+			const countryKey = this.getCountryKey(this.userExchange.secondCountry);
+			return Object.keys(this.universities?.[countryKey] || {});
 		},
 		universityToCountryMap() {
 			const map = {};
-			Object.keys(this.universities).forEach((country) => {
-				this.universities[country].forEach((university) => {
+
+			Object.keys(this.universities || {}).forEach((country) => {
+				Object.keys(this.universities[country] || {}).forEach((university) => {
 					map[university] = country;
 				});
 			});
+
 			return map;
 		},
 		missingBasicDataString() {
@@ -779,10 +768,8 @@ export default {
 			this.userExchange.year = newYear;
 		},
 		getCountryIndex(selectedCountry) {
-			const translatedCountries = this.countryNamesTranslated;
-			return translatedCountries.findIndex(
-				(translatedName) => translatedName === selectedCountry
-			);
+			const countryKey = this.getCountryKey(selectedCountry);
+			return this.countryNames.findIndex((country) => country === countryKey);
 		},
 		getCountryName(main) {
 			if (main) {
@@ -798,6 +785,16 @@ export default {
 				const translatedCountryName = this.$t(`countries.${countryKey}`);
 				return translatedCountryName;
 			}
+		},
+		getCountryKey(selectedCountry) {
+			if (!selectedCountry) return null;
+
+			const match = this.countryNamesTranslated.find(
+				(country) =>
+					country.key === selectedCountry || country.name === selectedCountry
+			);
+
+			return match ? match.key : selectedCountry;
 		},
 		async updateExchange() {
 			this.ensureSemesterCourses(this.semesters);
@@ -816,19 +813,13 @@ export default {
 						JSON.stringify(this.userExchange)
 					);
 
-					this.userExchange.country =
-						this.countryNames[
-						this.getCountryIndex(this.userExchange.country)
-						];
+					this.userExchange.country = this.getCountryKey(this.userExchange.country);
 
 					if (this.userExchange.sameUniversity) {
 						this.userExchange.secondUniversity = "null";
 						this.userExchange.secondCountry = "null";
 					} else {
-						this.userExchange.secondCountry =
-							this.countryNames[
-							this.getCountryIndex(this.userExchange.secondCountry)
-							];
+						this.userExchange.secondCountry = this.getCountryKey(this.userExchange.secondCountry);
 					}
 
 					await update(
@@ -863,8 +854,13 @@ export default {
 			this.userExchange.university = university;
 		},
 		setCountry(country) {
-			this.userExchange.country = country;
-			if (country != this.universityToCountryMap[country]) {
+			const countryKey = this.getCountryKey(country);
+			this.userExchange.country = countryKey;
+
+			if (
+				this.userExchange.university &&
+				this.universityToCountryMap[this.userExchange.university] !== countryKey
+			) {
 				this.userExchange.university = null;
 			}
 		},
