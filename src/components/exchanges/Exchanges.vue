@@ -885,7 +885,7 @@ export default {
 					return result;
 				}
 
-				let full_uni_string = universityData.english_name + "(" + universityData.original_name + " " + universityData.original_city + " " + universityData.abbreviation + ") -" + " " + universityData.english_city;
+				let full_uni_string = universityData.english_name + " (" + universityData.original_name + " " + universityData.original_city + " " + universityData.abbreviation + ") -" + " " + universityData.english_city;
 
 				exchange.university = full_uni_string;
 
