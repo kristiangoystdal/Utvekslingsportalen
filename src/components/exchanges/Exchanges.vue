@@ -875,10 +875,13 @@ export default {
 					result.push(exchange);
 				}
 
-				// Find the university data in the JSON file based on country and university name
-				const universityData = this.universitiesInfo.universities[exchange.country]?.[exchange.university];
+				// Get the country key from the user input
+				const countryKey = this.getCountryKeyFromUserInput(exchange.country);
+
+				// Find the university data in the JSON file based on english country and university name
+				const universityData = this.universitiesInfo.universities[countryKey]?.[exchange.university];
 				if (!universityData) {
-					console.warn(`No university data found for ${exchange.university} in ${exchange.country}`);
+					console.warn(`No university data found for ${exchange.university} in ${countryKey}`);
 					return result;
 				}
 
@@ -1011,7 +1014,7 @@ export default {
 			const countryKeysEn = Object.keys(countriesNameEn);
 
 			for (const key of countryKeysEn) {
-				if (this.locale === "en") {
+				if (this.locale === "no") {
 					const countryNameEn = countriesNameNo[key].toLowerCase();
 					if (countryNameEn === lowerWord) {
 						return key;
