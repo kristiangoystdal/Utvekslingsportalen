@@ -44,7 +44,6 @@ export async function getExchangesData() {
   const cached = readCachedExchanges();
 
   if (cached) {
-    console.log("Loaded exchanges from sessionStorage cache");
     return cached;
   }
 
@@ -58,8 +57,6 @@ export async function getExchangesData() {
 
   const exchanges = snapshot.val();
   writeCachedExchanges(exchanges);
-
-  console.log("Loaded exchanges from Firebase");
 
   return exchanges;
 }
