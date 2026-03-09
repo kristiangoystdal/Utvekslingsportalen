@@ -97,7 +97,7 @@ import { ref as dbRef, get, set, child } from "firebase/database";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
-import { getExchangesData } from "../../js/exchangeData";
+import { getExchangesData } from "../../js/exchangesCache";
 
 export default {
   name: "FavoriteCourses",
