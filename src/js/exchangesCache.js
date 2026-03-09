@@ -63,3 +63,8 @@ export async function getExchangesData() {
 
   return exchanges;
 }
+
+export async function refreshExchangesData() {
+  clearCachedExchanges();
+  return await getExchangesData();
+}
