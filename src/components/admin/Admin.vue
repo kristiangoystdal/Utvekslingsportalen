@@ -4,34 +4,6 @@
 	</div>
 	<br />
 	<v-container>
-		<!-- User List -->
-		<v-card style="padding: 20px ;">
-			<h3>{{ $t("adminPage.userListTitle") }} ({{ users.length }})</h3>
-			<v-text-field v-model="userSearch" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
-				single-line density="compact" style="width: 95%; margin: 10px auto; border-radius: 5px;"></v-text-field>
-			<v-data-table :headers="headers" :items="users" :items-per-page="5" :search="userSearch"
-				:custom-filter="makeRowFilter(headers)" density="compact" item-key="uid">
-				<template v-slot:item.actions="{ item }">
-					<v-icon @click="deleteUser(item)">mdi-delete</v-icon>
-				</template>
-			</v-data-table>
-		</v-card>
-		<br><br>
-		<!-- FAQ List -->
-		<v-card style="padding: 20px ;">
-			<h3>{{ $t("adminPage.faqListTitle") }} ({{ faqs.length }})</h3>
-			<v-text-field v-model="faqSearch" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
-				single-line density="compact" style="width: 95%; margin: 10px auto; border-radius: 5px;"></v-text-field>
-			<v-data-table :headers="faqHeaders" :items="faqs" :items-per-page="5" :search="faqSearch" density="compact"
-				item-key="id">
-				<template v-slot:item.actions="{ item }">
-					<v-icon @click="editFaq(item)">mdi-pencil</v-icon>
-					<v-icon @click="deleteFaq(item)">mdi-delete</v-icon>
-				</template>
-			</v-data-table>
-			<v-btn class="btn-primary" @click="openFaqDialog">{{ $t("adminPage.addFAQTitle") }}</v-btn>
-		</v-card>
-		<br><br>
 		<!--  Exchange List -->
 		<v-card style="padding: 20px ;">
 			<h3>{{ $t("adminPage.exchangeListTitle") }} ({{ exchanges.length }})</h3>
@@ -46,10 +18,13 @@
 					<v-icon @click="deleteExchange(item)">mdi-delete</v-icon>
 				</template>
 			</v-data-table>
-			<v-btn class="btn-primary" @click="openExchangeDialog">{{ $t("adminPage.addExchangeTitle") }}</v-btn>
+			<div style="display: inline-flex; gap: 10px; margin-top: 10px;">
+				<v-btn class="btn-primary" @click="openExchangeDialog">{{ $t("adminPage.addExchangeTitle") }}</v-btn>
+				<v-btn class="btn-third" @click="refreshExchangesData">{{ $t("adminPage.refreshExchangeData") }}</v-btn>
+			</div>
 		</v-card>
 
-		<br><br>
+		<br>
 		<!-- Course Search  -->
 		<v-card style="padding: 20px ;">
 			<h3>{{ $t("adminPage.courseListTitle") }} ({{ courseData.length }})</h3>
@@ -63,8 +38,41 @@
 					<v-icon @click="editExchangeCourse(item.exchangeID)">mdi-pencil</v-icon>
 				</template>
 			</v-data-table>
+			<div style="display: inline-flex; gap: 10px; margin-top: 10px;">
+				<v-btn class="btn-third" @click="refreshExchangesData">{{ $t("adminPage.refreshCourseData") }}</v-btn>
+			</div>
 		</v-card>
 
+		<br>
+
+		<!-- User List -->
+		<v-card style="padding: 20px ;">
+			<h3>{{ $t("adminPage.userListTitle") }} ({{ users.length }})</h3>
+			<v-text-field v-model="userSearch" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
+				single-line density="compact" style="width: 95%; margin: 10px auto; border-radius: 5px;"></v-text-field>
+			<v-data-table :headers="headers" :items="users" :items-per-page="5" :search="userSearch"
+				:custom-filter="makeRowFilter(headers)" density="compact" item-key="uid">
+				<template v-slot:item.actions="{ item }">
+					<v-icon @click="deleteUser(item)">mdi-delete</v-icon>
+				</template>
+			</v-data-table>
+		</v-card>
+		<br>
+
+		<!-- FAQ List -->
+		<v-card style="padding: 20px ;">
+			<h3>{{ $t("adminPage.faqListTitle") }} ({{ faqs.length }})</h3>
+			<v-text-field v-model="faqSearch" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
+				single-line density="compact" style="width: 95%; margin: 10px auto; border-radius: 5px;"></v-text-field>
+			<v-data-table :headers="faqHeaders" :items="faqs" :items-per-page="5" :search="faqSearch" density="compact"
+				item-key="id">
+				<template v-slot:item.actions="{ item }">
+					<v-icon @click="editFaq(item)">mdi-pencil</v-icon>
+					<v-icon @click="deleteFaq(item)">mdi-delete</v-icon>
+				</template>
+			</v-data-table>
+			<v-btn class="btn-primary" @click="openFaqDialog">{{ $t("adminPage.addFAQTitle") }}</v-btn>
+		</v-card>
 
 		<!-- Edit FAQ Dialog -->
 		<v-dialog v-model="faqDialog" max-width="500px">
@@ -130,6 +138,7 @@ import { toast } from "vue3-toastify";
 import Confirmation from "../common/Confirmation.vue";
 import EditExchange from "../exchanges/EditExchange.vue";
 
+import { getExchangesData, refreshExchangesData } from "../../js/exchangesCache";
 
 export default {
 	components: { Confirmation, EditExchange },
@@ -330,13 +339,19 @@ export default {
 		closeFaqDialog() {
 			this.faqDialog = false;
 		},
+		async refreshExchangesData() {
+			try {
+				await refreshExchangesData();
+				await this.loadExchangeData();
+			} catch (error) {
+				console.error("Error refreshing exchange data:", error);
+			}
+		},
 		async loadExchangeData() {
 			try {
-				const exchangeRef = dbRef(db, "exchanges");
-				const exchangeSnapshot = await get(exchangeRef);
-				if (exchangeSnapshot.exists()) {
-					const exchangesData = exchangeSnapshot.val();
-					this.exchanges = Object.keys(exchangesData).map(id => ({ id, ...exchangesData[id] }));
+				const exchanges = await getExchangesData();
+				if (exchanges) {
+					this.exchanges = exchanges ? Object.keys(exchanges).map(id => ({ id, ...exchanges[id] })) : [];
 				}
 			} catch (error) {
 				console.error("Error loading exchange data:", error);
@@ -445,13 +460,12 @@ export default {
 		},
 		async fetchCourseData() {
 			try {
-				const snapshot = await get(dbRef(db, "exchanges"));
-				if (!snapshot.exists()) {
+				const exchanges = await getExchangesData();
+				if (!exchanges) {
 					console.error("No exchange data available");
 					return;
 				}
 
-				const exchanges = snapshot.val();
 				const courseList = [];
 
 				const toArray = (obj) =>
@@ -537,7 +551,6 @@ export default {
 			if (typeof v === "object") return Object.values(v).map(this.toSearchText).join(" ");
 			return String(v);
 		},
-
 		// Factory that returns a Vuetify custom-filter which searches the whole row,
 		// using the provided headers' "value" keys.
 		makeRowFilter(headers) {

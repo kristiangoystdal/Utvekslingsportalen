@@ -440,6 +440,7 @@ import countriesNameEn from "../../languages/en/countries.json";
 import countriesNameNo from "../../languages/no/countries.json";
 import universitiesInformation from "../../data/universities.json";
 
+import { getExchangesData } from "../../js/exchangesCache";
 
 export default {
 	setup() {
@@ -448,6 +449,7 @@ export default {
 	},
 	data() {
 		return {
+			exchanges: {},
 			countriesInfo: countriesInformation,
 			universitiesInfo: universitiesInformation,
 			showFilters: false,
@@ -478,12 +480,15 @@ export default {
 			datatableLoading: false,
 		};
 	},
-	created() {
-		this.fetchExchangeData();
-		this.loadFavoriteCourses();
+	async created() {
+		await this.loadExchangeData();
+		await Promise.all([
+			this.fetchExchangeData(),
+			this.getValuesFromDatabase(),
+			this.loadFavoriteCourses(),
+		]);
 	},
 	mounted() {
-		this.getValuesFromDatabase();
 		window.addEventListener("resize", this.updateScreenWidth);
 		this.updateScreenWidth();
 	},
@@ -708,6 +713,9 @@ export default {
 		},
 	},
 	methods: {
+		async loadExchangeData() {
+			this.exchanges = await getExchangesData();
+		},
 		updateScreenWidth() {
 			this.screenWidth = window.innerWidth;
 		},
@@ -716,27 +724,24 @@ export default {
 		},
 		async getValuesFromDatabase() {
 			try {
-				const exchangesSnapshot = await get(child(dbRef(db), "exchanges"));
-				if (exchangesSnapshot.exists()) {
-					let exchanges = exchangesSnapshot.val();
+				if (this.exchanges && Object.keys(this.exchanges).length > 0) {
 					const countriesSet = new Set();
 					const universitiesSet = new Set();
 					const studiesSet = new Set();
 
-					for (const exchangeKey in exchanges) {
-						const exchange = exchanges[exchangeKey];
+					for (const exchangeKey in this.exchanges) {
+						const exchange = this.exchanges[exchangeKey];
 
-						// Check if either 'Høst' or 'Vår' courses exist and have at least one course
-						const hasAutumnCourses =
-							exchange.courses &&
-							exchange.courses.Høst &&
-							exchange.courses.Høst.length > 0;
-						const hasSpringCourses =
-							exchange.courses &&
-							exchange.courses.Vår &&
-							exchange.courses.Vår.length > 0;
+						const autumnCourses = this.normalizeCourseList(exchange.courses?.Høst);
+						const springCourses = this.normalizeCourseList(exchange.courses?.Vår);
+						const summerCourses = this.normalizeCourseList(exchange.courses?.Sommer);
 
-						if (hasAutumnCourses || hasSpringCourses) {
+						const hasCourses =
+							autumnCourses.length > 0 ||
+							springCourses.length > 0 ||
+							summerCourses.length > 0;
+
+						if (hasCourses) {
 							if (exchange.country) {
 								countriesSet.add(this.$t(`countries.${exchange.country}`));
 							}
@@ -765,17 +770,14 @@ export default {
 		async fetchExchangeData() {
 			this.datatableLoading = true;
 			try {
-				const snapshot = await get(child(dbRef(db), "exchanges"));
-				if (snapshot.exists()) {
-					let exchanges = snapshot.val();
-
-					exchanges = Object.keys(exchanges)
+				if (this.exchanges && Object.keys(this.exchanges).length > 0) {
+					const mappedExchanges = Object.keys(this.exchanges)
 						.map((key) => ({
 							id: key,
-							...exchanges[key],
-							country: this.$t(`countries.${exchanges[key].country}`),
-							secondCountry: exchanges[key].secondCountry !== "null" && exchanges[key].secondCountry
-								? this.$t(`countries.${exchanges[key].secondCountry}`)
+							...this.exchanges[key],
+							country: this.$t(`countries.${this.exchanges[key].country}`),
+							secondCountry: this.exchanges[key].secondCountry !== "null" && this.exchanges[key].secondCountry
+								? this.$t(`countries.${this.exchanges[key].secondCountry}`)
 								: null,
 						}))
 						.filter(
@@ -784,7 +786,7 @@ export default {
 						);
 
 					// Reformat exchanges
-					let reformattedExchanges = this.reformatExchanges(exchanges);
+					let reformattedExchanges = this.reformatExchanges(mappedExchanges);
 
 					// 
 
@@ -838,56 +840,76 @@ export default {
 				);
 			}
 			return exchanges;
+		}, formatUniversityName(country, university) {
+			const countryKey = this.getCountryKeyFromUserInput(country);
+			const universityData = this.universitiesInfo.universities[countryKey]?.[university];
+
+			if (!universityData) {
+				console.warn(`No university data found for ${university} in ${countryKey}`);
+				return university;
+			}
+
+			return `${universityData.english_name} (${universityData.original_name} ${universityData.original_city} ${universityData.abbreviation}) - ${universityData.english_city}`;
 		},
 		reformatExchanges(exchanges) {
 			return exchanges.reduce((result, exchange) => {
+				exchange.courses.Høst = this.normalizeCourseList(exchange.courses?.Høst);
+				exchange.courses.Vår = this.normalizeCourseList(exchange.courses?.Vår);
+				exchange.courses.Sommer = this.normalizeCourseList(exchange.courses?.Sommer);
 
-				// Normalize the lists so they **always** become arrays
-				exchange.courses.Høst = this.normalizeCourseList(exchange.courses.Høst);
-				exchange.courses.Vår = this.normalizeCourseList(exchange.courses.Vår);
+				const formattedMainUniversity = this.formatUniversityName(
+					exchange.country,
+					exchange.university
+				);
 
-				if (!exchange.sameUniversity && exchange.courses.Vår) {
-					const firstExchange = this.createExchange(exchange, {
-						Høst: exchange.courses.Høst,
-						Vår: [],
-					});
+				if (!exchange.sameUniversity && exchange.courses.Vår.length > 0) {
+					const formattedSecondUniversity = this.formatUniversityName(
+						exchange.secondCountry,
+						exchange.secondUniversity
+					);
+
+					const firstExchange = this.createExchange(
+						{
+							...exchange,
+							university: formattedMainUniversity,
+						},
+						{
+							Høst: exchange.courses.Høst,
+							Vår: [],
+							Sommer: [],
+						}
+					);
 
 					const newExchange = this.createExchange(
 						{
 							...exchange,
 							id: exchange.id + "new",
-							university: exchange.secondUniversity,
+							university: formattedSecondUniversity,
 							country: exchange.secondCountry,
 						},
 						{
 							Høst: [],
 							Vår: exchange.courses.Vår,
+							Sommer: [],
 						}
 					);
-
 
 					result.push(firstExchange);
 					result.push(newExchange);
 				} else {
-					if (!!exchange.courses.Høst !== !!exchange.courses.Vår) {
+					const hasAutumn = exchange.courses.Høst.length > 0;
+					const hasSpring = exchange.courses.Vår.length > 0;
+					const hasSummer = exchange.courses.Sommer.length > 0;
+
+					if ([hasAutumn, hasSpring, hasSummer].filter(Boolean).length === 1) {
 						exchange.numSemesters = 1;
 					}
-					result.push(exchange);
+
+					result.push({
+						...exchange,
+						university: formattedMainUniversity,
+					});
 				}
-
-				// Get the country key from the user input
-				const countryKey = this.getCountryKeyFromUserInput(exchange.country);
-
-				// Find the university data in the JSON file based on english country and university name
-				const universityData = this.universitiesInfo.universities[countryKey]?.[exchange.university];
-				if (!universityData) {
-					console.warn(`No university data found for ${exchange.university} in ${countryKey}`);
-					return result;
-				}
-
-				let full_uni_string = universityData.english_name + " (" + universityData.original_name + " " + universityData.original_city + " " + universityData.abbreviation + ") -" + " " + universityData.english_city;
-
-				exchange.university = full_uni_string;
 
 				return result;
 			}, []);
@@ -947,7 +969,6 @@ export default {
 				return;
 			}
 
-			// Get country and university and add to course object
 			const exchange = this.exchangeList.find(exchange =>
 				(exchange.courses.Høst &&
 					exchange.courses.Høst.some(c =>
@@ -960,21 +981,28 @@ export default {
 						c.courseCode === course.courseCode &&
 						c.courseName === course.courseName
 					)
+				) ||
+				(exchange.courses.Sommer &&
+					exchange.courses.Sommer.some(c =>
+						c.courseCode === course.courseCode &&
+						c.courseName === course.courseName
+					)
 				)
 			);
 
+			const enrichedCourse = {
+				...course,
+				country: exchange?.country ?? null,
+				university: exchange?.university ?? null,
+			};
 
-			if (exchange) {
-				course.country = exchange.country;
-				course.university = exchange.university;
-			}
-
-			// Add course to favorites if not already favorited, else remove it
-			if (!this.checkIfFavorite(course)) {
-				this.favoriteCourses.push(course);
+			if (!this.checkIfFavorite(enrichedCourse)) {
+				this.favoriteCourses.push(enrichedCourse);
 			} else {
-				this.favoriteCourses = this.favoriteCourses.filter(favCourse =>
-					!Object.keys(course).every(key => course[key] === favCourse[key])
+				this.favoriteCourses = this.favoriteCourses.filter(
+					favCourse => !Object.keys(enrichedCourse).every(
+						key => enrichedCourse[key] === favCourse[key]
+					)
 				);
 			}
 

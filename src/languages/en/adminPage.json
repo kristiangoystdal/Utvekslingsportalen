@@ -12,5 +12,7 @@
   "answer": "Answer",
   "editExchangeTitle": "Edit Exchange",
   "addExchangeTitle": "Add Exchange",
-  "courseListTitle": "Course List"
+  "courseListTitle": "Course List",
+  "refreshExchangeData": "Refresh Exchange Data",
+  "refreshCourseData": "Refresh Course Data"
 }

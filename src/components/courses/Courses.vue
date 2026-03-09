@@ -246,6 +246,8 @@ import countriesInformation from "../../data/countriesInformation.json";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
+import { getExchangesData } from "../../js/exchangesCache.js";
+
 export default {
   data() {
     return {
@@ -493,13 +495,12 @@ export default {
       try {
         this.coursetableLoading = true;
 
-        const snapshot = await get(child(dbRef(db), "exchanges"));
-        if (!snapshot.exists()) {
+        const exchanges = await getExchangesData();
+        if (!exchanges) {
           console.error("No data available");
           return;
         }
 
-        const exchanges = snapshot.val();
         this.exchanges = exchanges;
 
         // Temporary dictionary for grouping
@@ -672,6 +673,7 @@ export default {
         this.favoriteCourses = [];
         return;
       }
+
       const snapshot = await get(dbRef(db, `users/${user.uid}/favoriteCourses`));
       const courses = snapshot.val();
       this.favoriteCourses = courses
