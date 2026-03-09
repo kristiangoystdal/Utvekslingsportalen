@@ -798,6 +798,96 @@ export default {
 
 			return match ? match.key : selectedCountry;
 		},
+		buildCleanExchangeForUpload() {
+			const payload = JSON.parse(JSON.stringify(this.userExchange));
+
+			// Normalize country values before cleaning
+			payload.country = this.getCountryKey(payload.country);
+
+			if (payload.sameUniversity) {
+				payload.secondUniversity = null;
+				payload.secondCountry = null;
+			} else {
+				payload.secondCountry = this.getCountryKey(payload.secondCountry);
+			}
+
+			payload.id = this.adminMode
+				? (payload.id ?? this.exchangeToEdit?.id ?? null)
+				: auth.currentUser?.uid ?? null;
+
+			// Keep only selected semesters
+			const validSemesters = this.semesters || [];
+			const cleanedCourses = {};
+
+			for (const semester of validSemesters) {
+				const semesterCourses = payload.courses?.[semester] || {};
+				const cleanedSemesterCourses = {};
+
+				Object.entries(semesterCourses).forEach(([key, course]) => {
+					if (!course || typeof course !== "object") return;
+
+					const cleanedCourse = {};
+
+					for (const [courseKey, value] of Object.entries(course)) {
+						if (typeof value === "string") {
+							const trimmed = value.trim();
+							if (trimmed !== "" && trimmed !== "null") {
+								cleanedCourse[courseKey] = trimmed;
+							}
+						} else if (value !== null && value !== undefined) {
+							cleanedCourse[courseKey] = value;
+						}
+					}
+
+					// Skip completely empty course objects
+					if (Object.keys(cleanedCourse).length > 0) {
+						cleanedSemesterCourses[key] = cleanedCourse;
+					}
+				});
+
+				// Only include semester if it has courses
+				if (Object.keys(cleanedSemesterCourses).length > 0) {
+					cleanedCourses[semester] = cleanedSemesterCourses;
+				}
+			}
+
+			payload.courses = cleanedCourses;
+
+			// Recursive cleanup for the rest of the object
+			const cleanObject = (obj) => {
+				if (obj === null || obj === undefined) return undefined;
+
+				if (typeof obj === "string") {
+					const trimmed = obj.trim();
+					return trimmed === "" || trimmed === "null" ? undefined : trimmed;
+				}
+
+				if (Array.isArray(obj)) {
+					const cleanedArray = obj
+						.map(cleanObject)
+						.filter((item) => item !== undefined);
+
+					return cleanedArray.length > 0 ? cleanedArray : undefined;
+				}
+
+				if (typeof obj === "object") {
+					const cleanedObj = {};
+
+					for (const [key, value] of Object.entries(obj)) {
+						const cleanedValue = cleanObject(value);
+						if (cleanedValue !== undefined) {
+							cleanedObj[key] = cleanedValue;
+						}
+					}
+
+					return Object.keys(cleanedObj).length > 0 ? cleanedObj : undefined;
+				}
+
+				return obj;
+			};
+
+			return cleanObject(payload);
+		},
 		async updateExchange() {
 			this.ensureSemesterCourses(this.semesters);
 
@@ -811,28 +901,15 @@ export default {
 				try {
 					this.ensureSemesterCourses(this.semesters);
 
-					const tempUserExchange = JSON.parse(
-						JSON.stringify(this.userExchange)
-					);
+					const cleanPayload = this.buildCleanExchangeForUpload();
 
-					this.userExchange.country = this.getCountryKey(this.userExchange.country);
-
-					if (this.userExchange.sameUniversity) {
-						this.userExchange.secondUniversity = "null";
-						this.userExchange.secondCountry = "null";
-					} else {
-						this.userExchange.secondCountry = this.getCountryKey(this.userExchange.secondCountry);
-					}
-
-					this.userExchange.id = auth.currentUser.uid;
-
-					await update(
+					await set(
 						dbRef(db, `exchanges/${auth.currentUser.uid}`),
-						this.userExchange
+						cleanPayload
 					);
 
-					this.remoteExchange = JSON.parse(JSON.stringify(tempUserExchange));
-					this.userExchange = tempUserExchange;
+					this.remoteExchange = JSON.parse(JSON.stringify(cleanPayload));
+					this.userExchange = JSON.parse(JSON.stringify(cleanPayload));
 
 					toast.success(this.$t("notifications.exchangeUpdated"));
 					this.toggleEditExchange();
