@@ -217,6 +217,8 @@ import universitiesData from "../../data/universities.json";
 import { toast } from "vue3-toastify";
 import emailjs from "emailjs-com";
 
+import { refreshExchangesData, getExchangesData } from "../../js/exchangesCache";
+
 import BasicInfoStep from "./BasicInfoStep.vue";
 import CoursesStep from "./CoursesStep.vue";
 import ReviewStep from "./ReviewStep.vue";
@@ -600,14 +602,19 @@ export default {
 		},
 		async retriveUserExchange() {
 			if (auth.currentUser) {
-				// Get the user's exchange data from the database
-				const currentUser = auth.currentUser;
-				const userDocRef = dbRef(db, `exchanges/${currentUser.uid}`);
-				const userDoc = await get(userDocRef);
+
+				const exchanges = await getExchangesData();
+				if (!exchanges || Object.keys(exchanges).length === 0) {
+					console.error("No data available");
+					return;
+				}
+
+				// Get the user's exchange data 
+				const userExchange = exchanges[auth.currentUser.uid];
 
 				// If the user exists, set the userData object
-				if (userDoc.exists()) {
-					this.userData = userDoc.val();
+				if (userExchange && typeof userExchange === "object") {
+					this.userData = userExchange;
 
 					// Function to transform courses arrays to objects with numerical keys
 					const transformCourses = (exchange) => {
@@ -917,7 +924,11 @@ export default {
 				} catch (error) {
 					console.error("Error updating user exchange data: ", error);
 					toast.error(this.$t("notifications.exchangeUpdateFailure"));
+				} finally {
+					refreshExchangesData();
 				}
+			} else {
+				console.error("No user is signed in");
 			}
 		},
 		handleSemesterChange(newSemester) {
