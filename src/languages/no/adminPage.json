@@ -12,5 +12,7 @@
   "answer": "Svar",
   "editExchangeTitle": "Rediger utveksling",
   "addExchangeTitle": "Legg til utveksling",
-  "courseListTitle": "Fagliste"
+  "courseListTitle": "Fagliste",
+  "refreshExchangeData": "Oppdater utvekslingsdata",
+  "refreshCourseData": "Oppdater fagdata"
 }
