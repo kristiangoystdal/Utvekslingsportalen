@@ -97,6 +97,8 @@ import { ref as dbRef, get, set, child } from "firebase/database";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
+import { getExchangesData } from "../../js/exchangeData";
+
 export default {
   name: "FavoriteCourses",
   data() {
@@ -150,9 +152,7 @@ export default {
     },
     async fetchExchangeData() {
       try {
-        const snapshot = await get(child(dbRef(db), "exchanges"));
-        if (!snapshot.exists()) return;
-        this.exchanges = snapshot.val() || {};
+        this.exchanges = await getExchangesData();
       } catch (error) {
         console.error("Error fetching exchange data:", error);
       }
