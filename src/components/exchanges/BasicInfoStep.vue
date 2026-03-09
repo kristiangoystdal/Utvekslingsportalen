@@ -98,6 +98,9 @@ import uio_studies from "../../data/studies/uio.json";
 import uib_studies from "../../data/studies/uib.json";
 import uit_studies from "../../data/studies/uit.json";
 import uis_studies from "../../data/studies/uis.json";
+import oslomet_studies from "../../data/studies/oslomet.json";
+import bi_studies from "../../data/studies/bi.json";
+import usn_studie from "../../data/studies/usn.json";
 
 export default {
   props: {
@@ -139,6 +142,15 @@ export default {
       }
       if (this.localExchange.homeUniversity === homeUniversityJson["UiS"]) {
         return uis_studies;
+      }
+      if (this.localExchange.homeUniversity === homeUniversityJson["OsloMet"]) {
+        return oslomet_studies;
+      }
+      if (this.localExchange.homeUniversity === homeUniversityJson["BI"]) {
+        return bi_studies;
+      }
+      if (this.localExchange.homeUniversity === homeUniversityJson["USN"]) {
+        return usn_studies;
       }
 
       return {};
