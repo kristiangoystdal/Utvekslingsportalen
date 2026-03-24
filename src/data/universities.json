@@ -3831,6 +3831,55 @@
       }
     },
     "United Kingdom": {
+      "University of Portsmouth": {
+        "original_name": "University of Portsmouth",
+        "english_name": "University of Portsmouth",
+        "abbreviation": "UoP",
+        "original_city": "Portsmouth",
+        "english_city": "Portsmouth"
+      },
+      "University of Highlands and Islands": {
+        "original_name": "University of Highlands and Islands",
+        "english_name": "University of Highlands and Islands",
+        "abbreviation": "UHI",
+        "original_city": "Inverness",
+        "english_city": "Inverness"
+      },
+      "King's College London": {
+        "original_name": "King's College London",
+        "english_name": "King's College London",
+        "abbreviation": "KCL",
+        "original_city": "London",
+        "english_city": "London"
+      },
+      "Leeds Beckett University": {
+        "original_name": "Leeds Beckett University",
+        "english_name": "Leeds Beckett University",
+        "abbreviation": "LBU",
+        "original_city": "Leeds",
+        "english_city": "Leeds"
+      },
+      "University of Leeds": {
+        "original_name": "University of Leeds",
+        "english_name": "University of Leeds",
+        "abbreviation": "Leeds",
+        "original_city": "Leeds",
+        "english_city": "Leeds"
+      },
+      "Cardiff University": {
+        "original_name": "Cardiff University",
+        "english_name": "Cardiff University",
+        "abbreviation": "Cardiff",
+        "original_city": "Cardiff",
+        "english_city": "Cardiff"
+      },
+      "University of York": {
+        "original_name": "University of York",
+        "english_name": "University of York",
+        "abbreviation": "York",
+        "original_city": "York",
+        "english_city": "York"
+      },
       "The Robert Gordon University": {
         "original_name": "The Robert Gordon University",
         "english_name": "The Robert Gordon University",
