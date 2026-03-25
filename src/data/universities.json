@@ -3831,12 +3831,166 @@
       }
     },
     "United Kingdom": {
+      "Newcastle University": {
+        "original_name": "Newcastle University",
+        "english_name": "Newcastle University",
+        "abbreviation": "NU",
+        "original_city": "Newcastle upon Tyne",
+        "english_city": "Newcastle upon Tyne"
+      },
+      "University of West London": {
+        "original_name": "University of West London",
+        "english_name": "University of West London",
+        "abbreviation": "UWL",
+        "original_city": "London",
+        "english_city": "London"
+      },
+      "School of Oriental and African Studies": {
+        "original_name": "School of Oriental and African Studies",
+        "english_name": "School of Oriental and African Studies",
+        "abbreviation": "SOAS",
+        "original_city": "London",
+        "english_city": "London"
+      },
+      "University of South Wales": {
+        "original_name": "University of South Wales",
+        "english_name": "University of South Wales",
+        "abbreviation": "USW",
+        "original_city": "Cardiff",
+        "english_city": "Cardiff"
+      },
+      "University College London": {
+        "original_name": "University College London",
+        "english_name": "University College London",
+        "abbreviation": "UCL",
+        "original_city": "London",
+        "english_city": "London"
+      },
+      "The University of Aberdeen": {
+        "original_name": "The University of Aberdeen",
+        "english_name": "The University of Aberdeen",
+        "abbreviation": "Aberdeen",
+        "original_city": "Aberdeen",
+        "english_city": "Aberdeen"
+      },
+      "University of the Highlands and Islands": {
+        "original_name": "University of the Highlands and Islands",
+        "english_name": "University of the Highlands and Islands",
+        "abbreviation": "UHI",
+        "original_city": "Inverness",
+        "english_city": "Inverness"
+      },
+      "University of Portsmouth": {
+        "original_name": "University of Portsmouth",
+        "english_name": "University of Portsmouth",
+        "abbreviation": "UoP",
+        "original_city": "Portsmouth",
+        "english_city": "Portsmouth"
+      },
+      "University of Highlands and Islands": {
+        "original_name": "University of Highlands and Islands",
+        "english_name": "University of Highlands and Islands",
+        "abbreviation": "UHI",
+        "original_city": "Inverness",
+        "english_city": "Inverness"
+      },
+      "King's College London": {
+        "original_name": "King's College London",
+        "english_name": "King's College London",
+        "abbreviation": "KCL",
+        "original_city": "London",
+        "english_city": "London"
+      },
+      "Leeds Beckett University": {
+        "original_name": "Leeds Beckett University",
+        "english_name": "Leeds Beckett University",
+        "abbreviation": "LBU",
+        "original_city": "Leeds",
+        "english_city": "Leeds"
+      },
+      "University of Leeds": {
+        "original_name": "University of Leeds",
+        "english_name": "University of Leeds",
+        "abbreviation": "Leeds",
+        "original_city": "Leeds",
+        "english_city": "Leeds"
+      },
+      "Cardiff University": {
+        "original_name": "Cardiff University",
+        "english_name": "Cardiff University",
+        "abbreviation": "Cardiff",
+        "original_city": "Cardiff",
+        "english_city": "Cardiff"
+      },
+      "University of York": {
+        "original_name": "University of York",
+        "english_name": "University of York",
+        "abbreviation": "York",
+        "original_city": "York",
+        "english_city": "York"
+      },
+      "Bangor University": {
+        "original_name": "Bangor University",
+        "english_name": "Bangor University",
+        "abbreviation": "Bangor",
+        "original_city": "Bangor",
+        "english_city": "Bangor"
+      },
+      "University of Cambridge": {
+        "original_name": "University of Cambridge",
+        "english_name": "University of Cambridge",
+        "abbreviation": "Cambridge",
+        "original_city": "Cambridge",
+        "english_city": "Cambridge"
+      },
+      "Queen Mary, University of London": {
+        "original_name": "Queen Mary, University of London",
+        "english_name": "Queen Mary, University of London",
+        "abbreviation": "QMUL",
+        "original_city": "London",
+        "english_city": "London"
+      },
+      "Aston University": {
+        "original_name": "Aston University",
+        "english_name": "Aston University",
+        "abbreviation": "Aston",
+        "original_city": "Birmingham",
+        "english_city": "Birmingham"
+      },
+      "University of Chichester": {
+        "original_name": "University of Chichester",
+        "english_name": "University of Chichester",
+        "abbreviation": "UoC",
+        "original_city": "Chichester",
+        "english_city": "Chichester"
+      },
+      "The University of Manchester": {
+        "original_name": "The University of Manchester",
+        "english_name": "The University of Manchester",
+        "abbreviation": "Manchester",
+        "original_city": "Manchester",
+        "english_city": "Manchester"
+      },
+      "Edinburgh Napier University": {
+        "original_name": "Edinburgh Napier University",
+        "english_name": "Edinburgh Napier University",
+        "abbreviation": "Napier",
+        "original_city": "Edinburgh",
+        "english_city": "Edinburgh"
+      },
       "The Robert Gordon University": {
         "original_name": "The Robert Gordon University",
         "english_name": "The Robert Gordon University",
         "abbreviation": "RGU",
         "original_city": "Aberdeen",
         "english_city": "Aberdeen"
+      },
+      "Goldsmiths, University of London": {
+        "original_name": "Goldsmiths, University of London",
+        "english_name": "Goldsmiths, University of London",
+        "abbreviation": "Goldsmiths",
+        "original_city": "London",
+        "english_city": "London"
       },
       "University of Birmingham": {
         "original_name": "University of Birmingham",

@@ -212,7 +212,6 @@
 import { db, auth } from "../../js/firebaseConfig";
 import { ref as dbRef, get, set, update } from "firebase/database";
 import { onAuthStateChanged } from "firebase/auth";
-import studiesData from "../../data/studies.json";
 import universitiesData from "../../data/universities.json";
 import { toast } from "vue3-toastify";
 import emailjs from "emailjs-com";
@@ -594,7 +593,6 @@ export default {
 		loadData() {
 			// Load the studies data from the JSON file
 			try {
-				this.studies = studiesData.studies;
 				this.universities = universitiesData.universities;
 			} catch (error) {
 				console.error("There was an error loading the studies data:", error);
