@@ -24,7 +24,17 @@
 	<div class="search-wrap">
 		<v-text-field v-model="exchangeSearch" :label="$t('exchanges.search')" prepend-inner-icon="mdi-magnify" clearable
 			variant="solo" density="comfortable" rounded="xl" hide-details single-line @blur="updateSearchQuery"
-			class="search-field" />
+			@keyup.enter="addSearchChip" class="search-field">
+			<template v-slot:append-inner>
+				<transition name="enter-hint-fade">
+					<span v-if="exchangeSearch" class="enter-hint">↵</span>
+				</transition>
+			</template>
+		</v-text-field>
+	</div>
+
+	<div class="search-chips" v-if="searchChips.length > 0">
+		<v-chip v-for="chip in searchChips" :key="chip" closable @click:close="removeChip(chip)">{{ chip }}</v-chip>
 	</div>
 
 	<br />
@@ -32,7 +42,7 @@
 	<!-- Data Table -->
 	<div v-if="!isMobile">
 		<v-data-table v-model:expanded="expanded" :headers="translatedHeaders" :items="exchangeList" item-value="id"
-			show-expand class="main-table" id="main-table-width" :search="exchangeSearch" :custom-filter="rowSearchFilter"
+			show-expand class="main-table" id="main-table-width" :search="combinedSearch" :custom-filter="rowSearchFilter"
 			:items-per-page="exchangesPerPage" v-model:page="currentPage" :items-per-page-text="this.$t('exchanges.pageText')"
 			:loading="datatableLoading">
 
@@ -197,8 +207,8 @@
 	<div v-else>
 		<v-data-table :headers="translatedMobileHeaders" v-model:expanded="expanded" :items="exchangeList" item-value="id"
 			show-expand class="main-table fixed-table" id="main-table-width" :fixed-header="false" :style="{ width: '100%' }"
-			item-class="custom-item-class" header-class="custom-header-class" :search="exchangeSearch"
-			:custom-filter="rowSearchFilter" :items-per-page="exchangesPerPage" v-model:page="currentPage"
+			item-class="custom-item-class" header-class="custom-header-class"
+			:search="combinedSearch" :custom-filter="rowSearchFilter" :items-per-page="exchangesPerPage" v-model:page="currentPage"
 			:items-per-page-text="this.$t('exchanges.pageText')" :loading="datatableLoading">
 
 			<template v-slot:loading>
@@ -475,6 +485,7 @@ export default {
 			currentCourse: null,
 			favoriteCourses: [],
 			exchangeSearch: "",
+			searchChips: [],
 			exchangesPerPage: 10,
 			currentPage: 1,
 			datatableLoading: false,
@@ -673,8 +684,14 @@ export default {
 		locale() {
 			return this.$i18n.locale;
 		},
+		combinedSearch() {
+			const chips = this.searchChips.join("\0");
+			const input = this.exchangeSearch || "";
+			if (!chips && !input) return "";
+			return chips + "\x01" + input;
+		},
 		totalSearchExchanges() {
-			const search = (this.exchangeSearch || "").trim();
+			const search = this.combinedSearch.trim();
 
 			// Ingen søk: return total lengde
 			if (!search) {
@@ -692,7 +709,7 @@ export default {
 		totalSearchCountries() {
 			const countries = new Set();
 
-			const search = (this.exchangeSearch || "").trim().toLowerCase();
+			const search = this.combinedSearch.trim().toLowerCase();
 
 			this.exchangeList.forEach(group => {
 				// Ingen søk: legg til alle land
@@ -1187,6 +1204,16 @@ export default {
 				});
 			}
 		},
+		addSearchChip() {
+			const term = (this.exchangeSearch || "").trim();
+			if (term && !this.searchChips.includes(term)) {
+				this.searchChips.push(term);
+			}
+			this.exchangeSearch = "";
+		},
+		removeChip(chip) {
+			this.searchChips = this.searchChips.filter(c => c !== chip);
+		},
 		updateSearchQuery() {
 			if (!this.$route || !this.$route.query) return;
 			const r = this.$route.query.r;
@@ -1201,13 +1228,6 @@ export default {
 
 			const raw = item?.raw ?? item; // fallback in case it's already raw
 
-			// Split the search input into separate words
-			const words = search
-				.toLowerCase()
-				.trim()
-				.split(/\s+/);
-
-			// Pick only the fields you actually want to search in
 			const fieldsToSearch = [
 				"country",
 				"secondCountry",
@@ -1223,8 +1243,23 @@ export default {
 				.join(" ")
 				.toLowerCase();
 
-			// Every word in the search must appear somewhere in the row text
-			return words.every((word) => rowText.includes(word));
+			// Decode encoded search: chips\x01input
+			const sepIdx = search.indexOf("\x01");
+			const chipsPart = search.slice(0, sepIdx);
+			const inputPart = search.slice(sepIdx + 1).trim().toLowerCase();
+			const chips = chipsPart ? chipsPart.split("\0").filter(Boolean) : [];
+
+			if (!inputPart && chips.length === 0) return true;
+
+			// Input field: split into words, all must appear (AND)
+			const matchesInput = inputPart
+				? inputPart.split(/\s+/).every((word) => rowText.includes(word))
+				: false;
+
+			// Each chip is matched as a complete phrase (OR between chips)
+			const matchesChip = chips.some((chip) => rowText.includes(chip.toLowerCase()));
+
+			return matchesInput || matchesChip;
 		},
 		scrollWhenReady(index) {
 			const attemptScroll = () => {
@@ -1287,6 +1322,27 @@ body {
 
 .search-wrap {
 	margin: 10px auto 18px;
+}
+
+.enter-hint {
+	font-size: 11px;
+	color: rgba(0, 0, 0, 0.38);
+	background: rgba(0, 0, 0, 0.06);
+	border-radius: 4px;
+	padding: 2px 6px;
+	font-family: monospace;
+	pointer-events: none;
+	white-space: nowrap;
+}
+
+.enter-hint-fade-enter-active,
+.enter-hint-fade-leave-active {
+	transition: opacity 0.15s ease;
+}
+
+.enter-hint-fade-enter-from,
+.enter-hint-fade-leave-to {
+	opacity: 0;
 }
 
 /* Base */
