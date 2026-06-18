@@ -396,46 +396,6 @@ export default {
         },
       ];
     },
-    translatedMobileHeadersCourses() {
-      return [
-        {
-          title: this.$t("database.courseCode"),
-          align: "start",
-          key: "courseCode",
-        },
-        {
-          title: this.$t("database.courseName"),
-          align: "start",
-          key: "courseName",
-        },
-        {
-          title: this.$t("database.country"),
-          align: "end",
-          key: "country",
-        },
-        {
-          title: this.$t("database.university"),
-          align: "end",
-          key: "university",
-        },
-        {
-          title: this.$t("database.ECTSPoints"),
-          align: "end",
-          key: "ECTSPoints",
-        },
-        {
-          title: this.$t("database.comments"),
-          align: "end",
-          key: "comment",
-        },
-        {
-          title: "",
-          align: "end",
-          key: "favorite",
-          sortable: false,
-        },
-      ];
-    },
     totalSearchedCourses() {
       const search = (this.courseSearch || "").trim();
 
