@@ -108,6 +108,8 @@ import { getDatabase, ref, set } from "firebase/database"; // ✅ new imports fo
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
 export default {
 	data() {
 		return {
@@ -121,7 +123,7 @@ export default {
 	computed: {
 		isFormValid() {
 			const isPasswordValid = this.password.length >= 6 && this.password.length <= 50;
-			const isEmailValid = this.email.includes("@") && this.email.length <= 100;
+			const isEmailValid = EMAIL_REGEX.test(this.email);
 			const isNameValid = this.name.length <= 50 && this.name.length > 0;
 			return isPasswordValid && isEmailValid && isNameValid && this.acceptTerms;
 		},
@@ -161,7 +163,7 @@ export default {
 				} else if (this.password.length < 6) {
 					toast.error(this.$t("notifications.registerPasswordLength"));
 					return;
-				} else if (!this.email.includes("@")) {
+				} else if (!EMAIL_REGEX.test(this.email)) {
 					toast.error(this.$t("notifications.registerEmailInvalid"));
 					return;
 				}

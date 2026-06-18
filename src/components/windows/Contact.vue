@@ -32,6 +32,9 @@ import emailjs from "emailjs-com";
 import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
 export default {
 	data() {
 		return {
@@ -49,8 +52,7 @@ export default {
 			return this.form.name.length > 2;
 		},
 		validEmail() {
-			const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-			return emailPattern.test(this.form.email);
+			return EMAIL_REGEX.test(this.form.email);
 		},
 		validMessage() {
 			return this.form.message.length > 10;
@@ -68,8 +70,7 @@ export default {
 			}
 
 			// Email validation
-			const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-			if (!emailPattern.test(this.form.email)) {
+			if (!EMAIL_REGEX.test(this.form.email)) {
 				this.errors.email = this.$t("errors.contactEmail");
 				valid = false;
 			}
