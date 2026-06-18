@@ -264,7 +264,6 @@ export default {
 	data() {
 		return {
 			user: null,
-			userInformation: null,
 			panel: null,
 			coursePanel: null,
 			numCoursesMissing: 0,
@@ -966,15 +965,6 @@ export default {
 				this.currentCourse = null;
 			}
 		},
-		async loadUser() {
-			if (this.user) {
-				const userDocRef = dbRef(db, `users/${this.user.uid}`);
-				const userDoc = await get(userDocRef);
-				if (userDoc.exists()) {
-					this.userInformation = userDoc.val();
-				}
-			}
-		},
 		showUnsavedChangesToast() {
 			if (!this.isToastVisible) {
 				this.toastId = toast.warning(this.$t("myExchange.unsavedChanges"), {
@@ -1182,7 +1172,6 @@ export default {
 			}
 
 			this.user = user;
-			await this.loadUser();
 			this.loadData(); // ✅ load universities FIRST
 
 			await this.retriveUserExchange(); // ✅ NOW SAFE
