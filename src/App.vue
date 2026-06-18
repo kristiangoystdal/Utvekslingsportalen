@@ -27,9 +27,7 @@ import { ref, onMounted, onUnmounted } from "vue";
 import Header from "./components/common/Header.vue";
 import MobileFooter from "./components/common/mobileFooter.vue";
 import Footer from "./components/common/Footer.vue";
-import { useRouter } from "vue-router";
 
-const router = useRouter();
 const isDesktop = ref(window.innerWidth >= 769);
 
 const handleResize = () => {

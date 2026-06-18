@@ -201,6 +201,21 @@
 			:custom-filter="rowSearchFilter" :items-per-page="exchangesPerPage" v-model:page="currentPage"
 			:items-per-page-text="this.$t('exchanges.pageText')" :loading="datatableLoading">
 
+			<template v-slot:item.university="{ item }">
+				<v-tooltip>
+					<template #activator="{ props }">
+						<span v-bind="props">
+							{{ item.university ? item.university.split('(')[0].trim() : '' }}
+						</span>
+					</template>
+
+					<span>
+						{{ item.university ? (item.university.split("-")[1]) : '' }}
+					</span>
+				</v-tooltip>
+
+			</template>
+
 			<template v-slot:loading>
 				<v-skeleton-loader type="table-row@10"></v-skeleton-loader>
 			</template>
