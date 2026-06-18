@@ -118,7 +118,7 @@ export default {
       },
     },
     homeUniversities() {
-      return Object.values(homeUniversityJson);
+      return Object.values(homeUniversityJson || {});
     },
     studies() {
       if (!this.localExchange.homeUniversity) {
@@ -126,22 +126,22 @@ export default {
       }
 
       if (this.localExchange.homeUniversity === homeUniversityJson["NTNU"]) {
-        return ntnu_studies;
+        return ntnu_studies || { studies: {} };
       }
       if (this.localExchange.homeUniversity === homeUniversityJson["UiO"]) {
-        return uio_studies;
+        return uio_studies || { studies: {} };
       }
       if (this.localExchange.homeUniversity === homeUniversityJson["UiB"]) {
-        return uib_studies;
+        return uib_studies || { studies: {} };
       }
       if (this.localExchange.homeUniversity === homeUniversityJson["UiT"]) {
-        return uit_studies;
+        return uit_studies || { studies: {} };
       }
       if (this.localExchange.homeUniversity === homeUniversityJson["UiS"]) {
-        return uis_studies;
+        return uis_studies || { studies: {} };
       }
 
-      return {};
+      return { studies: {} };
     }
   },
   data() {

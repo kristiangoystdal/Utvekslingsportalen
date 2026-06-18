@@ -456,6 +456,7 @@ import countriesNameNo from "../../languages/no/countries.json";
 import universitiesInformation from "../../data/universities.json";
 
 import { getExchangesData } from "../../js/exchangesCache";
+import placeholderFlag from "../../assets/images/placeholder_flag.png";
 
 export default {
 	setup() {
@@ -957,6 +958,11 @@ export default {
 		getFlagUrl(country) {
 			const flagBaseUrl = "https://flagcdn.com/128x96/";
 			const countryCode = this.getCountryCode(country).toLowerCase();
+
+			if (countryCode === "unknown") {
+				return placeholderFlag;
+			}
+
 			return `${flagBaseUrl}${countryCode}.png`;
 		},
 		getCountryCode(country) {
