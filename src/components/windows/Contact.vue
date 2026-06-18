@@ -87,17 +87,23 @@ export default {
 			const isValid = this.validateForm();
 			if (isValid) {
 				try {
-					const serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-					const templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-					const userID = import.meta.env.VITE_EMAILJS_USER_ID;
+					const emailjs_serviceID = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+					const emailjs_templateID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+					const emailjs_userID = import.meta.env.VITE_EMAILJS_USER_ID;
 
-					const templateParams = {
+					if (!emailjs_serviceID || !emailjs_templateID || !emailjs_userID) {
+						console.error("Missing EmailJS configuration");
+						toast.error(this.$t("errors.emailConfigMissing"));
+						return;
+					}
+
+					const emailjs_templateParams = {
 						name: this.form.name,
 						email: this.form.email,
 						message: this.form.message,
 					};
 
-					await emailjs.send(serviceID, templateID, templateParams, userID);
+					await emailjs.send(emailjs_serviceID, emailjs_templateID, emailjs_templateParams, emailjs_userID);
 					this.handleReset();
 					toast.success(this.$t("notifications.emailSendSuccess"));
 				} catch (error) {
