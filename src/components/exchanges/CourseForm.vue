@@ -50,9 +50,7 @@ export default {
 				comments: "",
 			}),
 		},
-		updateExchange: Function,
 		unsavedChanges: Boolean,
-		removeCourse: Function, // Adding removeCourse prop
 	},
 	emits: ["submit-course"], // Declare the custom event
 	data() {
@@ -78,18 +76,7 @@ export default {
 			immediate: true,
 		},
 	},
-	methods: {
-		submit() {
-			if (this.$refs.form.validate()) {
-				this.updateExchange({ ...this.localCourse });
-			}
-		},
-		resetForm() {
-			for (const key in this.course) {
-				this.localCourse[key] = "";
-			}
-		},
-	},
+	methods: {},
 };
 </script>
 
