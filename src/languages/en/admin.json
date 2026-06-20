@@ -1,0 +1,23 @@
+{
+  "addExchangeTitle": "Add Exchange",
+  "addFAQTitle": "Add FAQ",
+  "answer": "Answer",
+  "courseListTitle": "Course List",
+  "deleteExchangeConfirmation": "Are you sure you want to delete this exchange?",
+  "deleteFAQConfirmation": "Are you sure you want to delete this FAQ?",
+  "deleteUserConfirmation": "Are you sure you want to delete this user?",
+  "editExchangeTitle": "Edit Exchange",
+  "editFAQTitle": "Edit FAQ",
+  "email": "Email",
+  "exchangeListTitle": "Exchange List",
+  "faqListTitle": "FAQ",
+  "name": "Name",
+  "pageHeader": "Admin Panel",
+  "question": "Question",
+  "refreshCourseData": "Refresh Course Data",
+  "refreshExchangeData": "Refresh Exchange Data",
+  "search": "Search",
+  "undefined": "Undefined",
+  "userId": "User Id",
+  "userListTitle": "User List"
+}

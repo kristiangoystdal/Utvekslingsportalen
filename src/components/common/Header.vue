@@ -3,41 +3,41 @@
 		<div class="header-container">
 			<router-link to="/" class="logo">
 				<img src="../../assets/images/logo.png" alt="Site Logo" />
-				<span class="site-name">{{ $t("common.siteName") }}</span>
+				<span class="site-name">{{ $t("nav.siteName") }}</span>
 			</router-link>
 			<div class="nav-and-language">
 				<nav :class="{ open: showMobileMenu }">
 					<ul>
 						<li v-if="checkAdminUser()">
 							<router-link to="/admin">{{
-								$t("navbar.adminHeader")
+								$t("nav.adminHeader")
 							}}</router-link>
 						</li>
 						<li>
-							<router-link to="/">{{ $t("navbar.homeHeader") }}</router-link>
+							<router-link to="/">{{ $t("nav.homeHeader") }}</router-link>
 						</li>
 						<li>
 							<router-link to="/utvekslinger">{{
-								$t("navbar.programHeader")
+								$t("nav.programHeader")
 							}}</router-link>
 						</li>
 
 						<li>
 							<router-link to="/kurs">{{
-								$t("navbar.coursesHeader")
+								$t("nav.coursesHeader")
 							}}</router-link>
 						</li>
 						<li>
 							<router-link to="/min_utveksling">{{
-								$t("navbar.myexchangeHeader")
+								$t("nav.myexchangeHeader")
 							}}</router-link>
 						</li>
 						<li ref="profileSwitcher">
 							<router-link v-if="isAuthenticated" to="/profil">{{
-								$t("navbar.profileHeader")
+								$t("nav.profileHeader")
 							}}</router-link>
 							<router-link v-else to="/logg_inn">{{
-								$t("navbar.loginHeader")
+								$t("nav.loginHeader")
 							}}</router-link>
 						</li>
 					</ul>
@@ -90,8 +90,8 @@ export default {
 		...mapGetters(["isAuthenticated"]),
 		authButtonText() {
 			return this.isAuthenticated
-				? this.$t("navbar.profileHeader")
-				: this.$t("navbar.loginHeader");
+				? this.$t("nav.profileHeader")
+				: this.$t("nav.loginHeader");
 		},
 		currentFlagUrl() {
 			return this.$i18n.locale === "en"

@@ -1,0 +1,14 @@
+{
+  "clickToSelect": "Klikk for å velge fil",
+  "comment": "Skriv inn studieprogram, destinasjonsland, universitet og studieår hvis det ikke er oppgitt i filen",
+  "commentLabel": "Kommentar",
+  "clear": "Nullstill",
+  "file": "Fil",
+  "fileTypesAndMax": "PDF eller PNG, maks 10MB",
+  "info": "Her kan du laste opp en fil med utvekslingsdata, for eksempel Learning Agreement. \n\nVennligst kontakt oss for mer informasjon.",
+  "label": "Velg fil (PDF eller PNG)",
+  "name": "Navn",
+  "email": "E-post",
+  "pageHeader": "Last opp data",
+  "submit": "Last opp"
+}

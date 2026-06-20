@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h2>{{ $t("userHandling.accountTitle") }}:</h2>
+		<h2>{{ $t("auth.accountTitle") }}:</h2>
 	</div>
 
 	<v-container class="py-10">
@@ -14,12 +14,12 @@
 
 					<div v-if="isVerified" class="verified-badge">
 						<v-icon color="green" class="spacing">mdi-check-circle</v-icon>
-						<span>{{ $t("userHandling.emailVerified") }}</span>
+						<span>{{ $t("auth.emailVerified") }}</span>
 					</div>
 
 					<div v-else class="unverified-badge" @click="sendVerificationEmail">
 						<v-icon color="red" class="spacing">mdi-alert-circle</v-icon>
-						<span>{{ $t("userHandling.emailNotVerified") }}</span>
+						<span>{{ $t("auth.emailNotVerified") }}</span>
 					</div>
 				</div>
 
@@ -27,10 +27,10 @@
 				<v-row>
 					<v-col cols="12">
 						<div class="info-block" v-if="user">
-							<strong>{{ $t("userHandling.name") }}:</strong>
+							<strong>{{ $t("auth.name") }}:</strong>
 							<p>{{ userData.displayName }}</p>
 							<br />
-							<strong>{{ $t("userHandling.email") }}:</strong>
+							<strong>{{ $t("auth.email") }}:</strong>
 							<p>{{ user.email }}</p>
 							<br />
 							<strong>{{ $t("database.study") }}:</strong>
@@ -43,17 +43,17 @@
 				<div class="button-row mt-2">
 					<v-btn color="primary" class="mr-3" @click="editProfile">
 						<v-icon left>mdi-account-edit</v-icon>
-						<p style="margin-left: 10px;">{{ $t("operations.edit") }}</p>
+						<p style="margin-left: 10px;">{{ $t("actions.edit") }}</p>
 					</v-btn>
 
 					<v-btn color="secondary" class="mr-3" @click="sendResetPasswordEmail">
 						<v-icon left>mdi-lock-reset</v-icon>
-						<p style="margin-left: 10px;">{{ $t("operations.changePassword") }}</p>
+						<p style="margin-left: 10px;">{{ $t("actions.changePassword") }}</p>
 					</v-btn>
 
 					<v-btn color="red" @click="signOut">
 						<v-icon left>mdi-logout</v-icon>
-						<p style="margin-left: 10px;">{{ $t("operations.signOut") }}</p>
+						<p style="margin-left: 10px;">{{ $t("actions.signOut") }}</p>
 					</v-btn>
 				</div>
 			</v-card>
@@ -80,13 +80,13 @@
 		<v-dialog v-model="dialog" persistent max-width="600px" class="dialog">
 			<v-card>
 				<v-card-title>
-					<span class="headline">{{ $t("userHandling.editProfile") }}</span>
+					<span class="headline">{{ $t("auth.editProfile") }}</span>
 				</v-card-title>
 				<v-card-text>
 					<v-form ref="editForm">
-						<v-text-field v-model="localEditData.displayName" :label="this.$t('userHandling.name')"
+						<v-text-field v-model="localEditData.displayName" :label="this.$t('auth.name')"
 							required></v-text-field>
-						<v-text-field v-model="localEditData.email" :label="this.$t('userHandling.email')" required
+						<v-text-field v-model="localEditData.email" :label="this.$t('auth.email')" required
 							readonly></v-text-field>
 						<v-autocomplete v-model="localEditData.study" :items="studyNames" :label="this.$t('database.study')"
 							required @update:modelValue="handleNewStudy"></v-autocomplete>
@@ -96,10 +96,10 @@
 				</v-card-text>
 				<v-card-actions>
 					<v-btn id="closeBtn" @click="closeDialog">
-						{{ $t("operations.cancel") }}
+						{{ $t("actions.cancel") }}
 					</v-btn>
 					<v-btn id="saveBtn" @click="saveProfile">
-						{{ $t("operations.save") }}
+						{{ $t("actions.save") }}
 					</v-btn>
 				</v-card-actions>
 			</v-card>
@@ -108,16 +108,16 @@
 		<!-- Verification Dialog -->
 		<v-dialog v-model="verificationDialog" max-width="500" class="dialog">
 			<v-card>
-				<v-card-title>{{ $t("userHandling.userNotVerified") }}</v-card-title>
+				<v-card-title>{{ $t("auth.userNotVerified") }}</v-card-title>
 				<v-card-text>
 					<v-btn class="btn btn-primary" @click="sendVerificationEmail()">
-						{{ $t("userHandling.sendVerificationEmail") }}
+						{{ $t("auth.sendVerificationEmail") }}
 					</v-btn>
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
 					<v-btn class="btn-accent" text @click="toggleVerificationDialog">
-						{{ $t("operations.close") }}
+						{{ $t("actions.close") }}
 					</v-btn>
 				</v-card-actions>
 			</v-card>

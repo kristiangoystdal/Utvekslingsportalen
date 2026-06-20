@@ -1,13 +1,13 @@
 <template>
 	<div>
-		<h2>{{ $t("adminPage.pageHeader") }}:</h2>
+		<h2>{{ $t("admin.pageHeader") }}:</h2>
 	</div>
 	<br />
 	<v-container>
 		<!--  Exchange List -->
 		<v-card style="padding: 20px ;">
-			<h3>{{ $t("adminPage.exchangeListTitle") }} ({{ exchanges.length }})</h3>
-			<v-text-field v-model="exchangeSearch" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined"
+			<h3>{{ $t("admin.exchangeListTitle") }} ({{ exchanges.length }})</h3>
+			<v-text-field v-model="exchangeSearch" :label="$t('admin.search')" prepend-inner-icon="mdi-magnify" variant="outlined"
 				hide-details single-line density="compact"
 				style="width: 95%; margin: 10px auto; border-radius: 5px;"></v-text-field>
 			<!-- Exchange list content goes here -->
@@ -19,16 +19,16 @@
 				</template>
 			</v-data-table>
 			<div style="display: inline-flex; gap: 10px; margin-top: 10px;">
-				<v-btn class="btn-primary" @click="openExchangeDialog">{{ $t("adminPage.addExchangeTitle") }}</v-btn>
-				<v-btn class="btn-third" @click="refreshExchangesData">{{ $t("adminPage.refreshExchangeData") }}</v-btn>
+				<v-btn class="btn-primary" @click="openExchangeDialog">{{ $t("admin.addExchangeTitle") }}</v-btn>
+				<v-btn class="btn-third" @click="refreshExchangesData">{{ $t("admin.refreshExchangeData") }}</v-btn>
 			</div>
 		</v-card>
 
 		<br>
 		<!-- Course Search  -->
 		<v-card style="padding: 20px ;">
-			<h3>{{ $t("adminPage.courseListTitle") }} ({{ courseData.length }})</h3>
-			<v-text-field v-model="courseSearch" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined"
+			<h3>{{ $t("admin.courseListTitle") }} ({{ courseData.length }})</h3>
+			<v-text-field v-model="courseSearch" :label="$t('admin.search')" prepend-inner-icon="mdi-magnify" variant="outlined"
 				hide-details single-line density="compact"
 				style="width: 95%; margin: 10px auto; border-radius: 5px;"></v-text-field>
 			<!-- Course list content goes here -->
@@ -39,7 +39,7 @@
 				</template>
 			</v-data-table>
 			<div style="display: inline-flex; gap: 10px; margin-top: 10px;">
-				<v-btn class="btn-third" @click="refreshExchangesData">{{ $t("adminPage.refreshCourseData") }}</v-btn>
+				<v-btn class="btn-third" @click="refreshExchangesData">{{ $t("admin.refreshCourseData") }}</v-btn>
 			</div>
 		</v-card>
 
@@ -47,8 +47,8 @@
 
 		<!-- User List -->
 		<v-card style="padding: 20px ;">
-			<h3>{{ $t("adminPage.userListTitle") }} ({{ users.length }})</h3>
-			<v-text-field v-model="userSearch" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
+			<h3>{{ $t("admin.userListTitle") }} ({{ users.length }})</h3>
+			<v-text-field v-model="userSearch" :label="$t('admin.search')" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
 				single-line density="compact" style="width: 95%; margin: 10px auto; border-radius: 5px;"></v-text-field>
 			<v-data-table :headers="headers" :items="users" :items-per-page="5" :search="userSearch"
 				:custom-filter="makeRowFilter(headers)" density="compact" item-key="uid">
@@ -61,8 +61,8 @@
 
 		<!-- FAQ List -->
 		<v-card style="padding: 20px ;">
-			<h3>{{ $t("adminPage.faqListTitle") }} ({{ faqs.length }})</h3>
-			<v-text-field v-model="faqSearch" label="Search" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
+			<h3>{{ $t("admin.faqListTitle") }} ({{ faqs.length }})</h3>
+			<v-text-field v-model="faqSearch" :label="$t('admin.search')" prepend-inner-icon="mdi-magnify" variant="outlined" hide-details
 				single-line density="compact" style="width: 95%; margin: 10px auto; border-radius: 5px;"></v-text-field>
 			<v-data-table :headers="faqHeaders" :items="faqs" :items-per-page="5" :search="faqSearch" density="compact"
 				item-key="id">
@@ -71,7 +71,7 @@
 					<v-icon @click="deleteFaq(item)">mdi-delete</v-icon>
 				</template>
 			</v-data-table>
-			<v-btn class="btn-primary" @click="openFaqDialog">{{ $t("adminPage.addFAQTitle") }}</v-btn>
+			<v-btn class="btn-primary" @click="openFaqDialog">{{ $t("admin.addFAQTitle") }}</v-btn>
 		</v-card>
 
 		<!-- Edit FAQ Dialog -->
@@ -84,18 +84,18 @@
 					<v-container>
 						<v-row>
 							<v-col cols="12">
-								<v-text-field v-model="localFaqData.question" label="Question"></v-text-field>
+								<v-text-field v-model="localFaqData.question" :label="$t('admin.question')"></v-text-field>
 							</v-col>
 							<v-col cols="12">
-								<v-text-field v-model="localFaqData.answer" label="Answer"></v-text-field>
+								<v-text-field v-model="localFaqData.answer" :label="$t('admin.answer')"></v-text-field>
 							</v-col>
 						</v-row>
 					</v-container>
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
-					<v-btn class="btn-red" text @click="closeFaqDialog">Cancel</v-btn>
-					<v-btn class="btn-primary" text @click="saveFaq">Save</v-btn>
+					<v-btn class="btn-red" text @click="closeFaqDialog">{{ $t("actions.cancel") }}</v-btn>
+					<v-btn class="btn-primary" text @click="saveFaq">{{ $t("actions.save") }}</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
@@ -115,17 +115,17 @@
 	</v-container>
 
 	<!-- Confirmation Dialog -->
-	<Confirmation ref="userConfirmationDialog" :value="userConfirmation" :title="$t('adminPage.deleteUserConfirmation')"
-		:message="localEditData.displayName !== '' ? localEditData.displayName : 'Undefined'" @yes="onUserConfirmYes"
+	<Confirmation ref="userConfirmationDialog" :value="userConfirmation" :title="$t('admin.deleteUserConfirmation')"
+		:message="localEditData.displayName !== '' ? localEditData.displayName : $t('admin.undefined')" @yes="onUserConfirmYes"
 		@no="onUserConfirmNo" />
 
-	<Confirmation ref="faqConfirmationDialog" :value="faqConfirmation" :title="$t('adminPage.deleteFAQConfirmation')"
-		:message="localFaqData.question != '' ? localFaqData.question : 'Undefined'" @yes="onFaqConfirmYes"
+	<Confirmation ref="faqConfirmationDialog" :value="faqConfirmation" :title="$t('admin.deleteFAQConfirmation')"
+		:message="localFaqData.question != '' ? localFaqData.question : $t('admin.undefined')" @yes="onFaqConfirmYes"
 		@no="onFaqConfirmNo" />
 
 	<Confirmation ref="exchangeConfirmationDialog" :value="exchangeConfirmation"
-		:title="$t('adminPage.deleteExchangeConfirmation')"
-		:message="localExchangeData.id != '' ? localExchangeData.id + ': ' + localExchangeData.country + ' - ' + localExchangeData.university : 'Undefined'"
+		:title="$t('admin.deleteExchangeConfirmation')"
+		:message="localExchangeData.id != '' ? localExchangeData.id + ': ' + localExchangeData.country + ' - ' + localExchangeData.university : $t('admin.undefined')"
 		@yes="onExchangeConfirmYes" @no="onExchangeConfirmNo" />
 
 </template>
@@ -145,9 +145,9 @@ export default {
 	data() {
 		return {
 			headers: [
-				{ title: 'User Id', value: 'uid', width: '20%' },
-				{ title: 'Name', value: 'displayName', width: '30%' },
-				{ title: 'Email', value: 'email', width: '20%' },
+				{ title: this.$t("admin.userId"), value: 'uid', width: '20%' },
+				{ title: this.$t("admin.name"), value: 'displayName', width: '30%' },
+				{ title: this.$t("admin.email"), value: 'email', width: '20%' },
 				{ title: '', value: 'actions', sortable: false, width: '5%', align: 'end' },
 			],
 			users: [],
@@ -168,8 +168,8 @@ export default {
 				answer: '',
 			},
 			faqHeaders: [
-				{ title: this.$t("adminPage.question"), value: 'question', width: '35%' },
-				{ title: this.$t("adminPage.answer"), value: 'answer', width: '55%' },
+				{ title: this.$t("admin.question"), value: 'question', width: '35%' },
+				{ title: this.$t("admin.answer"), value: 'answer', width: '55%' },
 				{ title: "", value: 'actions', sortable: false, width: '10%', align: 'end' },
 			],
 			faqSearch: '',
@@ -313,7 +313,7 @@ export default {
 		},
 		editFaq(faq) {
 			this.localFaqData = { ...faq }; // Copy FAQ data into localFaqData
-			this.faqDialogTitle = this.$t("adminPage.editFAQTitle");
+			this.faqDialogTitle = this.$t("admin.editFAQTitle");
 			this.faqDialog = true; // Open the dialog
 		},
 		async saveFaq() {
@@ -333,7 +333,7 @@ export default {
 		},
 		openFaqDialog() {
 			this.localFaqData = { question: '', answer: '' }; // Reset to empty data
-			this.faqDialogTitle = this.$t("adminPage.addFAQTitle");
+			this.faqDialogTitle = this.$t("admin.addFAQTitle");
 			this.faqDialog = true;
 		},
 		closeFaqDialog() {
@@ -375,13 +375,13 @@ export default {
 				secondUniversity: "null",
 				secondCountry: "null",
 			};
-			this.exchangeDialogTitle = this.$t("adminPage.addExchangeTitle");
+			this.exchangeDialogTitle = this.$t("admin.addExchangeTitle");
 			this.exchangeDialog = true;
 		},
 		editExchange(exchange) {
 			// Implement exchange editing logic here
 			this.localUserExchange = { ...exchange };
-			this.exchangeDialogTitle = this.$t("adminPage.editExchangeTitle");
+			this.exchangeDialogTitle = this.$t("admin.editExchangeTitle");
 			this.exchangeDialog = true;
 		},
 		editExchangeCourse(exchangeID) {
@@ -389,7 +389,7 @@ export default {
 
 			// Implement exchange editing logic here
 			this.localUserExchange = { ...exchange };
-			this.exchangeDialogTitle = this.$t("adminPage.editExchangeTitle");
+			this.exchangeDialogTitle = this.$t("admin.editExchangeTitle");
 			this.exchangeDialog = true;
 		},
 		async saveExchange(exchangeData) {
@@ -437,7 +437,7 @@ export default {
 		},
 		openExchangeDialog() {
 			this.localExchangeData = { country: '', university: '', study: '', numSemesters: 1 }; // Reset to empty data
-			this.exchangeDialogTitle = this.$t("adminPage.addExchangeTitle");
+			this.exchangeDialogTitle = this.$t("admin.addExchangeTitle");
 			this.exchangeDialog = true;
 		},
 		closeExchangeDialog() {

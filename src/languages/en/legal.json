@@ -1,9 +1,9 @@
 {
-  "legalPageTitle": "Legal Information",
+  "disclaimerTab": "Disclaimer",
   "legalPageDescription": "Privacy, Terms, and Disclaimer in one place.",
-  "updatedDate": "Updated",
+  "legalPageTitle": "Legal Information",
   "overviewTab": "Overview",
   "privacyTab": "Privacy",
   "termsTab": "Terms",
-  "disclaimerTab": "Disclaimer"
+  "updatedDate": "Updated"
 }

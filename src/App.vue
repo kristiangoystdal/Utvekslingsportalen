@@ -10,7 +10,7 @@
 			</div>
 			<div v-if="!isDesktop">
 				<div class="mobile-disclaimer">
-					{{ $t("common.disclaimer") }}
+					{{ $t("homepage.disclaimer") }}
 				</div>
 				<br><br>
 				<MobileFooter></MobileFooter>

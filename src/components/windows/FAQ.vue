@@ -1,11 +1,11 @@
 <template>
-	<h2>{{ $t("faqPage.pageHeader") }}</h2>
+	<h2>{{ $t("faq.pageHeader") }}</h2>
 	<p class="page-summary">
-		{{ $t("faqPage.info") }}
+		{{ $t("faq.info") }}
 	</p>
 
 	<v-container style="padding: 20px; max-width: 80%; margin: 10px auto">
-		<v-text-field v-model="searchQuery" :label="$t('faqPage.search')" append-icon="mdi-magnify"
+		<v-text-field v-model="searchQuery" :label="$t('faq.search')" append-icon="mdi-magnify"
 			class="mb-2"></v-text-field>
 
 		<v-row>

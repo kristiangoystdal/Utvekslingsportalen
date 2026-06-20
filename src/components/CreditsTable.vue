@@ -51,7 +51,7 @@
 				<v-card-actions>
 					<v-spacer></v-spacer>
 					<v-btn color="blue darken-1" text @click="closeCommentDialog">
-						Close
+						{{ $t('actions.close') }}
 					</v-btn>
 				</v-card-actions>
 			</v-card>

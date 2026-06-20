@@ -1,10 +1,10 @@
 <template>
-  <h2>{{ $t("userHandling.favoriteCourses") }}</h2>
+  <h2>{{ $t("auth.favoriteCourses") }}</h2>
   <div class="favorite-courses">
     <div class="d-flex flex-column flex-md-row align-start align-md-center mb-2">
       <!-- Left: label + hint -->
       <div class="mr-md-10 mb-2 mb-md-0">
-        <strong>{{ $t("operations.exportFavorites") }}</strong>
+        <strong>{{ $t("actions.exportFavorites") }}</strong>
         <div class="text-caption">
           {{ $t("hints.exportSelected") }}
         </div>
@@ -14,12 +14,12 @@
       <div class="d-flex flex-column flex-sm-row align-stretch align-sm-center ga-2 ga-md-10 w-100 w-md-auto">
         <v-btn color="primary" class="w-100 w-sm-auto" @click="exportAsPDF">
           <v-icon start>mdi-file-pdf-box</v-icon>
-          {{ $t("operations.exportAsPDF") }}
+          {{ $t("actions.exportAsPDF") }}
         </v-btn>
 
         <v-btn color="secondary" class="w-100 w-sm-auto" @click="exportAsCSV">
           <v-icon start>mdi-file-document-outline</v-icon>
-          {{ $t("operations.exportAsCSV") }}
+          {{ $t("actions.exportAsCSV") }}
         </v-btn>
       </div>
     </div>
@@ -27,11 +27,11 @@
     <!-- Sub-actions -->
     <div class="d-flex align-center ga-2">
       <v-chip size="small" prepend-icon="mdi-select-all" @click="selectAllUnis" class="cursor-pointer">
-        {{ $t("operations.selectAll") }}
+        {{ $t("actions.selectAll") }}
       </v-chip>
 
       <v-chip size="small" prepend-icon="mdi-close-circle-outline" @click="clearUniSelection" class="cursor-pointer">
-        {{ $t("operations.clearSelection") }}
+        {{ $t("actions.clearSelection") }}
       </v-chip>
     </div>
 
@@ -40,7 +40,7 @@
     <p v-if="!favoriteCourses.length">{{ $t("errors.noFavoriteCourses") }}</p>
 
     <div v-else>
-      <v-text-field v-model="q" :label="$t('userHandling.searchFavorites')" prepend-inner-icon="mdi-magnify"
+      <v-text-field v-model="q" :label="$t('auth.searchFavorites')" prepend-inner-icon="mdi-magnify"
         variant="outlined" density="compact" hide-details class="mb-3" clearable />
 
       <p v-if="q && totalMatches === 0" class="text-caption">

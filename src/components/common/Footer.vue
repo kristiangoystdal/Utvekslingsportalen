@@ -7,7 +7,7 @@
 				</span>
 			</div>
 			<div class="footer-disclaimer">
-				{{ $t("common.disclaimer") }}
+				{{ $t("homepage.disclaimer") }}
 			</div>
 
 			<div class="footer-text">
@@ -24,14 +24,14 @@ import { mapGetters } from "vuex";
 export default {
 	data: () => ({
 		links: [
-			{ name: "navbar.homeHeader", link: "/" },
-			{ name: "navbar.programHeader", link: "/utvekslinger" },
-			{ name: "navbar.myexchangeHeader", link: "/min_utveksling" },
-			{ name: "navbar.profileHeader", link: "/profil" },
-			{ name: "navbar.loginHeader", link: "/logg_inn" },
-			{ name: "navbar.contactHeader", link: "/kontakt" },
-			{ name: "navbar.faqHeader", link: "/faq" },
-			{ name: "navbar.legalHeader", link: "/terms_and_conditions" },
+			{ name: "nav.homeHeader", link: "/" },
+			{ name: "nav.programHeader", link: "/utvekslinger" },
+			{ name: "nav.myexchangeHeader", link: "/min_utveksling" },
+			{ name: "nav.profileHeader", link: "/profil" },
+			{ name: "nav.loginHeader", link: "/logg_inn" },
+			{ name: "nav.contactHeader", link: "/kontakt" },
+			{ name: "nav.faqHeader", link: "/faq" },
+			{ name: "nav.legalHeader", link: "/terms_and_conditions" },
 		],
 	}),
 	computed: {
@@ -48,11 +48,11 @@ export default {
 		filteredLinks() {
 			return this.translatedLinks.filter((link) => {
 				// Show "Profile" only if the user is logged in
-				if (link.name === this.$t("navbar.profileHeader")) {
+				if (link.name === this.$t("nav.profileHeader")) {
 					return this.isAuthenticated;
 				}
 				// Show "Login" only if the user is not logged in
-				if (link.name === this.$t("navbar.loginHeader")) {
+				if (link.name === this.$t("nav.loginHeader")) {
 					return !this.isAuthenticated;
 				}
 				// Show all other links regardless of login status

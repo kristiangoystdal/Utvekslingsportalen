@@ -1,0 +1,23 @@
+{
+  "addExchangeTitle": "Legg til utveksling",
+  "addFAQTitle": "Legg til FAQ",
+  "answer": "Svar",
+  "courseListTitle": "Fagliste",
+  "deleteExchangeConfirmation": "Er du sikker på at du vil slette denne utvekslingen?",
+  "deleteFAQConfirmation": "Er du sikker på at du vil slette denne FAQen?",
+  "deleteUserConfirmation": "Er du sikker på at du vil slette denne brukeren?",
+  "editExchangeTitle": "Rediger utveksling",
+  "editFAQTitle": "Rediger FAQ",
+  "email": "E-post",
+  "exchangeListTitle": "Utvekslingsliste",
+  "faqListTitle": "FAQ",
+  "name": "Navn",
+  "pageHeader": "Admin Panel",
+  "question": "Spørsmål",
+  "refreshCourseData": "Oppdater fagdata",
+  "refreshExchangeData": "Oppdater utvekslingsdata",
+  "search": "Søk",
+  "undefined": "Udefinert",
+  "userId": "Bruker-ID",
+  "userListTitle": "Brukerliste"
+}
