@@ -71,18 +71,18 @@
   <v-dialog v-model="deleteCourseDialog" class="dialog">
     <v-card>
       <v-card-title class="headline">
-        {{ $t("operations.confirmDelete") }}
+        {{ $t("actions.confirmDelete") }}
       </v-card-title>
       <v-card-text>
-        {{ $t("operations.confirmCourseDelete") }}
+        {{ $t("actions.confirmCourseDelete") }}
       </v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn id="noBtn" @click="toggleDialog">
-          {{ $t("operations.no") }}
+          {{ $t("actions.no") }}
         </v-btn>
         <v-btn id="yesBtn" @click="removeCourse(currentSemester, currentCourse)">
-          {{ $t("operations.yes") }}
+          {{ $t("actions.yes") }}
         </v-btn>
       </v-card-actions>
     </v-card>

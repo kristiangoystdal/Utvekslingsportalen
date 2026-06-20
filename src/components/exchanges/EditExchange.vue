@@ -83,7 +83,7 @@
 
 				<v-col cols="12" sm="4" class="d-flex justify-center">
 					<v-btn class="btn btn-danger" @click="toggleEditExchange">
-						{{ $t("operations.cancel") }}
+						{{ $t("actions.cancel") }}
 					</v-btn>
 				</v-col>
 
@@ -115,7 +115,7 @@
 				</div>
 				<br />
 				<v-btn class="btn-primary" :to="{ name: 'Login' }">
-					{{ $t("operations.signIn") }}
+					{{ $t("actions.signIn") }}
 				</v-btn>
 			</div>
 		</div>
@@ -126,18 +126,18 @@
 		<v-dialog v-if="!adminMode" v-model="deleteExchangeDialog" class="dialog">
 			<v-card>
 				<v-card-title class="headline">
-					{{ $t("operations.confirmDelete") }}
+					{{ $t("actions.confirmDelete") }}
 				</v-card-title>
 				<v-card-text>
-					{{ $t("operations.confirmExchangeDelete") }}
+					{{ $t("actions.confirmExchangeDelete") }}
 				</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
 					<v-btn id="noBtn" @click="toggleExchangeDialog()">
-						{{ $t("operations.no") }}
+						{{ $t("actions.no") }}
 					</v-btn>
 					<v-btn id="yesBtn" @click="deleteExchange()">
-						{{ $t("operations.yes") }}
+						{{ $t("actions.yes") }}
 					</v-btn>
 				</v-card-actions>
 			</v-card>
@@ -151,7 +151,7 @@
 			<div class="modal-header">
 				<div class="modal-title">
 					<v-icon class="mr-2" size="22">mdi-upload</v-icon>
-					{{ $t("uploadPage.pageHeader") }}
+					{{ $t("upload.pageHeader") }}
 				</div>
 
 				<button class="modal-close" type="button" @click="toggleUploadModal" aria-label="Close">
@@ -161,7 +161,7 @@
 
 			<!-- Body -->
 			<div class="modal-body">
-				<p class="modal-info">{{ $t("uploadPage.info") }}</p>
+				<p class="modal-info">{{ $t("upload.info") }}</p>
 
 				<!-- Dropzone -->
 				<div class="upload-dropzone" @click="triggerFilePicker" role="button" tabindex="0"
@@ -172,10 +172,10 @@
 
 					<div class="upload-text">
 						<div class="upload-file-title">
-							{{ selectedFile ? selectedFile.name : $t('uploadPage.clickToSelect') }}
+							{{ selectedFile ? selectedFile.name : $t('upload.clickToSelect') }}
 						</div>
 						<div class="upload-subtitle">
-							{{ $t('uploadPage.fileTypesAndMax') }}
+							{{ $t('upload.fileTypesAndMax') }}
 						</div>
 					</div>
 
@@ -186,9 +186,9 @@
 
 				<!-- Comment -->
 				<div class="upload-section">
-					<div class="field-title">{{ $t("uploadPage.comment") }}</div>
+					<div class="field-title">{{ $t("upload.comment") }}</div>
 
-					<v-textarea outlined rows="3" dense class="upload-input preserve" :label="$t('uploadPage.commentLabel')"
+					<v-textarea outlined rows="3" dense class="upload-input preserve" :label="$t('upload.commentLabel')"
 						v-model="comment" />
 				</div>
 			</div>
@@ -196,11 +196,11 @@
 			<!-- Footer -->
 			<div class="modal-actions">
 				<v-btn class="btn btn-danger" @click="toggleUploadModal">
-					{{ $t("operations.cancel") }}
+					{{ $t("actions.cancel") }}
 				</v-btn>
 				<v-btn class="btn-no" @click="uploadLearningAgreement" :loading="isSubmitting"
 					:disabled="isSubmitting || !selectedFile">
-					{{ $t("uploadPage.submit") }}
+					{{ $t("upload.submit") }}
 				</v-btn>
 			</div>
 		</div>
@@ -1041,7 +1041,7 @@ export default {
 		toggleEditExchange() {
 			if (this.adminMode) {
 				if (this.unsavedChanges) {
-					const ok = window.confirm(this.$t("operations.confirmLeavePage"));
+					const ok = window.confirm(this.$t("actions.confirmLeavePage"));
 					if (!ok) return;
 				}
 				this.$emit("close");
@@ -1050,7 +1050,7 @@ export default {
 
 			if (this.unsavedChanges) {
 				const confirmLeave = window.confirm(
-					this.$t("operations.confirmLeavePage")
+					this.$t("actions.confirmLeavePage")
 				)
 				if (!confirmLeave) {
 					return

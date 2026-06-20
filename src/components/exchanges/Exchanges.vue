@@ -379,7 +379,7 @@
 			<v-card-actions>
 				<v-spacer></v-spacer>
 				<v-btn class="btn btn-secondary" text @click="closeCommentDialog">
-					{{ $t("operations.close") }}
+					{{ $t("actions.close") }}
 				</v-btn>
 			</v-card-actions>
 		</v-card>
@@ -439,7 +439,7 @@
 			<v-card-actions>
 				<v-spacer></v-spacer>
 				<v-btn class="btn btn-secondary" text @click="toggleInformationDialog">
-					{{ $t("operations.close") }}
+					{{ $t("actions.close") }}
 				</v-btn>
 			</v-card-actions>
 		</v-card>

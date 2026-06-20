@@ -1,26 +1,26 @@
 <template>
   <div>
-    <h2>{{ $t("uploadPage.pageHeader") }}</h2>
+    <h2>{{ $t("upload.pageHeader") }}</h2>
     <br />
     <p class="page-summary">
-      {{ $t("uploadPage.info") }}
+      {{ $t("upload.info") }}
     </p>
 
     <v-container style="padding: 20px; max-width: 80%; margin: 10px auto">
       <form @submit.prevent="submit">
-        <v-file-input v-model="form.file" :error-messages="errors.file" :label="$t('uploadPage.file')"
+        <v-file-input v-model="form.file" :error-messages="errors.file" :label="$t('upload.file')"
           accept=".pdf,.png,.jpg,.jpeg" helper-text="Select a file to upload (PDF or image)." />
 
         <v-textarea v-model="form.comment" :counter="500" :error-messages="errors.comment"
-          :label="$t('uploadPage.comment')" helper-text="Enter any comments you have (at least 10 characters)."
+          :label="$t('upload.comment')" helper-text="Enter any comments you have (at least 10 characters)."
           rows="5" />
 
         <v-btn class="me-4" style="background-color: var(--second-color); color: white" :loading="isSubmitting"
           :disabled="isSubmitting" type="submit">
-          {{ $t("uploadPage.submit") }}
+          {{ $t("upload.submit") }}
         </v-btn>
 
-        <v-btn @click="handleReset">{{ $t("uploadPage.clear") }}</v-btn>
+        <v-btn @click="handleReset">{{ $t("upload.clear") }}</v-btn>
       </form>
     </v-container>
   </div>

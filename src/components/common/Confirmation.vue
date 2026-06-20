@@ -8,8 +8,8 @@
         {{ message }}
       </v-card-text>
       <v-card-actions>
-        <v-btn class="btn btn-primary" @click="emitYes">Yes</v-btn>
-        <v-btn class="btn btn-red" @click="emitNo">No</v-btn>
+        <v-btn class="btn btn-primary" @click="emitYes">{{ $t('actions.yes') }}</v-btn>
+        <v-btn class="btn btn-red" @click="emitNo">{{ $t('actions.no') }}</v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>

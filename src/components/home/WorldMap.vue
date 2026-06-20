@@ -9,7 +9,7 @@
 						<v-icon size="15">mdi-magnify-plus-outline</v-icon>
 						<div>
 							<div class="text-caption">
-								{{ this.$t("operations.scrollToZoomHint") }} • {{ this.$t("operations.dragToPanHint") }}
+								{{ this.$t("actions.scrollToZoomHint") }} • {{ this.$t("actions.dragToPanHint") }}
 							</div>
 						</div>
 					</div>

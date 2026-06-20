@@ -1,6 +1,6 @@
 <template>
 	<div class="zero-padding">
-		<h3>Legg til/Endre fag</h3>
+		<h3>{{ $t('myExchange.courseFormTitle') }}</h3>
 		<br />
 		<v-form ref="form" v-model="valid" class="form-grid" lazy-validation>
 			<!-- ECTS -->

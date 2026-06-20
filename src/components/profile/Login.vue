@@ -1,12 +1,12 @@
 <template>
 	<div>
-		<h2 v-if="login" class="sr-only">{{ $t("userHandling.loginTitle") }}:</h2>
-		<h2 v-else class="sr-only">{{ $t("userHandling.registerTitle") }}:</h2>
+		<h2 v-if="login" class="sr-only">{{ $t("auth.loginTitle") }}:</h2>
+		<h2 v-else class="sr-only">{{ $t("auth.registerTitle") }}:</h2>
 		<br />
 		<div class="login-container">
 			<v-card v-if="login" class="login-card box box-third-color">
 				<v-card-text>
-					<h3 class="title">{{ $t("userHandling.loginWithEmailTitle") }}</h3>
+					<h3 class="title">{{ $t("auth.loginWithEmailTitle") }}</h3>
 					<v-form @submit.prevent="loginWithEmail">
 						<v-text-field label="Email" v-model="email" type="email" required outlined hide-details></v-text-field>
 						<br />
@@ -15,16 +15,16 @@
 						<br />
 						<v-btn class="login-btn" color="primary" dark type="submit">
 							<v-icon left class="icon-spacing">mdi-login</v-icon>
-							{{ $t("operations.signIn") }}
+							{{ $t("actions.signIn") }}
 						</v-btn>
 						<br /><br />
 						<v-btn class="login-btn" color="secondary" dark @click="switchLoginRegister">
 							<v-icon left class="icon-spacing">mdi-account-plus</v-icon>
-							{{ $t("userHandling.makeNewAccount") }}
+							{{ $t("auth.makeNewAccount") }}
 						</v-btn>
 						<div class="text-center" style="margin-top: 15px;">
 							<span @click.prevent="sendResetPasswordEmail" class="forgot-password-link">
-								{{ $t("userHandling.forgotPassword") }}
+								{{ $t("auth.forgotPassword") }}
 							</span>
 						</div>
 						<br />
@@ -32,12 +32,12 @@
 						<br />
 
 						<h3 class="text-center">
-							{{ $t("userHandling.loginWithGoogleTitle") }}
+							{{ $t("auth.loginWithGoogleTitle") }}
 						</h3>
 
 						<v-btn class="login-btn btn-secondary" dark @click="loginWithGoogle">
 							<v-icon left class="icon-spacing">mdi-google</v-icon>
-							{{ $t("userHandling.loginWithGoogle") }}
+							{{ $t("auth.loginWithGoogle") }}
 						</v-btn>
 					</v-form>
 				</v-card-text>
@@ -45,7 +45,7 @@
 
 			<v-card v-if="!login" class="register-card box box-third-color">
 				<v-card-text>
-					<h3 class="title">{{ $t("userHandling.registerWithEmailTitle") }}</h3>
+					<h3 class="title">{{ $t("auth.registerWithEmailTitle") }}</h3>
 					<v-form @submit.prevent="registerWithEmail">
 						<v-text-field label="Name" v-model="name" type="text" required outlined hide-details autocomplete="name" />
 						<br />
@@ -61,9 +61,9 @@
 						<v-checkbox v-model="acceptTerms" required>
 							<template #label>
 								<span>
-									{{ $t("userHandling.acceptTermsLabel") }}
+									{{ $t("auth.acceptTermsLabel") }}
 									<a href="/terms_and_conditions" target="_blank" rel="noopener noreferrer">
-										{{ $t("userHandling.termsAndConditions") }}
+										{{ $t("auth.termsAndConditions") }}
 									</a>
 								</span>
 							</template>
@@ -72,13 +72,13 @@
 
 						<v-btn class="register-btn" color="primary" dark type="submit" :disabled="!isFormValid">
 							<v-icon left class="icon-spacing">mdi-account-plus</v-icon>
-							{{ $t("operations.register") }}
+							{{ $t("actions.register") }}
 						</v-btn>
 						<br /><br />
 
 						<v-btn class="switch-btn" color="secondary" dark @click="switchLoginRegister">
 							<v-icon left class="icon-spacing">mdi-login</v-icon>
-							{{ $t("userHandling.haveAccount") }}
+							{{ $t("auth.haveAccount") }}
 						</v-btn>
 
 						<br /> <br />
@@ -86,12 +86,12 @@
 						<br />
 
 						<h3 class="text-center">
-							{{ $t("userHandling.loginWithGoogleTitle") }}
+							{{ $t("auth.loginWithGoogleTitle") }}
 						</h3>
 
 						<v-btn class="login-btn btn-secondary" dark @click="loginWithGoogle">
 							<v-icon left class="icon-spacing">mdi-google</v-icon>
-							{{ $t("userHandling.loginWithGoogle") }}
+							{{ $t("auth.loginWithGoogle") }}
 						</v-btn>
 					</v-form>
 				</v-card-text>
@@ -187,11 +187,11 @@ export default {
 				// 3️⃣ Safely create the user profile after the user is ready
 				await this.createUserProfile(user);
 
-				toast.success("Account created successfully!");
+				toast.success(this.$t("notifications.registerSuccess"));
 				this.$router.push("/profil");
 			} catch (error) {
 				console.error("Error during email registration:", error);
-				toast.error("Registration failed");
+				toast.error(this.$t("errors.registerFailure"));
 			}
 		},
 		async createUserProfile(user) {

@@ -24,14 +24,14 @@
 				<div v-if="user != null">
 					<div class=" username">{{ userData.displayName }}</div>
 					<v-btn @click="goToProfile" class="btn btn-primary" :style="{ width: '100% !important' }">
-						{{ $t("navbar.profile") }}
+						{{ $t("nav.profile") }}
 					</v-btn>
 					<v-btn @click="signOut" class="btn btn-danger" :style="{ width: '100% !important' }">
-						{{ $t("operations.signOut") }}
+						{{ $t("actions.signOut") }}
 					</v-btn>
 				</div>
 				<div v-else>
-					<div class="username">{{ $t("operations.signIn") }}</div>
+					<div class="username">{{ $t("actions.signIn") }}</div>
 					<v-btn class="btn btn-primary" @click="goToLogin" :style="{ width: '100% !important', marginBottom: '10px' }">
 						<v-icon left class="icon-spacing" style="
 								display: inline-flex;
@@ -43,7 +43,7 @@
 								align-items: center;
 								vertical-align: middle;
 								padding-top: 1px;
-							">{{ $t("operations.loginWithEmailButton") }}</span>
+							">{{ $t("actions.loginWithEmailButton") }}</span>
 					</v-btn>
 					<v-btn class="btn btn-third" @click="loginWithGoogle" :style="{ width: '100% !important' }">
 						<v-icon left class="icon-spacing" style="
@@ -56,7 +56,7 @@
 								align-items: center;
 								vertical-align: middle;
 								padding-top: 1px;
-							">{{ $t("operations.loginWithGoogleButton") }}</span>
+							">{{ $t("actions.loginWithGoogleButton") }}</span>
 					</v-btn>
 				</div>
 			</div>
@@ -68,19 +68,19 @@
 				<div class="profile-content">
 					<router-link class="footer-icon" to="/kurs" @click="showMenuDropdown = false">
 						<v-icon size="30px">mdi-book-education-outline</v-icon>
-						<span>{{ $t("navbar.coursesHeader") }}</span>
+						<span>{{ $t("nav.coursesHeader") }}</span>
 					</router-link>
 					<router-link class="footer-icon" to="/faq" @click="showMenuDropdown = false">
 						<v-icon size="30px">mdi-chat-question</v-icon>
-						<span>{{ $t("navbar.faqHeader") }}</span>
+						<span>{{ $t("nav.faqHeader") }}</span>
 					</router-link>
 					<router-link class="footer-icon" to="/kontakt" @click="showMenuDropdown = false">
 						<v-icon size="30px">mdi-card-account-mail</v-icon>
-						<span>{{ $t("navbar.contactHeader") }}</span>
+						<span>{{ $t("nav.contactHeader") }}</span>
 					</router-link>
 					<router-link class="footer-icon" to="/terms_and_conditions" @click="showMenuDropdown = false">
 						<v-icon size="30px">mdi-gavel</v-icon>
-						<span>{{ $t("navbar.legalHeader") }}</span>
+						<span>{{ $t("nav.legalHeader") }}</span>
 					</router-link>
 				</div>
 			</div>
