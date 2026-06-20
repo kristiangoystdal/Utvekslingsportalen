@@ -64,7 +64,7 @@
 
 					<v-stepper-window-item :value="3">
 						<ReviewStep :userExchange="userExchange" :semesters="semesters" :canSubmit="canSaveExchange"
-							@submit="updateExchange" />
+							@submit="updateExchange" :saving="saving" />
 					</v-stepper-window-item>
 				</v-stepper-window>
 			</v-stepper>
@@ -320,6 +320,7 @@ export default {
 			selectedFile: null,
 			comment: "",
 			isSubmitting: false,
+			saving: false
 		};
 	},
 	watch: {
@@ -893,6 +894,8 @@ export default {
 			return cleanObject(payload);
 		},
 		async updateExchange() {
+			this.saving = true;
+
 			this.ensureSemesterCourses(this.semesters);
 
 			if (this.adminMode) {
@@ -922,6 +925,7 @@ export default {
 					console.error("Error updating user exchange data: ", error);
 					toast.error(this.$t("notifications.exchangeUpdateFailure"));
 				} finally {
+					this.saving = false;
 					refreshExchangesData();
 				}
 			} else {
