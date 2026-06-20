@@ -1,16 +1,16 @@
 {
-  "pageHeader": "Fagoversikt:",
-  "info": "Her kan du få en oversikt over hvilke fag hos de ulike utvekslingsuniversitetene som erstatter fagene i Norge.",
-  "search": "Søk etter fag",
-  "information": "Tilsvarende fag ved utvekslingsuniversiteter:",
-  "fall": "Høst",
-  "spring": "Vår",
-  "availableSemesters": "Tilgjengelige semestre",
   "availableCourses": "Tilgjengelige fag",
-  "pageText": "Fag per side",
-  "searchInfo": "Søk blant {groups} {groupWord} med {exchanges} {exchangeWord}",
-  "subject_one": "emne",
-  "subject_other": "emner",
+  "availableSemesters": "Tilgjengelige semestre",
   "exchange_one": "emnebytte",
-  "exchange_other": "emnebytter"
+  "exchange_other": "emnebytter",
+  "fall": "Høst",
+  "info": "Her kan du få en oversikt over hvilke fag hos de ulike utvekslingsuniversitetene som erstatter fagene i Norge.",
+  "information": "Tilsvarende fag ved utvekslingsuniversiteter:",
+  "pageHeader": "Fagoversikt:",
+  "pageText": "Fag per side",
+  "search": "Søk etter fag",
+  "searchInfo": "Søk blant {groups} {groupWord} med {exchanges} {exchangeWord}",
+  "spring": "Vår",
+  "subject_one": "emne",
+  "subject_other": "emner"
 }

@@ -1,12 +1,11 @@
 {
-  "welcome": "Welcome to Utvekslingsportalen!",
+  "count": "Count",
+  "disclaimer": "The Exchange Portal is not operated by NTNU. The information is based on student reports and may contain errors.",
   "goodbye": "Goodbye",
-  "siteDescription": "This site is a tool for students at NTNU to plan and document their exchange studies. \n\n Here you can see which courses other students have taken during their exchange, and you can create your own plan for your exchange.",
   "mobileWarning": "This site is not optimized for mobile devices. Please use a computer or tablet for the best experience.",
-  "createExchange": "Create Exchange",
-  "uploadExchange": "Upload Exchange",
+  "newFeature": "Support for UiO (Oslo), UiB (Bergen), UiS (Stavanger), and UiT (Tromsø) is now added! \nSelect your university when you create your exchange.",
+  "siteDescription": "This site is a tool for students at NTNU to plan and document their exchange studies. \n\n Here you can see which courses other students have taken during their exchange, and you can create your own plan for your exchange.",
   "topCountries": "Top 10 Destination Countries",
   "topStudyPrograms": "Top 10 Study Programs",
-  "count": "Count",
-  "newFeature": "Support for UiO (Oslo), UiB (Bergen), UiS (Stavanger), and UiT (Tromsø) is now added! \nSelect your university when you create your exchange."
+  "welcome": "Welcome to Utvekslingsportalen!"
 }

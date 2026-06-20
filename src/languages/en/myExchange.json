@@ -31,5 +31,6 @@
   "deleteMyExchange": "Delete My Exchange",
   "coursesMissingData": "Some courses are missing necessary information",
   "leaveWithUnsavedChanges": "You have unsaved data. Remember to update.",
-  "uploadLearningAgreement": "Upload Learning Agreement"
+  "uploadLearningAgreement": "Upload Learning Agreement",
+  "courseFormTitle": "Add/Edit Course"
 }

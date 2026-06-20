@@ -1,0 +1,14 @@
+{
+  "clickToSelect": "Click to select file",
+  "comment": "Please include study program, destination country, university, and study year if not included in the file",
+  "commentLabel": "Comment",
+  "clear": "Reset",
+  "file": "File",
+  "fileTypesAndMax": "PDF or PNG, max 10MB",
+  "info": "Here you can upload a file with exchange data, for example Learning Agreement. \n\nPlease contact us for more information.",
+  "label": "Select file (PDF or PNG)",
+  "name": "Name",
+  "email": "Email",
+  "pageHeader": "Upload Data",
+  "submit": "Upload"
+}

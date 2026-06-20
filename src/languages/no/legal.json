@@ -1,9 +1,9 @@
 {
-  "legalPageTitle": "Juridisk informasjon",
+  "disclaimerTab": "Ansvarsfraskrivelse",
   "legalPageDescription": "Personvern, vilkår og ansvarsfraskrivelse samlet på ett sted.",
-  "updatedDate": "Oppdatert",
+  "legalPageTitle": "Juridisk informasjon",
   "overviewTab": "Oversikt",
   "privacyTab": "Personvern",
   "termsTab": "Vilkår",
-  "disclaimerTab": "Ansvarsfraskrivelse"
+  "updatedDate": "Oppdatert"
 }
