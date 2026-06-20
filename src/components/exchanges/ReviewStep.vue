@@ -45,7 +45,8 @@
     </v-card>
 
     <!-- Submit -->
-    <v-btn v-if="showSubmitButton" color="success" size="large" :disabled="!canSubmit" @click="$emit('submit')">
+    <v-btn v-if="showSubmitButton" color="success" size="large" :disabled="!canSubmit || saving"
+      :loading="saving" @click="$emit('submit')">
       {{ $t("wizard.review.submit") }}
     </v-btn>
   </div>
@@ -60,6 +61,10 @@ export default {
     showSubmitButton: {
       type: Boolean,
       default: true,
+    },
+    saving: {
+      type: Boolean,
+      default: false,
     },
   },
   emits: ["submit"],
