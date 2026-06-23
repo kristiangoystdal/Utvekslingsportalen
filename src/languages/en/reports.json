@@ -1,0 +1,59 @@
+{
+  "pageHeader": "Exchange Reports",
+  "info": "Read reports from students who have been on exchange, or share your own experience.",
+
+  "writeReport": "Write a Report",
+  "editReport": "Edit Report",
+  "myReports": "My Reports",
+
+  "title": "Title",
+  "content": "Your Experience",
+  "pros": "Pros",
+  "cons": "Cons",
+  "tips": "Tips for Future Students",
+  "addPro": "Add a pro",
+  "addCon": "Add a con",
+
+  "ratings": "Ratings",
+  "overall": "Overall",
+  "academic": "Academic",
+  "social": "Social Life",
+  "housing": "Housing",
+  "costOfLiving": "Cost of Living",
+
+  "submit": "Submit Report",
+  "save": "Save Changes",
+  "saveDraft": "Save as Draft",
+  "edit": "Edit",
+  "delete": "Delete",
+  "cancel": "Cancel",
+
+  "published": "Published",
+  "pending": "Pending",
+  "rejected": "Rejected",
+
+  "titleRequired": "A title is required.",
+  "contentRequired": "Please write about your experience.",
+  "ratingRequired": "Please provide an overall rating.",
+
+  "filterByCountry": "Filter by country",
+  "filterByUniversity": "Filter by university",
+  "filterByStudy": "Filter by study program",
+  "sortBy": "Sort by",
+  "newest": "Newest",
+  "oldest": "Oldest",
+  "highestRated": "Highest rated",
+
+  "writtenBy": "Written by",
+  "exchangeAt": "Exchange at",
+  "readMore": "Read more",
+  "viewExchange": "View exchange",
+  "helpful": "Helpful",
+  "reportCount": "{count} reports",
+
+  "noReports": "No reports yet. Be the first to share your exchange experience!",
+  "noReportsForFilter": "No reports match your filters.",
+
+  "confirmDelete": "Delete report?",
+  "confirmDeleteBody": "This action cannot be undone. Are you sure you want to delete this report?"
+}
