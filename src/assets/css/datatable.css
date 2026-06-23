@@ -8,6 +8,7 @@
     margin: auto !important;
     width: 100% !important;
     max-width: 1200px !important;
+    overflow-x: hidden;
 }
 
 .main-table {
@@ -32,12 +33,14 @@
 }
 
 .virtual-table th {
-    background-color: var(--first-color);
-    color: var(--fourth-color);
+    background-color: var(--third-color, #dbe2ef);
+    color: var(--first-color, #112d4e);
+    font-weight: 600;
+    font-size: 13px;
 }
 
 .virtual-table th:hover {
-    color: var(--third-color) !important;
+    color: var(--second-color) !important;
 }
 
 .filter-container {
@@ -53,7 +56,7 @@
 }
 
 #coursesStyle {
-    background-color: var(--third-color) !important;
+    background-color: #f0f4fa !important;
 }
 
 @media (max-width: 1200px) {
@@ -89,6 +92,7 @@
 .fixed-table {
     width: 100%;
     table-layout: fixed;
+    max-width: 100vw;
 }
 
 .fixed-table th,

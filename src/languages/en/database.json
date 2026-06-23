@@ -9,6 +9,7 @@
   "institute": "Institute",
   "numSemesters": "Number of Semesters",
   "replacedCourseCode": "Replaced Course Code",
+  "replaces": "replaces",
   "replacedCourseName": "Replaced Course Name",
   "semester": "Semester",
   "specialization": "Specialization",
