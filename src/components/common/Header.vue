@@ -68,9 +68,8 @@
 <script>
 import { mapGetters } from "vuex";
 import { VIcon } from "vuetify/components";
-import { auth, db, provider } from "../../js/firebaseConfig";
-import { onAuthStateChanged, signOut, signInWithPopup } from "firebase/auth";
-import { ref as dbRef, get, set, update } from "firebase/database";
+import { auth, provider } from "../../js/firebaseConfig";
+import { signOut, signInWithPopup } from "firebase/auth";
 
 
 export default {
@@ -82,12 +81,10 @@ export default {
 		return {
 			showLanguageDropdown: false,
 			showMobileMenu: false,
-			userData: null,
-			user: null,
 		};
 	},
 	computed: {
-		...mapGetters(["isAuthenticated"]),
+		...mapGetters(["isAuthenticated", "user", "userData"]),
 		authButtonText() {
 			return this.isAuthenticated
 				? this.$t("nav.profileHeader")
@@ -121,8 +118,6 @@ export default {
 		async signOut() {
 			try {
 				await signOut(auth);
-				this.user = null;
-				this.userData = null;
 				this.$router.go();
 			} catch (error) {
 				console.error("Error signing out: ", error);
@@ -130,8 +125,7 @@ export default {
 		},
 		async loginWithGoogle() {
 			try {
-				const result = await signInWithPopup(auth, provider);
-				this.user = result.user;
+				await signInWithPopup(auth, provider);
 				this.$router.go();
 			} catch (error) {
 				console.error("Error during sign-in:", error);
@@ -143,36 +137,8 @@ export default {
 	},
 	mounted() {
 		document.addEventListener("click", this.handleClickOutside);
-
-		// Handle user authentication state
-		onAuthStateChanged(auth, async (currentUser) => {
-			if (currentUser) {
-				this.user = currentUser;
-				const userDocRef = dbRef(db, `users/${currentUser.uid}`);
-				const userDoc = await get(userDocRef);
-				if (userDoc.exists()) {
-					this.userData = userDoc.val();
-				} else {
-					// If user does not exist, show edit dialog
-					this.localEditData = {
-						displayName: currentUser.displayName || "",
-						email: currentUser.email || "",
-					};
-
-					// Create a new user record with initial values
-					await set(userDocRef, {
-						displayName: currentUser.displayName || "",
-						email: currentUser.email,
-					});
-				}
-			} else {
-				this.user = null;
-				this.userData = null;
-			}
-			this.loading = false;
-		});
 	},
-	beforeDestroy() {
+	beforeUnmount() {
 		document.removeEventListener("click", this.handleClickOutside);
 	},
 };
