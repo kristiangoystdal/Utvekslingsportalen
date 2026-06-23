@@ -76,7 +76,23 @@ export default {
 			immediate: true,
 		},
 	},
-	methods: {},
+	methods: {
+		normalizeEcts() {
+			if (this.localCourse.ECTSPoints) {
+				this.localCourse.ECTSPoints = String(parseFloat(this.localCourse.ECTSPoints) || "");
+			}
+		},
+		normalizeCourseCode() {
+			if (this.localCourse.courseCode) {
+				this.localCourse.courseCode = this.localCourse.courseCode.toUpperCase().trim();
+			}
+		},
+		normalizeReplacedCourseCode() {
+			if (this.localCourse.replacedCourseCode) {
+				this.localCourse.replacedCourseCode = this.localCourse.replacedCourseCode.toUpperCase().trim();
+			}
+		}
+	},
 };
 </script>
 
