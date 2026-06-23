@@ -9,7 +9,7 @@ import Login from '../components/profile/Login.vue';
 import FAQ from '../components/windows/FAQ.vue';
 import Admin from '../components/admin/Admin.vue';
 import NotFound from '../components/error/NotFound.vue';
-import Upload from '../components/windows/Upload.vue';
+
 import Courses from '../components/courses/Courses.vue';
 import Legal from '../components/docs/Legal.vue'
 
@@ -98,17 +98,7 @@ const routes = [
     }
   },
 
-  {
-    path: '/last_opp',
-    name: 'Upload',
-    component: Upload,
-    meta: {
-      title: "Last opp rapport",
-      description: "Last opp din utvekslingsrapport og hjelp andre NTNU-studenter med å finne riktig universitet."
-    }
-  },
-
-  {
+{
     path: '/kurs',
     name: 'Courses',
     component: Courses,

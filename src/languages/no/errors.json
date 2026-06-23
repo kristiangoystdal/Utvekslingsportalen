@@ -17,5 +17,7 @@
   "notLoggedIn": "Profil ikke tilgjengelig. Vennligst logg inn",
   "registerFailure": "Registrering mislyktes",
   "selectUniversityForPDF": "Vennligst velg minst ett universitet for å eksportere som PDF.",
+  "fileTooLarge": "Filen er for stor. Maksimal størrelse er 10 MB.",
+  "fileTypeNotAllowed": "Filtypen er ikke tillatt. Vennligst last opp en PDF, PNG eller JPEG.",
   "uploadFileRequired": "En fil må lastes opp for å fortsette."
 }
