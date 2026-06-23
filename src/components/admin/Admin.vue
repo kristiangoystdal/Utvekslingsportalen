@@ -223,11 +223,15 @@ export default {
 	},
 	computed: {
 		...mapGetters(["user"]),
+		isAdmin() {
+			const adminUserId = import.meta.env.VITE_ADMIN_USER_ID;
+			return !!adminUserId && !!this.user && this.user.uid === String(adminUserId);
+		},
 	},
 	watch: {
 		user: {
 			handler(newUser) {
-				if (newUser) {
+				if (newUser && this.isAdmin) {
 					this.loadUserData();
 					this.loadFAQData();
 					this.loadExchangeData();
