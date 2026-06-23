@@ -154,11 +154,11 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // Navigation guard for authentication and admin access
   const isAuthenticated = store.getters.isAuthenticated; // Check if user is authenticated
-  const adminUserId = String(import.meta.env.VITE_ADMIN_USER_ID); // Ensure Admin user ID is a string
-  const currentUserId = String(store.getters.user?.uid || ''); // Ensure current user ID is a string
+  const adminUserId = import.meta.env.VITE_ADMIN_USER_ID;
+  const currentUserId = store.getters.user?.uid;
 
   // Admin gate: Only allow access to Admin route if user is authenticated and is the admin
-  if (to.name === 'Admin' && (!isAuthenticated || currentUserId !== adminUserId)) {
+  if (to.name === 'Admin' && (!adminUserId || !isAuthenticated || String(currentUserId) !== String(adminUserId))) {
     return next({ name: 'Home' }); // Redirect unauthorized users to the home page
   }
 
