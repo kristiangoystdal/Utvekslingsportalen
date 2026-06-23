@@ -11,6 +11,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
       - name: Set environment variables for Vite
         run: |
           echo "VITE_FIREBASE_API_KEY=${{ vars.VITE_FIREBASE_API_KEY }}" >> $GITHUB_ENV
