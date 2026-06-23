@@ -4,59 +4,42 @@
 		<h2 v-else class="sr-only">{{ $t("auth.registerTitle") }}:</h2>
 		<br />
 		<div class="login-container">
-			<v-card v-if="login" class="login-card box box-third-color">
+			<v-card class="auth-card" elevation="1">
+				<div class="auth-tabs">
+					<button class="auth-tab" :class="{ active: login }" @click="login = true">
+						{{ $t("auth.loginTitle") }}
+					</button>
+					<button class="auth-tab" :class="{ active: !login }" @click="login = false">
+						{{ $t("auth.registerTitle") }}
+					</button>
+				</div>
+
 				<v-card-text>
-					<h3 class="title">{{ $t("auth.loginWithEmailTitle") }}</h3>
-					<v-form @submit.prevent="loginWithEmail">
+					<v-form v-if="login" @submit.prevent="loginWithEmail">
 						<v-text-field label="Email" v-model="email" type="email" required outlined hide-details></v-text-field>
 						<br />
-						<v-text-field label="Password" v-model="password" type="password" required outlined
+						<v-text-field :label="$t('auth.password')" v-model="password" type="password" required outlined
 							hide-details></v-text-field>
-						<br />
-						<v-btn class="login-btn" color="primary" dark type="submit">
-							<v-icon left class="icon-spacing">mdi-login</v-icon>
-							{{ $t("actions.signIn") }}
-						</v-btn>
-						<br /><br />
-						<v-btn class="login-btn" color="secondary" dark @click="switchLoginRegister">
-							<v-icon left class="icon-spacing">mdi-account-plus</v-icon>
-							{{ $t("auth.makeNewAccount") }}
-						</v-btn>
-						<div class="text-center" style="margin-top: 15px;">
+						<div class="forgot-password-wrapper">
 							<span @click.prevent="sendResetPasswordEmail" class="forgot-password-link">
 								{{ $t("auth.forgotPassword") }}
 							</span>
 						</div>
 						<br />
-						<v-divider></v-divider>
-						<br />
-
-						<h3 class="text-center">
-							{{ $t("auth.loginWithGoogleTitle") }}
-						</h3>
-
-						<v-btn class="login-btn btn-secondary" dark @click="loginWithGoogle">
-							<v-icon left class="icon-spacing">mdi-google</v-icon>
-							{{ $t("auth.loginWithGoogle") }}
+						<v-btn class="action-btn" color="primary" dark type="submit">
+							{{ $t("actions.signIn") }}
 						</v-btn>
 					</v-form>
-				</v-card-text>
-			</v-card>
 
-			<v-card v-if="!login" class="register-card box box-third-color">
-				<v-card-text>
-					<h3 class="title">{{ $t("auth.registerWithEmailTitle") }}</h3>
-					<v-form @submit.prevent="registerWithEmail">
-						<v-text-field label="Name" v-model="name" type="text" required outlined hide-details autocomplete="name" />
+					<v-form v-else @submit.prevent="registerWithEmail">
+						<v-text-field :label="$t('auth.name')" v-model="name" type="text" required outlined hide-details
+							autocomplete="name" />
 						<br />
-
 						<v-text-field label="Email" v-model="email" type="email" required outlined hide-details
 							autocomplete="username" />
 						<br />
-
-						<v-text-field label="Password" v-model="password" type="password" required outlined hide-details
+						<v-text-field :label="$t('auth.password')" v-model="password" type="password" required outlined hide-details
 							autocomplete="new-password" />
-						<br />
 
 						<v-checkbox v-model="acceptTerms" required>
 							<template #label>
@@ -68,32 +51,22 @@
 								</span>
 							</template>
 						</v-checkbox>
-						<br />
 
-						<v-btn class="register-btn" color="primary" dark type="submit" :disabled="!isFormValid">
-							<v-icon left class="icon-spacing">mdi-account-plus</v-icon>
+						<v-btn class="action-btn" color="primary" dark type="submit" :disabled="!isFormValid">
 							{{ $t("actions.register") }}
 						</v-btn>
-						<br /><br />
-
-						<v-btn class="switch-btn" color="secondary" dark @click="switchLoginRegister">
-							<v-icon left class="icon-spacing">mdi-login</v-icon>
-							{{ $t("auth.haveAccount") }}
-						</v-btn>
-
-						<br /> <br />
-						<v-divider></v-divider>
-						<br />
-
-						<h3 class="text-center">
-							{{ $t("auth.loginWithGoogleTitle") }}
-						</h3>
-
-						<v-btn class="login-btn btn-secondary" dark @click="loginWithGoogle">
-							<v-icon left class="icon-spacing">mdi-google</v-icon>
-							{{ $t("auth.loginWithGoogle") }}
-						</v-btn>
 					</v-form>
+
+					<div class="or-divider">
+						<v-divider></v-divider>
+						<span class="or-text">{{ $t("auth.or") }}</span>
+						<v-divider></v-divider>
+					</div>
+
+					<v-btn class="action-btn google-btn" variant="outlined" @click="loginWithGoogle">
+						<v-icon left class="icon-spacing">mdi-google</v-icon>
+						{{ $t("auth.continueWithGoogle") }}
+					</v-btn>
 				</v-card-text>
 			</v-card>
 		</div>
@@ -129,9 +102,6 @@ export default {
 		},
 	},
 	methods: {
-		switchLoginRegister() {
-			this.login = !this.login;
-		},
 		async loginWithGoogle() {
 			try {
 				const result = await signInWithPopup(auth, provider);
@@ -233,31 +203,47 @@ export default {
 	align-items: center;
 }
 
-/* --- CARD STYLES --- */
-.login-card,
-.register-card {
-	width: 400px;
-	padding: 20px;
-	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-	border-radius: 8px;
+.auth-card {
+	width: 420px;
+	border-radius: 12px;
+	overflow: hidden;
 }
 
-/* --- TITLES --- */
-.title {
-	font-size: 24px;
-	text-align: center;
-	margin-bottom: 20px;
+.auth-tabs {
+	display: flex;
+	border-bottom: 2px solid var(--third-color, #dbe2ef);
 }
 
-/* --- BUTTONS --- */
-.login-btn,
-.register-btn,
-.switch-btn {
+.auth-tab {
+	flex: 1;
+	padding: 16px 0;
+	border: none;
+	background: transparent;
+	cursor: pointer;
+	font-size: 16px;
+	font-weight: 500;
+	color: var(--text-color, #999);
+	transition: color 0.2s, border-color 0.2s;
+	border-bottom: 3px solid transparent;
+	margin-bottom: -2px;
+}
+
+.auth-tab.active {
+	color: var(--second-color, #3f72af);
+	border-bottom-color: var(--second-color, #3f72af);
+	font-weight: 600;
+}
+
+.auth-tab:hover:not(.active) {
+	color: var(--second-color, #3f72af);
+	opacity: 0.7;
+}
+
+.action-btn {
 	width: 100%;
 	font-size: 16px;
 	margin: 10px auto;
 	text-transform: none;
-	/* keep text as defined */
 }
 
 .icon-spacing {
@@ -275,26 +261,49 @@ export default {
 	border: 0;
 }
 
+.forgot-password-wrapper {
+	text-align: right;
+	margin-top: 10px;
+}
+
 .forgot-password-link {
 	color: var(--second-color);
 	text-decoration: none;
 	cursor: pointer;
-	font-size: var(--text-sm);
+	font-size: 13px;
 }
 
+.forgot-password-link:hover {
+	text-decoration: underline;
+}
+
+.or-divider {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin: 20px 0;
+}
+
+.or-text {
+	color: var(--text-color, #999);
+	font-size: 14px;
+	white-space: nowrap;
+}
+
+.google-btn {
+	border-color: var(--third-color, #dbe2ef);
+	color: var(--text-color, #333);
+	text-transform: none;
+	font-weight: 500;
+}
 
 /* --- MOBILE RESPONSIVE --- */
 @media (max-width: 768px) {
-
-	.login-card,
-	.register-card {
+	.auth-card {
 		width: 90%;
-		align-items: center;
 	}
 
-	.login-btn,
-	.register-btn,
-	.switch-btn {
+	.action-btn {
 		font-size: auto;
 		width: 100%;
 		margin: 0px auto;
