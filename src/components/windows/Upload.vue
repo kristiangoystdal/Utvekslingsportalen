@@ -45,11 +45,24 @@ export default {
 
   methods: {
     validateForm() {
+      const MAX_FILE_SIZE = 10 * 1024 * 1024;
+      const ALLOWED_TYPES = [
+        "application/pdf",
+        "image/png",
+        "image/jpeg",
+      ];
+
       let valid = true;
       this.errors = {};
 
       if (!this.form.file) {
         this.errors.file = this.$t("errors.uploadFileRequired");
+        valid = false;
+      } else if (this.form.file.size > MAX_FILE_SIZE) {
+        this.errors.file = this.$t("errors.fileTooLarge");
+        valid = false;
+      } else if (!ALLOWED_TYPES.includes(this.form.file.type)) {
+        this.errors.file = this.$t("errors.fileTypeNotAllowed");
         valid = false;
       }
 
