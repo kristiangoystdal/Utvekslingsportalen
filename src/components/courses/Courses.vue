@@ -514,6 +514,7 @@ export default {
               ...course,
               country: countryTranslated,
               university: exchange.university,
+              exchangeID: exchangeKey,
             };
 
             let skip_addition = false;
@@ -692,26 +693,17 @@ export default {
       return words.every((word) => rowText.includes(word));
     },
     routeToExchange(item) {
-      const exchange = this.exchanges && Object.values(this.exchanges).find((exch) => {
-        if (!exch.courses) return false;
-        if (exch.id && item.exchangeID && exch.id === item.exchangeID) {
-          return true;
-        }
-      });
-
-      if (!exchange) {
+      if (!item.exchangeID || !this.exchanges || !this.exchanges[item.exchangeID]) {
         console.error("routeToExchange: exchange not found for course", item);
         return;
       }
 
+      const exchange = this.exchanges[item.exchangeID];
       const translatedCountry = this.$t(`countries.${exchange.country}`);
 
       const searchString = translatedCountry + " " + exchange.university + " " + exchange.homeUniversity + " " + exchange.study + " " + exchange.studyYear + " " + exchange.year;
 
-      if (!exchange.id) {
-        exchange.id = this.exchanges && Object.keys(this.exchanges).find(key => this.exchanges[key] === exchange);
-      }
-      const hiddenId = btoa(exchange.id);
+      const hiddenId = btoa(item.exchangeID);
 
       if (exchange) {
         this.$router.push({ name: "Exchanges", query: { search: searchString, r: hiddenId } });
