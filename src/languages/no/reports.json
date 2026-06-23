@@ -1,0 +1,59 @@
+{
+  "pageHeader": "Utvekslingsrapporter",
+  "info": "Les rapporter fra studenter som har vært på utveksling, eller del din egen erfaring.",
+
+  "writeReport": "Skriv en rapport",
+  "editReport": "Rediger rapport",
+  "myReports": "Mine rapporter",
+
+  "title": "Tittel",
+  "content": "Din erfaring",
+  "pros": "Fordeler",
+  "cons": "Ulemper",
+  "tips": "Tips til fremtidige studenter",
+  "addPro": "Legg til en fordel",
+  "addCon": "Legg til en ulempe",
+
+  "ratings": "Vurderinger",
+  "overall": "Helhetlig",
+  "academic": "Akademisk",
+  "social": "Sosialt",
+  "housing": "Bolig",
+  "costOfLiving": "Levekostnader",
+
+  "submit": "Send inn rapport",
+  "save": "Lagre endringer",
+  "saveDraft": "Lagre som utkast",
+  "edit": "Rediger",
+  "delete": "Slett",
+  "cancel": "Avbryt",
+
+  "published": "Publisert",
+  "pending": "Venter",
+  "rejected": "Avvist",
+
+  "titleRequired": "En tittel er påkrevd.",
+  "contentRequired": "Vennligst skriv om din erfaring.",
+  "ratingRequired": "Vennligst gi en helhetlig vurdering.",
+
+  "filterByCountry": "Filtrer etter land",
+  "filterByUniversity": "Filtrer etter universitet",
+  "filterByStudy": "Filtrer etter studieprogram",
+  "sortBy": "Sorter etter",
+  "newest": "Nyeste",
+  "oldest": "Eldste",
+  "highestRated": "Høyest vurdert",
+
+  "writtenBy": "Skrevet av",
+  "exchangeAt": "Utveksling ved",
+  "readMore": "Les mer",
+  "viewExchange": "Se utveksling",
+  "helpful": "Nyttig",
+  "reportCount": "{count} rapporter",
+
+  "noReports": "Ingen rapporter ennå. Bli den første til å dele din utvekslingserfaring!",
+  "noReportsForFilter": "Ingen rapporter matcher filtrene dine.",
+
+  "confirmDelete": "Slette rapport?",
+  "confirmDeleteBody": "Denne handlingen kan ikke angres. Er du sikker på at du vil slette denne rapporten?"
+}
