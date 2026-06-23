@@ -276,11 +276,10 @@ export default {
 }
 
 .forgot-password-link {
-	color: #1976d2;
-	/* Vuetify primary color */
+	color: var(--second-color);
 	text-decoration: none;
 	cursor: pointer;
-	font-size: 1vw;
+	font-size: var(--text-sm);
 }
 
 

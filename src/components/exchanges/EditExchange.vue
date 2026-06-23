@@ -1188,33 +1188,27 @@ export default {
 
 <style scoped>
 .unsaved-changes {
-	background-color: #ffecb3;
-	/* Light yellow background */
-	border: 1px solid #ffd54f;
-	/* Darker yellow border */
-	padding: 16px;
+	background-color: var(--color-warning-bg);
+	border: 1px solid var(--color-warning-border);
+	padding: var(--space-md);
 	border-radius: 8px;
-	margin-bottom: 16px;
+	margin-bottom: var(--space-md);
 	font-weight: bold;
-	color: #ff6f00;
-	/* Dark orange text */
+	color: var(--color-warning-text);
 	width: fit-content;
 	margin: 0 auto;
 	text-align: center;
 }
 
 .update-btn {
-	background-color: #00bd7e;
-	/* Teal background */
-	color: white;
+	background-color: var(--green-color);
+	color: var(--fifth-color);
 	font-weight: bold;
 }
 
 .update-btn:disabled {
-	background-color: #b2dfdb;
-	/* Light teal background */
-	color: #004d40;
-	/* Dark teal text */
+	background-color: var(--third-color);
+	color: var(--first-color);
 }
 
 .course-icons {
@@ -1243,7 +1237,7 @@ export default {
 /* Card */
 .modal-card {
 	width: min(640px, 100%);
-	background: #fff;
+	background: var(--color-bg-card);
 	border-radius: 18px;
 	box-shadow: 0 18px 60px rgba(0, 0, 0, 0.22);
 	overflow: hidden;

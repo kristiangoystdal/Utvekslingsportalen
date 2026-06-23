@@ -315,7 +315,7 @@ export default {
 }
 
 #closeBtn:hover {
-	background-color: #d32f2f;
+	background-color: var(--color-danger-hover);
 	/* Darker Soft Red */
 	color: var(--fifth-color);
 }

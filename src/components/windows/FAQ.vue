@@ -89,7 +89,7 @@ export default {
 
 <style scoped>
 h2 {
-	color: #333;
+	color: var(--color-text-primary);
 }
 
 p {

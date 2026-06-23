@@ -735,13 +735,13 @@ export default {
 }
 
 .selected {
-  background-color: #1976d2 !important;
-  color: white !important;
+  background-color: var(--second-color) !important;
+  color: var(--fifth-color) !important;
 }
 
 .search-summary {
-  margin: 8px 0 12px;
-  font-size: 0.95rem;
-  color: #555;
+  margin: var(--space-sm) 0 var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
 }
 </style>
