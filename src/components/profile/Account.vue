@@ -127,9 +127,10 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { auth, db } from "../../js/firebaseConfig";
-import { onAuthStateChanged, signOut, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
-import { ref as dbRef, get, set, update } from "firebase/database";
+import { signOut, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
+import { ref as dbRef, update } from "firebase/database";
 import studiesData from "../../data/studies.json";
 import FavoriteCourses from "./FavoriteCourses.vue";
 import { toast } from "vue3-toastify";
@@ -139,8 +140,6 @@ export default {
 	data() {
 		return {
 			studies: {},
-			user: null,
-			userData: null,
 			loading: true,
 			dialog: false,
 			editData: {
@@ -159,6 +158,7 @@ export default {
 		};
 	},
 	computed: {
+		...mapGetters(["user", "userData"]),
 		studyNames() {
 			return Object.keys(this.studies);
 		},
@@ -191,13 +191,14 @@ export default {
 		async saveProfile() {
 			if (this.user) {
 				try {
-					await update(dbRef(db, `users/${this.user.uid}`), {
+					const updatedData = {
 						displayName: this.localEditData.displayName,
 						email: this.localEditData.email,
 						study: this.localEditData.study,
 						specialization: this.localEditData.specialization,
-					});
-					this.userData = { ...this.localEditData };
+					};
+					await update(dbRef(db, `users/${this.user.uid}`), updatedData);
+					this.$store.commit("setUserData", { ...this.localEditData });
 					this.closeDialog();
 					toast.success(this.$t("notifications.profileUpdateSuccess"));
 				} catch (error) {
@@ -209,9 +210,6 @@ export default {
 		async signOut() {
 			try {
 				await signOut(auth);
-				this.user = null;
-				this.userData = null;
-
 				this.$router.push("/logg_inn");
 			} catch (error) {
 				console.error("Error signing out: ", error);
@@ -237,8 +235,8 @@ export default {
 			this.verificationDialog = !this.verificationDialog;
 		},
 		sendVerificationEmail() {
-			if (this.user) {
-				sendEmailVerification(this.user)
+			if (auth.currentUser) {
+				sendEmailVerification(auth.currentUser)
 					.then(() => {
 						toast.success(this.$t("notifications.verificationEmailSuccess"));
 					})
@@ -261,43 +259,19 @@ export default {
 			}
 		},
 	},
-	mounted() {
-		// Fetch studies file
-		this.loadData();
-
-		// Handle user authentication state
-		onAuthStateChanged(auth, async (currentUser) => {
-			if (currentUser) {
-				this.user = currentUser;
-				const userDocRef = dbRef(db, `users/${currentUser.uid}`);
-				const userDoc = await get(userDocRef);
-				if (userDoc.exists()) {
-					this.userData = userDoc.val();
-				} else {
-					// If user does not exist, show edit dialog
-					this.localEditData = {
-						displayName: currentUser.displayName || "",
-						email: currentUser.email || "",
-						study: "",
-						specialization: "",
-					};
-
-					// Create a new user record with initial values
-					await set(userDocRef, {
-						displayName: currentUser.displayName || "",
-						email: currentUser.email,
-						study: "",
-						specialization: "",
-					});
+	watch: {
+		userData: {
+			handler(val) {
+				if (val) {
+					this.loadLocalData();
 				}
-
-				this.loadLocalData();
-			} else {
-				this.user = null;
-				this.userData = null;
-			}
-			this.loading = false;
-		});
+				this.loading = false;
+			},
+			immediate: true,
+		},
+	},
+	mounted() {
+		this.loadData();
 	},
 };
 </script>
