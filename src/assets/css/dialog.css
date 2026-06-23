@@ -10,36 +10,32 @@
 
 .dialog .v-card-title {
   background-color: var(--second-color);
-  /* Primary Green */
-  color: #ffffff;
-  font-size: 20px;
+  color: var(--fifth-color);
+  font-size: var(--text-lg);
   font-weight: bold;
-  padding: 16px;
+  padding: var(--space-md);
 }
 
 .dialog .v-card-text {
   color: var(--first-color);
-  font-size: 16px;
-  padding: 16px;
+  font-size: var(--text-base);
+  padding: var(--space-md);
   background-color: var(--fourth-color);
 }
 
 .dialog .v-card-actions {
-  padding: 16px;
+  padding: var(--space-md);
   background-color: var(--fourth-color);
-  /* Light Grey */
 }
 
 .dialog .v-btn {
   background-color: var(--third-color);
-  /* Secondary Green */
   color: var(--first-color);
   font-weight: bold;
 }
 
 .dialog .v-btn:hover {
   background-color: var(--second-color);
-  /* Darker Green on hover */
   color: var(--fifth-color);
 }
 

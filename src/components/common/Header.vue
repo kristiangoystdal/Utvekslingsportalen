@@ -237,7 +237,7 @@ nav a {
 	position: absolute;
 	top: 60px;
 	right: 0;
-	background-color: #fff;
+	background-color: var(--color-bg-card);
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 	border-radius: 4px;
 	overflow: hidden;
@@ -328,7 +328,7 @@ nav a {
 	position: absolute;
 	top: 60px;
 	right: 50px;
-	background-color: #fff;
+	background-color: var(--color-bg-card);
 	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 	border-radius: 10px;
 	padding: 1rem;

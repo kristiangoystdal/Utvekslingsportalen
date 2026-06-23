@@ -604,12 +604,12 @@ export default {
 	border: none;
 	font-size: 14px !important;
 	margin: 10px;
-	background-color: #e53935;
+	background-color: var(--color-danger);
 	color: var(--fifth-color);
 }
 
 #closeBtn:hover {
-	background-color: #d32f2f;
+	background-color: var(--color-danger-hover);
 	color: var(--fifth-color);
 }
 

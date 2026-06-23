@@ -1,75 +1,58 @@
 /* Box Styles */
 .box {
   border-radius: 10px;
-  padding: 15px;
-  margin: 15px auto;
-  font-size: 16px;
+  padding: var(--space-md);
+  margin: var(--space-md) auto;
+  font-size: var(--text-base);
   width: fit-content;
   max-width: 90%;
 }
 
-/* First Color Box */
 .box-first-color {
   background-color: var(--first-color);
   color: var(--fifth-color);
   border: 1px solid var(--second-color);
-  /* Darker shade of first color */
 }
 
-/* Second Color Box */
 .box-second-color {
   background-color: var(--second-color);
-  color: var(--white);
+  color: var(--fifth-color);
   border: 1px solid var(--first-color);
-  /* Darker shade of second color */
 }
 
-/* Third Color Box */
 .box-third-color {
   background-color: var(--third-color);
-  /* color: var(--fifth-color); */
   border: 1px solid var(--first-color);
-  /* Darker shade of third color */
 }
 
-/* Fourth Color Box */
 .box-fourth-color {
   background-color: var(--fourth-color);
-  /* color: var(--fifth-color); */
   border: 1px solid var(--first-color);
-  /* Slightly darker shade of fourth color */
 }
 
-/* Fifth Color Box */
 .box-fifth-color {
   background-color: var(--fifth-color);
-  /* color: var(--white); */
-  border: 1px solid #404040;
-  /* Slightly darker shade of fifth color */
+  border: 1px solid var(--color-text-primary);
 }
 
 .box-alert {
   background-color: var(--alert-warning);
-  border: 1px solid #FF0000;
-  /* Darker shade of alert color */
+  border: 1px solid var(--alert-error);
 }
 
 .box-info {
   background-color: var(--alert-info);
   color: var(--alert-info-text);
-  border: 1px solid #004080;
-  /* Darker shade of info color */
+  border: 1px solid var(--first-color);
 }
 
 .box-success {
   background-color: var(--alert-success);
   color: var(--alert-success-text);
-  border: 1px solid #006600;
-  /* Darker shade of success color */
+  border: 1px solid var(--color-confirm);
 }
 
 .box-warning {
   background-color: var(--alert-warning);
-  border: 1px solid #CC9900;
-  /* Darker shade of warning color */
+  border: 1px solid var(--color-warning-text);
 }

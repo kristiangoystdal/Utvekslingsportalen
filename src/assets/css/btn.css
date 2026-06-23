@@ -1,22 +1,22 @@
 /* Button Styles */
 .v-btn {
-  padding: 10px 20px;
+  padding: var(--space-sm) var(--space-lg);
   border-radius: 5px;
   cursor: pointer;
   border: none;
-  font-size: 14px !important;
-  margin: 10px auto;
-  padding: 10px 20px !important;
+  font-size: var(--text-sm) !important;
+  margin: var(--space-sm) auto;
+  padding: var(--space-sm) var(--space-lg) !important;
 }
 
 .btn {
-  padding: 10px 20px;
+  padding: var(--space-sm) var(--space-lg);
   border-radius: 5px;
   cursor: pointer;
   border: none;
-  font-size: 14px !important;
-  margin: 10px auto;
-  padding: 10px 20px !important;
+  font-size: var(--text-sm) !important;
+  margin: var(--space-sm) auto;
+  padding: var(--space-sm) var(--space-lg) !important;
 }
 
 .btn-primary {
@@ -41,109 +41,94 @@
 
 .btn-warning {
   background-color: var(--alert-warning);
-  /* Amber */
   color: var(--fifth-color);
 }
 
 .btn-success {
   background-color: var(--alert-success);
-  /* Green */
   color: var(--fifth-color);
 }
 
 .btn-danger {
   background-color: var(--alert-error);
-  /* Red */
   color: var(--fifth-color);
 }
 
 .btn-info {
   background-color: var(--alert-info);
-  /* Bright Blue */
   color: var(--fifth-color);
 }
 
-/* Better color for the sign-out button */
 .btn-red {
-  background-color: #E53935;
-  /* Soft Red */
+  background-color: var(--color-danger);
   color: var(--fifth-color);
 }
 
 .btn-red:hover {
-  background-color: #D32F2F;
-  /* Darker Soft Red */
+  background-color: var(--color-danger-hover);
   color: var(--fifth-color);
 }
 
 .btn-yes {
-  padding: 10px 20px;
+  padding: var(--space-sm) var(--space-lg);
   border-radius: 5px;
   cursor: pointer;
   border: none;
-  font-size: 14px !important;
-  margin: 10px;
-  background-color: #e53935;
-  /* Soft Red */
+  font-size: var(--text-sm) !important;
+  margin: var(--space-sm);
+  background-color: var(--color-danger);
   color: var(--fifth-color);
 }
 
 .btn-yes:hover {
-  background-color: #d32f2f;
-  /* Darker Soft Red */
+  background-color: var(--color-danger-hover);
   color: var(--fifth-color);
 }
 
 .btn-no {
-  padding: 10px 20px;
+  padding: var(--space-sm) var(--space-lg);
   border-radius: 5px;
   cursor: pointer;
   border: none;
-  font-size: 14px !important;
-  margin: 10px;
-  background-color: #4caf50;
-  /* Soft Green */
+  font-size: var(--text-sm) !important;
+  margin: var(--space-sm);
+  background-color: var(--color-confirm);
   color: var(--fifth-color);
 }
 
 .btn-no:hover {
-  background-color: #388e3c;
-  /* Darker Soft Green */
+  background-color: var(--color-confirm-hover);
   color: var(--fifth-color);
 }
 
 #yesBtn {
-  padding: 10px 20px;
+  padding: var(--space-sm) var(--space-lg);
   border-radius: 5px;
   cursor: pointer;
   border: none;
-  font-size: 14px !important;
-  margin: 10px;
-  background-color: #e53935;
-  /* Soft Red */
+  font-size: var(--text-sm) !important;
+  margin: var(--space-sm);
+  background-color: var(--color-danger);
   color: var(--fifth-color);
 }
 
 #yesBtn:hover {
-  background-color: #d32f2f;
-  /* Darker Soft Red */
+  background-color: var(--color-danger-hover);
   color: var(--fifth-color);
 }
 
 #noBtn {
-  padding: 10px 20px;
+  padding: var(--space-sm) var(--space-lg);
   border-radius: 5px;
   cursor: pointer;
   border: none;
-  font-size: 14px !important;
-  margin: 10px;
-  background-color: #4caf50;
-  /* Soft Green */
+  font-size: var(--text-sm) !important;
+  margin: var(--space-sm);
+  background-color: var(--color-confirm);
   color: var(--fifth-color);
 }
 
 #noBtn:hover {
-  background-color: #388e3c;
-  /* Darker Soft Green */
+  background-color: var(--color-confirm-hover);
   color: var(--fifth-color);
 }

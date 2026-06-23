@@ -1,11 +1,9 @@
 /* datatable.css */
 
-/* Header content styling */
 .v-data-table-header__content {
     font-weight: bold;
 }
 
-/* Main table styling */
 #main-table-width {
     margin: auto !important;
     width: 100% !important;
@@ -17,7 +15,7 @@
     width: 100%;
     border-collapse: collapse;
     margin: 0 auto;
-    margin-top: 20px;
+    margin-top: var(--space-lg);
 }
 
 .main-table th {
@@ -29,7 +27,10 @@
     color: var(--fourth-color) !important;
 }
 
-/* Courses table header styling */
+.main-table tbody tr:nth-child(even) {
+    background-color: var(--color-bg-subtle);
+}
+
 .virtual-table th {
     background-color: var(--first-color);
     color: var(--fourth-color);
@@ -39,58 +40,52 @@
     color: var(--third-color) !important;
 }
 
-
-/* Filter container styling */
 .filter-container {
     max-width: 1000px !important;
     margin: 0 auto !important;
-    padding: 16px !important;
+    padding: var(--space-md) !important;
 }
 
-/* Autocomplete styling */
 .v-autocomplete {
     height: auto !important;
     width: 100% !important;
     margin: auto !important;
 }
 
-/* Courses style */
 #coursesStyle {
     background-color: var(--third-color) !important;
 }
 
-/* Responsive font sizes */
 @media (max-width: 1200px) {
     .main-table {
-        font-size: 1.2vw;
+        font-size: var(--text-sm);
     }
 
     .main-table th {
-        font-size: 1.2vw;
+        font-size: var(--text-sm);
     }
 }
 
 @media (max-width: 992px) {
     .main-table {
-        font-size: 1.5vw;
+        font-size: var(--text-sm);
     }
 
     .main-table th {
-        font-size: 1.5vw;
+        font-size: var(--text-sm);
     }
 }
 
 @media (max-width: 769px) {
     .main-table {
-        font-size: 3vw;
+        font-size: var(--text-xs);
     }
 
     .main-table th {
-        font-size: 3vw;
+        font-size: var(--text-xs);
     }
 }
 
-/* Fixed table styling */
 .fixed-table {
     width: 100%;
     table-layout: fixed;
@@ -100,12 +95,11 @@
 .fixed-table td {
     overflow: hidden;
     text-overflow: ellipsis;
-    /* white-space: nowrap; */
 }
 
 .expanded-content {
     width: 100%;
     overflow: hidden;
     text-overflow: ellipsis;
-    margin: 20px auto;
+    margin: var(--space-lg) auto;
 }

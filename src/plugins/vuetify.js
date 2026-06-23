@@ -11,4 +11,14 @@ export default createVuetify({
   icons: {
     defaultSet: 'mdi',
   },
+  theme: {
+    themes: {
+      light: {
+        colors: {
+          primary: '#3f72af',   // --second-color
+          secondary: '#112d4e', // --first-color
+        },
+      },
+    },
+  },
 });

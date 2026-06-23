@@ -1,17 +1,17 @@
 .text-primary {
-  color: #00bd7e;
+  color: var(--second-color);
 }
 
 .text-secondary {
-  color: #009960;
+  color: var(--first-color);
 }
 
 .text-dark {
-  color: #333333;
+  color: var(--color-text-primary);
 }
 
 .text-light {
-  color: #f5f5f5;
+  color: var(--color-text-light);
 }
 
 .text-grey {
@@ -23,19 +23,19 @@
 }
 
 .text-alert {
-  color: #ff6f00
+  color: var(--color-warning-text);
 }
 
 .text-large {
-  font-size: 1.5rem;
+  font-size: var(--text-lg);
 }
 
 .text-medium {
-  font-size: 1rem;
+  font-size: var(--text-base);
 }
 
 .text-small {
-  font-size: 0.8rem;
+  font-size: var(--text-xs);
 }
 
 .text-underline {
@@ -51,7 +51,7 @@
 }
 
 .page-summary {
-  margin: 8px 0 12px;
-  font-size: 0.95rem;
-  color: #555;
+  margin: var(--space-sm) 0 var(--space-sm);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
 }

@@ -50,7 +50,7 @@
 				<v-card-text>{{ currentComments }}</v-card-text>
 				<v-card-actions>
 					<v-spacer></v-spacer>
-					<v-btn color="blue darken-1" text @click="closeCommentDialog">
+					<v-btn color="primary" text @click="closeCommentDialog">
 						{{ $t('actions.close') }}
 					</v-btn>
 				</v-card-actions>
