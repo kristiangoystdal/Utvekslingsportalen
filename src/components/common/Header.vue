@@ -45,19 +45,23 @@
 
 				<div ref="languageSwitcher" @click="toggleLanguageDropdown" class="language-switcher">
 					<img :src="currentFlagUrl" width="20" height="14" alt="flag" />
-					<v-icon>mdi-earth</v-icon>
+					<span class="lang-code">{{ $i18n.locale === 'en' ? 'EN' : 'NO' }}</span>
+					<v-icon size="small">mdi-chevron-down</v-icon>
 
-					<div v-if="showLanguageDropdown" class="language-dropdown">
-						<a @click.stop="changeLanguage('en')">
-							<img src="/flags/GB.svg" width="20" height="14" alt="English" />
-							English
-						</a>
-
-						<a @click.stop="changeLanguage('no')">
-							<img src="/flags/NO.svg" width="20" height="14" alt="Norsk" />
-							Norsk
-						</a>
-					</div>
+					<transition name="dropdown-fade">
+						<div v-if="showLanguageDropdown" class="language-dropdown">
+							<a @click.stop="changeLanguage('en')" :class="{ selected: $i18n.locale === 'en' }">
+								<img src="/flags/GB.svg" width="20" height="14" alt="English" />
+								<span>English</span>
+								<v-icon v-if="$i18n.locale === 'en'" size="small" class="check-icon">mdi-check</v-icon>
+							</a>
+							<a @click.stop="changeLanguage('no')" :class="{ selected: $i18n.locale === 'no' }">
+								<img src="/flags/NO.svg" width="20" height="14" alt="Norsk" />
+								<span>Norsk</span>
+								<v-icon v-if="$i18n.locale === 'no'" size="small" class="check-icon">mdi-check</v-icon>
+							</a>
+						</div>
+					</transition>
 				</div>
 
 			</div>
@@ -199,16 +203,23 @@ nav li {
 
 nav a {
 	text-decoration: none;
-	color: var(--first-color);
+	color: #6b7280;
 	font-weight: normal;
-	transition: 0.4s;
+	transition: color 0.2s, border-color 0.2s;
 	padding: 0.5rem;
 	cursor: pointer;
+	border-bottom: 2.5px solid transparent;
+}
+
+nav a.router-link-exact-active {
+	color: var(--second-color);
+	border-bottom-color: var(--second-color);
+	font-weight: 600;
 }
 
 @media (hover: hover) {
 	nav a:hover {
-		background-color: var(--third-color);
+		color: var(--second-color);
 		cursor: pointer;
 	}
 
@@ -221,39 +232,77 @@ nav a {
 	position: relative;
 	display: flex;
 	align-items: center;
-	margin-left: 0.5rem;
+	gap: 4px;
+	margin-left: 0.75rem;
 	cursor: pointer;
-	padding: 0.5rem;
+	padding: 6px 10px;
+	border-radius: 20px;
+	border: 1px solid var(--third-color, #dbe2ef);
+	transition: background-color 0.2s;
+}
+
+.lang-code {
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--first-color);
 }
 
 .language-switcher .v-icon {
-	cursor: pointer;
-	font-size: 1.5rem;
-	color: var(--second-color);
-	margin-left: 0.5rem;
+	font-size: 16px;
+	color: #6b7280;
 }
 
 .language-dropdown {
 	position: absolute;
-	top: 60px;
+	top: calc(100% + 8px);
 	right: 0;
-	background-color: var(--color-bg-card);
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	border-radius: 4px;
+	background-color: white;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+	border-radius: 10px;
 	overflow: hidden;
+	min-width: 160px;
+	z-index: 1000;
+	border: 1px solid var(--third-color, #dbe2ef);
 }
 
 .language-dropdown a {
 	display: flex;
 	align-items: center;
-	padding: 0.5rem 1rem;
+	gap: 10px;
+	padding: 10px 14px;
 	text-decoration: none;
 	color: var(--first-color);
-	transition: background-color 0.3s;
+	font-size: 14px;
+	transition: background-color 0.15s;
+	cursor: pointer;
 }
 
 .language-dropdown a:hover {
-	background-color: var(--fourth-color);
+	background-color: var(--fourth-color, #f9f7f7);
+}
+
+.language-dropdown a.selected {
+	color: var(--second-color);
+	font-weight: 600;
+}
+
+.language-dropdown a span {
+	flex: 1;
+}
+
+.check-icon {
+	color: var(--second-color);
+}
+
+.dropdown-fade-enter-active,
+.dropdown-fade-leave-active {
+	transition: opacity 0.15s, transform 0.15s;
+}
+
+.dropdown-fade-enter-from,
+.dropdown-fade-leave-to {
+	opacity: 0;
+	transform: translateY(-4px);
 }
 
 .fi {
@@ -313,14 +362,9 @@ nav a {
 	}
 
 	.language-dropdown {
-		top: 60px;
+		top: calc(100% + 8px);
 		right: 0;
 		z-index: 10000;
-	}
-
-	.language-dropdown a {
-		padding: 0.5rem 1rem;
-		height: 3rem;
 	}
 }
 
@@ -358,10 +402,9 @@ nav a {
 
 .language-switcher img,
 .language-dropdown img {
-	width: 25px !important;
+	width: 22px !important;
 	height: auto !important;
 	object-fit: cover;
 	border-radius: 2px;
-	margin: 0 8px 0 0;
 }
 </style>
