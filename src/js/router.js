@@ -12,6 +12,7 @@ import NotFound from '../components/error/NotFound.vue';
 
 import Courses from '../components/courses/Courses.vue';
 import Legal from '../components/docs/Legal.vue'
+import CreateReport from '../components/reports/CreateReport.vue'
 
 import store, { authReadyPromise } from './store.js';
 
@@ -98,7 +99,18 @@ const routes = [
     }
   },
 
-{
+  {
+    path: '/rapporter/ny',
+    name: 'CreateReport',
+    component: CreateReport,
+    meta: {
+      requiresAuth: true,
+      title: "Skriv rapport",
+      description: "Del din utvekslingserfaring og hjelp andre studenter med å velge riktig universitet."
+    }
+  },
+
+  {
     path: '/kurs',
     name: 'Courses',
     component: Courses,
