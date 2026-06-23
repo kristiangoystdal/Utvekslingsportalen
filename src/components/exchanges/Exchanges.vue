@@ -70,6 +70,7 @@
 		<v-data-table v-model:expanded="expanded" :headers="translatedHeaders" :items="filteredExchangeList" item-value="id"
 			show-expand class="main-table" id="main-table-width"
 			:items-per-page="exchangesPerPage" v-model:page="currentPage" :items-per-page-text="this.$t('exchanges.pageText')"
+			:items-per-page-options="[10, 25, 50, 100]"
 			:loading="datatableLoading">
 
 			<template v-slot:loading>
@@ -123,106 +124,49 @@
 			<template v-slot:expanded-row="{ columns, item }">
 				<tr>
 					<td :colspan="columns.length" id="coursesStyle">
-						<div>
-							<br />
-							<!-- Høst -->
-							<h3 v-if="
-								item.courses && item.courses.Høst && item.courses.Høst.length
-							">
-								{{ $t("exchanges.coursesFallHeader") }} ({{ $t("database.totalECTS") }}:
-								{{item.courses.Høst
-									.reduce((sum, course) => sum + parseFloat(course.ECTSPoints || 0), 0)
-									.toFixed(1)
-								}}
-								)
-							</h3>
-							<v-data-table-virtual v-if="
-								item.courses && item.courses.Høst && item.courses.Høst.length
-							" :headers="translatedHeadersCourses" :items="item.courses.Høst" item-value="name" dense class="virtual-table">
-								<template v-slot:item.comment="{ item }">
-									<v-icon v-if="item.comments && item.comments.trim() !== ''" small class="mr-2"
-										@click="showComments(item)">
-										mdi-comment
-									</v-icon>
-									<v-icon v-else small class="mr-2"> mdi-comment-off </v-icon>
+						<div class="expanded-courses">
+							<template v-for="(semester, si) in semesters" :key="semester.key">
+								<template v-if="semesterCourses(item, semester.key)">
+									<div class="semester-header" :style="si > 0 ? 'margin-top: 20px' : ''">
+										<span class="semester-pill">{{ semester.label.toUpperCase() }}</span>
+										<span class="semester-ects">{{ semesterECTS(semesterCourses(item, semester.key)) }} ECTS</span>
+									</div>
+									<v-data-table-virtual
+										:headers="translatedHeadersCourses"
+										:items="semesterCourses(item, semester.key)"
+										item-value="name"
+										dense
+										class="virtual-table"
+									>
+										<template v-slot:item.courseName="{ item: course }">
+											<div>
+												<span class="course-name">{{ course.courseName }}</span>
+												<div v-if="course.replacedCourseName || course.replacedCourseCode" class="course-replaced">
+													→ {{ $t("database.replaces") }} {{ course.replacedCourseCode }} {{ course.replacedCourseName }}
+												</div>
+											</div>
+										</template>
+										<template v-slot:item.ECTSPoints="{ item: course }">
+											<span class="ects-value">{{ course.ECTSPoints }}</span>
+										</template>
+										<template v-slot:item.comment="{ item: course }">
+											<span v-if="course.comments && course.comments.trim() !== ''"
+												class="comment-btn" @click="showComments(course)">
+												<v-icon size="small">mdi-comment</v-icon>
+											</span>
+											<span v-else class="comment-empty">—</span>
+										</template>
+										<template v-slot:item.favorite="{ item: course }">
+											<v-icon v-if="!checkIfFavorite(course)" small class="mr-2" @click="toggleFavorite(course)">
+												mdi-heart-outline
+											</v-icon>
+											<v-icon v-else small class="mr-2" color="#E53935" @click="toggleFavorite(course)">
+												mdi-heart
+											</v-icon>
+										</template>
+									</v-data-table-virtual>
 								</template>
-								<template v-slot:item.favorite="{ item }">
-									<v-icon v-if="!checkIfFavorite(item)" small class="mr-2" @click="toggleFavorite(item)">
-										mdi-heart-outline
-									</v-icon>
-									<v-icon v-else small class="mr-2" color="red" @click="toggleFavorite(item)">
-										mdi-heart
-									</v-icon>
-								</template>
-							</v-data-table-virtual>
-							<br v-if="item.courses && item.courses.Høst && item.courses.Høst.length" />
-							<!-- Vår -->
-							<h3 v-if="
-								item.courses && item.courses.Vår && item.courses.Vår.length
-							">
-								{{ $t("exchanges.coursesSpringHeader") }}
-								({{ $t("database.totalECTS") }}:
-								{{
-									item.courses.Vår
-										.reduce((sum, course) => sum + parseFloat(course.ECTSPoints || 0), 0)
-										.toFixed(1)
-								}}
-								)
-							</h3>
-							<v-data-table-virtual v-if="
-								item.courses && item.courses.Vår && item.courses.Vår.length
-							" :headers="translatedHeadersCourses" :items="item.courses.Vår" item-value="name" dense class="virtual-table">
-								<template v-slot:item.comment="{ item }">
-									<v-icon v-if="item.comments && item.comments.trim() !== ''" small class="mr-2"
-										@click="showComments(item)">
-										mdi-comment
-									</v-icon>
-									<v-icon v-else small class="mr-2"> mdi-comment-off </v-icon>
-								</template>
-								<template v-slot:item.favorite="{ item }">
-									<v-icon v-if="!checkIfFavorite(item)" small class="mr-2" @click="toggleFavorite(item)">
-										mdi-heart-outline
-									</v-icon>
-									<v-icon v-else small class="mr-2" color="red" @click="toggleFavorite(item)">
-										mdi-heart
-									</v-icon>
-								</template>
-							</v-data-table-virtual>
-							<br v-if="item.courses && item.courses.Vår && item.courses.Vår.length" />
-							<!-- Sommer -->
-							<h3 v-if="
-								item.courses && item.courses.Sommer && item.courses.Sommer.length
-							">
-								{{ $t("exchanges.coursesSummerHeader") }}
-								({{ $t("database.totalECTS") }}:
-								{{
-									item.courses.Sommer
-										.reduce((sum, course) => sum + parseFloat(course.ECTSPoints || 0), 0)
-										.toFixed(1)
-								}}
-								)
-							</h3>
-							<v-data-table-virtual v-if="
-								item.courses && item.courses.Sommer && item.courses.Sommer.length
-							" :headers="translatedHeadersCourses" :items="item.courses.Sommer" item-value="name" dense
-								class="virtual-table">
-								<template v-slot:item.comment="{ item }">
-									<v-icon v-if="item.comments && item.comments.trim() !== ''" small class="mr-2"
-										@click="showComments(item)">
-										mdi-comment
-									</v-icon>
-									<v-icon v-else small class="mr-2"> mdi-comment-off </v-icon>
-								</template>
-								<template v-slot:item.favorite="{ item }">
-									<v-icon v-if="!checkIfFavorite(item)" small class="mr-2" @click="toggleFavorite(item)">
-										mdi-heart-outline
-									</v-icon>
-									<v-icon v-else small class="mr-2" color="red" @click="toggleFavorite(item)">
-										mdi-heart
-									</v-icon>
-								</template>
-							</v-data-table-virtual>
-							<br v-if="item.courses && item.courses.Sommer && item.courses.Sommer.length" />
+							</template>
 						</div>
 					</td>
 				</tr>
@@ -235,7 +179,9 @@
 			show-expand class="main-table fixed-table" id="main-table-width" :fixed-header="false" :style="{ width: '100%' }"
 			item-class="custom-item-class" header-class="custom-header-class"
 			:items-per-page="exchangesPerPage" v-model:page="currentPage"
-			:items-per-page-text="this.$t('exchanges.pageText')" :loading="datatableLoading">
+			:items-per-page-text="this.$t('exchanges.pageText')"
+			:items-per-page-options="[10, 25, 50, 100]"
+			:loading="datatableLoading">
 
 			<template v-slot:item.university="{ item }">
 				<v-tooltip>
@@ -264,140 +210,60 @@
 
 			<template v-slot:expanded-row="{ columns, item }">
 				<tr>
-					<td :colspan="translatedMobileHeaders.length + 1">
-						<div class="expanded-content">
-							<div>
-								<div class="text-underline text-medium">
-									{{ $t("exchanges.courseInformation") }}
+					<td :colspan="translatedMobileHeaders.length + 1" id="coursesStyle">
+						<div class="expanded-courses mobile-expanded">
+							<div class="mobile-info-card">
+								<div class="mobile-info-row">
+									<span class="mobile-info-label">{{ $t("database.country") }}</span>
+									<span class="mobile-info-value">{{ item.country }}</span>
 								</div>
-								<v-container>
-									<v-row no-gutters>
-										<v-col cols="6" class="text-bold">
-											{{ $t("database.country") }}:
-										</v-col>
-										<v-col cols="6">
-											{{ item.country }}
-										</v-col>
-									</v-row>
-									<v-row no-gutters>
-										<v-col cols="6" class="text-bold">
-											{{ $t("database.homeUniversity") }}:
-										</v-col>
-										<v-col cols="6">
-											{{ item.homeUniversity }}
-										</v-col>
-									</v-row>
-									<v-row no-gutters>
-										<v-col cols="6" class="text-bold">
-											{{ $t("database.numSemesters") }}:
-										</v-col>
-										<v-col cols="6">
-											{{ item.numSemesters }}
-										</v-col>
-									</v-row>
-									<v-row no-gutters>
-										<v-col cols="6" class="text-bold">
-											{{ $t("database.studyYear") }}:
-										</v-col>
-										<v-col cols="6">
-											{{ item.studyYear }}
-										</v-col>
-									</v-row>
-									<br />
-									<div v-if="item.courses.Høst && item.courses.Høst.length > 0">
-										<v-row no-gutters class="text-bold" style="font-size: 15px; text-decoration: underline">
-											{{ $t("exchanges.coursesFallHeader") }} ({{ $t("database.totalECTS") }}:
-											{{
-												item.courses.Høst
-													.reduce((sum, course) => sum + parseFloat(course.ECTSPoints || 0), 0)
-													.toFixed(1)
-											}}
-											)
-										</v-row>
-										<v-row no-gutters style="margin-bottom: 5px">
-											<v-col cols="5" class="text-bold" style="padding-right: 10px">
-												{{ $t("database.courseName") }}
-											</v-col>
-											<v-col cols="3" class="text-bold" style="padding-right: 10px">
-												{{ $t("database.courseCode") }}
-											</v-col>
-											<v-col cols="2" class="text-bold" style="padding-right: 10px">
-												{{ $t("database.ECTSPoints") }}
-											</v-col>
-										</v-row>
-										<v-row v-for="(course, index) in item.courses.Høst" :key="index" class="mb-3" no-gutters>
-											<v-col cols="5" style="padding-right: 10px">
-												{{ course.courseName }}
-											</v-col>
-											<v-col cols="3" style="padding-right: 10px">
-												{{ course.courseCode }}
-											</v-col>
-											<v-col cols="2" style="padding-right: 10px">
-												{{ course.ECTSPoints }}
-											</v-col>
-											<v-col cols="1">
-												<v-icon v-if="!checkIfFavorite(course)" small class="mr-2" @click="toggleFavorite(course)">
-													mdi-heart-outline
-												</v-icon>
-												<v-icon v-else small class="mr-2" color="red" @click="toggleFavorite(course)">
-													mdi-heart
-												</v-icon>
-											</v-col>
-											<v-col cols="1">
-												<v-icon small class="mr-2" @click="toggleInformationDialog(course)">
-													mdi-dots-horizontal
-												</v-icon>
-											</v-col>
-										</v-row>
-									</div>
-									<div v-if="item.courses.Vår && item.courses.Vår.length > 0">
-										<v-row no-gutters class="text-bold" style="font-size: 15px; text-decoration: underline">
-											{{ $t("exchanges.coursesSpringHeader") }} ({{ $t("database.totalECTS") }}:
-											{{
-												item.courses.Vår
-													.reduce((sum, course) => sum + parseFloat(course.ECTSPoints || 0), 0)
-													.toFixed(1)
-											}}
-											)
-										</v-row>
-										<v-row no-gutters style="margin-bottom: 5px">
-											<v-col cols="5" class="text-bold" style="padding-right: 10px">
-												{{ $t("database.courseName") }}
-											</v-col>
-											<v-col cols="3" class="text-bold" style="padding-right: 10px">
-												{{ $t("database.courseCode") }}
-											</v-col>
-											<v-col cols="2" class="text-bold" style="padding-right: 10px">
-												{{ $t("database.ECTSPoints") }}
-											</v-col>
-										</v-row>
-										<v-row v-for="(course, index) in item.courses.Vår" :key="index" class="mb-3" no-gutters>
-											<v-col cols="5" style="padding-right: 10px">
-												{{ course.courseName }}
-											</v-col>
-											<v-col cols="3" style="padding-right: 10px">
-												{{ course.courseCode }}
-											</v-col>
-											<v-col cols="2" style="padding-right: 10px">
-												{{ course.ECTSPoints }}
-											</v-col>
-											<v-col cols="1">
-												<v-icon v-if="!checkIfFavorite(course)" small class="mr-2" @click="toggleFavorite(course)">
-													mdi-heart-outline
-												</v-icon>
-												<v-icon v-else small class="mr-2" color="red" @click="toggleFavorite(course)">
-													mdi-heart
-												</v-icon>
-											</v-col>
-											<v-col cols="1">
-												<v-icon small class="mr-2" @click="toggleInformationDialog(course)">
-													mdi-dots-horizontal
-												</v-icon>
-											</v-col>
-										</v-row>
-									</div>
-								</v-container>
+								<div class="mobile-info-row">
+									<span class="mobile-info-label">{{ $t("database.homeUniversity") }}</span>
+									<span class="mobile-info-value">{{ item.homeUniversity }}</span>
+								</div>
+								<div class="mobile-info-row">
+									<span class="mobile-info-label">{{ $t("database.numSemesters") }}</span>
+									<span class="mobile-info-value">{{ item.numSemesters }}</span>
+								</div>
+								<div class="mobile-info-row">
+									<span class="mobile-info-label">{{ $t("database.studyYear") }}</span>
+									<span class="mobile-info-value">{{ item.studyYear }}</span>
+								</div>
 							</div>
+
+							<template v-for="(semester, si) in semesters" :key="semester.key">
+								<div v-if="semesterCourses(item, semester.key)" :style="si > 0 ? 'margin-top: 16px' : ''">
+									<div class="semester-header">
+										<span class="semester-pill">{{ semester.label.toUpperCase() }}</span>
+										<span class="semester-ects">{{ semesterECTS(semesterCourses(item, semester.key)) }} ECTS</span>
+									</div>
+									<div v-for="(course, index) in semesterCourses(item, semester.key)" :key="index" class="mobile-course-card">
+										<div class="mobile-course-main">
+											<div class="mobile-course-info">
+												<span class="course-name">{{ course.courseName }}</span>
+												<span class="mobile-course-code">{{ course.courseCode }}</span>
+												<div v-if="course.replacedCourseName || course.replacedCourseCode" class="course-replaced">
+													→ {{ $t("database.replaces") }} {{ course.replacedCourseCode }} {{ course.replacedCourseName }}
+												</div>
+											</div>
+											<span class="ects-value">{{ course.ECTSPoints }}</span>
+										</div>
+										<div class="mobile-course-actions">
+											<v-icon v-if="!checkIfFavorite(course)" size="small" @click="toggleFavorite(course)">
+												mdi-heart-outline
+											</v-icon>
+											<v-icon v-else size="small" color="#E53935" @click="toggleFavorite(course)">
+												mdi-heart
+											</v-icon>
+											<span v-if="course.comments && course.comments.trim() !== ''"
+												class="comment-btn" @click="showComments(course)">
+												<v-icon size="small">mdi-comment</v-icon>
+											</span>
+											<span v-else class="comment-empty">—</span>
+										</div>
+									</div>
+								</div>
+							</template>
 						</div>
 					</td>
 				</tr>
@@ -406,18 +272,24 @@
 	</div>
 
 	<!-- Comment Dialog -->
-	<v-dialog v-model="commentDialog" max-width="500px" class="dialog">
-		<v-card>
-			<v-card-title>
-				{{ $t("exchanges.courseComments") }} {{ currentCourseName }}
-			</v-card-title>
-			<v-card-text>{{ currentComments }}</v-card-text>
-			<v-card-actions>
-				<v-spacer></v-spacer>
-				<v-btn class="btn btn-secondary" text @click="closeCommentDialog">
-					{{ $t("actions.close") }}
+	<v-dialog v-model="commentDialog" max-width="460px" class="dialog">
+		<v-card class="comment-dialog-card" rounded="lg">
+			<div class="comment-dialog-header">
+				<div class="comment-dialog-icon">
+					<v-icon size="20">mdi-comment-text-outline</v-icon>
+				</div>
+				<div class="comment-dialog-title-wrap">
+					<div class="comment-dialog-label">{{ $t("exchanges.courseComments") }}</div>
+					<div class="comment-dialog-course">{{ currentCourseName }}</div>
+				</div>
+				<v-btn icon variant="text" size="small" @click="closeCommentDialog" class="comment-dialog-close">
+					<v-icon>mdi-close</v-icon>
 				</v-btn>
-			</v-card-actions>
+			</div>
+			<v-divider></v-divider>
+			<v-card-text class="comment-dialog-body">
+				{{ currentComments }}
+			</v-card-text>
 		</v-card>
 	</v-dialog>
 
@@ -631,26 +503,6 @@ export default {
 					key: "courseCode",
 				},
 				{
-					title: this.$t("database.replacedCourseName"),
-					align: "end",
-					key: "replacedCourseName",
-				},
-				{
-					title: this.$t("database.replacedCourseCode"),
-					align: "end",
-					key: "replacedCourseCode",
-				},
-				// {
-				// 	title: this.$t("database.courseType"),
-				// 	align: "end",
-				// 	key: "courseType",
-				// },
-				// {
-				// 	title: this.$t("database.institute"),
-				// 	align: "end",
-				// 	key: "institute",
-				// },
-				{
 					title: this.$t("database.ECTSPoints"),
 					align: "end",
 					key: "ECTSPoints",
@@ -659,11 +511,13 @@ export default {
 					title: this.$t("database.comments"),
 					align: "end",
 					key: "comment",
+					sortable: false,
 				},
 				{
 					title: "",
 					align: "end",
 					key: "favorite",
+					sortable: false,
 				},
 			];
 		},
@@ -747,6 +601,13 @@ export default {
 		},
 		locationWord() {
 			return this.totalSearchCountries === 1 ? this.$t("exchanges.country_one") : this.$t("exchanges.country_other");
+		},
+		semesters() {
+			return [
+				{ key: "Høst", label: this.$t("exchanges.coursesFallHeader") },
+				{ key: "Vår", label: this.$t("exchanges.coursesSpringHeader") },
+				{ key: "Sommer", label: this.$t("exchanges.coursesSummerHeader") },
+			];
 		},
 		hasActiveFilters() {
 			return this.searchChips.length > 0;
@@ -861,6 +722,15 @@ export default {
 			} catch (error) {
 				console.error("Error fetching values from database:", error);
 			}
+		},
+		semesterCourses(item, semesterKey) {
+			return item.courses && item.courses[semesterKey] && item.courses[semesterKey].length > 0
+				? item.courses[semesterKey]
+				: null;
+		},
+		semesterECTS(courses) {
+			const total = courses.reduce((sum, c) => sum + parseFloat(c.ECTSPoints || 0), 0);
+			return total % 1 === 0 ? total.toFixed(0) : total.toFixed(1);
 		},
 		remove(item) {
 			this.countryValues = this.countryValues.filter((i) => i !== item);
@@ -1435,6 +1305,219 @@ export default {
 	transition: box-shadow 180ms ease, background 180ms ease;
 	cursor: text;
 	min-height: 48px;
+}
+
+.expanded-courses {
+	padding: 16px 8px;
+}
+
+.semester-header {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 10px;
+}
+
+.semester-pill {
+	background-color: var(--first-color, #112d4e);
+	color: white;
+	font-size: 12px;
+	font-weight: 700;
+	padding: 4px 12px;
+	border-radius: 4px;
+	letter-spacing: 0.5px;
+}
+
+.semester-ects {
+	font-size: 14px;
+	color: #6b7280;
+}
+
+.course-name {
+	font-weight: 500;
+}
+
+.course-replaced {
+	font-size: 12px;
+	color: #9ca3af;
+	margin-top: 2px;
+}
+
+.ects-value {
+	color: var(--second-color, #3f72af);
+	font-weight: 600;
+}
+
+.comment-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 30px;
+	height: 30px;
+	border-radius: 8px;
+	background-color: var(--third-color, #dbe2ef);
+	cursor: pointer;
+	transition: background-color 0.15s;
+}
+
+.comment-btn:hover {
+	background-color: var(--second-color, #3f72af);
+}
+
+.comment-btn:hover .v-icon {
+	color: white;
+}
+
+.comment-btn .v-icon {
+	color: var(--first-color, #112d4e);
+}
+
+.comment-empty {
+	color: #d1d5db;
+	font-size: 14px;
+}
+
+.comment-dialog-card {
+	overflow: hidden;
+}
+
+.comment-dialog-header {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 16px 20px;
+}
+
+.comment-dialog-icon {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border-radius: 10px;
+	background-color: var(--third-color, #dbe2ef);
+	flex-shrink: 0;
+}
+
+.comment-dialog-icon .v-icon {
+	color: var(--second-color, #3f72af);
+}
+
+.comment-dialog-title-wrap {
+	flex: 1;
+	min-width: 0;
+}
+
+.comment-dialog-label {
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	color: #9ca3af;
+	font-weight: 600;
+}
+
+.comment-dialog-course {
+	font-size: 15px;
+	font-weight: 600;
+	color: var(--first-color, #112d4e);
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.comment-dialog-close {
+	color: #9ca3af;
+	flex-shrink: 0;
+}
+
+.comment-dialog-body {
+	padding: 20px !important;
+	font-size: 15px;
+	line-height: 1.6;
+	color: var(--first-color, #333);
+}
+
+.mobile-expanded {
+	padding: 12px 8px;
+	max-width: 100vw;
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+.mobile-info-card {
+	background: white;
+	border-radius: 10px;
+	padding: 12px 14px;
+	margin-bottom: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	overflow: hidden;
+	word-break: break-word;
+}
+
+.mobile-info-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	gap: 8px;
+}
+
+.mobile-info-label {
+	font-size: 13px;
+	color: #9ca3af;
+	flex-shrink: 0;
+}
+
+.mobile-info-value {
+	font-size: 13px;
+	font-weight: 500;
+	color: var(--first-color, #112d4e);
+	text-align: right;
+	word-break: break-word;
+	min-width: 0;
+}
+
+.mobile-course-card {
+	background: white;
+	border-radius: 8px;
+	padding: 10px 12px;
+	margin-bottom: 6px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	overflow: hidden;
+}
+
+.mobile-course-main {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	flex: 1;
+	min-width: 0;
+}
+
+.mobile-course-info {
+	flex: 1;
+	min-width: 0;
+}
+
+.mobile-course-info .course-name {
+	display: block;
+	font-size: 13px;
+}
+
+.mobile-course-code {
+	font-size: 12px;
+	color: #9ca3af;
+}
+
+.mobile-course-actions {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	flex-shrink: 0;
 }
 
 .search-icon {
