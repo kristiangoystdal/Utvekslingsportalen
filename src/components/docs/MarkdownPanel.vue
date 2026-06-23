@@ -6,6 +6,7 @@
 
 <script>
 import MarkdownIt from "markdown-it"
+import DOMPurify from 'dompurify';
 
 export default {
   name: "MarkdownPanel",
@@ -27,8 +28,8 @@ export default {
 
   computed: {
     html() {
-      return this.md.render(this.content)
-    },
+      return DOMPurify.sanitize(this.md.render(this.content));
+    }
   },
 
   methods: {
