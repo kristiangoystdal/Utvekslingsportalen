@@ -24,7 +24,7 @@ export default createStore({
       if (unsubscribeAuth) return;
       unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
         if (user) {
-          commit('setUser', { uid: user.uid, email: user.email, displayName: user.displayName });
+          commit('setUser', { uid: user.uid, email: user.email, displayName: user.displayName, photoURL: user.photoURL, emailVerified: user.emailVerified });
           const userDocRef = dbRef(db, `users/${user.uid}`);
           const userDoc = await get(userDocRef);
           if (userDoc.exists()) {
