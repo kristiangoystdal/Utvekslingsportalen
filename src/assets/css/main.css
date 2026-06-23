@@ -66,8 +66,7 @@
 	--text-2xl: 36px;
 }
 
-a,
-.green {
+a {
 	text-decoration: none;
 	color: var(--second-color);
 	transition: 0.4s;
