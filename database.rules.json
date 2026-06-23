@@ -1,0 +1,44 @@
+{
+  "rules": {
+    "users": {
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+
+    "exchanges": {
+      ".read": "true",
+      "$uid": {
+        ".write": "auth != null && (auth.uid === $uid || auth.uid === 'TaJF8H08JmQJ77NR8hUooUqfe0I2')"
+      },
+      ".indexOn": ["country", "university", "study", "specialization", "numSemesters"]
+    },
+
+    "exchangesTest": {
+      ".read": "true",
+      "$uid": {
+        ".write": "auth != null && (auth.uid === $uid || auth.uid === 'TaJF8H08JmQJ77NR8hUooUqfe0I2')"
+      },
+      ".indexOn": ["country", "university", "study", "specialization", "numSemesters"]
+    },
+
+    "faq": {
+      ".read": "true",
+      ".write": "auth != null && auth.uid === 'TaJF8H08JmQJ77NR8hUooUqfe0I2'"
+    },
+
+    "uploads": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid"
+      }
+    },
+
+    "reports": {
+      ".read": "true",
+      ".indexOn": ["authorId", "university", "country", "status"],
+      "$reportId": {
+        ".write": "auth != null && ((!data.exists() && newData.child('authorId').val() === auth.uid) || (data.exists() && data.child('authorId').val() === auth.uid) || auth.uid === 'TaJF8H08JmQJ77NR8hUooUqfe0I2')"
+      }
+    }
+  }
+}
