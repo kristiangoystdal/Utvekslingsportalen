@@ -181,7 +181,8 @@ header {
 .site-name {
 	margin-left: 0.5rem;
 	font-size: 1.5rem;
-	font-weight: bold;
+	font-weight: 700;
+	font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
 .nav-and-language {
