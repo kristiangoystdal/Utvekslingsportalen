@@ -20,19 +20,55 @@
 
 
 
-	<!-- Search Field -->
+	<!-- Search Field with Chips -->
 	<div class="search-wrap">
-		<v-text-field v-model="exchangeSearch" :label="$t('exchanges.search')" prepend-inner-icon="mdi-magnify" clearable
-			variant="solo" density="comfortable" rounded="xl" hide-details single-line @blur="updateSearchQuery"
-			class="search-field" />
+		<div class="search-chip-container" :class="{ focused: searchFocused }" @click="$refs.searchInput?.focus()">
+			<v-icon class="search-icon">mdi-magnify</v-icon>
+			<v-chip
+				v-for="(chip, index) in searchChips"
+				:key="'chip-' + index"
+				closable
+				color="primary"
+				variant="tonal"
+				size="small"
+				@click:close="removeChip(index)"
+			>{{ chip }}</v-chip>
+			<div class="search-input-wrap">
+				<input
+					ref="searchInput"
+					v-model="searchInput"
+					:placeholder="searchChips.length === 0 ? $t('exchanges.search') : ''"
+					class="chip-search-input"
+					@keydown.enter.prevent="onSearchEnter"
+					@keydown.down.prevent="onArrowDown"
+					@keydown.up.prevent="onArrowUp"
+					@keydown.delete="onBackspace"
+					@focus="searchFocused = true"
+					@blur="onSearchBlur"
+				/>
+				<div v-if="showSuggestions && filteredSuggestions.length > 0" class="suggestions-dropdown">
+					<div
+						v-for="(suggestion, i) in filteredSuggestions"
+						:key="i"
+						class="suggestion-item"
+						:class="{ highlighted: i === highlightedIndex }"
+						@mousedown.prevent="selectSuggestion(suggestion)"
+					>
+						<v-icon size="small" class="suggestion-icon">{{ suggestion.icon }}</v-icon>
+						<span class="suggestion-text">{{ suggestion.label }}</span>
+						<span class="suggestion-type">{{ suggestion.type }}</span>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<br />
 
 	<!-- Data Table -->
 	<div v-if="!isMobile">
-		<v-data-table v-model:expanded="expanded" :headers="translatedHeaders" :items="exchangeList" item-value="id"
-			show-expand class="main-table" id="main-table-width" :search="exchangeSearch" :custom-filter="rowSearchFilter"
+		<v-data-table v-model:expanded="expanded" :headers="translatedHeaders" :items="filteredExchangeList" item-value="id"
+			show-expand class="main-table" id="main-table-width"
 			:items-per-page="exchangesPerPage" v-model:page="currentPage" :items-per-page-text="this.$t('exchanges.pageText')"
 			:loading="datatableLoading">
 
@@ -195,10 +231,10 @@
 	</div>
 
 	<div v-else>
-		<v-data-table :headers="translatedMobileHeaders" v-model:expanded="expanded" :items="exchangeList" item-value="id"
+		<v-data-table :headers="translatedMobileHeaders" v-model:expanded="expanded" :items="filteredExchangeList" item-value="id"
 			show-expand class="main-table fixed-table" id="main-table-width" :fixed-header="false" :style="{ width: '100%' }"
-			item-class="custom-item-class" header-class="custom-header-class" :search="exchangeSearch"
-			:custom-filter="rowSearchFilter" :items-per-page="exchangesPerPage" v-model:page="currentPage"
+			item-class="custom-item-class" header-class="custom-header-class"
+			:items-per-page="exchangesPerPage" v-model:page="currentPage"
 			:items-per-page-text="this.$t('exchanges.pageText')" :loading="datatableLoading">
 
 			<template v-slot:item.university="{ item }">
@@ -491,6 +527,10 @@ export default {
 			currentCourse: null,
 			favoriteCourses: [],
 			exchangeSearch: "",
+			searchChips: [],
+			searchInput: "",
+			searchFocused: false,
+			highlightedIndex: -1,
 			exchangesPerPage: 10,
 			currentPage: 1,
 			datatableLoading: false,
@@ -512,6 +552,9 @@ export default {
 		window.removeEventListener("resize", this.updateScreenWidth);
 	},
 	watch: {
+		searchInput() {
+			this.highlightedIndex = -1;
+		},
 		locale(newLocale, oldLocale) {
 			this.fetchExchangeData();
 			this.getValuesFromDatabase();
@@ -690,42 +733,81 @@ export default {
 			return this.$i18n.locale;
 		},
 		totalSearchExchanges() {
-			const search = (this.exchangeSearch || "").trim();
-
-			// Ingen søk: return total lengde
-			if (!search) {
-				return this.exchangeList.length;
-			}
-
-			// Søk: bruk samme filter-logikk som v-data-table bruker (rowSearchFilter)
-			return this.exchangeList.filter(group => {
-				return this.rowSearchFilter(null, search, { raw: group });
-			}).length;
+			return this.filteredExchangeList.length;
 		},
 		groupWord() {
 			return this.totalSearchExchanges === 1 ? this.$t("exchanges.exchange_one") : this.$t("exchanges.exchange_other");
 		},
 		totalSearchCountries() {
 			const countries = new Set();
-
-			const search = (this.exchangeSearch || "").trim().toLowerCase();
-
-			this.exchangeList.forEach(group => {
-				// Ingen søk: legg til alle land
-				if (!search) {
-					countries.add(group.country);
-				} else {
-					// Søk: bruk samme filter-logikk som v-data-table bruker (rowSearchFilter)
-					if (this.rowSearchFilter(null, search, { raw: group })) {
-						countries.add(group.country);
-					}
-				}
+			this.filteredExchangeList.forEach(group => {
+				countries.add(group.country);
 			});
-
 			return countries.size;
 		},
 		locationWord() {
 			return this.totalSearchCountries === 1 ? this.$t("exchanges.country_one") : this.$t("exchanges.country_other");
+		},
+		hasActiveFilters() {
+			return this.searchChips.length > 0;
+		},
+		filteredExchangeList() {
+			if (this.searchChips.length === 0) return this.exchangeList;
+			return this.exchangeList.filter(item => {
+				return this.searchChips.every(chip => {
+					const chipLower = chip.toLowerCase();
+					const fieldsToSearch = [
+						"country", "secondCountry", "university",
+						"study", "studyYear", "year", "homeUniversity",
+					];
+					const rowText = fieldsToSearch
+						.map(key => (item[key] != null ? String(item[key]) : ""))
+						.join(" ")
+						.toLowerCase();
+					return rowText.includes(chipLower);
+				});
+			});
+		},
+		allSuggestions() {
+			const suggestions = [];
+			const added = new Set();
+
+			for (const country of this.countryList) {
+				if (!added.has(country)) {
+					added.add(country);
+					suggestions.push({ label: country, type: this.$t("database.country"), icon: "mdi-earth" });
+				}
+			}
+
+			const universityNames = new Set();
+			for (const exchange of this.exchangeList) {
+				if (exchange.university) {
+					const shortName = exchange.university.split('(')[0].trim();
+					if (!universityNames.has(shortName)) {
+						universityNames.add(shortName);
+						suggestions.push({ label: shortName, type: this.$t("database.university"), icon: "mdi-school" });
+					}
+				}
+			}
+
+			for (const study of this.studyList) {
+				if (!added.has(study)) {
+					added.add(study);
+					suggestions.push({ label: study, type: this.$t("database.study"), icon: "mdi-book-open-variant" });
+				}
+			}
+
+			return suggestions;
+		},
+		filteredSuggestions() {
+			const input = this.searchInput.trim().toLowerCase();
+			if (!input) return [];
+			return this.allSuggestions
+				.filter(s => s.label.toLowerCase().includes(input) && !this.searchChips.includes(s.label))
+				.slice(0, 8);
+		},
+		showSuggestions() {
+			return this.searchFocused && this.searchInput.trim().length > 0;
 		},
 	},
 	methods: {
@@ -782,6 +864,62 @@ export default {
 		},
 		remove(item) {
 			this.countryValues = this.countryValues.filter((i) => i !== item);
+		},
+		removeChip(index) {
+			this.searchChips.splice(index, 1);
+			this.updateSearchQuery();
+		},
+		onSearchEnter() {
+			if (this.highlightedIndex >= 0 && this.filteredSuggestions[this.highlightedIndex]) {
+				this.selectSuggestion(this.filteredSuggestions[this.highlightedIndex]);
+				return;
+			}
+			const input = this.searchInput.trim();
+			if (input && !this.searchChips.includes(input)) {
+				this.searchChips.push(input);
+				this.searchInput = "";
+				this.highlightedIndex = -1;
+				this.updateSearchQuery();
+			}
+		},
+		selectSuggestion(suggestion) {
+			if (!this.searchChips.includes(suggestion.label)) {
+				this.searchChips.push(suggestion.label);
+			}
+			this.searchInput = "";
+			this.highlightedIndex = -1;
+			this.updateSearchQuery();
+			this.$nextTick(() => {
+				this.$refs.searchInput?.focus();
+			});
+		},
+		onArrowDown() {
+			if (this.filteredSuggestions.length > 0) {
+				this.highlightedIndex = Math.min(this.highlightedIndex + 1, this.filteredSuggestions.length - 1);
+			}
+		},
+		onArrowUp() {
+			if (this.highlightedIndex > 0) {
+				this.highlightedIndex--;
+			}
+		},
+		onBackspace() {
+			if (this.searchInput === "" && this.searchChips.length > 0) {
+				this.searchChips.pop();
+				this.updateSearchQuery();
+			}
+		},
+		onSearchBlur() {
+			setTimeout(() => {
+				this.searchFocused = false;
+				this.highlightedIndex = -1;
+			}, 150);
+		},
+		clearSearch() {
+			this.searchChips = [];
+			this.searchInput = "";
+			this.exchangeSearch = "";
+			this.updateSearchQuery();
 		},
 		async fetchExchangeData() {
 			this.datatableLoading = true;
@@ -1152,31 +1290,21 @@ export default {
 
 			const search = this.$route.query.search;
 			if (search) {
-				const words = search.trim().split(/\s+/);
-				for (const [index, word] of words.entries()) {
-					if (!isNaN(word)) continue; // skip numbers
-
-					// Skip very short words to avoid false positives (e.g., "in", "at", "on")
-					if (word.length <= 3) {
-						// But keep them in the search query as they might be relevant for course names or other fields
-						this.exchangeSearch = search;
-						continue;
+				const chips = search.split(',').map(s => s.trim()).filter(Boolean);
+				for (const chip of chips) {
+					const words = chip.split(/\s+/);
+					let resolved = chip;
+					for (const [index, word] of words.entries()) {
+						if (!isNaN(word) || word.length <= 3) continue;
+						let current_word = this.normalizeCountrySearchWord(words, index);
+						const canonicalKey = this.getCountryKeyFromUserInput(current_word);
+						if (canonicalKey) {
+							resolved = this.$t(`countries.${canonicalKey}`);
+							break;
+						}
 					}
-
-					let current_word = this.normalizeCountrySearchWord(words, index);
-
-					const canonicalKey = this.getCountryKeyFromUserInput(current_word);
-
-					if (canonicalKey) {
-						const translated = this.$t(`countries.${canonicalKey}`);
-						words[index] = translated;
-						this.exchangeSearch = words.join(" ");
-						break;
-					} else {
-						// If no country match, just set the search query as is (after processing special cases)
-						words[index] = current_word;
-						this.exchangeSearch = words.join(" ");
-						break;
+					if (!this.searchChips.includes(resolved)) {
+						this.searchChips.push(resolved);
 					}
 				}
 				this.updateSearchQuery();
@@ -1192,16 +1320,9 @@ export default {
 					this.expanded.push(decodedId);
 				}
 
-				// Scroll to the first expanded row
 				this.$nextTick(() => {
 					const firstId = atob(exchangeIds[0]);
-
-					const searchList = this.exchangeList.filter(exchange =>
-						this.rowSearchFilter(null, this.exchangeSearch, exchange)
-					);
-
-					const index = searchList.findIndex(exchange => exchange.id === firstId);
-
+					const index = this.filteredExchangeList.findIndex(exchange => exchange.id === firstId);
 					if (index !== -1) {
 						this.scrollWhenReady(index);
 					}
@@ -1211,11 +1332,17 @@ export default {
 		updateSearchQuery() {
 			if (!this.$route || !this.$route.query) return;
 			const r = this.$route.query.r;
-			if (r && r.length > 0) {
-				this.$router.replace({ query: { ...this.$route.query, search: this.exchangeSearch, r: r } });
+			const searchParam = this.searchChips.length > 0 ? this.searchChips.join(',') : undefined;
+			const query = { ...this.$route.query };
+			if (searchParam) {
+				query.search = searchParam;
 			} else {
-				this.$router.replace({ query: { ...this.$route.query, search: this.exchangeSearch } });
+				delete query.search;
 			}
+			if (r && r.length > 0) {
+				query.r = r;
+			}
+			this.$router.replace({ query });
 		},
 		rowSearchFilter(value, search, item) {
 			if (!search) return true;
@@ -1296,6 +1423,100 @@ export default {
 </script>
 
 <style>
+.search-chip-container {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 16px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.85);
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+	transition: box-shadow 180ms ease, background 180ms ease;
+	cursor: text;
+	min-height: 48px;
+}
+
+.search-icon {
+	color: #9ca3af;
+	flex-shrink: 0;
+}
+
+.search-chip-container:hover {
+	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+	background: rgba(255, 255, 255, 0.92);
+}
+
+.search-chip-container.focused {
+	box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.18), 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.search-input-wrap {
+	flex: 1;
+	min-width: 120px;
+	position: relative;
+}
+
+.chip-search-input {
+	width: 100%;
+	border: none;
+	outline: none;
+	background: transparent;
+	font-size: 16px;
+	padding: 4px 0;
+	color: var(--first-color, #112d4e);
+}
+
+.chip-search-input::placeholder {
+	color: #9ca3af;
+}
+
+.suggestions-dropdown {
+	position: absolute;
+	top: calc(100% + 12px);
+	left: -16px;
+	right: -16px;
+	min-width: 300px;
+	background: white;
+	border-radius: 12px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+	border: 1px solid var(--third-color, #dbe2ef);
+	overflow: hidden;
+	z-index: 1000;
+}
+
+.suggestion-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 14px;
+	cursor: pointer;
+	transition: background-color 0.1s;
+	font-size: 14px;
+}
+
+.suggestion-item:hover,
+.suggestion-item.highlighted {
+	background-color: var(--fourth-color, #f9f7f7);
+}
+
+.suggestion-icon {
+	color: var(--second-color, #3f72af);
+	opacity: 0.7;
+}
+
+.suggestion-text {
+	flex: 1;
+	color: var(--first-color, #112d4e);
+}
+
+.suggestion-type {
+	font-size: 12px;
+	color: #9ca3af;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
 html,
 body {
 	scroll-behavior: auto !important;
