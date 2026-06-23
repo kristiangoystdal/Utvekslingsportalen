@@ -35,15 +35,41 @@
 	--alert-info-text: #1e5aa8;
 	--alert-info: #eaf2fb;
 
+	/* Semantic colors */
+	--color-danger: #e53935;
+	--color-danger-hover: #d32f2f;
+	--color-confirm: #2e7d32;
+	--color-confirm-hover: #1b5e20;
+	--color-warning-bg: #ffecb3;
+	--color-warning-border: #ffd54f;
+	--color-warning-text: #ff6f00;
+	--color-text-primary: #333333;
+	--color-text-secondary: #555555;
+	--color-text-light: #f5f5f5;
+	--color-bg-subtle: #f5f5f5;
+	--color-bg-card: #ffffff;
 
+	/* Spacing scale */
+	--space-xs: 4px;
+	--space-sm: 8px;
+	--space-md: 16px;
+	--space-lg: 24px;
+	--space-xl: 32px;
+	--space-2xl: 48px;
 
-
+	/* Font-size scale */
+	--text-xs: 12px;
+	--text-sm: 14px;
+	--text-base: 16px;
+	--text-lg: 20px;
+	--text-xl: 28px;
+	--text-2xl: 36px;
 }
 
 a,
 .green {
 	text-decoration: none;
-	color: rgb(255, 191, 0);
+	color: var(--second-color);
 	transition: 0.4s;
 	padding: 3px;
 }

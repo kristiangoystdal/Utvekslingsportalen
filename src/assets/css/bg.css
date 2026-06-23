@@ -1,30 +1,24 @@
 /* Background Color Styles */
 .bg-primary {
   background-color: var(--second-color);
-  /* #00BD7E */
 }
 
 .bg-secondary {
   background-color: var(--first-color);
-  /* #277E93 */
 }
 
 .bg-tertiary {
   background-color: var(--third-color);
-  /* #94CB4F */
 }
 
 .bg-light {
   background-color: var(--fourth-color);
-  /* #F5F5F5 */
 }
 
 .bg-dark {
   background-color: var(--fifth-color);
-  /* #333333 */
 }
 
 .bg-white {
-  background-color: var(--white);
-  /* #ffffff */
+  background-color: var(--fifth-color);
 }

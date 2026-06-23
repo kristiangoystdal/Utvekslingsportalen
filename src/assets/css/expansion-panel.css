@@ -1,17 +1,15 @@
 /* expansion-panels.css */
 
-/* General panel styling */
 .v-expansion-panel {
     background-color: var(--fourth-color);
-    margin-bottom: 10px;
+    margin-bottom: var(--space-sm);
     border-radius: 5px;
 }
 
-/* Panel title styling */
 .v-expansion-panel-title {
-    padding: 16px;
+    padding: var(--space-md);
     font-weight: bold;
-    font-size: 1rem;
+    font-size: var(--text-base);
     background-color: var(--fourth-color);
     color: var(--text-light-color);
     cursor: pointer;
@@ -21,59 +19,48 @@
 }
 
 .v-expansion-panel-title .v-icon {
-    margin-left: 10px;
+    margin-left: var(--space-sm);
+    color: var(--icon-color);
 }
 
 .v-expansion-panel-title .v-row {
     width: 100%;
 }
 
-/* Text and icon color based on state */
-.v-expansion-panel-title .v-icon {
-    color: var(--icon-color);
-}
-
-/* Different colors for expanded state */
 .v-expansion-panel-title[aria-expanded="true"] {
     background-color: var(--third-color);
     border-bottom: 2px solid var(--first-color);
-
 }
 
-/* Panel text styling */
 .v-expansion-panel-text {
-    padding: 16px;
+    padding: var(--space-md);
     background-color: var(--fourth-color);
 }
 
-/* Autocomplete styling within panels */
 .v-expansion-panel-text .v-autocomplete {
-    margin-bottom: 20px;
+    margin-bottom: var(--space-lg);
 }
 
-
-
-/* Responsive font sizes */
 @media (max-width: 1200px) {
     .v-expansion-panel-title {
-        font-size: 1rem;
+        font-size: var(--text-base);
     }
 }
 
 @media (max-width: 992px) {
     .v-expansion-panel-title {
-        font-size: 0.9rem;
+        font-size: var(--text-sm);
     }
 }
 
 @media (max-width: 768px) {
     .v-expansion-panel-title {
-        font-size: 0.8rem;
+        font-size: var(--text-sm);
     }
 }
 
 @media (max-width: 576px) {
     .v-expansion-panel-title {
-        font-size: 0.7rem;
+        font-size: var(--text-xs);
     }
 }

@@ -1,14 +1,14 @@
 .navbar {
-    background-color: #009960;
-    padding: 10px;
+    background-color: var(--fourth-color);
+    padding: var(--space-sm);
 }
 
 .navbar a {
-    color: #ffffff;
+    color: var(--first-color);
     text-decoration: none;
-    padding: 10px 15px;
+    padding: var(--space-sm) var(--space-md);
 }
 
 .navbar a:hover {
-    background-color: #33d19c;
+    background-color: var(--third-color);
 }
