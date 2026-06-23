@@ -9,6 +9,9 @@
   "label": "Select file (PDF or PNG)",
   "name": "Name",
   "email": "Email",
+  "currentUpload": "Your current upload",
   "pageHeader": "Upload Data",
+  "remove": "Remove",
+  "replace": "Replace",
   "submit": "Upload"
 }

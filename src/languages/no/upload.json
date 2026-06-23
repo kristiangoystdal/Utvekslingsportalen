@@ -9,6 +9,9 @@
   "label": "Velg fil (PDF eller PNG)",
   "name": "Navn",
   "email": "E-post",
+  "currentUpload": "Din nåværende opplasting",
   "pageHeader": "Last opp data",
+  "remove": "Fjern",
+  "replace": "Erstatt",
   "submit": "Last opp"
 }
