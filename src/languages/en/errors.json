@@ -17,5 +17,7 @@
   "notLoggedIn": "Profile not available. Please log in",
   "registerFailure": "Registration failed",
   "selectUniversityForPDF": "Please select at least one university to export as PDF.",
+  "fileTooLarge": "File is too large. Maximum size is 10 MB.",
+  "fileTypeNotAllowed": "File type not allowed. Please upload a PDF, PNG, or JPEG.",
   "uploadFileRequired": "A file must be uploaded to proceed."
 }
