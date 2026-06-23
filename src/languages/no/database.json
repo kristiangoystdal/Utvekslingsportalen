@@ -9,6 +9,7 @@
   "institute": "Institutt",
   "numSemesters": "Antall semestre",
   "replacedCourseCode": "Erstattet fagkode",
+  "replaces": "erstatter",
   "replacedCourseName": "Erstattet fagnavn",
   "semester": "Semester",
   "specialization": "Spesialisering",
