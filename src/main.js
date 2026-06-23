@@ -29,6 +29,7 @@ let app;
 
 onAuthStateChanged(auth, () => {
 	if (!app) {
+		store.dispatch("fetchUser");
 		app = createApp(App)
 			.use(store)
 			.use(vuetify) // Use Vuetify
@@ -42,7 +43,5 @@ onAuthStateChanged(auth, () => {
 				hideProgressBar: false,
 			})
 			.mount("#app");
-
 	}
-	store.dispatch("fetchUser");
 });

@@ -131,9 +131,9 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { db } from "../../js/firebaseConfig";
 import { ref as dbRef, get, set, update } from "firebase/database";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { toast } from "vue3-toastify";
 import Confirmation from "../common/Confirmation.vue";
 import EditExchange from "../exchanges/EditExchange.vue";
@@ -153,7 +153,6 @@ export default {
 			users: [],
 			faqs: [],
 			userSearch: '',
-			userData: null,
 			localEditData: {
 				uid: '',
 				displayName: '',
@@ -222,18 +221,18 @@ export default {
 			courseData: [],
 		};
 	},
-	methods: {
-		onAuthStateChanged() {
-			const auth = getAuth();
-			onAuthStateChanged(auth, (user) => {
-				if (user) {
-					this.userData = user;
+	computed: {
+		...mapGetters(["user"]),
+	},
+	watch: {
+		user: {
+			handler(newUser) {
+				if (newUser) {
 					this.loadUserData();
 					this.loadFAQData();
 					this.loadExchangeData();
 					this.fetchCourseData();
 				} else {
-					this.userData = null;
 					this.users = [];
 					try {
 						this.$router.push("/");
@@ -241,8 +240,11 @@ export default {
 						console.error("Navigation error: ", error);
 					}
 				}
-			});
+			},
+			immediate: true,
 		},
+	},
+	methods: {
 		openUserConfirmationDialog() {
 			this.$refs.userConfirmationDialog.dialog = true;
 		},
@@ -574,9 +576,6 @@ export default {
 				return words.every(w => rowText.includes(w));
 			};
 		},
-	},
-	mounted() {
-		this.onAuthStateChanged();
 	},
 };
 </script>

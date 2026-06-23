@@ -90,9 +90,8 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { auth, db, provider } from "../../js/firebaseConfig";
-import { onAuthStateChanged, signOut, signInWithPopup } from "firebase/auth";
-import { ref as dbRef, get, remove, set } from "firebase/database";
+import { auth, provider } from "../../js/firebaseConfig";
+import { signOut, signInWithPopup } from "firebase/auth";
 
 export default {
 	name: "MobileFooter",
@@ -100,11 +99,10 @@ export default {
 		return {
 			showProfileDropDown: false,
 			showMenuDropdown: false,
-			userData: null, // Assume this is populated with user data from your Vuex store or API
 		};
 	},
 	computed: {
-		...mapGetters(["isAuthenticated"]),
+		...mapGetters(["isAuthenticated", "user", "userData"]),
 	},
 	methods: {
 		toggleProfileDropdown() {
@@ -126,8 +124,6 @@ export default {
 		async signOut() {
 			try {
 				await signOut(auth);
-				this.user = null;
-				this.userData = null;
 				this.$router.go();
 			} catch (error) {
 				console.error("Error signing out: ", error);
@@ -135,8 +131,7 @@ export default {
 		},
 		async loginWithGoogle() {
 			try {
-				const result = await signInWithPopup(auth, provider);
-				this.user = result.user;
+				await signInWithPopup(auth, provider);
 				this.showProfileDropDown = false;
 				this.$router.go();
 			} catch (error) {
@@ -151,34 +146,6 @@ export default {
 			this.showProfileDropDown = false;
 			this.$router.push({ name: "Account" });
 		},
-	},
-	mounted() {
-		onAuthStateChanged(auth, async (currentUser) => {
-			if (currentUser) {
-				this.user = currentUser;
-				const userDocRef = dbRef(db, `users/${currentUser.uid}`);
-				const userDoc = await get(userDocRef);
-				if (userDoc.exists()) {
-					this.userData = userDoc.val();
-				} else {
-					// If user does not exist, show edit dialog
-					this.localEditData = {
-						displayName: currentUser.displayName || "",
-						email: currentUser.email || "",
-					};
-
-					// Create a new user record with initial values
-					await set(userDocRef, {
-						displayName: currentUser.displayName || "",
-						email: currentUser.email,
-					});
-				}
-			} else {
-				this.user = null;
-				this.userData = null;
-			}
-			this.loading = false;
-		});
 	},
 };
 </script>

@@ -209,9 +209,9 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { db, auth } from "../../js/firebaseConfig";
 import { ref as dbRef, get, set, update } from "firebase/database";
-import { onAuthStateChanged } from "firebase/auth";
 import universitiesData from "../../data/universities.json";
 import { toast } from "vue3-toastify";
 import emailjs from "emailjs-com";
@@ -263,7 +263,6 @@ export default {
 	},
 	data() {
 		return {
-			user: null,
 			panel: null,
 			coursePanel: null,
 			numCoursesMissing: 0,
@@ -324,6 +323,14 @@ export default {
 		};
 	},
 	watch: {
+		async user(newUser) {
+			if (newUser && !this.adminMode) {
+				this.loadData();
+				await this.retriveUserExchange();
+			} else if (!newUser) {
+				this.dataLoaded = true;
+			}
+		},
 		unsavedChanges(newValue) {
 			if (newValue) {
 				this.showUnsavedChangesToast(); // Show the toast when unsavedChanges becomes true
@@ -414,6 +421,7 @@ export default {
 		},
 	},
 	computed: {
+		...mapGetters(["user"]),
 		countryNames() {
 			return Object.keys(this.universities || {});
 		},
@@ -1157,29 +1165,20 @@ export default {
 			return x;
 		}
 	},
-	mounted() {
+	async mounted() {
 		window.addEventListener("beforeunload", this.handleBeforeUnload);
 
 		this.loadData();
 
 
 		if (this.adminMode) {
-			// data kommer via props + watcher
 			return;
 		}
 
-		onAuthStateChanged(auth, async (user) => {
-			if (!user) {
-				this.user = null;
-				this.dataLoaded = true;
-				return;
-			}
-
-			this.user = user;
-			this.loadData(); // ✅ load universities FIRST
-
-			await this.retriveUserExchange(); // ✅ NOW SAFE
-		});
+		if (this.user) {
+			this.loadData();
+			await this.retriveUserExchange();
+		}
 	},
 	beforeUnmount() {
 		window.removeEventListener("beforeunload", this.handleBeforeUnload)
