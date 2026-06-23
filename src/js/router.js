@@ -13,7 +13,7 @@ import NotFound from '../components/error/NotFound.vue';
 import Courses from '../components/courses/Courses.vue';
 import Legal from '../components/docs/Legal.vue'
 
-import store from './store.js';
+import store, { authReadyPromise } from './store.js';
 
 const routes = [
   {
@@ -141,30 +141,26 @@ const router = createRouter({
   }
 });
 
-router.beforeEach((to, from, next) => {
-  // Navigation guard for authentication and admin access
-  const isAuthenticated = store.getters.isAuthenticated; // Check if user is authenticated
+router.beforeEach(async (to, from, next) => {
+  await authReadyPromise;
+
+  const isAuthenticated = store.getters.isAuthenticated;
   const adminUserId = import.meta.env.VITE_ADMIN_USER_ID;
   const currentUserId = store.getters.user?.uid;
 
-  // Admin gate: Only allow access to Admin route if user is authenticated and is the admin
   if (to.name === 'Admin' && (!adminUserId || !isAuthenticated || String(currentUserId) !== String(adminUserId))) {
-    return next({ name: 'Home' }); // Redirect unauthorized users to the home page
+    return next({ name: 'Home' });
   }
 
-  // Redirect authenticated users away from the login page
   if (to.name === 'Login' && isAuthenticated) {
-    return next({ name: 'Account' }); // Redirect to the Account page or Home page
+    return next({ name: 'Account' });
   }
 
-  // Check if route requires authentication
   if (to.matched.some(record => record.meta.requiresAuth) && !isAuthenticated) {
-    return next({ name: 'Login' }); // Redirect unauthenticated users to the login page
+    return next({ name: 'Login' });
   }
 
-
-
-  next(); // Proceed to the route if all checks pass
+  next();
 });
 
 router.afterEach((to) => {

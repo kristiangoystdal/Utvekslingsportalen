@@ -5,11 +5,14 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { ref as dbRef, get, set } from 'firebase/database';
 
 let unsubscribeAuth = null;
+let authReadyResolve = null;
+const authReadyPromise = new Promise((resolve) => { authReadyResolve = resolve; });
 
-export default createStore({
+const store = createStore({
   state: {
     user: null,
     userData: null,
+    authReady: false,
   },
   mutations: {
     setUser(state, user) {
@@ -18,10 +21,13 @@ export default createStore({
     setUserData(state, userData) {
       state.userData = userData;
     },
+    setAuthReady(state) {
+      state.authReady = true;
+    },
   },
   actions: {
-    fetchUser({ commit }) {
-      if (unsubscribeAuth) return;
+    fetchUser({ commit, state }) {
+      if (unsubscribeAuth) return authReadyPromise;
       unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
         if (user) {
           commit('setUser', { uid: user.uid, email: user.email, displayName: user.displayName, photoURL: user.photoURL, emailVerified: user.emailVerified });
@@ -41,12 +47,21 @@ export default createStore({
           commit('setUser', null);
           commit('setUserData', null);
         }
+        if (!state.authReady) {
+          commit('setAuthReady');
+          authReadyResolve();
+        }
       });
+      return authReadyPromise;
     },
   },
   getters: {
     user: state => state.user,
     userData: state => state.userData,
     isAuthenticated: state => !!state.user,
+    authReady: state => state.authReady,
   }
 });
+
+export { authReadyPromise };
+export default store;
