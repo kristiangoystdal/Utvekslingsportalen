@@ -368,7 +368,7 @@ export default {
         });
       }
     },
-    routeToExchange(item) {
+    async routeToExchange(item) {
       if (!this.exchanges || Object.keys(this.exchanges).length === 0) return;
 
       const exchangeId = item.exchangeID;
@@ -401,7 +401,7 @@ export default {
         .filter(Boolean)
         .join(" ");
 
-      const hiddenId = encryptId(exchangeId);
+      const hiddenId = await encryptId(exchangeId, "exchange");
       this.$router.push({ name: "Exchanges", query: { search: searchString, r: hiddenId } });
     },
     isUniSelected(uni) {

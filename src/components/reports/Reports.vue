@@ -122,7 +122,7 @@ import universitiesData from "../../data/universities.json";
 import countriesInformation from "../../data/countriesInformation.json";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
 import ReportDetail from "./ReportDetail.vue";
-import { encryptId, decryptId } from "../../js/urlCipher";
+import { encryptId, decryptId, encryptIds } from "../../js/urlCipher";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -141,6 +141,7 @@ export default {
 			page: 1,
 			universities: universitiesData.universities || {},
 			countriesInfo: countriesInformation,
+			resolvedReportId: null,
 		};
 	},
 
@@ -251,21 +252,11 @@ export default {
 			return this.filteredReports.slice(start, start + ITEMS_PER_PAGE);
 		},
 
-		selectedReportId() {
-			const encrypted = this.$route.params.id;
-			if (!encrypted) return null;
-			try {
-				return decryptId(encrypted);
-			} catch {
-				return null;
-			}
-		},
-
 		selectedReport() {
-			if (!this.selectedReportId) return null;
-			const report = this.reports[this.selectedReportId];
+			if (!this.resolvedReportId) return null;
+			const report = this.reports[this.resolvedReportId];
 			if (!report) return null;
-			return { id: this.selectedReportId, ...report };
+			return { id: this.resolvedReportId, ...report };
 		},
 	},
 
@@ -273,6 +264,20 @@ export default {
 		searchInput() { this.highlightedIndex = -1; },
 		searchChips() { this.page = 1; },
 		sortBy() { this.page = 1; },
+		"$route.params.id": {
+			immediate: true,
+			async handler(token) {
+				if (!token) {
+					this.resolvedReportId = null;
+					return;
+				}
+				try {
+					this.resolvedReportId = await decryptId(token);
+				} catch {
+					this.resolvedReportId = null;
+				}
+			},
+		},
 		selectedReport(report) {
 			if (report) {
 				document.title = report.title || "Rapport";
@@ -285,6 +290,10 @@ export default {
 	async mounted() {
 		try {
 			this.reports = await getReportsData();
+			const ids = Object.keys(this.reports);
+			if (ids.length > 0) {
+				encryptIds(ids, "report");
+			}
 		} catch (error) {
 			console.error("Error loading reports:", error);
 		} finally {
@@ -312,14 +321,16 @@ export default {
 		},
 
 		getCountryCode(country) {
+			const translated = this.$t(`countries.${country}`);
 			if (this.locale === "en") {
-				return this.countriesInfo.countryCodes.en[country] || "unknown";
+				return this.countriesInfo.countryCodes.en[translated] || this.countriesInfo.countryCodes.en[country] || "unknown";
 			}
-			return this.countriesInfo.countryCodes.no[country] || "unknown";
+			return this.countriesInfo.countryCodes.no[translated] || this.countriesInfo.countryCodes.no[country] || "unknown";
 		},
 
-		goToReport(reportId) {
-			this.$router.push({ name: "ReportDetail", params: { id: encryptId(reportId) } });
+		async goToReport(reportId) {
+			const token = await encryptId(reportId, "report");
+			this.$router.push({ name: "ReportDetail", params: { id: token } });
 		},
 
 		closeReport() {

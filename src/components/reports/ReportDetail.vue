@@ -139,6 +139,7 @@ export default {
 			copied: false,
 			countriesInfo: countriesInformation,
 			ratingKeys: ["overall", "academic", "social", "housing", "costOfLiving"],
+			exchangeToken: null,
 		};
 	},
 
@@ -153,10 +154,22 @@ export default {
 		},
 
 		exchangeLink() {
-			if (!this.report.exchangeId) return null;
-			const encoded = encryptId(this.report.exchangeId);
+			if (!this.exchangeToken) return null;
 			const search = this.report.university || "";
-			return { path: "/utvekslinger", query: { search, r: encoded } };
+			return { path: "/utvekslinger", query: { search, r: this.exchangeToken } };
+		},
+	},
+
+	watch: {
+		"report.exchangeId": {
+			immediate: true,
+			async handler(exchangeId) {
+				if (!exchangeId) {
+					this.exchangeToken = null;
+					return;
+				}
+				this.exchangeToken = await encryptId(exchangeId, "exchange");
+			},
 		},
 	},
 
@@ -178,10 +191,11 @@ export default {
 		},
 
 		getCountryCode(country) {
+			const translated = this.$t(`countries.${country}`);
 			if (this.locale === "en") {
-				return this.countriesInfo.countryCodes.en[country] || "unknown";
+				return this.countriesInfo.countryCodes.en[translated] || this.countriesInfo.countryCodes.en[country] || "unknown";
 			}
-			return this.countriesInfo.countryCodes.no[country] || "unknown";
+			return this.countriesInfo.countryCodes.no[translated] || this.countriesInfo.countryCodes.no[country] || "unknown";
 		},
 
 		async copyLink() {
