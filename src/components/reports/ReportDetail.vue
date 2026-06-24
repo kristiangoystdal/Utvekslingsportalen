@@ -1,18 +1,18 @@
 <template>
 	<v-dialog :model-value="true" max-width="800" scrollable @update:model-value="close">
-		<v-card rounded="xl">
+		<v-card rounded="xl" class="detail-card">
 			<!-- Header -->
-			<v-card-title class="d-flex align-center pa-4 pb-2">
-				<div class="flex-grow-1">
+			<v-card-title class="d-flex align-center pa-4 pa-sm-5 pb-2">
+				<div class="flex-grow-1 min-width-0">
 					<div class="d-flex align-center ga-2 mb-1">
 						<img v-if="report.country" :src="getFlagUrl(report.country)" alt="" width="28" height="21"
 							class="flag-img" />
-						<span class="text-body-2 text-medium-emphasis">
+						<span class="text-body-2 text-medium-emphasis text-truncate">
 							{{ report.university || '—' }}
 						</span>
 					</div>
 					<h2 class="detail-title">{{ report.title }}</h2>
-					<div class="d-flex align-center flex-wrap ga-2 mt-1">
+					<div class="detail-meta mt-1">
 						<span class="text-caption text-medium-emphasis">
 							{{ $t("reports.writtenBy") }}
 							{{ report.anonymous ? $t("reports.anonymousLabel") : (report.authorName || '—') }}
@@ -31,7 +31,7 @@
 						</template>
 					</div>
 				</div>
-				<v-btn icon variant="text" size="small" @click="close">
+				<v-btn icon variant="text" size="small" @click="close" class="ml-2 flex-shrink-0">
 					<v-icon>mdi-close</v-icon>
 				</v-btn>
 			</v-card-title>
@@ -39,20 +39,36 @@
 			<v-divider />
 
 			<!-- Body -->
-			<v-card-text class="pa-4 detail-body">
+			<v-card-text class="pa-4 pa-sm-5 detail-body">
 				<!-- Ratings -->
 				<div class="ratings-section mb-5">
 					<h3 class="section-label mb-2">{{ $t("reports.ratings") }}</h3>
-					<div class="ratings-grid">
-						<div v-for="key in ratingKeys" :key="key" class="rating-row">
-							<span class="rating-label text-body-2">{{ $t(`reports.${key}`) }}</span>
-							<v-rating :model-value="report.ratings?.[key] || 0" color="amber" readonly
-								density="compact" size="18" />
-							<span class="text-caption text-medium-emphasis">
-								{{ report.ratings?.[key] || 0 }}/5
-							</span>
-						</div>
-					</div>
+					<table class="ratings-table ratings-table--desktop">
+						<tr v-for="(_, i) in ratingKeysLeft" :key="i">
+							<td class="rating-label text-body-2">{{ $t(`reports.${ratingKeysLeft[i]}`) }}</td>
+							<td class="rating-stars-cell">
+								<v-rating :model-value="report.ratings?.[ratingKeysLeft[i]] || 0" color="amber" readonly
+									density="compact" size="16" class="d-flex" />
+							</td>
+							<template v-if="ratingKeysRight[i]">
+								<td class="rating-gap"></td>
+								<td class="rating-label text-body-2">{{ $t(`reports.${ratingKeysRight[i]}`) }}</td>
+								<td class="rating-stars-cell">
+									<v-rating :model-value="report.ratings?.[ratingKeysRight[i]] || 0" color="amber" readonly
+										density="compact" size="16" class="d-flex" />
+								</td>
+							</template>
+						</tr>
+					</table>
+					<table class="ratings-table ratings-table--mobile">
+						<tr v-for="key in ratingKeys" :key="key">
+							<td class="rating-label text-body-2">{{ $t(`reports.${key}`) }}</td>
+							<td class="rating-stars-cell">
+								<v-rating :model-value="report.ratings?.[key] || 0" color="amber" readonly density="compact" size="16"
+									class="d-flex" />
+							</td>
+						</tr>
+					</table>
 				</div>
 
 				<!-- Content -->
@@ -64,9 +80,9 @@
 				<div v-if="report.pros && report.pros.length > 0" class="mb-4">
 					<h3 class="section-label mb-2">{{ $t("reports.pros") }}</h3>
 					<ul class="pro-con-list">
-						<li v-for="(pro, i) in report.pros" :key="'pro-' + i" class="pro-item">
-							<v-icon size="18" color="success" class="mr-2">mdi-check-circle</v-icon>
-							{{ pro }}
+						<li v-for="(pro, i) in report.pros" :key="'pro-' + i">
+							<v-icon size="18" color="success" class="pro-con-icon">mdi-check-circle</v-icon>
+							<span>{{ pro }}</span>
 						</li>
 					</ul>
 				</div>
@@ -75,9 +91,9 @@
 				<div v-if="report.cons && report.cons.length > 0" class="mb-4">
 					<h3 class="section-label mb-2">{{ $t("reports.cons") }}</h3>
 					<ul class="pro-con-list">
-						<li v-for="(con, i) in report.cons" :key="'con-' + i" class="con-item">
-							<v-icon size="18" color="error" class="mr-2">mdi-close-circle</v-icon>
-							{{ con }}
+						<li v-for="(con, i) in report.cons" :key="'con-' + i">
+							<v-icon size="18" color="error" class="pro-con-icon">mdi-close-circle</v-icon>
+							<span>{{ con }}</span>
 						</li>
 					</ul>
 				</div>
@@ -95,15 +111,14 @@
 			<v-divider />
 
 			<!-- Footer -->
-			<v-card-actions class="pa-4 d-flex flex-wrap ga-2">
-				<v-btn v-if="report.exchangeId" variant="tonal" color="primary" size="small"
-					:to="exchangeLink">
-					<v-icon start size="18">mdi-swap-horizontal</v-icon>
+			<v-card-actions class="pa-4 pa-sm-5 d-flex flex-wrap ga-3">
+				<v-btn v-if="report.exchangeId" variant="tonal" color="primary" :to="exchangeLink">
+					<v-icon start>mdi-swap-horizontal</v-icon>
 					{{ $t("reports.viewExchange") }}
 				</v-btn>
 				<v-spacer />
-				<v-btn variant="text" size="small" @click="copyLink">
-					<v-icon start size="18">mdi-share-variant</v-icon>
+				<v-btn variant="text" @click="copyLink">
+					<v-icon start>mdi-share-variant</v-icon>
 					{{ copied ? $t("reports.linkCopied") : $t("reports.share") }}
 				</v-btn>
 			</v-card-actions>
@@ -146,6 +161,14 @@ export default {
 	computed: {
 		locale() {
 			return this.$i18n.locale;
+		},
+
+		ratingKeysLeft() {
+			return this.ratingKeys.slice(0, Math.ceil(this.ratingKeys.length / 2));
+		},
+
+		ratingKeysRight() {
+			return this.ratingKeys.slice(Math.ceil(this.ratingKeys.length / 2));
 		},
 
 		renderedContent() {
@@ -212,15 +235,33 @@ export default {
 </script>
 
 <style scoped>
+.detail-card {
+	overflow: hidden;
+}
+
+.min-width-0 {
+	min-width: 0;
+}
+
 .detail-title {
 	font-size: 1.3rem;
 	font-weight: 700;
 	line-height: 1.3;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
+}
+
+.detail-meta {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 4px;
 }
 
 .flag-img {
 	border-radius: 2px;
 	object-fit: cover;
+	flex-shrink: 0;
 }
 
 .section-label {
@@ -228,22 +269,45 @@ export default {
 	font-weight: 700;
 }
 
-.ratings-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-	gap: 6px 24px;
+/* Ratings */
+.ratings-table {
+	border-collapse: collapse;
 }
 
-.rating-row {
-	display: flex;
-	align-items: center;
-	gap: 8px;
+.ratings-table td {
+	padding: 4px 0;
+	vertical-align: middle;
 }
 
-.rating-label {
-	min-width: 100px;
+.ratings-table .rating-label {
+	padding-right: 8px;
+	white-space: nowrap;
 }
 
+.ratings-table .rating-stars-cell {
+	white-space: nowrap;
+}
+
+.ratings-table .rating-gap {
+	width: 24px;
+}
+
+.ratings-table--mobile {
+	display: none;
+}
+
+.ratings-table :deep(.v-rating) {
+	line-height: 1;
+	position: relative;
+	top: -11px;
+}
+
+.ratings-table :deep(.v-rating .v-btn) {
+	height: 16px;
+	width: 16px;
+}
+
+/* Pros / Cons */
 .pro-con-list {
 	list-style: none;
 	padding: 0;
@@ -258,6 +322,13 @@ export default {
 	line-height: 1.5;
 }
 
+.pro-con-icon {
+	flex-shrink: 0;
+	margin-right: 8px;
+	margin-top: 2px;
+}
+
+/* Tips */
 .tips-box {
 	background: rgba(var(--v-theme-primary), 0.06);
 	border-left: 4px solid rgb(var(--v-theme-primary));
@@ -269,14 +340,20 @@ export default {
 	margin: 0;
 	font-size: 0.95rem;
 	line-height: 1.6;
+	word-wrap: break-word;
+	overflow-wrap: break-word;
 }
 
-/* Markdown body styles */
+/* Markdown */
 .markdown-body {
 	color: rgba(0, 0, 0, 0.84);
+	overflow-wrap: break-word;
+	word-wrap: break-word;
 }
 
-.markdown-body :deep(h1) { display: none; }
+.markdown-body :deep(h1) {
+	display: none;
+}
 
 .markdown-body :deep(h2) {
 	font-size: 1.15rem;
@@ -296,7 +373,9 @@ export default {
 	line-height: 1.65;
 }
 
-.markdown-body :deep(p:last-child) { margin-bottom: 0; }
+.markdown-body :deep(p:last-child) {
+	margin-bottom: 0;
+}
 
 .markdown-body :deep(ul),
 .markdown-body :deep(ol) {
@@ -316,7 +395,9 @@ export default {
 	text-decoration: none;
 }
 
-.markdown-body :deep(a:hover) { text-decoration: underline; }
+.markdown-body :deep(a:hover) {
+	text-decoration: underline;
+}
 
 .markdown-body :deep(blockquote) {
 	margin: 0.5rem 0 0.75rem;
@@ -328,11 +409,30 @@ export default {
 
 .detail-body {
 	max-height: 70vh;
+	overflow-x: hidden;
 }
 
+/* Mobile */
 @media (max-width: 600px) {
-	.ratings-grid {
-		grid-template-columns: 1fr;
+	.detail-title {
+		font-size: 1.1rem;
+	}
+
+	.ratings-table--desktop {
+		display: none;
+	}
+
+	.ratings-table--mobile {
+		display: table;
+	}
+
+	.ratings-table .rating-label {
+		font-size: 0.85rem;
+	}
+
+	.ratings-table :deep(.v-rating .v-btn) {
+		height: 14px;
+		width: 14px;
 	}
 }
 </style>
