@@ -111,6 +111,16 @@ const routes = [
   },
 
   {
+    path: '/rapporter/:id',
+    name: 'ReportDetail',
+    component: Reports,
+    meta: {
+      title: "Rapport",
+      description: "Les en utvekslingsrapport fra en student som har vært på utveksling gjennom NTNU."
+    }
+  },
+
+  {
     path: '/rapporter/ny',
     name: 'CreateReport',
     component: CreateReport,
@@ -159,6 +169,9 @@ const router = createRouter({
     if (to.path === from.path) {
       return false;
     }
+
+    const isReportNav = to.path.startsWith('/rapporter') && from.path.startsWith('/rapporter');
+    if (isReportNav) return false;
 
     return { top: 0 };
   }
