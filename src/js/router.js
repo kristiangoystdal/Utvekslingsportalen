@@ -1,19 +1,19 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../components/home/Home.vue';
-import Exchanges from '../components/exchanges/Exchanges.vue';
-import EditExchange from '../components/exchanges/EditExchange.vue';
-import Contact from '../components/windows/Contact.vue';
-import Account from '../components/profile/Account.vue';
-import Login from '../components/profile/Login.vue';
-import FAQ from '../components/windows/FAQ.vue';
-import Admin from '../components/admin/Admin.vue';
-import NotFound from '../components/error/NotFound.vue';
 
-import Courses from '../components/courses/Courses.vue';
-import Legal from '../components/docs/Legal.vue'
-import Reports from '../components/reports/Reports.vue'
-import CreateReport from '../components/reports/CreateReport.vue'
+const Exchanges = () => import('../components/exchanges/Exchanges.vue');
+const EditExchange = () => import('../components/exchanges/EditExchange.vue');
+const Contact = () => import('../components/windows/Contact.vue');
+const Account = () => import('../components/profile/Account.vue');
+const Login = () => import('../components/profile/Login.vue');
+const FAQ = () => import('../components/windows/FAQ.vue');
+const Admin = () => import('../components/admin/Admin.vue');
+const NotFound = () => import('../components/error/NotFound.vue');
+const Courses = () => import('../components/courses/Courses.vue');
+const Legal = () => import('../components/docs/Legal.vue');
+const Reports = () => import('../components/reports/Reports.vue');
+const CreateReport = () => import('../components/reports/CreateReport.vue');
 
 import store, { authReadyPromise } from './store.js';
 

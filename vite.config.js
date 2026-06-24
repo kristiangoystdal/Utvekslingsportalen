@@ -11,5 +11,16 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vuetify': ['vuetify', 'vuetify/components', 'vuetify/directives'],
+          'firebase': ['firebase/app', 'firebase/auth', 'firebase/database', 'firebase/storage', 'firebase/functions'],
+          'vendor': ['vue', 'vue-router', 'vuex', 'vue-i18n'],
+        },
+      },
+    },
+  },
 });
