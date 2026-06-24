@@ -247,6 +247,7 @@ import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
 import { getExchangesData } from "../../js/exchangesCache.js";
+import { encryptId } from "../../js/urlCipher";
 
 export default {
   data() {
@@ -703,7 +704,7 @@ export default {
 
       const searchString = translatedCountry + " " + exchange.university + " " + exchange.homeUniversity + " " + exchange.study + " " + exchange.studyYear + " " + exchange.year;
 
-      const hiddenId = btoa(item.exchangeID);
+      const hiddenId = encryptId(item.exchangeID);
 
       if (exchange) {
         this.$router.push({ name: "Exchanges", query: { search: searchString, r: hiddenId } });

@@ -109,6 +109,9 @@
 			:to="{ name: 'CreateReport' }">
 			<v-icon>mdi-plus</v-icon>
 		</v-btn>
+
+		<!-- Report Detail Modal -->
+		<ReportDetail v-if="selectedReport" :report="selectedReport" @close="closeReport" />
 	</div>
 </template>
 
@@ -118,10 +121,14 @@ import { getReportsData } from "../../js/reportsCache";
 import universitiesData from "../../data/universities.json";
 import countriesInformation from "../../data/countriesInformation.json";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
+import ReportDetail from "./ReportDetail.vue";
+import { encryptId, decryptId } from "../../js/urlCipher";
 
 const ITEMS_PER_PAGE = 12;
 
 export default {
+	components: { ReportDetail },
+
 	data() {
 		return {
 			loading: true,
@@ -243,12 +250,36 @@ export default {
 			const start = (this.page - 1) * ITEMS_PER_PAGE;
 			return this.filteredReports.slice(start, start + ITEMS_PER_PAGE);
 		},
+
+		selectedReportId() {
+			const encrypted = this.$route.params.id;
+			if (!encrypted) return null;
+			try {
+				return decryptId(encrypted);
+			} catch {
+				return null;
+			}
+		},
+
+		selectedReport() {
+			if (!this.selectedReportId) return null;
+			const report = this.reports[this.selectedReportId];
+			if (!report) return null;
+			return { id: this.selectedReportId, ...report };
+		},
 	},
 
 	watch: {
 		searchInput() { this.highlightedIndex = -1; },
 		searchChips() { this.page = 1; },
 		sortBy() { this.page = 1; },
+		selectedReport(report) {
+			if (report) {
+				document.title = report.title || "Rapport";
+			} else {
+				document.title = "Rapporter";
+			}
+		},
 	},
 
 	async mounted() {
@@ -288,7 +319,11 @@ export default {
 		},
 
 		goToReport(reportId) {
-			this.$router.push({ name: "ReportDetail", params: { id: reportId } });
+			this.$router.push({ name: "ReportDetail", params: { id: encryptId(reportId) } });
+		},
+
+		closeReport() {
+			this.$router.push({ name: "Reports" });
 		},
 
 		removeChip(index) {

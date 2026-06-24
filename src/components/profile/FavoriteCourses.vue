@@ -98,6 +98,7 @@ import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
 import { getExchangesData } from "../../js/exchangesCache";
+import { encryptId } from "../../js/urlCipher";
 
 export default {
   name: "FavoriteCourses",
@@ -400,7 +401,7 @@ export default {
         .filter(Boolean)
         .join(" ");
 
-      const hiddenId = btoa(exchangeId);
+      const hiddenId = encryptId(exchangeId);
       this.$router.push({ name: "Exchanges", query: { search: searchString, r: hiddenId } });
     },
     isUniSelected(uni) {

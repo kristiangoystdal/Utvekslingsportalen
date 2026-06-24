@@ -365,6 +365,7 @@ import universitiesInformation from "../../data/universities.json";
 
 import { getExchangesData } from "../../js/exchangesCache";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
+import { encryptId, decryptId } from "../../js/urlCipher";
 
 export default {
 	setup() {
@@ -435,7 +436,7 @@ export default {
 			if (newVal != null && newVal.length != oldVal.length && newVal.length > 0) {
 				let exchangesString = "";
 				for (const exchangeId of newVal) {
-					exchangesString += btoa(exchangeId) + ",";
+					exchangesString += encryptId(exchangeId) + ",";
 				}
 				this.$router.replace({ query: { ...this.$route.query, r: exchangesString } });
 			} else {
@@ -1185,13 +1186,13 @@ export default {
 				const exchangeIds = exchangeId.split(",");
 				for (const encodedId of exchangeIds) {
 					if (!encodedId) continue;
-					const decodedId = atob(encodedId);
+					const decodedId = decryptId(encodedId);
 					if (this.expanded.includes(decodedId)) continue;
 					this.expanded.push(decodedId);
 				}
 
 				this.$nextTick(() => {
-					const firstId = atob(exchangeIds[0]);
+					const firstId = decryptId(exchangeIds[0]);
 					const index = this.filteredExchangeList.findIndex(exchange => exchange.id === firstId);
 					if (index !== -1) {
 						this.scrollWhenReady(index);
