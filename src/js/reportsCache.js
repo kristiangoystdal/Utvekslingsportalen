@@ -43,7 +43,7 @@ export async function getReportsData() {
   if (cached) return cached;
 
   const db = getDatabase();
-  const snapshot = await get(child(dbRef(db), "reports"));
+  const snapshot = await get(child(dbRef(db), "test_reports"));
 
   if (!snapshot.exists()) return {};
 
@@ -72,7 +72,7 @@ export async function getReportById(reportId) {
 
 export async function getUserReports(userId) {
   const db = getDatabase();
-  const snapshot = await get(child(dbRef(db), "reports"));
+  const snapshot = await get(child(dbRef(db), "test_reports"));
 
   if (!snapshot.exists()) return {};
 
@@ -87,7 +87,7 @@ export async function getUserReports(userId) {
 
 export async function createReport(reportData) {
   const db = getDatabase();
-  const newRef = push(dbRef(db, "reports"));
+  const newRef = push(dbRef(db, "test_reports"));
   const now = Date.now();
 
   await set(newRef, {

@@ -12,6 +12,7 @@ import NotFound from '../components/error/NotFound.vue';
 
 import Courses from '../components/courses/Courses.vue';
 import Legal from '../components/docs/Legal.vue'
+import Reports from '../components/reports/Reports.vue'
 import CreateReport from '../components/reports/CreateReport.vue'
 
 import store, { authReadyPromise } from './store.js';
@@ -96,6 +97,16 @@ const routes = [
     meta: {
       title: "FAQ",
       description: "Finn svar på vanlige spørsmål om utveksling, fagvalg, innsendte rapporter og bruk av portalen."
+    }
+  },
+
+  {
+    path: '/rapporter',
+    name: 'Reports',
+    component: Reports,
+    meta: {
+      title: "Rapporter",
+      description: "Les utvekslingsrapporter fra studenter som har vært på utveksling gjennom NTNU."
     }
   },
 

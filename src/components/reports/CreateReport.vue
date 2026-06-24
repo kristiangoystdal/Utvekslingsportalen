@@ -35,6 +35,8 @@
 					<v-text-field v-model="report.title" :label="$t('reports.title')"
 						:error-messages="submitted && !report.title ? $t('reports.titleRequired') : ''" />
 
+					<v-checkbox v-model="report.anonymous" :label="$t('reports.anonymous')" hide-details class="mb-2" />
+
 					<v-row>
 						<v-col cols="12" md="6">
 							<v-autocomplete v-model="report.country" :items="countryNamesTranslated"
@@ -115,6 +117,7 @@
 							{{ report.university || '—' }}, {{ translatedCountry }}
 							· {{ report.study || '—' }}
 							· {{ report.year || '—' }} {{ report.semester || '' }}
+							<span v-if="report.anonymous"> · {{ $t("reports.anonymousLabel") }}</span>
 						</div>
 
 						<div v-if="hasRatings" class="mb-3">
@@ -208,6 +211,7 @@ export default {
 			universities: {},
 			report: {
 				title: "",
+				anonymous: false,
 				university: null,
 				country: null,
 				study: null,
@@ -323,7 +327,8 @@ export default {
 			try {
 				const reportData = {
 					authorId: auth.currentUser.uid,
-					authorName: this.user?.displayName || auth.currentUser.displayName || "",
+					authorName: this.report.anonymous ? "" : (this.user?.displayName || auth.currentUser.displayName || ""),
+					anonymous: this.report.anonymous,
 					exchangeId: auth.currentUser.uid,
 					university: this.report.university,
 					country: this.report.country,
