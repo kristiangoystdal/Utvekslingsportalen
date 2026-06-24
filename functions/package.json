@@ -1,0 +1,13 @@
+{
+  "name": "utveksling-functions",
+  "description": "Cloud Functions for Utvekslingsportalen",
+  "engines": {
+    "node": "22"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^12.0.0",
+    "firebase-functions": "^5.0.0",
+    "uuid": "^9.0.0"
+  }
+}
