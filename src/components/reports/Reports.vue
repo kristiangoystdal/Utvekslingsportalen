@@ -112,6 +112,7 @@
 
 		<!-- Report Detail Modal -->
 		<ReportDetail v-if="selectedReport" :report="selectedReport" @close="closeReport" />
+
 	</div>
 </template>
 
@@ -123,6 +124,7 @@ import countriesInformation from "../../data/countriesInformation.json";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
 import ReportDetail from "./ReportDetail.vue";
 import { encryptId, decryptId, encryptIds } from "../../js/urlCipher";
+import { toast } from "vue3-toastify";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -272,9 +274,14 @@ export default {
 					return;
 				}
 				try {
-					this.resolvedReportId = await decryptId(token);
+					const id = await decryptId(token);
+					this.resolvedReportId = id;
+					if (!this.loading && id && !this.reports[id]) {
+						this.showNotFoundAndRedirect();
+					}
 				} catch {
 					this.resolvedReportId = null;
+					this.showNotFoundAndRedirect();
 				}
 			},
 		},
@@ -335,6 +342,13 @@ export default {
 
 		closeReport() {
 			this.$router.push({ name: "Reports" });
+		},
+
+		showNotFoundAndRedirect() {
+			this.$router.replace({ name: "Reports" });
+			setTimeout(() => {
+				toast.error(this.$t("reports.reportNotFound"));
+			}, 100);
 		},
 
 		removeChip(index) {

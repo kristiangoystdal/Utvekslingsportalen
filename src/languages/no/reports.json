@@ -60,5 +60,6 @@
   "confirmDeleteBody": "Denne handlingen kan ikke angres. Er du sikker på at du vil slette denne rapporten?",
 
   "share": "Del",
-  "linkCopied": "Lenke kopiert!"
+  "linkCopied": "Lenke kopiert!",
+  "reportNotFound": "Rapporten ble ikke funnet."
 }

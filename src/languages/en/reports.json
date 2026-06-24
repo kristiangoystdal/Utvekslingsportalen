@@ -60,5 +60,6 @@
   "confirmDeleteBody": "This action cannot be undone. Are you sure you want to delete this report?",
 
   "share": "Share",
-  "linkCopied": "Link copied!"
+  "linkCopied": "Link copied!",
+  "reportNotFound": "Report not found."
 }
