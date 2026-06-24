@@ -2,6 +2,8 @@
   "pageHeader": "Exchange Reports",
   "info": "Read reports from students who have been on exchange, or share your own experience.",
 
+  "anonymous": "Submit anonymously",
+  "anonymousLabel": "Anonymous",
   "writeReport": "Write a Report",
   "editReport": "Edit Report",
   "myReports": "My Reports",

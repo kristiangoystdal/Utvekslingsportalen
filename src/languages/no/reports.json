@@ -2,6 +2,8 @@
   "pageHeader": "Utvekslingsrapporter",
   "info": "Les rapporter fra studenter som har vært på utveksling, eller del din egen erfaring.",
 
+  "anonymous": "Send inn anonymt",
+  "anonymousLabel": "Anonym",
   "writeReport": "Skriv en rapport",
   "editReport": "Rediger rapport",
   "myReports": "Mine rapporter",
