@@ -57,5 +57,9 @@
   "noReportsForFilter": "No reports match your filters.",
 
   "confirmDelete": "Delete report?",
-  "confirmDeleteBody": "This action cannot be undone. Are you sure you want to delete this report?"
+  "confirmDeleteBody": "This action cannot be undone. Are you sure you want to delete this report?",
+
+  "share": "Share",
+  "linkCopied": "Link copied!",
+  "reportNotFound": "Report not found."
 }

@@ -365,6 +365,7 @@ import universitiesInformation from "../../data/universities.json";
 
 import { getExchangesData } from "../../js/exchangesCache";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
+import { encryptId, decryptId, encryptIds } from "../../js/urlCipher";
 
 export default {
 	setup() {
@@ -431,12 +432,10 @@ export default {
 			this.fetchExchangeData();
 			this.getValuesFromDatabase();
 		},
-		expanded(newVal, oldVal) {
+		async expanded(newVal, oldVal) {
 			if (newVal != null && newVal.length != oldVal.length && newVal.length > 0) {
-				let exchangesString = "";
-				for (const exchangeId of newVal) {
-					exchangesString += btoa(exchangeId) + ",";
-				}
+				const tokens = await encryptIds(newVal, "exchange");
+				const exchangesString = newVal.map((id) => tokens[id]).join(",");
 				this.$router.replace({ query: { ...this.$route.query, r: exchangesString } });
 			} else {
 				const query = { ...this.$route.query };
@@ -674,6 +673,10 @@ export default {
 	methods: {
 		async loadExchangeData() {
 			this.exchanges = await getExchangesData();
+			const ids = Object.keys(this.exchanges);
+			if (ids.length > 0) {
+				encryptIds(ids, "exchange");
+			}
 		},
 		updateScreenWidth() {
 			this.screenWidth = window.innerWidth;
@@ -1155,7 +1158,7 @@ export default {
 			// Fallback: leave word unchanged
 			return words[index];
 		},
-		checkRouterParams() {
+		async checkRouterParams() {
 			if (!this.$route || !this.$route.query) return;
 
 			const search = this.$route.query.search;
@@ -1182,21 +1185,28 @@ export default {
 
 			const exchangeId = this.$route.query.r;
 			if (exchangeId) {
-				const exchangeIds = exchangeId.split(",");
-				for (const encodedId of exchangeIds) {
-					if (!encodedId) continue;
-					const decodedId = atob(encodedId);
-					if (this.expanded.includes(decodedId)) continue;
-					this.expanded.push(decodedId);
+				const exchangeIds = exchangeId.split(",").filter(Boolean);
+				const decoded = [];
+				for (const token of exchangeIds) {
+					try {
+						const realId = await decryptId(token);
+						decoded.push(realId);
+						if (!this.expanded.includes(realId)) {
+							this.expanded.push(realId);
+						}
+					} catch {
+						// invalid token, skip
+					}
 				}
 
-				this.$nextTick(() => {
-					const firstId = atob(exchangeIds[0]);
-					const index = this.filteredExchangeList.findIndex(exchange => exchange.id === firstId);
-					if (index !== -1) {
-						this.scrollWhenReady(index);
-					}
-				});
+				if (decoded.length > 0) {
+					this.$nextTick(() => {
+						const index = this.filteredExchangeList.findIndex(exchange => exchange.id === decoded[0]);
+						if (index !== -1) {
+							this.scrollWhenReady(index);
+						}
+					});
+				}
 			}
 		},
 		updateSearchQuery() {

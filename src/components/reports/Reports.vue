@@ -109,6 +109,10 @@
 			:to="{ name: 'CreateReport' }">
 			<v-icon>mdi-plus</v-icon>
 		</v-btn>
+
+		<!-- Report Detail Modal -->
+		<ReportDetail v-if="selectedReport" :report="selectedReport" @close="closeReport" />
+
 	</div>
 </template>
 
@@ -118,10 +122,15 @@ import { getReportsData } from "../../js/reportsCache";
 import universitiesData from "../../data/universities.json";
 import countriesInformation from "../../data/countriesInformation.json";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
+import ReportDetail from "./ReportDetail.vue";
+import { encryptId, decryptId, encryptIds } from "../../js/urlCipher";
+import { toast } from "vue3-toastify";
 
 const ITEMS_PER_PAGE = 12;
 
 export default {
+	components: { ReportDetail },
+
 	data() {
 		return {
 			loading: true,
@@ -134,6 +143,7 @@ export default {
 			page: 1,
 			universities: universitiesData.universities || {},
 			countriesInfo: countriesInformation,
+			resolvedReportId: null,
 		};
 	},
 
@@ -243,17 +253,54 @@ export default {
 			const start = (this.page - 1) * ITEMS_PER_PAGE;
 			return this.filteredReports.slice(start, start + ITEMS_PER_PAGE);
 		},
+
+		selectedReport() {
+			if (!this.resolvedReportId) return null;
+			const report = this.reports[this.resolvedReportId];
+			if (!report) return null;
+			return { id: this.resolvedReportId, ...report };
+		},
 	},
 
 	watch: {
 		searchInput() { this.highlightedIndex = -1; },
 		searchChips() { this.page = 1; },
 		sortBy() { this.page = 1; },
+		"$route.params.id": {
+			immediate: true,
+			async handler(token) {
+				if (!token) {
+					this.resolvedReportId = null;
+					return;
+				}
+				try {
+					const id = await decryptId(token);
+					this.resolvedReportId = id;
+					if (!this.loading && id && !this.reports[id]) {
+						this.showNotFoundAndRedirect();
+					}
+				} catch {
+					this.resolvedReportId = null;
+					this.showNotFoundAndRedirect();
+				}
+			},
+		},
+		selectedReport(report) {
+			if (report) {
+				document.title = report.title || "Rapport";
+			} else {
+				document.title = "Rapporter";
+			}
+		},
 	},
 
 	async mounted() {
 		try {
 			this.reports = await getReportsData();
+			const ids = Object.keys(this.reports);
+			if (ids.length > 0) {
+				encryptIds(ids, "report");
+			}
 		} catch (error) {
 			console.error("Error loading reports:", error);
 		} finally {
@@ -281,14 +328,27 @@ export default {
 		},
 
 		getCountryCode(country) {
+			const translated = this.$t(`countries.${country}`);
 			if (this.locale === "en") {
-				return this.countriesInfo.countryCodes.en[country] || "unknown";
+				return this.countriesInfo.countryCodes.en[translated] || this.countriesInfo.countryCodes.en[country] || "unknown";
 			}
-			return this.countriesInfo.countryCodes.no[country] || "unknown";
+			return this.countriesInfo.countryCodes.no[translated] || this.countriesInfo.countryCodes.no[country] || "unknown";
 		},
 
-		goToReport(reportId) {
-			this.$router.push({ name: "ReportDetail", params: { id: reportId } });
+		async goToReport(reportId) {
+			const token = await encryptId(reportId, "report");
+			this.$router.push({ name: "ReportDetail", params: { id: token } });
+		},
+
+		closeReport() {
+			this.$router.push({ name: "Reports" });
+		},
+
+		showNotFoundAndRedirect() {
+			this.$router.replace({ name: "Reports" });
+			setTimeout(() => {
+				toast.error(this.$t("reports.reportNotFound"));
+			}, 100);
 		},
 
 		removeChip(index) {

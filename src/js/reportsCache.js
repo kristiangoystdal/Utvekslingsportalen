@@ -65,8 +65,11 @@ export async function refreshReportsData() {
 }
 
 export async function getReportById(reportId) {
+  const cached = readCachedReports();
+  if (cached && cached[reportId]) return cached[reportId];
+
   const db = getDatabase();
-  const snapshot = await get(child(dbRef(db), `reports/${reportId}`));
+  const snapshot = await get(child(dbRef(db), `test_reports/${reportId}`));
   return snapshot.exists() ? snapshot.val() : null;
 }
 
