@@ -24,22 +24,38 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from "vue";
+import { useStore } from "vuex";
 import Header from "./components/common/Header.vue";
 import MobileFooter from "./components/common/mobileFooter.vue";
 import Footer from "./components/common/Footer.vue";
 
+const store = useStore();
 const isDesktop = ref(window.innerWidth >= 769);
 
 const handleResize = () => {
 	isDesktop.value = window.innerWidth >= 769;
 };
 
+const handleKeydown = (e) => {
+	if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.code === "KeyL") {
+		e.preventDefault();
+		const adminId = import.meta.env.VITE_ADMIN_USER_ID;
+		const uid = store.getters.user?.uid;
+		if (uid && uid === adminId) {
+			sessionStorage.clear();
+			window.location.reload();
+		}
+	}
+};
+
 onMounted(() => {
 	window.addEventListener("resize", handleResize);
+	window.addEventListener("keydown", handleKeydown);
 });
 
 onUnmounted(() => {
 	window.removeEventListener("resize", handleResize);
+	window.removeEventListener("keydown", handleKeydown);
 });
 </script>
 
