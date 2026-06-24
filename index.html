@@ -3,13 +3,23 @@
 	<head>
 		<meta charset="UTF-8" />
 		<link rel="icon" type="image/png" href="/favicon.png" />
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Utvekslingsportalen</title>
 
-		<!-- Google tag (gtag.js) -->
+		<!-- Preconnect to external origins -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+		<!-- Non-render-blocking Google Font -->
+		<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&display=swap" />
+		<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+		<noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet" /></noscript>
+
+		<!-- Preconnect to Firebase -->
+		<link rel="preconnect" href="https://utveksling-database-default-rtdb.europe-west1.firebasedatabase.app" />
+		<link rel="preconnect" href="https://www.googleapis.com" />
+
+		<!-- Google Analytics (async, non-blocking) -->
 		<script
 			async
 			src="https://www.googletagmanager.com/gtag/js?id=G-31CD94Y5G7"
