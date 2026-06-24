@@ -75,8 +75,7 @@ onUnmounted(() => {
 	left: 0;
 	width: 100%;
 	height: 100%;
-	background-image: url("@/assets/images/bg.png");
-	/* Ensure the correct path */
+	background-image: url("@/assets/images/bg.webp");
 	background-size: cover;
 	/* Covers the full width */
 	background-repeat: repeat-y;
