@@ -10,5 +10,6 @@
   "myexchangeHeader": "My Exchange",
   "profile": "My Profile",
   "profileHeader": "Profile",
-  "programHeader": "Exchanges"
+  "programHeader": "Exchanges",
+  "reportsHeader": "Reports"
 }
