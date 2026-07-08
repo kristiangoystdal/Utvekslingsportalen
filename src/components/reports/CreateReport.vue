@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h2>{{ $t("reports.writeReport") }}</h2>
+		<h2>{{ editMode ? $t("reports.editReport") : $t("reports.writeReport") }}</h2>
 		<p class="page-summary">{{ $t("reports.info") }}</p>
 		<br />
 
@@ -187,7 +187,7 @@
 				</v-btn>
 				<v-btn v-else class="btn btn-primary" :disabled="!canSubmit" :loading="saving"
 					@click="submitReport">
-					{{ $t("reports.submit") }}
+					{{ editMode ? $t("reports.save") : $t("reports.submit") }}
 				</v-btn>
 			</v-col>
 		</v-row>
@@ -198,9 +198,10 @@
 import { mapGetters } from "vuex";
 import { auth } from "../../js/firebaseConfig";
 import { getExchangesData } from "../../js/exchangesCache";
-import { createReport } from "../../js/reportsCache";
+import { createReport, updateReport, getReportById } from "../../js/reportsCache";
 import universitiesData from "../../data/universities.json";
 import { toast } from "vue3-toastify";
+import { decryptId, encryptId } from "../../js/urlCipher";
 
 export default {
 	data() {
@@ -208,6 +209,7 @@ export default {
 			step: 1,
 			submitted: false,
 			saving: false,
+			editReportId: null,
 			universities: {},
 			report: {
 				title: "",
@@ -235,6 +237,10 @@ export default {
 
 	computed: {
 		...mapGetters(["user", "userData"]),
+
+		editMode() {
+			return !!this.editReportId;
+		},
 
 		countryNamesTranslated() {
 			return Object.keys(this.universities || {}).map((country) => ({
@@ -297,7 +303,35 @@ export default {
 
 	async mounted() {
 		this.universities = universitiesData.universities || {};
-		await this.prefillFromExchange();
+
+		const token = this.$route.params.id;
+		if (token) {
+			try {
+				const reportId = await decryptId(token);
+				const existing = await getReportById(reportId);
+				if (!existing || existing.authorId !== auth.currentUser?.uid) {
+					this.$router.replace({ name: "Reports" });
+					return;
+				}
+				this.editReportId = reportId;
+				this.report.title = existing.title || "";
+				this.report.anonymous = existing.anonymous || false;
+				this.report.country = existing.country || null;
+				this.report.university = existing.university || null;
+				this.report.study = existing.study || null;
+				this.report.year = existing.year || null;
+				this.report.semester = existing.semester || null;
+				this.report.content = existing.content || "";
+				this.report.tips = existing.tips || "";
+				this.report.ratings = { ...{ overall: 0, academic: 0, social: 0, housing: 0, costOfLiving: 0 }, ...existing.ratings };
+				this.report.pros = existing.pros?.length ? [...existing.pros] : [""];
+				this.report.cons = existing.cons?.length ? [...existing.cons] : [""];
+			} catch {
+				this.$router.replace({ name: "Reports" });
+			}
+		} else {
+			await this.prefillFromExchange();
+		}
 	},
 
 	methods: {
@@ -343,11 +377,18 @@ export default {
 					tips: this.report.tips.trim() || null,
 				};
 
-				await createReport(reportData);
-				toast.success(this.$t("notifications.reportCreated"));
-				this.$router.push({ name: "EditExchange" });
+				if (this.editMode) {
+					await updateReport(this.editReportId, reportData);
+					toast.success(this.$t("notifications.reportUpdated"));
+					const token = await encryptId(this.editReportId, "report");
+					this.$router.push({ name: "ReportDetail", params: { id: token } });
+				} else {
+					await createReport(reportData);
+					toast.success(this.$t("notifications.reportCreated"));
+					this.$router.push({ name: "EditExchange" });
+				}
 			} catch (error) {
-				console.error("Error creating report:", error);
+				console.error("Error saving report:", error);
 				toast.error(this.$t("notifications.reportError"));
 			} finally {
 				this.saving = false;
