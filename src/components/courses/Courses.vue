@@ -71,6 +71,15 @@
                     mdi-airplane-search
                   </v-icon>
                 </template>
+                <template v-slot:item.report="{ item }">
+                  <router-link
+                    v-if="item.exchangeID && reportsByExchangeId[item.exchangeID]"
+                    :to="`/rapporter/${reportsByExchangeId[item.exchangeID].id}`"
+                    class="report-icon-link"
+                  >
+                    <v-icon small>mdi-file-document-outline</v-icon>
+                  </router-link>
+                </template>
               </v-data-table-virtual>
               <br />
             </div>
@@ -148,6 +157,11 @@
                     <v-icon small class="mr-2" @click="routeToExchange(course)">
                       mdi-airplane-search
                     </v-icon>
+                  </v-col>
+                  <v-col v-if="course.exchangeID && reportsByExchangeId[course.exchangeID]" cols="1" style="margin: auto;">
+                    <router-link :to="`/rapporter/${reportsByExchangeId[course.exchangeID].id}`" class="report-icon-link">
+                      <v-icon small>mdi-file-document-outline</v-icon>
+                    </router-link>
                   </v-col>
                 </v-row>
 
@@ -248,6 +262,7 @@ import "vue3-toastify/dist/index.css";
 
 import { getExchangesData } from "../../js/exchangesCache.js";
 import { encryptId } from "../../js/urlCipher";
+import { getReportsData } from "../../js/reportsCache.js";
 
 export default {
   data() {
@@ -269,11 +284,15 @@ export default {
       homeUniversities: [],
       selectedUniversity: "",
       coursetableLoading: false,
+      reports: {},
     };
   },
-  created() {
-    this.fetchExchangeData();
-    this.loadFavoriteCourses();
+  async created() {
+    await Promise.all([
+      this.fetchExchangeData(),
+      this.loadFavoriteCourses(),
+      this.loadReports(),
+    ]);
   },
   mounted() {
     window.addEventListener("resize", this.updateScreenWidth);
@@ -375,6 +394,12 @@ export default {
           align: "end",
           key: "link",
           sortable: false,
+        },
+        {
+          title: "",
+          align: "end",
+          key: "report",
+          sortable: false,
         }
       ];
     },
@@ -443,9 +468,20 @@ export default {
       return this.totalSearchedCourses === 1
         ? this.$t("courses.exchange_one")
         : this.$t("courses.exchange_other");
-    }
+    },
+    reportsByExchangeId() {
+      const map = {};
+      for (const [id, report] of Object.entries(this.reports)) {
+        const key = report.exchangeId;
+        if (key && !map[key]) map[key] = { id, ...report };
+      }
+      return map;
+    },
   },
   methods: {
+    async loadReports() {
+      this.reports = await getReportsData();
+    },
     updateScreenWidth() {
       this.screenWidth = window.innerWidth;
     },
@@ -744,5 +780,15 @@ export default {
   margin: var(--space-sm) 0 var(--space-sm);
   font-size: var(--text-sm);
   color: var(--color-text-secondary);
+}
+
+.report-icon-link {
+  color: var(--second-color, #3f72af);
+  display: inline-flex;
+  align-items: center;
+}
+
+.report-icon-link:hover .v-icon {
+  opacity: 0.7;
 }
 </style>
