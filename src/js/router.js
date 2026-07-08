@@ -14,6 +14,7 @@ const Courses = () => import('../components/courses/Courses.vue');
 const Legal = () => import('../components/docs/Legal.vue');
 const Reports = () => import('../components/reports/Reports.vue');
 const CreateReport = () => import('../components/reports/CreateReport.vue');
+const EditReport = () => import('../components/reports/CreateReport.vue');
 
 import store, { authReadyPromise } from './store.js';
 
@@ -132,6 +133,17 @@ const routes = [
   },
 
   {
+    path: '/rapporter/:id/rediger',
+    name: 'EditReport',
+    component: EditReport,
+    meta: {
+      requiresAuth: true,
+      title: "Rediger rapport",
+      description: "Rediger din utvekslingsrapport."
+    }
+  },
+
+  {
     path: '/kurs',
     name: 'Courses',
     component: Courses,
@@ -188,7 +200,7 @@ router.beforeEach(async (to, from, next) => {
     return next({ name: 'Home' });
   }
 
-  const isReportsRoute = to.matched.some(record => ['Reports', 'ReportDetail', 'CreateReport'].includes(record.name));
+  const isReportsRoute = to.matched.some(record => ['Reports', 'ReportDetail', 'CreateReport', 'EditReport'].includes(record.name));
   if (isReportsRoute && (!adminUserId || !isAuthenticated || String(currentUserId) !== String(adminUserId))) {
     return next({ name: 'Home' });
   }
