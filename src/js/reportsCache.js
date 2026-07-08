@@ -113,6 +113,13 @@ export async function updateReport(reportId, reportData) {
   clearCachedReports();
 }
 
+export async function getReportsByExchangeId(exchangeId) {
+  const reports = await getReportsData();
+  return Object.entries(reports)
+    .filter(([, r]) => r.exchangeId === exchangeId)
+    .map(([id, r]) => ({ id, ...r }));
+}
+
 export async function deleteReport(reportId) {
   const db = getDatabase();
   await remove(dbRef(db, `reports/${reportId}`));

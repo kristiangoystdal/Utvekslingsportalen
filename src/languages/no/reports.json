@@ -61,5 +61,6 @@
 
   "share": "Del",
   "linkCopied": "Lenke kopiert!",
-  "reportNotFound": "Rapporten ble ikke funnet."
+  "reportNotFound": "Rapporten ble ikke funnet.",
+  "noOwnReports": "Du har ikke skrevet noen rapporter ennå."
 }
