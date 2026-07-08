@@ -66,6 +66,10 @@
 		<div v-if="showMenuDropdown">
 			<div class="menu-dropdown">
 				<div class="profile-content">
+					<router-link v-if="isAdminUser" class="footer-icon" to="/rapporter" @click="showMenuDropdown = false">
+						<v-icon size="30px">mdi-file-document-outline</v-icon>
+						<span>{{ $t("nav.reportsHeader") }}</span>
+					</router-link>
 					<router-link class="footer-icon" to="/kurs" @click="showMenuDropdown = false">
 						<v-icon size="30px">mdi-book-education-outline</v-icon>
 						<span>{{ $t("nav.coursesHeader") }}</span>
@@ -103,6 +107,9 @@ export default {
 	},
 	computed: {
 		...mapGetters(["isAuthenticated", "user", "userData"]),
+		isAdminUser() {
+			return this.user && this.user.uid === import.meta.env.VITE_ADMIN_USER_ID;
+		},
 	},
 	methods: {
 		toggleProfileDropdown() {

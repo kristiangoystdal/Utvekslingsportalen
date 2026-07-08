@@ -22,6 +22,12 @@
 							}}</router-link>
 						</li>
 
+						<li v-if="checkAdminUser()">
+							<router-link to="/rapporter">{{
+								$t("nav.reportsHeader")
+							}}</router-link>
+						</li>
+
 						<li>
 							<router-link to="/kurs">{{
 								$t("nav.coursesHeader")
