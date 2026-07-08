@@ -62,6 +62,28 @@
 				<FavoriteCourses />
 			</v-card>
 
+			<v-card class="pa-6 profile-card footer" elevation="4">
+				<div class="section-title mb-4">{{ $t("reports.myReports") }}</div>
+				<div v-if="myReportsList.length === 0" class="no-reports-text">
+					{{ $t("reports.noOwnReports") }}
+				</div>
+				<div v-else class="my-reports-list">
+					<div v-for="report in myReportsList" :key="report.id" class="my-report-row">
+						<router-link :to="`/rapporter/${report.id}`" class="my-report-title">
+							{{ report.title || report.university || $t("reports.readMore") }}
+						</router-link>
+						<v-chip
+							size="small"
+							:color="report.status === 'published' ? 'success' : report.status === 'pending' ? 'warning' : 'error'"
+							variant="tonal"
+							class="ml-2"
+						>
+							{{ $t(`reports.${report.status}`) }}
+						</v-chip>
+					</div>
+				</div>
+			</v-card>
+
 		</div>
 
 		<!-- Loading state -->
@@ -134,6 +156,7 @@ import { ref as dbRef, update } from "firebase/database";
 import studiesData from "../../data/studies.json";
 import FavoriteCourses from "./FavoriteCourses.vue";
 import { toast } from "vue3-toastify";
+import { getUserReports } from "../../js/reportsCache";
 
 export default {
 	components: { FavoriteCourses },
@@ -155,6 +178,7 @@ export default {
 				specialization: "",
 			},
 			verificationDialog: false,
+			myReports: {},
 		};
 	},
 	computed: {
@@ -169,7 +193,11 @@ export default {
 		},
 		isVerified() {
 			return this.user && this.user.emailVerified;
-		}
+		},
+		myReportsList() {
+			return Object.entries(this.myReports).map(([id, r]) => ({ id, ...r }))
+				.sort((a, b) => b.createdAt - a.createdAt);
+		},
 	},
 	methods: {
 		loadData() {
@@ -266,6 +294,14 @@ export default {
 					this.loadLocalData();
 				}
 				this.loading = false;
+			},
+			immediate: true,
+		},
+		user: {
+			async handler(val) {
+				if (val) {
+					this.myReports = await getUserReports(val.uid);
+				}
 			},
 			immediate: true,
 		},
@@ -449,5 +485,38 @@ export default {
 
 .button-row .v-btn {
 	width: 100%;
+}
+
+.section-title {
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--first-color, #112d4e);
+}
+
+.no-reports-text {
+	color: #9ca3af;
+	font-size: 14px;
+}
+
+.my-reports-list {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.my-report-row {
+	display: flex;
+	align-items: center;
+}
+
+.my-report-title {
+	font-size: 14px;
+	color: var(--second-color, #3f72af);
+	text-decoration: none;
+	font-weight: 500;
+}
+
+.my-report-title:hover {
+	text-decoration: underline;
 }
 </style>
