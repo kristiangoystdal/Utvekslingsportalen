@@ -407,6 +407,110 @@ export default {
 </script>
 
 <style scoped>
+.search-summary {
+	font-size: 14px;
+	color: #6b7280;
+	margin-bottom: 8px;
+}
+
+.search-wrap {
+	margin: 10px auto 18px;
+}
+
+.search-chip-container {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 16px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.85);
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+	transition: box-shadow 180ms ease, background 180ms ease;
+	cursor: text;
+	min-height: 48px;
+}
+
+.search-chip-container:hover {
+	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+	background: rgba(255, 255, 255, 0.92);
+}
+
+.search-chip-container.focused {
+	box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.18), 0 10px 24px rgba(0, 0, 0, 0.12);
+}
+
+.search-icon {
+	color: #9ca3af;
+	flex-shrink: 0;
+}
+
+.search-input-wrap {
+	flex: 1;
+	min-width: 120px;
+	position: relative;
+}
+
+.chip-search-input {
+	width: 100%;
+	border: none;
+	outline: none;
+	background: transparent;
+	font-size: 16px;
+	padding: 4px 0;
+	color: var(--first-color, #112d4e);
+}
+
+.chip-search-input::placeholder {
+	color: #9ca3af;
+}
+
+.suggestions-dropdown {
+	position: absolute;
+	top: calc(100% + 12px);
+	left: -16px;
+	right: -16px;
+	min-width: 300px;
+	background: white;
+	border-radius: 12px;
+	box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+	border: 1px solid var(--third-color, #dbe2ef);
+	overflow: hidden;
+	z-index: 1000;
+}
+
+.suggestion-item {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	padding: 10px 14px;
+	cursor: pointer;
+	transition: background-color 0.1s;
+	font-size: 14px;
+}
+
+.suggestion-item:hover,
+.suggestion-item.highlighted {
+	background-color: var(--fourth-color, #f9f7f7);
+}
+
+.suggestion-icon {
+	color: var(--second-color, #3f72af);
+	opacity: 0.7;
+}
+
+.suggestion-text {
+	flex: 1;
+	color: var(--first-color, #112d4e);
+}
+
+.suggestion-type {
+	font-size: 12px;
+	color: #9ca3af;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
 .reports-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));

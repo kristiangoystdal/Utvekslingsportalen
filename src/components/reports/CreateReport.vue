@@ -234,7 +234,7 @@ export default {
 	},
 
 	computed: {
-		...mapGetters(["user"]),
+		...mapGetters(["user", "userData"]),
 
 		countryNamesTranslated() {
 			return Object.keys(this.universities || {}).map((country) => ({
@@ -327,7 +327,7 @@ export default {
 			try {
 				const reportData = {
 					authorId: auth.currentUser.uid,
-					authorName: this.report.anonymous ? "" : (this.user?.displayName || auth.currentUser.displayName || ""),
+					authorName: this.report.anonymous ? "" : (this.userData?.displayName || this.user?.displayName || auth.currentUser?.displayName || ""),
 					anonymous: this.report.anonymous,
 					exchangeId: auth.currentUser.uid,
 					university: this.report.university,
