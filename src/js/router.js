@@ -188,6 +188,11 @@ router.beforeEach(async (to, from, next) => {
     return next({ name: 'Home' });
   }
 
+  const isReportsRoute = to.matched.some(record => ['Reports', 'ReportDetail', 'CreateReport'].includes(record.name));
+  if (isReportsRoute && (!adminUserId || !isAuthenticated || String(currentUserId) !== String(adminUserId))) {
+    return next({ name: 'Home' });
+  }
+
   if (to.name === 'Login' && isAuthenticated) {
     return next({ name: 'Account' });
   }
