@@ -61,5 +61,6 @@
 
   "share": "Share",
   "linkCopied": "Link copied!",
-  "reportNotFound": "Report not found."
+  "reportNotFound": "Report not found.",
+  "noOwnReports": "You haven't written any reports yet."
 }
