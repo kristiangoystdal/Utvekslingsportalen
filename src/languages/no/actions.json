@@ -30,5 +30,6 @@
   "signOut": "Logg ut",
   "uploadExchange": "Last opp utvekslingsdata",
   "viewExchanges": "Se utvekslinger",
-  "yes": "Ja"
+  "yes": "Ja",
+  "confirmReportDelete": "Er du sikker på at du vil slette denne rapporten? Dette kan ikke angres."
 }

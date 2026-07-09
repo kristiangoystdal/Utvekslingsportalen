@@ -1,5 +1,7 @@
 {
   "pageHeader": "Your Exchange:",
+  "missingExchangePrompt": "You haven't added your exchange yet.",
+  "clickToAdd": "Click to add information about your exchange.",
   "info": "Create or edit your overview of the courses you have taken during your exchange. \n\nCourse name and number of ECTS credits are required, where the ECTS credits should be converted from the university's local unit. \n\nIf your study program or specialization is not listed, please contact us.",
   "missingData": "Missing data on",
   "unsavedChanges": "You have unsaved data. Remember to update.",
