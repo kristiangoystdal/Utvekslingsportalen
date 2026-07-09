@@ -106,8 +106,11 @@ export async function createReport(reportData) {
 
 export async function updateReport(reportId, reportData) {
   const db = getDatabase();
-  await set(dbRef(db, `reports/${reportId}`), {
+  const existing = await getReportById(reportId);
+  await set(dbRef(db, `test_reports/${reportId}`), {
     ...reportData,
+    status: existing?.status ?? "published",
+    createdAt: existing?.createdAt ?? Date.now(),
     updatedAt: Date.now(),
   });
   clearCachedReports();
@@ -122,6 +125,6 @@ export async function getReportsByExchangeId(exchangeId) {
 
 export async function deleteReport(reportId) {
   const db = getDatabase();
-  await remove(dbRef(db, `reports/${reportId}`));
+  await remove(dbRef(db, `test_reports/${reportId}`));
   clearCachedReports();
 }
