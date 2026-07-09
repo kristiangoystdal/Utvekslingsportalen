@@ -31,7 +31,7 @@
 							<v-icon start size="16">mdi-account-edit</v-icon>
 							{{ $t("auth.editProfile") }}
 						</v-btn>
-						<v-btn variant="outlined" block @click="sendResetPasswordEmail">
+						<v-btn color="error" variant="tonal" block @click="sendResetPasswordEmail">
 							<v-icon start size="16">mdi-lock-reset</v-icon>
 							{{ $t("actions.changePassword") }}
 						</v-btn>
@@ -96,16 +96,16 @@
 						</div>
 						<div v-if="myExchange" class="card-actions">
 							<v-btn variant="tonal" color="primary" @click="startExchangeEdit">
-								<v-icon start size="14">mdi-pencil-outline</v-icon>
+								<v-icon start size="16">mdi-pencil-outline</v-icon>
 								{{ $t("actions.edit") }}
 							</v-btn>
-							<v-btn variant="tonal" color="error" class="px-2" @click="deleteExchangeDialog = true">
-								<v-icon size="16">mdi-trash-can-outline</v-icon>
+							<v-btn variant="tonal" color="error" class="px-3" @click="deleteExchangeDialog = true">
+								<v-icon size="18">mdi-trash-can-outline</v-icon>
 							</v-btn>
 						</div>
 						<div v-else-if="hasExchange === false" class="card-actions">
 							<v-btn variant="tonal" color="primary" @click="openExchangeEdit">
-								<v-icon start size="14">mdi-plus</v-icon>
+								<v-icon start size="16">mdi-plus</v-icon>
 								{{ $t("myExchange.editMyExchange") }}
 							</v-btn>
 						</div>
@@ -156,17 +156,17 @@
 						</div>
 						<div v-if="myReportsList.length === 0" class="card-actions">
 							<v-btn variant="tonal" color="primary" @click="newReport">
-								<v-icon start size="14">mdi-plus</v-icon>
+								<v-icon start size="16">mdi-plus</v-icon>
 								{{ $t("reports.writeReport") }}
 							</v-btn>
 						</div>
 						<div v-else class="card-actions">
 							<v-btn variant="tonal" color="primary" @click="startEditReport(myReportsList[0])">
-								<v-icon start size="14">mdi-pencil-outline</v-icon>
+								<v-icon start size="16">mdi-pencil-outline</v-icon>
 								{{ $t("actions.edit") }}
 							</v-btn>
-							<v-btn variant="tonal" color="error" class="px-2" @click="deleteReportDialog = true">
-								<v-icon size="16">mdi-trash-can-outline</v-icon>
+							<v-btn variant="tonal" color="error" class="px-3" @click="deleteReportDialog = true">
+								<v-icon size="18">mdi-trash-can-outline</v-icon>
 							</v-btn>
 						</div>
 					</div>
@@ -242,11 +242,11 @@
 						</div>
 						<div class="card-actions">
 							<v-btn variant="tonal" color="primary" @click="$refs.favComp.exportAsPDF()">
-								<v-icon start size="14">mdi-file-pdf-box</v-icon>
+								<v-icon start size="16">mdi-file-pdf-box</v-icon>
 								{{ $t("actions.exportAsPDF") }}
 							</v-btn>
 							<v-btn variant="tonal" color="primary" @click="$refs.favComp.exportAsCSV()">
-								<v-icon start size="14">mdi-file-document-outline</v-icon>
+								<v-icon start size="16">mdi-file-document-outline</v-icon>
 								{{ $t("actions.exportAsCSV") }}
 							</v-btn>
 						</div>
@@ -277,14 +277,14 @@
 		<!-- Report Create / Edit Modal -->
 		<v-dialog v-model="editReportDialog" max-width="860" scrollable persistent>
 			<v-card rounded="xl">
-				<v-card-title class="d-flex align-center justify-space-between pa-4 pb-2">
-					<span class="text-h6 font-weight-bold">
+				<div class="dialog-header">
+					<span class="dialog-title">
 						{{ editingReportId ? $t("reports.editReport") : $t("reports.writeReport") }}
 					</span>
 					<v-btn icon variant="text" size="small" @click="cancelEditReport">
 						<v-icon>mdi-close</v-icon>
 					</v-btn>
-				</v-card-title>
+				</div>
 				<v-divider />
 				<v-card-text class="pa-4">
 					<CreateReport
@@ -318,9 +318,9 @@
 		<!-- Exchange Detail Modal -->
 		<v-dialog v-if="selectedExchange" :model-value="true" max-width="700" scrollable @update:model-value="selectedExchange = null">
 			<v-card rounded="xl">
-				<v-card-title class="d-flex align-center pa-4 pa-sm-5 pb-2">
-					<div class="flex-grow-1 min-width-0">
-						<div class="text-h6 font-weight-bold text-truncate">{{ selectedExchange.university || '—' }}</div>
+				<div class="dialog-header">
+					<div class="min-width-0 flex-grow-1">
+						<div class="dialog-title text-truncate">{{ selectedExchange.university || '—' }}</div>
 						<div class="text-caption text-medium-emphasis mt-1">
 							{{ $t(`countries.${selectedExchange.country}`) || selectedExchange.country }}
 							<template v-if="selectedExchange.year">· {{ selectedExchange.year }}</template>
@@ -328,10 +328,10 @@
 							<template v-if="exchangeSemesters.length">· {{ exchangeSemesters.join(" + ") }}</template>
 						</div>
 					</div>
-					<v-btn icon variant="text" size="small" class="ml-2 flex-shrink-0" @click="selectedExchange = null">
+					<v-btn icon variant="text" size="small" class="flex-shrink-0" @click="selectedExchange = null">
 						<v-icon>mdi-close</v-icon>
 					</v-btn>
-				</v-card-title>
+				</div>
 				<v-divider />
 				<v-card-text class="pa-4 pa-sm-5">
 					<v-row dense class="mb-2">
@@ -406,12 +406,12 @@
 		<!-- Exchange Edit Modal -->
 		<v-dialog v-model="editExchangeDialog" max-width="900" scrollable persistent>
 			<v-card rounded="xl">
-				<v-card-title class="d-flex align-center justify-space-between pa-4 pb-2">
-					<span class="text-h6 font-weight-bold">{{ $t("nav.myexchangeHeader") }}</span>
+				<div class="dialog-header">
+					<span class="dialog-title">{{ $t("nav.myexchangeHeader") }}</span>
 					<v-btn icon variant="text" size="small" @click="closeExchangeEdit">
 						<v-icon>mdi-close</v-icon>
 					</v-btn>
-				</v-card-title>
+				</div>
 				<v-divider />
 				<v-card-text class="pa-4">
 					<EditExchange v-if="editExchangeDialog" :compact="true" :embedded="true" @saved="finishExchangeEdit" @cancelled="closeExchangeEdit" />
@@ -422,12 +422,12 @@
 		<!-- Edit Profile Dialog -->
 		<v-dialog v-model="dialog" persistent max-width="560px">
 			<v-card rounded="xl">
-				<v-card-title class="d-flex align-center justify-space-between pa-4 pb-2">
-					<span class="text-h6 font-weight-bold">{{ $t("auth.editProfile") }}</span>
+				<div class="dialog-header">
+					<span class="dialog-title">{{ $t("auth.editProfile") }}</span>
 					<v-btn icon variant="text" size="small" @click="closeDialog">
 						<v-icon>mdi-close</v-icon>
 					</v-btn>
-				</v-card-title>
+				</div>
 				<v-divider />
 				<v-card-text class="pa-4">
 					<v-form ref="editForm">
@@ -440,7 +440,7 @@
 				<v-divider />
 				<v-card-actions class="pa-4 ga-2">
 					<v-spacer />
-					<v-btn variant="text" @click="closeDialog">{{ $t("actions.cancel") }}</v-btn>
+					<v-btn color="error" variant="tonal" @click="closeDialog">{{ $t("actions.cancel") }}</v-btn>
 					<v-btn color="primary" variant="tonal" @click="saveProfile">{{ $t("actions.save") }}</v-btn>
 				</v-card-actions>
 			</v-card>
@@ -449,12 +449,12 @@
 		<!-- Verification Dialog -->
 		<v-dialog v-model="verificationDialog" max-width="440">
 			<v-card rounded="xl">
-				<v-card-title class="d-flex align-center justify-space-between pa-4 pb-2">
-					<span class="text-h6 font-weight-bold">{{ $t("auth.userNotVerified") }}</span>
+				<div class="dialog-header">
+					<span class="dialog-title">{{ $t("auth.userNotVerified") }}</span>
 					<v-btn icon variant="text" size="small" @click="toggleVerificationDialog">
 						<v-icon>mdi-close</v-icon>
 					</v-btn>
-				</v-card-title>
+				</div>
 				<v-divider />
 				<v-card-actions class="pa-4 ga-2">
 					<v-btn color="primary" variant="tonal" block @click="sendVerificationEmail()">
@@ -846,8 +846,8 @@ export default {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 0 20px;
-	height: 58px;
+	padding: 0 16px;
+	height: 52px;
 	gap: 12px;
 	background: var(--fourth-color, #f9f7f7);
 }
@@ -877,14 +877,8 @@ export default {
 .card-actions {
 	display: flex;
 	align-items: center;
-	align-self: stretch;
-	gap: 8px;
+	gap: 6px;
 	flex-shrink: 0;
-}
-
-.card-actions :deep(.v-btn) {
-	height: 60%;
-	align-self: center;
 }
 
 /* ─── Empty states ─── */
@@ -979,5 +973,23 @@ export default {
 }
 
 .min-width-0 { min-width: 0; }
+
+/* ─── Dialog headers ─── */
+.dialog-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px 16px;
+	gap: 8px;
+	min-height: 54px;
+}
+
+.dialog-title {
+	flex: 1;
+	font-size: 1.05rem;
+	font-weight: 700;
+	color: rgba(0, 0, 0, 0.87);
+	line-height: 1.3;
+}
 
 </style>
