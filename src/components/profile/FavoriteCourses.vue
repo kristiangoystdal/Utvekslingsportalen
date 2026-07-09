@@ -1,7 +1,7 @@
 <template>
-  <h2>{{ $t("auth.favoriteCourses") }}</h2>
+  <h2 v-if="!embedded">{{ $t("auth.favoriteCourses") }}</h2>
   <div class="favorite-courses">
-    <div class="d-flex flex-column flex-md-row align-start align-md-center mb-2">
+    <div v-if="!embedded" class="d-flex flex-column flex-md-row align-start align-md-center mb-2">
       <!-- Left: label + hint -->
       <div class="mr-md-10 mb-2 mb-md-0">
         <strong>{{ $t("actions.exportFavorites") }}</strong>
@@ -102,6 +102,10 @@ import { encryptId } from "../../js/urlCipher";
 
 export default {
   name: "FavoriteCourses",
+  props: {
+    embedded: { type: Boolean, default: false },
+  },
+  emits: ["favorites-count"],
   data() {
     return {
       q: "",
@@ -177,6 +181,7 @@ export default {
         courseKey,
         ...coursesObj[courseKey],
       }));
+      this.$emit("favorites-count", this.favoriteCourses.length);
     },
     async saveFavoriteCourses() {
       const user = auth.currentUser;
