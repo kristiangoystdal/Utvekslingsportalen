@@ -1,157 +1,112 @@
 <template>
-	<!-- Title and infobox -->
-	<div v-if="!adminMode && !compact">
-		<h2>{{ $t("myExchange.pageHeader") }}</h2>
-		<p class="page-summary">
-			{{ $t("myExchange.info") }}
-		</p>
-	</div>
-	<br v-if="!adminMode && !compact" />
-	<v-btn v-if="!adminMode && !embedded" class="btn btn-third" @click="toggleUploadModal">
-		{{ $t("myExchange.uploadLearningAgreement") }}
-	</v-btn>
-	<br v-if="!adminMode && !embedded" />
-	<div>
-		<div v-if="user || adminMode">
-			<!-- Show current exchange data here -->
-			<div v-if="!adminMode && !editExchange && !embedded">
-				<div class="mt-4">
-					<ReviewStep :userExchange="userExchange" :semesters="semesters" :canSubmit="true" :showSubmitButton="false" />
-				</div>
+	<div class="form-root">
+		<!-- ── Standalone header (non-embedded, non-admin) ── -->
+		<template v-if="!adminMode && !compact && !embedded">
+			<h2 class="text-h5 font-weight-bold mb-1">{{ $t("myExchange.pageHeader") }}</h2>
+			<p class="text-medium-emphasis mb-4">{{ $t("myExchange.info") }}</p>
+			<v-btn variant="tonal" class="mb-4" @click="toggleUploadModal">
+				{{ $t("myExchange.uploadLearningAgreement") }}
+			</v-btn>
+		</template>
 
-				<div class="box text-info text-center my-4 d-flex flex-wrap justify-center ga-8">
-					<v-btn class="btn btn-primary" @click="editExchange = true">
+		<div v-if="user || adminMode">
+			<!-- ── Standalone view mode (not editing) ── -->
+			<div v-if="!adminMode && !editExchange && !embedded">
+				<ReviewStep :userExchange="userExchange" :semesters="semesters" :canSubmit="true" :showSubmitButton="false" />
+				<div class="d-flex flex-wrap justify-center ga-3 mt-5">
+					<v-btn variant="tonal" color="primary" @click="editExchange = true">
 						{{ $t("myExchange.editMyExchange") }}
 					</v-btn>
-					<v-btn class="btn btn-danger" @click="toggleExchangeDialog()">
+					<v-btn variant="tonal" color="error" @click="toggleExchangeDialog()">
 						{{ $t("myExchange.deleteMyExchange") }}
 					</v-btn>
 				</div>
 			</div>
 
-			<!-- Stepper -->
-			<br />
+			<!-- ── Loading ── -->
 			<div v-if="(editExchange || embedded) && !dataLoaded" class="text-center py-10">
 				<v-progress-circular indeterminate color="primary" size="36" />
 			</div>
-			<v-stepper v-if="(editExchange || embedded) && dataLoaded" v-model="step" elevation="1">
-				<v-stepper-header>
-					<v-stepper-item :value="1" :complete="!missingBasicDataBool">
-						{{ $t("wizard.basic.title") }}
-					</v-stepper-item>
 
-					<v-divider />
-
-					<v-stepper-item :value="2" :complete="!missingCoursesBool">
-						{{ $t("wizard.courses.title") }}
-					</v-stepper-item>
-
-					<v-divider />
-
-					<v-stepper-item :value="3">
-						{{ $t("wizard.review.title") }}
-					</v-stepper-item>
-				</v-stepper-header>
-
-				<v-stepper-window>
-					<v-stepper-window-item :value="1">
-						<BasicInfoStep :userExchange="userExchange" :studies="studies"
-							:countryNamesTranslated="countryNamesTranslated" :universityNames="universityNames"
-							:secondUniversityNames="secondUniversityNames" :semesters="semesters" @update="userExchange = $event"
-							@updateSemesters="semesters = $event" />
-					</v-stepper-window-item>
-
-					<v-stepper-window-item :value="2">
-						<CoursesStep :userExchange="userExchange" :semesters="semesters" @update="userExchange = $event" />
-					</v-stepper-window-item>
-
-					<v-stepper-window-item :value="3">
-						<ReviewStep :userExchange="userExchange" :semesters="semesters" :canSubmit="canSaveExchange"
-							@submit="updateExchange" :saving="saving" />
-					</v-stepper-window-item>
-				</v-stepper-window>
-			</v-stepper>
-
-			<v-divider v-if="(editExchange || embedded) && dataLoaded" class="my-4" />
-
-			<v-row v-if="(editExchange || embedded) && dataLoaded" class="px-4 pb-4" align="center" no-gutters>
-				<!-- Left: Previous -->
-				<v-col cols="12" sm="4" class="d-flex justify-center">
-					<v-btn v-if="step > 1" class="btn btn-third" @click="prevStep">
-						{{ step == 2 ? $t("wizard.courses.previous") : $t("wizard.review.previous") }}
-					</v-btn>
-				</v-col>
-
-				<v-spacer />
-
-				<v-col cols="12" sm="4" class="d-flex justify-center">
-					<v-btn v-if="embedded" class="btn btn-danger" @click="$emit('cancelled')">
-						{{ $t("actions.cancel") }}
-					</v-btn>
-					<v-btn v-else class="btn btn-danger" @click="toggleEditExchange">
-						{{ $t("actions.cancel") }}
-					</v-btn>
-				</v-col>
-
-				<v-spacer />
-
-				<!-- Right: Warning icon + Next -->
-				<v-col cols="12" sm="4" class="d-flex align-center justify-center">
-					<v-tooltip>
-						<template #activator="{ props }">
-							<v-icon v-bind="props" color="warning" v-if="nextDisabled">
-								mdi-alert-circle
-							</v-icon>
-						</template>
-
-						<span v-if="step == 1 && missingBasicDataBool">{{ missingBasicDataString }}</span>
-						<span v-else-if="step == 2 && missingCoursesBool">{{ $t("myExchange.coursesMissingData") }}</span>
-					</v-tooltip>
-
-					<v-btn v-if="step < 3" class="btn btn-primary" :disabled="nextDisabled" @click="nextStep">
-						{{ step == 1 ? $t("wizard.basic.next") : $t("wizard.courses.next") }}
-					</v-btn>
-				</v-col>
-			</v-row>
-		</div>
-		<div v-else>
-			<div class="box box-alert text-alert text-center">
-				<div>
-					{{ $t("myExchange.loginToEdit") }}
+			<!-- ── Flat edit form ── -->
+			<div v-if="(editExchange || embedded) && dataLoaded" class="flat-form">
+				<div class="step-body">
+					<BasicInfoStep
+						:userExchange="userExchange"
+						:countryNamesTranslated="countryNamesTranslated"
+						:universityNames="universityNames"
+						:secondUniversityNames="secondUniversityNames"
+						:semesters="semesters"
+						@update="userExchange = $event"
+						@updateSemesters="semesters = $event"
+					/>
 				</div>
-				<br />
-				<v-btn class="btn-primary" :to="{ name: 'Login' }">
-					{{ $t("actions.signIn") }}
-				</v-btn>
+				<div class="flat-courses-header"><span>{{ $t('wizard.courses.title') }}</span></div>
+				<div class="step-body">
+					<CoursesStep :userExchange="userExchange" :semesters="semesters" @update="userExchange = $event" />
+				</div>
 			</div>
+
+			<!-- ── Navigation ── -->
+			<template v-if="(editExchange || embedded) && dataLoaded">
+				<v-divider />
+				<div class="form-nav">
+					<div class="nav-side"></div>
+
+					<v-btn variant="text" color="error" size="small" @click="embedded ? $emit('cancelled') : toggleEditExchange()">
+						{{ $t("actions.cancel") }}
+					</v-btn>
+
+					<div class="nav-side nav-side--right">
+						<v-tooltip v-if="!canSaveExchange" location="top">
+							<template #activator="{ props }">
+								<v-icon v-bind="props" color="warning" size="18">mdi-alert-circle</v-icon>
+							</template>
+							{{ missingBasicDataString || $t("myExchange.coursesMissingData") }}
+						</v-tooltip>
+						<v-btn
+							variant="tonal"
+							color="primary"
+							size="small"
+							:disabled="!canSaveExchange"
+							:loading="saving"
+							@click="updateExchange"
+						>{{ $t("wizard.review.submit") }}</v-btn>
+					</div>
+				</div>
+			</template>
 		</div>
 
+		<!-- ── Not logged in ── -->
+		<div v-else class="text-center py-8">
+			<p class="text-medium-emphasis mb-4">{{ $t("myExchange.loginToEdit") }}</p>
+			<v-btn variant="tonal" color="primary" :to="{ name: 'Login' }">
+				{{ $t("actions.signIn") }}
+			</v-btn>
+		</div>
 
-
-		<!-- Delete exchange dialog -->
-		<v-dialog v-if="!adminMode" v-model="deleteExchangeDialog" class="dialog">
-			<v-card>
-				<v-card-title class="headline">
-					{{ $t("actions.confirmDelete") }}
+		<!-- ── Delete dialog (standalone mode) ── -->
+		<v-dialog v-if="!adminMode" v-model="deleteExchangeDialog" max-width="420">
+			<v-card rounded="xl">
+				<v-card-title class="d-flex align-center justify-space-between pa-4 pb-2">
+					<span class="text-h6 font-weight-bold">{{ $t("actions.confirmDelete") }}</span>
+					<v-btn icon variant="text" size="small" @click="toggleExchangeDialog()">
+						<v-icon>mdi-close</v-icon>
+					</v-btn>
 				</v-card-title>
-				<v-card-text>
+				<v-card-text class="pa-4 pt-1 text-medium-emphasis">
 					{{ $t("actions.confirmExchangeDelete") }}
 				</v-card-text>
-				<v-card-actions>
-					<v-spacer></v-spacer>
-					<v-btn id="noBtn" @click="toggleExchangeDialog()">
-						{{ $t("actions.no") }}
-					</v-btn>
-					<v-btn id="yesBtn" @click="deleteExchange()">
-						{{ $t("actions.yes") }}
-					</v-btn>
+				<v-card-actions class="pa-4 pt-0 ga-2">
+					<v-spacer />
+					<v-btn variant="text" @click="toggleExchangeDialog()">{{ $t("actions.no") }}</v-btn>
+					<v-btn color="error" variant="tonal" @click="deleteExchange()">{{ $t("actions.yes") }}</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
+
+		<Upload v-model="uploadModalActive" />
 	</div>
-
-	<Upload v-model="uploadModalActive" />
-
 </template>
 
 <script>
@@ -1086,38 +1041,54 @@ export default {
 </script>
 
 <style scoped>
-.unsaved-changes {
-	background-color: var(--color-warning-bg);
-	border: 1px solid var(--color-warning-border);
-	padding: var(--space-md);
-	border-radius: 8px;
-	margin-bottom: var(--space-md);
-	font-weight: bold;
-	color: var(--color-warning-text);
-	width: fit-content;
-	margin: 0 auto;
-	text-align: center;
+.form-root {
+	display: flex;
+	flex-direction: column;
 }
 
-.update-btn {
-	background-color: var(--green-color);
-	color: var(--fifth-color);
-	font-weight: bold;
+.flat-form {
+	display: flex;
+	flex-direction: column;
 }
 
-.update-btn:disabled {
-	background-color: var(--third-color);
-	color: var(--first-color);
+.step-body {
+	padding: 12px 16px 8px;
 }
 
-.course-icons {
-	margin: 0 8px;
-	/* Adjust the margin value as needed */
+.flat-courses-header {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	font-size: 11px;
+	font-weight: 700;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	color: rgba(0, 0, 0, 0.38);
+	margin: 4px 16px 0;
+}
+.flat-courses-header::before,
+.flat-courses-header::after {
+	content: '';
+	flex: 1;
+	height: 1px;
+	background: rgba(0, 0, 0, 0.1);
 }
 
-.step-btn {
-	min-width: 120px !important;
-	width: 80% !important;
+.form-nav {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 8px 12px 10px;
 }
 
+.nav-side {
+	flex: 1;
+	display: flex;
+	align-items: center;
+}
+
+.nav-side--right {
+	justify-content: flex-end;
+	gap: 6px;
+}
 </style>
