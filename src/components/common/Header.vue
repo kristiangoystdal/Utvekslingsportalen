@@ -33,11 +33,6 @@
 								$t("nav.coursesHeader")
 							}}</router-link>
 						</li>
-						<li>
-							<router-link to="/min_utveksling">{{
-								$t("nav.myexchangeHeader")
-							}}</router-link>
-						</li>
 						<li ref="profileSwitcher">
 							<router-link v-if="isAuthenticated" to="/profil">{{
 								$t("nav.profileHeader")

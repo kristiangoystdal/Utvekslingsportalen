@@ -10,7 +10,7 @@
 			<a class="footer-icon" @click="toggleMenu">
 				<v-icon size="30px">mdi-menu</v-icon>
 			</a>
-			<router-link class="footer-icon" to="/min_utveksling" @click="removeDropdowns">
+			<router-link class="footer-icon" to="/profil?tab=exchange" @click="removeDropdowns">
 				<v-icon size="30px">mdi-airplane-edit</v-icon>
 			</router-link>
 			<a class="footer-icon" @click="toggleProfileDropdown">
