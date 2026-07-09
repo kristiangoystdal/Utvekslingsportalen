@@ -31,7 +31,10 @@
 
 			<!-- Stepper -->
 			<br />
-			<v-stepper v-if="editExchange || embedded" v-model="step" elevation="1">
+			<div v-if="(editExchange || embedded) && !dataLoaded" class="text-center py-10">
+				<v-progress-circular indeterminate color="primary" size="36" />
+			</div>
+			<v-stepper v-if="(editExchange || embedded) && dataLoaded" v-model="step" elevation="1">
 				<v-stepper-header>
 					<v-stepper-item :value="1" :complete="!missingBasicDataBool">
 						{{ $t("wizard.basic.title") }}
@@ -69,9 +72,9 @@
 				</v-stepper-window>
 			</v-stepper>
 
-			<v-divider v-if="editExchange || embedded" class="my-4" />
+			<v-divider v-if="(editExchange || embedded) && dataLoaded" class="my-4" />
 
-			<v-row v-if="editExchange || embedded" class="px-4 pb-4" align="center" no-gutters>
+			<v-row v-if="(editExchange || embedded) && dataLoaded" class="px-4 pb-4" align="center" no-gutters>
 				<!-- Left: Previous -->
 				<v-col cols="12" sm="4" class="d-flex justify-center">
 					<v-btn v-if="step > 1" class="btn btn-third" @click="prevStep">
