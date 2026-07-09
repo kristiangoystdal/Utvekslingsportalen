@@ -1,20 +1,20 @@
 <template>
 	<!-- Title and infobox -->
-	<div v-if="!adminMode">
+	<div v-if="!adminMode && !compact">
 		<h2>{{ $t("myExchange.pageHeader") }}</h2>
 		<p class="page-summary">
 			{{ $t("myExchange.info") }}
 		</p>
 	</div>
-	<br v-if="!adminMode" />
-	<v-btn v-if="!adminMode" class="btn btn-third" @click="toggleUploadModal">
+	<br v-if="!adminMode && !compact" />
+	<v-btn v-if="!adminMode && !embedded" class="btn btn-third" @click="toggleUploadModal">
 		{{ $t("myExchange.uploadLearningAgreement") }}
 	</v-btn>
-	<br v-if="!adminMode" />
+	<br v-if="!adminMode && !embedded" />
 	<div>
 		<div v-if="user || adminMode">
 			<!-- Show current exchange data here -->
-			<div v-if="!adminMode && !editExchange">
+			<div v-if="!adminMode && !editExchange && !embedded">
 				<div class="mt-4">
 					<ReviewStep :userExchange="userExchange" :semesters="semesters" :canSubmit="true" :showSubmitButton="false" />
 				</div>
@@ -31,7 +31,7 @@
 
 			<!-- Stepper -->
 			<br />
-			<v-stepper v-if="editExchange" v-model="step" elevation="1">
+			<v-stepper v-if="editExchange || embedded" v-model="step" elevation="1">
 				<v-stepper-header>
 					<v-stepper-item :value="1" :complete="!missingBasicDataBool">
 						{{ $t("wizard.basic.title") }}
@@ -69,9 +69,9 @@
 				</v-stepper-window>
 			</v-stepper>
 
-			<v-divider v-if="editExchange" class="my-4" />
+			<v-divider v-if="editExchange || embedded" class="my-4" />
 
-			<v-row v-if="editExchange" class="px-4 pb-4" align="center" no-gutters>
+			<v-row v-if="editExchange || embedded" class="px-4 pb-4" align="center" no-gutters>
 				<!-- Left: Previous -->
 				<v-col cols="12" sm="4" class="d-flex justify-center">
 					<v-btn v-if="step > 1" class="btn btn-third" @click="prevStep">
@@ -82,7 +82,10 @@
 				<v-spacer />
 
 				<v-col cols="12" sm="4" class="d-flex justify-center">
-					<v-btn class="btn btn-danger" @click="toggleEditExchange">
+					<v-btn v-if="embedded" class="btn btn-danger" @click="$emit('cancelled')">
+						{{ $t("actions.cancel") }}
+					</v-btn>
+					<v-btn v-else class="btn btn-danger" @click="toggleEditExchange">
 						{{ $t("actions.cancel") }}
 					</v-btn>
 				</v-col>
@@ -90,7 +93,7 @@
 				<v-spacer />
 
 				<!-- Right: Warning icon + Next -->
-				<v-col cols="12" sm="4" class="d-flex align-center">
+				<v-col cols="12" sm="4" class="d-flex align-center justify-center">
 					<v-tooltip>
 						<template #activator="{ props }">
 							<v-icon v-bind="props" color="warning" v-if="nextDisabled">
@@ -177,8 +180,18 @@ export default {
 			type: Boolean,
 			default: false,
 		},
+		// hvis true: skjul sidetittel og infotekst (nyttig ved innbygging i profil)
+		compact: {
+			type: Boolean,
+			default: false,
+		},
+		// hvis true: vis alltid redigeringsmodusen, emit 'saved'/'cancelled' i stedet for navigering
+		embedded: {
+			type: Boolean,
+			default: false,
+		},
 	},
-	emits: ["save", "close"],
+	emits: ["save", "close", "saved", "cancelled"],
 	beforeRouteLeave(to, from, next) {
 		if (!this.unsavedChanges) {
 			next()
@@ -865,8 +878,12 @@ export default {
 					this.userExchange = JSON.parse(JSON.stringify(cleanPayload));
 
 					toast.success(this.$t("notifications.exchangeUpdated"));
-					this.toggleEditExchange();
-					this.step = 1;
+					if (this.embedded) {
+						this.$emit("saved");
+					} else {
+						this.toggleEditExchange();
+						this.step = 1;
+					}
 				} catch (error) {
 					console.error("Error updating user exchange data: ", error);
 					toast.error(this.$t("notifications.exchangeUpdateFailure"));
