@@ -179,7 +179,7 @@
 					</div>
 
 					<div v-else class="pa-5">
-						<div class="d-flex align-start justify-space-between gap-3 mb-2">
+						<div class="d-flex align-start justify-space-between gap-3 mb-3">
 							<div class="report-title">{{ myReportsList[0].title || '—' }}</div>
 							<v-chip
 								size="x-small"
@@ -191,10 +191,12 @@
 							</v-chip>
 						</div>
 
-						<div class="report-subtitle mb-3">
-							<span v-if="myReportsList[0].university">{{ myReportsList[0].university }}</span>
-							<span v-if="myReportsList[0].year || myReportsList[0].semester"> · {{ myReportsList[0].semester }} {{ myReportsList[0].year }}</span>
-							<span v-if="myReportsList[0].study"> · {{ myReportsList[0].study }}</span>
+						<div class="d-flex flex-wrap ga-2 mb-4">
+							<span v-if="myReportsList[0].country" class="meta-chip">{{ $t(`countries.${myReportsList[0].country}`) }}</span>
+							<span v-if="myReportsList[0].university" class="meta-chip">{{ myReportsList[0].university }}</span>
+							<span v-if="myReportsList[0].year" class="meta-chip">{{ myReportsList[0].year }}</span>
+							<span v-if="myReportsList[0].semester" class="meta-chip">{{ myReportsList[0].semester }}</span>
+							<span v-if="myReportsList[0].study" class="meta-chip">{{ myReportsList[0].study }}</span>
 						</div>
 
 						<div v-if="myReportsList[0].ratings?.overall" class="d-flex align-center ga-1 mb-3">
@@ -418,12 +420,16 @@
 		</v-dialog>
 
 		<!-- Edit Profile Dialog -->
-		<v-dialog v-model="dialog" persistent max-width="600px">
-			<v-card>
-				<v-card-title>
-					<span class="headline">{{ $t("auth.editProfile") }}</span>
+		<v-dialog v-model="dialog" persistent max-width="560px">
+			<v-card rounded="xl">
+				<v-card-title class="d-flex align-center justify-space-between pa-4 pb-2">
+					<span class="text-h6 font-weight-bold">{{ $t("auth.editProfile") }}</span>
+					<v-btn icon variant="text" size="small" @click="closeDialog">
+						<v-icon>mdi-close</v-icon>
+					</v-btn>
 				</v-card-title>
-				<v-card-text>
+				<v-divider />
+				<v-card-text class="pa-4">
 					<v-form ref="editForm">
 						<v-text-field v-model="localEditData.displayName" :label="$t('auth.name')" required />
 						<v-text-field v-model="localEditData.email" :label="$t('auth.email')" required readonly />
@@ -431,25 +437,29 @@
 						<v-autocomplete v-model="localEditData.specialization" :items="specializations" :label="$t('database.specialization')" />
 					</v-form>
 				</v-card-text>
-				<v-card-actions>
-					<v-btn id="closeBtn" @click="closeDialog">{{ $t("actions.cancel") }}</v-btn>
-					<v-btn id="saveBtn" @click="saveProfile">{{ $t("actions.save") }}</v-btn>
+				<v-divider />
+				<v-card-actions class="pa-4 ga-2">
+					<v-spacer />
+					<v-btn variant="text" @click="closeDialog">{{ $t("actions.cancel") }}</v-btn>
+					<v-btn color="primary" variant="tonal" @click="saveProfile">{{ $t("actions.save") }}</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
 
 		<!-- Verification Dialog -->
-		<v-dialog v-model="verificationDialog" max-width="500">
-			<v-card>
-				<v-card-title>{{ $t("auth.userNotVerified") }}</v-card-title>
-				<v-card-text>
-					<v-btn class="btn btn-primary" @click="sendVerificationEmail()">
+		<v-dialog v-model="verificationDialog" max-width="440">
+			<v-card rounded="xl">
+				<v-card-title class="d-flex align-center justify-space-between pa-4 pb-2">
+					<span class="text-h6 font-weight-bold">{{ $t("auth.userNotVerified") }}</span>
+					<v-btn icon variant="text" size="small" @click="toggleVerificationDialog">
+						<v-icon>mdi-close</v-icon>
+					</v-btn>
+				</v-card-title>
+				<v-divider />
+				<v-card-actions class="pa-4 ga-2">
+					<v-btn color="primary" variant="tonal" block @click="sendVerificationEmail()">
 						{{ $t("auth.sendVerificationEmail") }}
 					</v-btn>
-				</v-card-text>
-				<v-card-actions>
-					<v-spacer />
-					<v-btn variant="text" @click="toggleVerificationDialog">{{ $t("actions.close") }}</v-btn>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
@@ -970,26 +980,4 @@ export default {
 
 .min-width-0 { min-width: 0; }
 
-/* ─── Profile edit dialog ─── */
-#saveBtn {
-	padding: 10px 20px;
-	border-radius: 5px;
-	cursor: pointer;
-	border: none;
-	font-size: 14px !important;
-	margin: 10px;
-	background-color: var(--second-color);
-	color: var(--fifth-color);
-}
-
-#closeBtn {
-	padding: 10px 20px;
-	border-radius: 5px;
-	cursor: pointer;
-	border: none;
-	font-size: 14px !important;
-	margin: 10px;
-	background-color: var(--alert-error);
-	color: var(--fifth-color);
-}
 </style>
