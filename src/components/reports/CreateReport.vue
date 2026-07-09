@@ -1,205 +1,152 @@
 <template>
-	<div>
-		<h2 v-if="!embedded">{{ editMode ? $t("reports.editReport") : $t("reports.writeReport") }}</h2>
-		<p v-if="!embedded" class="page-summary">{{ $t("reports.info") }}</p>
-		<br v-if="!embedded" />
+	<div class="form-root">
+		<h2 v-if="!embedded" class="text-h5 font-weight-bold mb-1">
+			{{ editMode ? $t("reports.editReport") : $t("reports.writeReport") }}
+		</h2>
+		<p v-if="!embedded" class="text-medium-emphasis mb-6">{{ $t("reports.info") }}</p>
 
-		<v-stepper v-model="step" elevation="1">
+		<!-- ── Creation: guided stepper ── -->
+		<v-stepper v-if="!editMode" v-model="step" elevation="0" class="form-stepper">
 			<v-stepper-header>
-				<v-stepper-item :value="1" :complete="!!report.title">
-					{{ $t("wizard.basic.title") }}
-				</v-stepper-item>
-
+				<v-stepper-item :value="1" :complete="step > 1">{{ $t("wizard.basic.title") }}</v-stepper-item>
 				<v-divider />
-
-				<v-stepper-item :value="2" :complete="!!report.ratings.overall">
-					{{ $t("reports.ratings") }}
-				</v-stepper-item>
-
+				<v-stepper-item :value="2" :complete="step > 2">{{ $t("reports.ratings") }}</v-stepper-item>
 				<v-divider />
-
-				<v-stepper-item :value="3" :complete="!!report.content">
-					{{ $t("reports.content") }}
-				</v-stepper-item>
-
+				<v-stepper-item :value="3" :complete="step > 3">{{ $t("reports.content") }}</v-stepper-item>
 				<v-divider />
-
-				<v-stepper-item :value="4">
-					{{ $t("wizard.review.title") }}
-				</v-stepper-item>
+				<v-stepper-item :value="4">{{ $t("wizard.review.title") }}</v-stepper-item>
 			</v-stepper-header>
 
 			<v-stepper-window>
-				<!-- Step 1: Basic Info -->
 				<v-stepper-window-item :value="1">
-					<v-text-field v-model="report.title" :label="$t('reports.title')"
-						:error-messages="submitted && !report.title ? $t('reports.titleRequired') : ''" />
-
-					<v-checkbox v-model="report.anonymous" :label="$t('reports.anonymous')" hide-details class="mb-2" />
-
-					<v-row>
-						<v-col cols="12" md="6">
-							<v-autocomplete v-model="report.country" :items="countryNamesTranslated"
-								item-title="name" item-value="key" :label="$t('database.country')" clearable />
-						</v-col>
-						<v-col cols="12" md="6">
-							<v-autocomplete v-model="report.university" :items="universityNames"
-								:label="$t('database.university')" :disabled="!report.country" clearable />
-						</v-col>
-					</v-row>
-
-					<v-row>
-						<v-col cols="12" md="4">
-							<v-autocomplete v-model="report.study" :items="studyNames"
-								:label="$t('database.study')" clearable />
-						</v-col>
-						<v-col cols="12" md="4">
-							<v-text-field v-model="report.year" type="number"
-								:label="$t('database.year')" />
-						</v-col>
-						<v-col cols="12" md="4">
-							<v-select v-model="report.semester" :items="['Høst', 'Vår']"
-								:label="$t('database.semester')" clearable />
-						</v-col>
-					</v-row>
+					<ReportBasicStep
+						:report="report"
+						:countryNamesTranslated="countryNamesTranslated"
+						:universityNames="universityNames"
+						:studyNames="studyNames"
+						:submitted="submitted"
+						@update="Object.assign(report, $event)"
+					/>
 				</v-stepper-window-item>
 
-				<!-- Step 2: Ratings & Pros/Cons -->
 				<v-stepper-window-item :value="2">
-					<div v-for="key in ratingKeys" :key="key" class="rating-row">
-						<span class="rating-label">{{ $t(`reports.${key}`) }}</span>
-						<v-rating v-model="report.ratings[key]" color="amber" hover length="5" size="32" />
-					</div>
-
-					<v-divider class="my-4" />
-
-					<!-- Pros -->
-					<div class="field-title">{{ $t("reports.pros") }}</div>
-					<div v-for="(pro, i) in report.pros" :key="'pro-' + i" class="d-flex align-center ga-2 mb-2">
-						<v-text-field v-model="report.pros[i]" density="compact" hide-details />
-						<v-btn icon size="small" variant="text" @click="report.pros.splice(i, 1)">
-							<v-icon>mdi-close</v-icon>
-						</v-btn>
-					</div>
-					<v-btn variant="text" size="small" @click="report.pros.push('')" prepend-icon="mdi-plus">
-						{{ $t("reports.addPro") }}
-					</v-btn>
-
-					<v-divider class="my-4" />
-
-					<!-- Cons -->
-					<div class="field-title">{{ $t("reports.cons") }}</div>
-					<div v-for="(con, i) in report.cons" :key="'con-' + i" class="d-flex align-center ga-2 mb-2">
-						<v-text-field v-model="report.cons[i]" density="compact" hide-details />
-						<v-btn icon size="small" variant="text" @click="report.cons.splice(i, 1)">
-							<v-icon>mdi-close</v-icon>
-						</v-btn>
-					</div>
-					<v-btn variant="text" size="small" @click="report.cons.push('')" prepend-icon="mdi-plus">
-						{{ $t("reports.addCon") }}
-					</v-btn>
+					<ReportRatingsStep
+						:ratings="report.ratings"
+						:pros="report.pros"
+						:cons="report.cons"
+						@update:ratings="report.ratings = $event"
+						@update:pros="report.pros = $event"
+						@update:cons="report.cons = $event"
+					/>
 				</v-stepper-window-item>
 
-				<!-- Step 3: Content -->
 				<v-stepper-window-item :value="3">
-					<v-textarea v-model="report.content" :label="$t('reports.content')" rows="8"
-						:error-messages="submitted && !report.content ? $t('reports.contentRequired') : ''" />
-
-					<v-textarea v-model="report.tips" :label="$t('reports.tips')" rows="4" />
+					<ReportContentStep
+						:content="report.content"
+						:tips="report.tips"
+						:submitted="submitted"
+						@update:content="report.content = $event"
+						@update:tips="report.tips = $event"
+					/>
 				</v-stepper-window-item>
 
-				<!-- Step 4: Review -->
 				<v-stepper-window-item :value="4">
-					<v-card variant="tonal" rounded="xl" class="pa-5">
-						<h3>{{ report.title || '—' }}</h3>
-
-						<div class="text-caption text-medium-emphasis mt-1 mb-3">
-							{{ report.university || '—' }}, {{ translatedCountry }}
-							· {{ report.study || '—' }}
-							· {{ report.year || '—' }} {{ report.semester || '' }}
-							<span v-if="report.anonymous"> · {{ $t("reports.anonymousLabel") }}</span>
-						</div>
-
-						<div v-if="hasRatings" class="mb-3">
-							<div v-for="key in ratingKeys" :key="'review-' + key">
-								<span class="text-body-2 font-weight-medium">{{ $t(`reports.${key}`) }}:</span>
-								<v-rating :model-value="report.ratings[key]" color="amber" readonly
-									density="compact" size="18" class="d-inline-flex ml-1" />
-							</div>
-						</div>
-
-						<div v-if="filteredPros.length" class="mb-2">
-							<div class="field-title">{{ $t("reports.pros") }}</div>
-							<ul>
-								<li v-for="(pro, i) in filteredPros" :key="i">{{ pro }}</li>
-							</ul>
-						</div>
-
-						<div v-if="filteredCons.length" class="mb-2">
-							<div class="field-title">{{ $t("reports.cons") }}</div>
-							<ul>
-								<li v-for="(con, i) in filteredCons" :key="i">{{ con }}</li>
-							</ul>
-						</div>
-
-						<div v-if="report.content" class="mb-2">
-							<div class="field-title">{{ $t("reports.content") }}</div>
-							<p class="text-body-2" style="white-space: pre-wrap;">{{ report.content }}</p>
-						</div>
-
-						<div v-if="report.tips">
-							<div class="field-title">{{ $t("reports.tips") }}</div>
-							<p class="text-body-2" style="white-space: pre-wrap;">{{ report.tips }}</p>
-						</div>
-					</v-card>
-
-					<div v-if="!canSubmit" class="text-error text-caption mt-3">
-						<div v-if="!report.title">{{ $t("reports.titleRequired") }}</div>
-						<div v-if="!report.content">{{ $t("reports.contentRequired") }}</div>
-						<div v-if="!report.ratings.overall">{{ $t("reports.ratingRequired") }}</div>
-					</div>
+					<ReportReviewStep
+						:report="report"
+						:translatedCountry="translatedCountry"
+						:canSubmit="canSubmit"
+					/>
 				</v-stepper-window-item>
 			</v-stepper-window>
 		</v-stepper>
 
-		<v-divider class="my-4" />
+		<!-- ── Edit: flat scrollable form ── -->
+		<div v-else class="flat-form">
+			<ReportBasicStep
+				:report="report"
+				:countryNamesTranslated="countryNamesTranslated"
+				:universityNames="universityNames"
+				:studyNames="studyNames"
+				:submitted="submitted"
+				@update="Object.assign(report, $event)"
+			/>
+			<ReportRatingsStep
+				:ratings="report.ratings"
+				:pros="report.pros"
+				:cons="report.cons"
+				@update:ratings="report.ratings = $event"
+				@update:pros="report.pros = $event"
+				@update:cons="report.cons = $event"
+			/>
+			<ReportContentStep
+				:content="report.content"
+				:tips="report.tips"
+				:submitted="submitted"
+				@update:content="report.content = $event"
+				@update:tips="report.tips = $event"
+			/>
+		</div>
 
-		<v-row class="px-4 pb-4" align="center" no-gutters>
-			<v-col cols="12" sm="4" class="d-flex justify-center">
-				<v-btn v-if="step > 1" class="btn btn-third" @click="step--">
-					{{ $t("wizard.courses.previous") }}
+		<!-- ── Navigation ── -->
+		<v-divider />
+		<div class="form-nav">
+			<div class="nav-side">
+				<v-btn v-if="!editMode && step > 1" variant="text" prepend-icon="mdi-chevron-left" size="small" @click="step--">
+					{{ $t('wizard.courses.previous') }}
 				</v-btn>
-			</v-col>
+			</div>
 
-			<v-spacer />
+			<v-btn variant="text" color="error" size="small" @click="embedded ? $emit('cancelled') : $router.push({ name: 'Account' })">
+				{{ $t('actions.cancel') }}
+			</v-btn>
 
-			<v-col cols="12" sm="4" class="d-flex justify-center">
-				<v-btn v-if="embedded" class="btn btn-danger" @click="$emit('cancelled')">
-					{{ $t("actions.cancel") }}
-				</v-btn>
-				<v-btn v-else class="btn btn-danger" :to="{ name: 'Account' }">
-					{{ $t("actions.cancel") }}
-				</v-btn>
-			</v-col>
-
-			<v-spacer />
-
-			<v-col cols="12" sm="4" class="d-flex align-center justify-center">
-				<v-tooltip v-if="step < 4 && nextDisabled">
-					<template #activator="{ props }">
-						<v-icon v-bind="props" color="warning" class="mr-2">mdi-alert-circle</v-icon>
-					</template>
-					<span>{{ missingStepFieldsString }}</span>
-				</v-tooltip>
-				<v-btn v-if="step < 4" class="btn btn-primary" :disabled="nextDisabled" @click="step++">
-					{{ $t("wizard.basic.next") }}
-				</v-btn>
-				<v-btn v-else class="btn btn-primary" :disabled="!canSubmit" :loading="saving"
-					@click="submitReport">
-					{{ editMode ? $t("reports.save") : $t("reports.submit") }}
-				</v-btn>
-			</v-col>
-		</v-row>
+			<div class="nav-side nav-side--right">
+				<!-- Create mode: step navigation -->
+				<template v-if="!editMode">
+					<v-tooltip v-if="nextDisabled" location="top">
+						<template #activator="{ props }">
+							<v-icon v-bind="props" color="warning" size="18">mdi-alert-circle</v-icon>
+						</template>
+						{{ missingStepFieldsString }}
+					</v-tooltip>
+					<v-btn
+						v-if="step < 4"
+						variant="tonal"
+						color="primary"
+						size="small"
+						append-icon="mdi-chevron-right"
+						:disabled="nextDisabled"
+						@click="step++"
+					>{{ $t('wizard.basic.next') }}</v-btn>
+					<v-btn
+						v-else
+						variant="tonal"
+						color="primary"
+						size="small"
+						:disabled="!canSubmit"
+						:loading="saving"
+						@click="submitReport"
+					>{{ $t('reports.submit') }}</v-btn>
+				</template>
+				<!-- Edit mode: save directly -->
+				<template v-else>
+					<v-tooltip v-if="!canSubmit" location="top">
+						<template #activator="{ props }">
+							<v-icon v-bind="props" color="warning" size="18">mdi-alert-circle</v-icon>
+						</template>
+						{{ missingStepFieldsString }}
+					</v-tooltip>
+					<v-btn
+						variant="tonal"
+						color="primary"
+						size="small"
+						:disabled="!canSubmit"
+						:loading="saving"
+						@click="submitReport"
+					>{{ $t('reports.save') }}</v-btn>
+				</template>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -212,11 +159,16 @@ import universitiesData from "../../data/universities.json";
 import { toast } from "vue3-toastify";
 import { decryptId } from "../../js/urlCipher";
 
+import ReportBasicStep from "./steps/ReportBasicStep.vue";
+import ReportRatingsStep from "./steps/ReportRatingsStep.vue";
+import ReportContentStep from "./steps/ReportContentStep.vue";
+import ReportReviewStep from "./steps/ReportReviewStep.vue";
+
 export default {
+	components: { ReportBasicStep, ReportRatingsStep, ReportContentStep, ReportReviewStep },
+
 	props: {
-		// When used as a dialog on the profile page, pass the raw report ID directly
 		propReportId: { type: String, default: null },
-		// When true: emit 'saved'/'cancelled' instead of navigating
 		embedded: { type: Boolean, default: false },
 	},
 
@@ -237,31 +189,22 @@ export default {
 				study: null,
 				year: null,
 				semester: null,
-				ratings: {
-					overall: 0,
-					academic: 0,
-					social: 0,
-					housing: 0,
-					costOfLiving: 0,
-				},
+				ratings: { overall: 0, academic: 0, social: 0, housing: 0, costOfLiving: 0 },
 				pros: [""],
 				cons: [""],
 				content: "",
 				tips: "",
 			},
-			ratingKeys: ["overall", "academic", "social", "housing", "costOfLiving"],
 		};
 	},
 
 	computed: {
 		...mapGetters(["user", "userData"]),
 
-		editMode() {
-			return !!this.editReportId;
-		},
+		editMode() { return !!this.editReportId; },
 
 		countryNamesTranslated() {
-			return Object.keys(this.universities || {}).map((country) => ({
+			return Object.keys(this.universities || {}).map(country => ({
 				key: country,
 				name: this.$t(`countries.${country}`),
 			}));
@@ -277,21 +220,11 @@ export default {
 		},
 
 		translatedCountry() {
-			if (!this.report.country) return "—";
-			return this.$t(`countries.${this.report.country}`);
+			return this.report.country ? this.$t(`countries.${this.report.country}`) : "—";
 		},
 
-		filteredPros() {
-			return this.report.pros.filter((p) => p.trim());
-		},
-
-		filteredCons() {
-			return this.report.cons.filter((c) => c.trim());
-		},
-
-		hasRatings() {
-			return this.ratingKeys.some((k) => this.report.ratings[k] > 0);
-		},
+		filteredPros() { return this.report.pros.filter(p => p.trim()); },
+		filteredCons() { return this.report.cons.filter(c => c.trim()); },
 
 		canSubmit() {
 			return !!this.report.title && !!this.report.content && this.report.ratings.overall > 0;
@@ -306,46 +239,37 @@ export default {
 
 		missingStepFieldsString() {
 			const prefix = this.$t("myExchange.missingData") + " ";
+			if (this.editMode) {
+				const missing = [];
+				if (!this.report.title) missing.push(this.$t("reports.title").toLowerCase());
+				if (!this.report.ratings.overall) missing.push(this.$t("reports.overall").toLowerCase());
+				if (!this.report.content) missing.push(this.$t("reports.content").toLowerCase());
+				return missing.length ? prefix + missing.join(", ") : "";
+			}
 			if (this.step === 1 && !this.report.title) return prefix + this.$t("reports.title").toLowerCase();
 			if (this.step === 2 && !this.report.ratings.overall) return prefix + this.$t("reports.overall").toLowerCase();
 			if (this.step === 3 && !this.report.content) return prefix + this.$t("reports.content").toLowerCase();
 			return "";
 		},
 
-		hasUnsavedChanges() {
-			return !!(this.report.title || this.report.content);
-		},
+		hasUnsavedChanges() { return !!(this.report.title || this.report.content); },
 	},
 
 	watch: {
-		"report.country"(newVal, oldVal) {
-			if (oldVal && newVal !== oldVal) {
-				this.report.university = null;
-			}
-		},
 		propReportId: {
 			immediate: true,
-			async handler(id) {
-				if (id) {
-					await this.loadExistingReport(id);
-				}
-			},
+			async handler(id) { if (id) await this.loadExistingReport(id); },
 		},
 	},
 
 	beforeRouteLeave(to, from, next) {
-		if (this.embedded || !this.hasUnsavedChanges) {
-			next();
-			return;
-		}
-		const answer = window.confirm(this.$t("myExchange.leaveWithUnsavedChanges"));
-		answer ? next() : next(false);
+		if (this.embedded || !this.hasUnsavedChanges) { next(); return; }
+		window.confirm(this.$t("myExchange.leaveWithUnsavedChanges")) ? next() : next(false);
 	},
 
 	async mounted() {
 		this.universities = universitiesData.universities || {};
 
-		// Route-based edit mode (standalone /rapporter/:id/rediger page)
 		if (!this.propReportId) {
 			const token = this.$route?.params?.id;
 			if (token) {
@@ -389,16 +313,13 @@ export default {
 
 		async prefillFromExchange() {
 			if (!auth.currentUser) return;
-
 			const exchanges = await getExchangesData();
 			const exchange = exchanges?.[auth.currentUser.uid];
 			if (!exchange) return;
-
 			this.report.university = exchange.university || null;
 			this.report.country = exchange.country || null;
 			this.report.study = exchange.study || null;
 			this.report.year = exchange.year || null;
-
 			if (exchange.numSemesters === 1) {
 				const hasFall = exchange.courses?.["Høst"] && Object.keys(exchange.courses["Høst"]).length > 0;
 				this.report.semester = hasFall ? "Høst" : "Vår";
@@ -408,12 +329,11 @@ export default {
 		async submitReport() {
 			this.submitted = true;
 			if (!this.canSubmit) return;
-
 			this.saving = true;
 			try {
 				const reportData = {
 					authorId: auth.currentUser.uid,
-					authorName: this.report.anonymous ? "" : (this.userData?.displayName || this.user?.displayName || auth.currentUser?.displayName || ""),
+					authorName: this.report.anonymous ? "" : (this.userData?.displayName || auth.currentUser?.displayName || ""),
 					anonymous: this.report.anonymous,
 					exchangeId: auth.currentUser.uid,
 					university: this.report.university,
@@ -432,20 +352,13 @@ export default {
 				if (this.editMode) {
 					await updateReport(this.editReportId, reportData);
 					toast.success(this.$t("notifications.reportUpdated"));
-					if (this.embedded) {
-						this.$emit("saved");
-					} else {
-						this.$router.push({ name: "Account", query: { tab: "reports" } });
-					}
 				} else {
 					await createReport(reportData);
 					toast.success(this.$t("notifications.reportCreated"));
-					if (this.embedded) {
-						this.$emit("saved");
-					} else {
-						this.$router.push({ name: "Account", query: { tab: "reports" } });
-					}
 				}
+
+				if (this.embedded) this.$emit("saved");
+				else this.$router.push({ name: "Account", query: { tab: "reports" } });
 			} catch (error) {
 				console.error("Error saving report:", error);
 				toast.error(this.$t("notifications.reportError"));
@@ -458,36 +371,39 @@ export default {
 </script>
 
 <style scoped>
-.rating-row {
+.form-root {
+	display: flex;
+	flex-direction: column;
+}
+
+.form-stepper :deep(.v-stepper__header) {
+	box-shadow: none;
+}
+
+.form-stepper :deep(.v-stepper-window-item) {
+	padding: 0;
+}
+
+.flat-form {
+	display: flex;
+	flex-direction: column;
+}
+
+.form-nav {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	padding: 6px 0;
+	padding: 8px 12px 10px;
 }
 
-.rating-label {
-	font-weight: 600;
-	font-size: 0.95rem;
-	min-width: 140px;
+.nav-side {
+	flex: 1;
+	display: flex;
+	align-items: center;
 }
 
-.field-title {
-	font-size: 0.85rem;
-	font-weight: 700;
-	color: rgba(0, 0, 0, 0.72);
-	margin-bottom: 6px;
-}
-
-@media (max-width: 600px) {
-	.rating-row {
-		flex-direction: column;
-		align-items: flex-start;
-		gap: 2px;
-	}
-
-	.rating-label {
-		min-width: unset;
-		font-size: 0.88rem;
-	}
+.nav-side--right {
+	justify-content: flex-end;
+	gap: 6px;
 }
 </style>
