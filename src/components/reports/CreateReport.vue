@@ -1,24 +1,24 @@
 <template>
 	<div>
-		<h2>{{ $t("reports.writeReport") }}</h2>
-		<p class="page-summary">{{ $t("reports.info") }}</p>
-		<br />
+		<h2 v-if="!embedded">{{ editMode ? $t("reports.editReport") : $t("reports.writeReport") }}</h2>
+		<p v-if="!embedded" class="page-summary">{{ $t("reports.info") }}</p>
+		<br v-if="!embedded" />
 
 		<v-stepper v-model="step" elevation="1">
 			<v-stepper-header>
-				<v-stepper-item :value="1" :complete="step > 1">
+				<v-stepper-item :value="1" :complete="!!report.title">
 					{{ $t("wizard.basic.title") }}
 				</v-stepper-item>
 
 				<v-divider />
 
-				<v-stepper-item :value="2" :complete="step > 2">
+				<v-stepper-item :value="2" :complete="!!report.ratings.overall">
 					{{ $t("reports.ratings") }}
 				</v-stepper-item>
 
 				<v-divider />
 
-				<v-stepper-item :value="3" :complete="step > 3">
+				<v-stepper-item :value="3" :complete="!!report.content">
 					{{ $t("reports.content") }}
 				</v-stepper-item>
 
@@ -174,20 +174,29 @@
 			<v-spacer />
 
 			<v-col cols="12" sm="4" class="d-flex justify-center">
-				<v-btn class="btn btn-danger" :to="{ name: 'EditExchange' }">
+				<v-btn v-if="embedded" class="btn btn-danger" @click="$emit('cancelled')">
+					{{ $t("actions.cancel") }}
+				</v-btn>
+				<v-btn v-else class="btn btn-danger" :to="{ name: 'Account' }">
 					{{ $t("actions.cancel") }}
 				</v-btn>
 			</v-col>
 
 			<v-spacer />
 
-			<v-col cols="12" sm="4" class="d-flex justify-center">
-				<v-btn v-if="step < 4" class="btn btn-primary" @click="step++">
+			<v-col cols="12" sm="4" class="d-flex align-center justify-center">
+				<v-tooltip v-if="step < 4 && nextDisabled">
+					<template #activator="{ props }">
+						<v-icon v-bind="props" color="warning" class="mr-2">mdi-alert-circle</v-icon>
+					</template>
+					<span>{{ missingStepFieldsString }}</span>
+				</v-tooltip>
+				<v-btn v-if="step < 4" class="btn btn-primary" :disabled="nextDisabled" @click="step++">
 					{{ $t("wizard.basic.next") }}
 				</v-btn>
 				<v-btn v-else class="btn btn-primary" :disabled="!canSubmit" :loading="saving"
 					@click="submitReport">
-					{{ $t("reports.submit") }}
+					{{ editMode ? $t("reports.save") : $t("reports.submit") }}
 				</v-btn>
 			</v-col>
 		</v-row>
@@ -198,16 +207,27 @@
 import { mapGetters } from "vuex";
 import { auth } from "../../js/firebaseConfig";
 import { getExchangesData } from "../../js/exchangesCache";
-import { createReport } from "../../js/reportsCache";
+import { createReport, updateReport, getReportById } from "../../js/reportsCache";
 import universitiesData from "../../data/universities.json";
 import { toast } from "vue3-toastify";
+import { decryptId } from "../../js/urlCipher";
 
 export default {
+	props: {
+		// When used as a dialog on the profile page, pass the raw report ID directly
+		propReportId: { type: String, default: null },
+		// When true: emit 'saved'/'cancelled' instead of navigating
+		embedded: { type: Boolean, default: false },
+	},
+
+	emits: ["saved", "cancelled"],
+
 	data() {
 		return {
 			step: 1,
 			submitted: false,
 			saving: false,
+			editReportId: null,
 			universities: {},
 			report: {
 				title: "",
@@ -235,6 +255,10 @@ export default {
 
 	computed: {
 		...mapGetters(["user", "userData"]),
+
+		editMode() {
+			return !!this.editReportId;
+		},
 
 		countryNamesTranslated() {
 			return Object.keys(this.universities || {}).map((country) => ({
@@ -273,6 +297,21 @@ export default {
 			return !!this.report.title && !!this.report.content && this.report.ratings.overall > 0;
 		},
 
+		nextDisabled() {
+			if (this.step === 1) return !this.report.title;
+			if (this.step === 2) return !this.report.ratings.overall;
+			if (this.step === 3) return !this.report.content;
+			return false;
+		},
+
+		missingStepFieldsString() {
+			const prefix = this.$t("myExchange.missingData") + " ";
+			if (this.step === 1 && !this.report.title) return prefix + this.$t("reports.title").toLowerCase();
+			if (this.step === 2 && !this.report.ratings.overall) return prefix + this.$t("reports.overall").toLowerCase();
+			if (this.step === 3 && !this.report.content) return prefix + this.$t("reports.content").toLowerCase();
+			return "";
+		},
+
 		hasUnsavedChanges() {
 			return !!(this.report.title || this.report.content);
 		},
@@ -284,10 +323,18 @@ export default {
 				this.report.university = null;
 			}
 		},
+		propReportId: {
+			immediate: true,
+			async handler(id) {
+				if (id) {
+					await this.loadExistingReport(id);
+				}
+			},
+		},
 	},
 
 	beforeRouteLeave(to, from, next) {
-		if (!this.hasUnsavedChanges) {
+		if (this.embedded || !this.hasUnsavedChanges) {
 			next();
 			return;
 		}
@@ -297,10 +344,49 @@ export default {
 
 	async mounted() {
 		this.universities = universitiesData.universities || {};
-		await this.prefillFromExchange();
+
+		// Route-based edit mode (standalone /rapporter/:id/rediger page)
+		if (!this.propReportId) {
+			const token = this.$route?.params?.id;
+			if (token) {
+				try {
+					const reportId = await decryptId(token);
+					await this.loadExistingReport(reportId);
+				} catch {
+					this.$router.replace({ name: "Reports" });
+				}
+			} else {
+				await this.prefillFromExchange();
+			}
+		}
 	},
 
 	methods: {
+		async loadExistingReport(reportId) {
+			try {
+				const existing = await getReportById(reportId);
+				if (!existing || existing.authorId !== auth.currentUser?.uid) {
+					if (!this.embedded) this.$router.replace({ name: "Reports" });
+					return;
+				}
+				this.editReportId = reportId;
+				this.report.title = existing.title || "";
+				this.report.anonymous = existing.anonymous || false;
+				this.report.country = existing.country || null;
+				this.report.university = existing.university || null;
+				this.report.study = existing.study || null;
+				this.report.year = existing.year || null;
+				this.report.semester = existing.semester || null;
+				this.report.content = existing.content || "";
+				this.report.tips = existing.tips || "";
+				this.report.ratings = { ...{ overall: 0, academic: 0, social: 0, housing: 0, costOfLiving: 0 }, ...existing.ratings };
+				this.report.pros = existing.pros?.length ? [...existing.pros] : [""];
+				this.report.cons = existing.cons?.length ? [...existing.cons] : [""];
+			} catch {
+				if (!this.embedded) this.$router.replace({ name: "Reports" });
+			}
+		},
+
 		async prefillFromExchange() {
 			if (!auth.currentUser) return;
 
@@ -343,11 +429,25 @@ export default {
 					tips: this.report.tips.trim() || null,
 				};
 
-				await createReport(reportData);
-				toast.success(this.$t("notifications.reportCreated"));
-				this.$router.push({ name: "EditExchange" });
+				if (this.editMode) {
+					await updateReport(this.editReportId, reportData);
+					toast.success(this.$t("notifications.reportUpdated"));
+					if (this.embedded) {
+						this.$emit("saved");
+					} else {
+						this.$router.push({ name: "Account", query: { tab: "reports" } });
+					}
+				} else {
+					await createReport(reportData);
+					toast.success(this.$t("notifications.reportCreated"));
+					if (this.embedded) {
+						this.$emit("saved");
+					} else {
+						this.$router.push({ name: "Account", query: { tab: "reports" } });
+					}
+				}
 			} catch (error) {
-				console.error("Error creating report:", error);
+				console.error("Error saving report:", error);
 				toast.error(this.$t("notifications.reportError"));
 			} finally {
 				this.saving = false;

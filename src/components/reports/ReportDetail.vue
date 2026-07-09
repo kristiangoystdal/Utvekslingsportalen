@@ -112,14 +112,41 @@
 
 			<!-- Footer -->
 			<v-card-actions class="pa-4 pa-sm-5 d-flex flex-wrap ga-3">
-				<v-btn v-if="report.exchangeId" variant="tonal" color="primary" :to="exchangeLink">
+				<v-btn v-if="report.exchangeId && !inline" variant="tonal" color="primary" :to="exchangeLink">
 					<v-icon start>mdi-swap-horizontal</v-icon>
 					{{ $t("reports.viewExchange") }}
 				</v-btn>
+				<template v-if="isAuthor">
+					<v-btn variant="tonal" color="secondary" @click="handleEdit">
+						<v-icon start>mdi-pencil-outline</v-icon>
+						{{ $t("reports.edit") }}
+					</v-btn>
+					<v-btn variant="tonal" color="error" @click="deleteDialog = true">
+						<v-icon start>mdi-trash-can-outline</v-icon>
+						{{ $t("reports.delete") }}
+					</v-btn>
+				</template>
 				<v-spacer />
 				<v-btn variant="text" @click="copyLink">
 					<v-icon start>mdi-share-variant</v-icon>
 					{{ copied ? $t("reports.linkCopied") : $t("reports.share") }}
+				</v-btn>
+			</v-card-actions>
+		</v-card>
+	</v-dialog>
+
+	<!-- Delete confirmation dialog -->
+	<v-dialog v-model="deleteDialog" max-width="420">
+		<v-card rounded="xl">
+			<v-card-title class="pa-5 pb-2">{{ $t("reports.confirmDelete") }}</v-card-title>
+			<v-card-text class="pa-5 pt-1 text-medium-emphasis">
+				{{ $t("reports.confirmDeleteBody") }}
+			</v-card-text>
+			<v-card-actions class="pa-4 pt-0 ga-2">
+				<v-spacer />
+				<v-btn variant="text" @click="deleteDialog = false">{{ $t("reports.cancel") }}</v-btn>
+				<v-btn color="error" variant="tonal" :loading="deleting" @click="confirmDelete">
+					{{ $t("reports.delete") }}
 				</v-btn>
 			</v-card-actions>
 		</v-card>
@@ -129,9 +156,12 @@
 <script>
 import MarkdownIt from "markdown-it";
 import DOMPurify from "dompurify";
+import { mapGetters } from "vuex";
 import countriesInformation from "../../data/countriesInformation.json";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
 import { encryptId } from "../../js/urlCipher";
+import { deleteReport } from "../../js/reportsCache";
+import { toast } from "vue3-toastify";
 
 const md = new MarkdownIt({
 	html: false,
@@ -145,22 +175,38 @@ export default {
 
 	props: {
 		report: { type: Object, required: true },
+		// When true: edit button emits 'edit' instead of navigating to edit route
+		inline: { type: Boolean, default: false },
 	},
 
-	emits: ["close"],
+	emits: ["close", "edit"],
 
 	data() {
 		return {
 			copied: false,
+			deleteDialog: false,
+			deleting: false,
 			countriesInfo: countriesInformation,
 			ratingKeys: ["overall", "academic", "social", "housing", "costOfLiving"],
 			exchangeToken: null,
+			editToken: null,
 		};
 	},
 
 	computed: {
+		...mapGetters(["user"]),
+
 		locale() {
 			return this.$i18n.locale;
+		},
+
+		isAuthor() {
+			return this.user && this.report.authorId && this.user.uid === this.report.authorId;
+		},
+
+		editLink() {
+			if (!this.editToken) return null;
+			return { name: "EditReport", params: { id: this.editToken } };
 		},
 
 		ratingKeysLeft() {
@@ -187,11 +233,15 @@ export default {
 		"report.exchangeId": {
 			immediate: true,
 			async handler(exchangeId) {
-				if (!exchangeId) {
-					this.exchangeToken = null;
-					return;
-				}
+				if (!exchangeId) { this.exchangeToken = null; return; }
 				this.exchangeToken = await encryptId(exchangeId, "exchange");
+			},
+		},
+		"report.id": {
+			immediate: true,
+			async handler(reportId) {
+				if (!reportId) { this.editToken = null; return; }
+				this.editToken = await encryptId(reportId, "report");
 			},
 		},
 	},
@@ -199,6 +249,29 @@ export default {
 	methods: {
 		close() {
 			this.$emit("close");
+		},
+
+		handleEdit() {
+			if (this.inline) {
+				this.$emit("edit", this.report);
+			} else if (this.editLink) {
+				this.$router.push(this.editLink);
+			}
+		},
+
+		async confirmDelete() {
+			this.deleting = true;
+			try {
+				await deleteReport(this.report.id);
+				toast.success(this.$t("notifications.reportDeleted"));
+				this.deleteDialog = false;
+				this.$emit("close");
+			} catch (error) {
+				console.error("Error deleting report:", error);
+				toast.error(this.$t("notifications.reportError"));
+			} finally {
+				this.deleting = false;
+			}
 		},
 
 		formatDate(timestamp) {
