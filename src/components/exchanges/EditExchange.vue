@@ -31,15 +31,9 @@
 			<!-- ── Flat edit form ── -->
 			<div v-if="(editExchange || embedded) && dataLoaded" class="flat-form">
 				<div class="step-body">
-					<BasicInfoStep
-						:userExchange="userExchange"
-						:countryNamesTranslated="countryNamesTranslated"
-						:universityNames="universityNames"
-						:secondUniversityNames="secondUniversityNames"
-						:semesters="semesters"
-						@update="userExchange = $event"
-						@updateSemesters="semesters = $event"
-					/>
+					<BasicInfoStep :userExchange="userExchange" :countryNamesTranslated="countryNamesTranslated"
+						:universityNames="universityNames" :secondUniversityNames="secondUniversityNames" :semesters="semesters"
+						@update="userExchange = $event" @updateSemesters="semesters = $event" />
 				</div>
 				<div class="flat-courses-header"><span>{{ $t('wizard.courses.title') }}</span></div>
 				<div class="step-body">
@@ -51,11 +45,11 @@
 			<template v-if="(editExchange || embedded) && dataLoaded">
 				<v-divider />
 				<div class="form-nav">
-					<div class="nav-side"></div>
-
-					<v-btn variant="text" color="error" size="small" @click="embedded ? $emit('cancelled') : toggleEditExchange()">
-						{{ $t("actions.cancel") }}
-					</v-btn>
+					<div class="nav-side">
+						<v-btn variant="tonal" color="error" @click="embedded ? $emit('cancelled') : toggleEditExchange()">
+							{{ $t("actions.cancel") }}
+						</v-btn>
+					</div>
 
 					<div class="nav-side nav-side--right">
 						<v-tooltip v-if="!canSaveExchange" location="top">
@@ -64,14 +58,9 @@
 							</template>
 							{{ missingBasicDataString || $t("myExchange.coursesMissingData") }}
 						</v-tooltip>
-						<v-btn
-							variant="tonal"
-							color="primary"
-							size="small"
-							:disabled="!canSaveExchange"
-							:loading="saving"
-							@click="updateExchange"
-						>{{ $t("wizard.review.submit") }}</v-btn>
+						<v-btn variant="tonal" color="primary" :disabled="!canSaveExchange" :loading="saving"
+							@click="updateExchange">{{
+								$t("wizard.review.submit") }}</v-btn>
 					</div>
 				</div>
 			</template>
@@ -1066,6 +1055,7 @@ export default {
 	color: rgba(0, 0, 0, 0.38);
 	margin: 4px 16px 0;
 }
+
 .flat-courses-header::before,
 .flat-courses-header::after {
 	content: '';

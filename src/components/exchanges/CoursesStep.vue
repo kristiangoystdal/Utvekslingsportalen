@@ -8,7 +8,7 @@
 						: $t('myExchange.courseInformation.courseSpringTitle') }}
 					<span class="semester-count">({{ courseCount(semester) }} {{ $t('wizard.courses.courses') }})</span>
 				</div>
-				<v-btn variant="tonal" color="primary" size="small" prepend-icon="mdi-plus" @click="addCourse(semester)">
+				<v-btn variant="tonal" color="primary" prepend-icon="mdi-plus" @click="addCourse(semester)">
 					{{ $t('wizard.courses.addCourse') }}
 				</v-btn>
 			</div>
@@ -19,11 +19,7 @@
 			</div>
 
 			<v-expansion-panels v-else variant="accordion" class="course-panels">
-				<v-expansion-panel
-					v-for="(course, index) in coursesForSemester(semester)"
-					:key="index"
-					rounded="lg"
-				>
+				<v-expansion-panel v-for="(course, index) in coursesForSemester(semester)" :key="index" rounded="lg">
 					<v-expansion-panel-title>
 						<div class="course-panel-title">
 							<div class="course-name">
@@ -37,23 +33,21 @@
 									</template>
 									{{ $t('wizard.courses.missingFields') }}: {{ missingFields(course).join(', ') }}
 								</v-tooltip>
-								<v-btn
-									v-if="semesters.length === 2"
-									icon
-									size="x-small"
-									variant="text"
-									@click="moveToOtherSemester(semester, index)"
-								>
+								<v-btn v-if="semesters.length === 2" icon size="x-small" variant="text"
+									@click="moveToOtherSemester(semester, index)">
 									<v-icon size="16">mdi-swap-horizontal</v-icon>
 								</v-btn>
-								<v-btn icon size="x-small" variant="text" color="error" @click="toggleDialog(semester, index)">
+								<v-btn icon size="x-small" variant="text" color="error"
+									style="display: flex; align-items: center; justify-content: center;"
+									@click="toggleDialog(semester, index)">
 									<v-icon size="16">mdi-trash-can-outline</v-icon>
 								</v-btn>
 							</div>
 						</div>
 					</v-expansion-panel-title>
 					<v-expansion-panel-text>
-						<CourseForm :course="course" :unsavedChanges="true" @submit-course="updateCourse(semester, index, $event)" />
+						<CourseForm :course="course" :unsavedChanges="true"
+							@submit-course="updateCourse(semester, index, $event)" />
 					</v-expansion-panel-text>
 				</v-expansion-panel>
 			</v-expansion-panels>
@@ -62,18 +56,21 @@
 		<!-- Delete confirmation -->
 		<v-dialog v-model="deleteCourseDialog" max-width="400">
 			<v-card rounded="xl">
-				<v-card-title class="d-flex align-center justify-space-between pa-4 pb-2">
-					<span class="text-h6 font-weight-bold">{{ $t('actions.confirmDelete') }}</span>
-					<v-btn icon variant="text" size="small" @click="toggleDialog()">
-						<v-icon>mdi-close</v-icon>
-					</v-btn>
+				<v-card-title class="pa-4 pb-2">
+					<div style="display: flex; align-items: center;">
+						<span class="text-h6 font-weight-bold" style="flex: 1;">{{ $t('actions.confirmDelete') }}</span>
+						<v-btn icon variant="text" size="small" style="display: flex; align-items: center; justify-content: center;"
+							@click="toggleDialog()">
+							<v-icon>mdi-close</v-icon>
+						</v-btn>
+					</div>
 				</v-card-title>
 				<v-card-text class="pa-4 pt-1 text-medium-emphasis">
 					{{ $t('actions.confirmCourseDelete') }}
 				</v-card-text>
 				<v-card-actions class="pa-4 pt-0 ga-2">
 					<v-spacer />
-					<v-btn variant="text" @click="toggleDialog()">{{ $t('actions.no') }}</v-btn>
+					<v-btn color="success" variant="tonal" @click="toggleDialog()">{{ $t('actions.no') }}</v-btn>
 					<v-btn color="error" variant="tonal" @click="removeCourse(currentSemester, currentCourse)">
 						{{ $t('actions.yes') }}
 					</v-btn>
@@ -171,11 +168,12 @@ export default {
 .semester-header {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
+	gap: 8px;
 	margin-bottom: 8px;
 }
 
 .semester-title {
+	flex: 1;
 	font-size: 14px;
 	font-weight: 700;
 	color: var(--first-color, #112d4e);
@@ -194,6 +192,11 @@ export default {
 	flex-direction: column;
 }
 
+.course-panels :deep(.v-expansion-panel-title) {
+	padding: 4px 16px;
+	min-height: unset;
+}
+
 .course-panel-title {
 	display: flex;
 	align-items: center;
@@ -204,8 +207,9 @@ export default {
 }
 
 .course-name {
-	font-size: 14px;
+	font-size: 16px;
 	font-weight: 500;
+	line-height: 1.5;
 	min-width: 0;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -224,6 +228,12 @@ export default {
 	align-items: center;
 	gap: 2px;
 	flex-shrink: 0;
+}
+
+.course-actions :deep(.v-btn__content) {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .empty-courses {

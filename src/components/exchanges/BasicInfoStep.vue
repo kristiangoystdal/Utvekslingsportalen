@@ -1,154 +1,70 @@
 <template>
 	<div v-if="isInitialized">
 		<div class="section-divider"><span>{{ $t('wizard.basic.homeInfo') }}</span></div>
-		<v-row dense>
+		<br />
+		<v-row>
 			<v-col cols="12" md="6">
-				<v-autocomplete
-					:items="homeUniversities"
-					v-model="localExchange.homeUniversity"
-					:label="$t('database.homeUniversity')"
-					variant="outlined"
-					density="compact"
-					clearable
-					:hint="$t('hints.homeUniversity')"
-					persistent-hint
-					autocomplete="off"
-				/>
+				<v-autocomplete :items="homeUniversities" v-model="localExchange.homeUniversity"
+					:label="$t('database.homeUniversity')" variant="outlined" density="compact" clearable
+					:hint="$t('hints.homeUniversity')" persistent-hint autocomplete="off" />
 			</v-col>
 			<v-col cols="12" md="6">
-				<v-autocomplete
-					:items="Object.keys(studies?.studies || {})"
-					v-model="localExchange.study"
-					:label="$t('database.study')"
-					variant="outlined"
-					density="compact"
-					clearable
+				<v-autocomplete :items="Object.keys(studies?.studies || {})" v-model="localExchange.study"
+					:label="$t('database.study')" variant="outlined" density="compact" clearable
 					:disabled="!localExchange.homeUniversity"
 					:hint="!localExchange.homeUniversity ? $t('hints.selectHomeUniversityFirst') : $t('hints.study')"
-					persistent-hint
-					autocomplete="off"
-				/>
+					persistent-hint autocomplete="off" />
 			</v-col>
 			<v-col cols="12" md="6">
-				<v-autocomplete
-					v-model="localExchange.studyYear"
-					:items="['1.', '2.', '3.', '4.', '5.']"
-					:label="$t('database.studyYear')"
-					variant="outlined"
-					density="compact"
-					clearable
-					:hint="$t('hints.studyYear')"
-					persistent-hint
-					autocomplete="off"
-				/>
+				<v-autocomplete v-model="localExchange.studyYear" :items="['1.', '2.', '3.', '4.', '5.']"
+					:label="$t('database.studyYear')" variant="outlined" density="compact" clearable :hint="$t('hints.studyYear')"
+					persistent-hint autocomplete="off" />
 			</v-col>
 			<v-col cols="12" md="6">
-				<v-text-field
-					v-model="localExchange.year"
-					type="number"
-					:label="$t('database.year')"
-					variant="outlined"
-					density="compact"
-					clearable
-					:hint="$t('hints.year')"
-					persistent-hint
-					autocomplete="off"
-				/>
+				<v-text-field v-model="localExchange.year" type="number" :label="$t('database.year')" variant="outlined"
+					density="compact" clearable :hint="$t('hints.year')" persistent-hint autocomplete="off" />
 			</v-col>
 		</v-row>
 
 		<div class="section-divider"><span>{{ $t('wizard.basic.destination') }}</span></div>
-		<v-row dense>
+		<br />
+		<v-row>
 			<v-col cols="12" md="6">
-				<v-autocomplete
-					v-model="localExchange.country"
-					:items="countryNamesTranslated"
-					item-title="name"
-					item-value="key"
-					:label="$t('database.country')"
-					variant="outlined"
-					density="compact"
-					clearable
-					:hint="$t('hints.country')"
-					persistent-hint
-					autocomplete="off"
-				/>
+				<v-autocomplete v-model="localExchange.country" :items="countryNamesTranslated" item-title="name"
+					item-value="key" :label="$t('database.country')" variant="outlined" density="compact" clearable
+					:hint="$t('hints.country')" persistent-hint autocomplete="off" />
 			</v-col>
 			<v-col cols="12" md="6">
-				<v-autocomplete
-					v-model="localExchange.university"
-					:items="universityNames"
-					:label="$t('database.university')"
+				<v-autocomplete v-model="localExchange.university" :items="universityNames" :label="$t('database.university')"
 					:disabled="!localExchange.country"
-					:hint="!localExchange.country ? $t('hints.selectCountryFirst') : $t('hints.university')"
-					variant="outlined"
-					density="compact"
-					persistent-hint
-					autocomplete="off"
-				/>
+					:hint="!localExchange.country ? $t('hints.selectCountryFirst') : $t('hints.university')" variant="outlined"
+					density="compact" persistent-hint autocomplete="off" />
 			</v-col>
 			<v-col cols="12" md="6">
-				<v-autocomplete
-					v-model="localExchange.numSemesters"
-					:items="[1, 2]"
-					:label="$t('database.numSemesters')"
-					variant="outlined"
-					density="compact"
-					clearable
-					:hint="$t('hints.numSemesters')"
-					persistent-hint
-					autocomplete="off"
-				/>
+				<v-autocomplete v-model="localExchange.numSemesters" :items="[1, 2]" :label="$t('database.numSemesters')"
+					variant="outlined" density="compact" clearable :hint="$t('hints.numSemesters')" persistent-hint
+					autocomplete="off" />
 			</v-col>
 			<v-col v-if="localExchange.numSemesters === 1" cols="12" md="6">
-				<v-autocomplete
-					v-model="localSemester"
-					:items="['Høst', 'Vår', 'Sommer']"
-					:label="$t('database.semester')"
-					variant="outlined"
-					density="compact"
-					clearable
-					:hint="$t('hints.semester')"
-					persistent-hint
-					autocomplete="off"
-				/>
+				<v-autocomplete v-model="localSemester" :items="['Høst', 'Vår', 'Sommer']" :label="$t('database.semester')"
+					variant="outlined" density="compact" clearable :hint="$t('hints.semester')" persistent-hint
+					autocomplete="off" />
 			</v-col>
 		</v-row>
 
 		<template v-if="localExchange.numSemesters === 2">
-			<v-checkbox
-				v-model="localExchange.sameUniversity"
-				:label="$t('myExchange.semestersLocation')"
-				hide-details
-				class="mt-2 mb-2"
-			/>
+			<v-checkbox v-model="localExchange.sameUniversity" :label="$t('myExchange.semestersLocation')" hide-details
+				class="mt-2 mb-2" />
 			<v-row v-if="!localExchange.sameUniversity" dense>
 				<v-col cols="12" md="6">
-					<v-autocomplete
-						v-model="localExchange.secondCountry"
-						:items="countryNamesTranslated"
-						item-title="name"
-						item-value="key"
-						:label="$t('database.country') + ' 2'"
-						variant="outlined"
-						density="compact"
-						clearable
-						:hint="$t('hints.secondCountry')"
-						persistent-hint
-						autocomplete="off"
-					/>
+					<v-autocomplete v-model="localExchange.secondCountry" :items="countryNamesTranslated" item-title="name"
+						item-value="key" :label="$t('database.country') + ' 2'" variant="outlined" density="compact" clearable
+						:hint="$t('hints.secondCountry')" persistent-hint autocomplete="off" />
 				</v-col>
 				<v-col cols="12" md="6">
-					<v-autocomplete
-						v-model="localExchange.secondUniversity"
-						:items="secondUniversityNames"
-						:label="$t('database.university') + ' 2'"
-						variant="outlined"
-						density="compact"
-						:hint="$t('hints.secondUniversity')"
-						persistent-hint
-						autocomplete="off"
-					/>
+					<v-autocomplete v-model="localExchange.secondUniversity" :items="secondUniversityNames"
+						:label="$t('database.university') + ' 2'" variant="outlined" density="compact"
+						:hint="$t('hints.secondUniversity')" persistent-hint autocomplete="off" />
 				</v-col>
 			</v-row>
 		</template>
@@ -286,6 +202,7 @@ export default {
 	color: rgba(0, 0, 0, 0.38);
 	margin: 10px 0 8px;
 }
+
 .section-divider::before,
 .section-divider::after {
 	content: '';
