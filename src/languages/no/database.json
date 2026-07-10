@@ -1,6 +1,7 @@
 {
   "comments": "Kommentar",
   "country": "Land",
+  "course": "Fag",
   "courseCode": "Fagkode",
   "courseName": "Fagnavn",
   "courseType": "Fag type",
