@@ -106,6 +106,7 @@ import universitiesData from "../../data/universities.json";
 import { toast } from "vue3-toastify";
 
 import { refreshExchangesData, getExchangesData } from "../../js/exchangesCache";
+import { syncHomeInfoToUserReports } from "../../js/reportsCache";
 
 import BasicInfoStep from "./BasicInfoStep.vue";
 import CoursesStep from "./CoursesStep.vue";
@@ -189,6 +190,7 @@ export default {
 			},
 			userExchange: {
 				id: null,
+				homeUniversity: null,
 				university: null,
 				country: null,
 				studyYear: null,
@@ -825,6 +827,17 @@ export default {
 					this.userExchange = JSON.parse(JSON.stringify(cleanPayload));
 
 					toast.success(this.$t("notifications.exchangeUpdated"));
+					try {
+						await syncHomeInfoToUserReports(auth.currentUser.uid, {
+							homeUniversity: this.userExchange.homeUniversity ?? null,
+							study: this.userExchange.study ?? null,
+							studyYear: this.userExchange.studyYear ?? null,
+							year: this.userExchange.year ?? null,
+							numSemesters: this.userExchange.numSemesters ?? null,
+						});
+					} catch (syncError) {
+						console.error("Failed to sync home info to reports:", syncError);
+					}
 					if (this.embedded) {
 						this.$emit("saved");
 					} else {

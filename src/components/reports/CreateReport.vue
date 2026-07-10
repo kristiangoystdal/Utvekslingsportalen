@@ -23,7 +23,6 @@
 						:report="report"
 						:countryNamesTranslated="countryNamesTranslated"
 						:universityNames="universityNames"
-						:studyNames="studyNames"
 						:submitted="submitted"
 						@update="Object.assign(report, $event)"
 					/>
@@ -66,7 +65,6 @@
 				:report="report"
 				:countryNamesTranslated="countryNamesTranslated"
 				:universityNames="universityNames"
-				:studyNames="studyNames"
 				:submitted="submitted"
 				@update="Object.assign(report, $event)"
 			/>
@@ -91,14 +89,13 @@
 		<v-divider />
 		<div class="form-nav">
 			<div class="nav-side">
-				<v-btn v-if="!editMode && step > 1" variant="text" prepend-icon="mdi-chevron-left" size="small" @click="step--">
+				<v-btn v-if="!editMode && step > 1" variant="tonal" prepend-icon="mdi-chevron-left" @click="step--">
 					{{ $t('wizard.courses.previous') }}
 				</v-btn>
+				<v-btn variant="tonal" color="error" @click="embedded ? $emit('cancelled') : $router.push({ name: 'Account' })">
+					{{ $t('actions.cancel') }}
+				</v-btn>
 			</div>
-
-			<v-btn variant="text" color="error" size="small" @click="embedded ? $emit('cancelled') : $router.push({ name: 'Account' })">
-				{{ $t('actions.cancel') }}
-			</v-btn>
 
 			<div class="nav-side nav-side--right">
 				<!-- Create mode: step navigation -->
@@ -113,7 +110,6 @@
 						v-if="step < 4"
 						variant="tonal"
 						color="primary"
-						size="small"
 						append-icon="mdi-chevron-right"
 						:disabled="nextDisabled"
 						@click="step++"
@@ -122,7 +118,6 @@
 						v-else
 						variant="tonal"
 						color="primary"
-						size="small"
 						:disabled="!canSubmit"
 						:loading="saving"
 						@click="submitReport"
@@ -139,7 +134,6 @@
 					<v-btn
 						variant="tonal"
 						color="primary"
-						size="small"
 						:disabled="!canSubmit"
 						:loading="saving"
 						@click="submitReport"
@@ -152,7 +146,8 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { auth } from "../../js/firebaseConfig";
+import { db, auth } from "../../js/firebaseConfig";
+import { ref as dbRef, update } from "firebase/database";
 import { getExchangesData } from "../../js/exchangesCache";
 import { createReport, updateReport, getReportById } from "../../js/reportsCache";
 import universitiesData from "../../data/universities.json";
@@ -184,9 +179,12 @@ export default {
 			report: {
 				title: "",
 				anonymous: false,
+				homeUniversity: null,
+				study: null,
+				studyYear: null,
 				university: null,
 				country: null,
-				study: null,
+				numSemesters: null,
 				year: null,
 				semester: null,
 				ratings: { overall: 0, academic: 0, social: 0, housing: 0, costOfLiving: 0 },
@@ -213,10 +211,6 @@ export default {
 		universityNames() {
 			if (!this.report.country) return [];
 			return Object.keys(this.universities?.[this.report.country] || {});
-		},
-
-		studyNames() {
-			return Object.keys(universitiesData.studies?.studies || {});
 		},
 
 		translatedCountry() {
@@ -298,14 +292,25 @@ export default {
 				this.report.anonymous = existing.anonymous || false;
 				this.report.country = existing.country || null;
 				this.report.university = existing.university || null;
-				this.report.study = existing.study || null;
-				this.report.year = existing.year || null;
 				this.report.semester = existing.semester || null;
 				this.report.content = existing.content || "";
 				this.report.tips = existing.tips || "";
 				this.report.ratings = { ...{ overall: 0, academic: 0, social: 0, housing: 0, costOfLiving: 0 }, ...existing.ratings };
 				this.report.pros = existing.pros?.length ? [...existing.pros] : [""];
 				this.report.cons = existing.cons?.length ? [...existing.cons] : [""];
+
+				// For shared fields, use the report value if set, otherwise fall back to exchange
+				const exchanges = await getExchangesData();
+				const exchange = exchanges?.[auth.currentUser?.uid] || {};
+				this.report.homeUniversity = existing.homeUniversity || exchange.homeUniversity || null;
+				this.report.study = existing.study || exchange.study || null;
+				this.report.studyYear = existing.studyYear || exchange.studyYear || null;
+				this.report.numSemesters = existing.numSemesters ?? exchange.numSemesters ?? null;
+				this.report.year = existing.year || exchange.year || null;
+				if (!this.report.semester && exchange.numSemesters === 1) {
+					const hasFall = exchange.courses?.["Høst"] && Object.keys(exchange.courses["Høst"]).length > 0;
+					this.report.semester = hasFall ? "Høst" : "Vår";
+				}
 			} catch {
 				if (!this.embedded) this.$router.replace({ name: "Reports" });
 			}
@@ -316,9 +321,12 @@ export default {
 			const exchanges = await getExchangesData();
 			const exchange = exchanges?.[auth.currentUser.uid];
 			if (!exchange) return;
+			this.report.homeUniversity = exchange.homeUniversity || null;
+			this.report.study = exchange.study || null;
+			this.report.studyYear = exchange.studyYear || null;
 			this.report.university = exchange.university || null;
 			this.report.country = exchange.country || null;
-			this.report.study = exchange.study || null;
+			this.report.numSemesters = exchange.numSemesters || null;
 			this.report.year = exchange.year || null;
 			if (exchange.numSemesters === 1) {
 				const hasFall = exchange.courses?.["Høst"] && Object.keys(exchange.courses["Høst"]).length > 0;
@@ -336,9 +344,12 @@ export default {
 					authorName: this.report.anonymous ? "" : (this.userData?.displayName || auth.currentUser?.displayName || ""),
 					anonymous: this.report.anonymous,
 					exchangeId: auth.currentUser.uid,
+					homeUniversity: this.report.homeUniversity,
+					study: this.report.study,
+					studyYear: this.report.studyYear,
 					university: this.report.university,
 					country: this.report.country,
-					study: this.report.study,
+					numSemesters: this.report.numSemesters,
 					year: this.report.year ? Number(this.report.year) : null,
 					semester: this.report.semester,
 					title: this.report.title.trim(),
@@ -356,6 +367,14 @@ export default {
 					await createReport(reportData);
 					toast.success(this.$t("notifications.reportCreated"));
 				}
+
+				await update(dbRef(db, `exchanges/${auth.currentUser.uid}`), {
+					homeUniversity: this.report.homeUniversity ?? null,
+					study: this.report.study ?? null,
+					studyYear: this.report.studyYear ?? null,
+					year: this.report.year ?? null,
+					numSemesters: this.report.numSemesters ?? null,
+				}).catch(() => {});
 
 				if (this.embedded) this.$emit("saved");
 				else this.$router.push({ name: "Account", query: { tab: "reports" } });

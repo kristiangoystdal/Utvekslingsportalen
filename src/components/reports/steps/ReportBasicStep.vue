@@ -1,86 +1,51 @@
 <template>
 	<div class="step-body">
-		<v-text-field
-			v-model="localReport.title"
-			:label="$t('reports.title')"
-			:error-messages="submitted && !localReport.title ? $t('reports.titleRequired') : ''"
-			variant="outlined"
-			density="compact"
-		/>
-		<v-checkbox
-			v-model="localReport.anonymous"
-			:label="$t('reports.anonymous')"
-			hide-details
-			density="compact"
-			class="mb-2"
+		<v-text-field v-model="localReport.title" :label="$t('reports.title')"
+			:error-messages="submitted && !localReport.title ? $t('reports.titleRequired') : ''" variant="outlined"
+			density="compact" />
+		<v-checkbox v-model="localReport.anonymous" :label="$t('reports.anonymous')" hide-details density="compact"
+			class="mb-2" />
+
+		<div class="section-divider"><span>{{ $t('wizard.basic.homeInfo') }}</span></div>
+		<br />
+		<HomeInfoSection
+			:homeUniversity="localReport.homeUniversity"
+			:study="localReport.study"
+			:studyYear="localReport.studyYear"
+			:year="localReport.year"
+			@update:homeUniversity="localReport.homeUniversity = $event"
+			@update:study="localReport.study = $event"
+			@update:studyYear="localReport.studyYear = $event"
+			@update:year="localReport.year = $event"
 		/>
 
-		<div class="section-divider"><span>{{ $t('reports.destination') }}</span></div>
-
-		<v-row dense>
-			<v-col cols="12" sm="6">
-				<v-autocomplete
-					v-model="localReport.country"
-					:items="countryNamesTranslated"
-					item-title="name"
-					item-value="key"
-					:label="$t('database.country')"
-					variant="outlined"
-					density="compact"
-					clearable
-				/>
-			</v-col>
-			<v-col cols="12" sm="6">
-				<v-autocomplete
-					v-model="localReport.university"
-					:items="universityNames"
-					:label="$t('database.university')"
-					:disabled="!localReport.country"
-					variant="outlined"
-					density="compact"
-					clearable
-				/>
-			</v-col>
-			<v-col cols="12" sm="4">
-				<v-autocomplete
-					v-model="localReport.study"
-					:items="studyNames"
-					:label="$t('database.study')"
-					variant="outlined"
-					density="compact"
-					clearable
-				/>
-			</v-col>
-			<v-col cols="12" sm="4">
-				<v-text-field
-					v-model="localReport.year"
-					type="number"
-					:label="$t('database.year')"
-					variant="outlined"
-					density="compact"
-				/>
-			</v-col>
-			<v-col cols="12" sm="4">
-				<v-select
-					v-model="localReport.semester"
-					:items="['Høst', 'Vår']"
-					:label="$t('database.semester')"
-					variant="outlined"
-					density="compact"
-					clearable
-				/>
-			</v-col>
-		</v-row>
+		<div class="section-divider"><span>{{ $t('wizard.basic.destination') }}</span></div>
+		<br />
+		<DestinationSection
+			:country="localReport.country"
+			:university="localReport.university"
+			:numSemesters="localReport.numSemesters"
+			:semester="localReport.semester"
+			:countryItems="countryNamesTranslated"
+			:universityItems="universityNames"
+			@update:country="localReport.country = $event"
+			@update:university="localReport.university = $event"
+			@update:numSemesters="localReport.numSemesters = $event"
+			@update:semester="localReport.semester = $event"
+		/>
 	</div>
 </template>
 
 <script>
+import HomeInfoSection from "../../common/HomeInfoSection.vue";
+import DestinationSection from "../../common/DestinationSection.vue";
+
 export default {
+	components: { HomeInfoSection, DestinationSection },
 	props: {
 		report: { type: Object, required: true },
 		countryNamesTranslated: { type: Array, default: () => [] },
 		universityNames: { type: Array, default: () => [] },
-		studyNames: { type: Array, default: () => [] },
 		submitted: { type: Boolean, default: false },
 	},
 	emits: ["update"],
@@ -101,7 +66,9 @@ export default {
 </script>
 
 <style scoped>
-.step-body { padding: 12px 16px 8px; }
+.step-body {
+	padding: 12px 16px 8px;
+}
 
 .section-divider {
 	display: flex;
@@ -114,6 +81,7 @@ export default {
 	color: rgba(0, 0, 0, 0.38);
 	margin: 10px 0 8px;
 }
+
 .section-divider::before,
 .section-divider::after {
 	content: '';

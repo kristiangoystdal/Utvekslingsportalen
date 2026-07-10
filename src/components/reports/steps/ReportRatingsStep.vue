@@ -3,28 +3,33 @@
 		<div class="section-divider"><span>{{ $t('reports.ratings') }}</span></div>
 		<div v-for="key in ratingKeys" :key="key" class="rating-row">
 			<span class="rating-label">{{ $t(`reports.${key}`) }}</span>
-			<v-rating v-model="localRatings[key]" color="amber" hover length="5" size="24" @update:model-value="emitRatings" />
+			<v-rating v-model="localRatings[key]" color="amber" hover length="5" size="24"
+				@update:model-value="emitRatings" />
 		</div>
 
 		<div class="section-divider mt-3"><span>{{ $t('reports.pros') }}</span></div>
+		<br />
 		<div v-for="(_, i) in localPros" :key="'pro-' + i" class="list-row">
-			<v-text-field v-model="localPros[i]" density="compact" variant="outlined" hide-details @update:model-value="$emit('update:pros', [...localPros])" />
+			<v-text-field v-model="localPros[i]" density="compact" variant="outlined" hide-details
+				@update:model-value="$emit('update:pros', [...localPros])" />
 			<v-btn icon size="small" variant="text" color="error" @click="removePro(i)">
 				<v-icon size="16">mdi-close</v-icon>
 			</v-btn>
 		</div>
-		<v-btn variant="text" size="small" color="primary" prepend-icon="mdi-plus" @click="addPro">
+		<v-btn variant="tonal" color="primary" prepend-icon="mdi-plus" @click="addPro">
 			{{ $t('reports.addPro') }}
 		</v-btn>
 
 		<div class="section-divider mt-3"><span>{{ $t('reports.cons') }}</span></div>
+		<br />
 		<div v-for="(_, i) in localCons" :key="'con-' + i" class="list-row">
-			<v-text-field v-model="localCons[i]" density="compact" variant="outlined" hide-details @update:model-value="$emit('update:cons', [...localCons])" />
+			<v-text-field v-model="localCons[i]" density="compact" variant="outlined" hide-details
+				@update:model-value="$emit('update:cons', [...localCons])" />
 			<v-btn icon size="small" variant="text" color="error" @click="removeCon(i)">
 				<v-icon size="16">mdi-close</v-icon>
 			</v-btn>
 		</div>
-		<v-btn variant="text" size="small" color="primary" prepend-icon="mdi-plus" @click="addCon">
+		<v-btn variant="tonal" color="primary" prepend-icon="mdi-plus" @click="addCon">
 			{{ $t('reports.addCon') }}
 		</v-btn>
 	</div>
@@ -62,7 +67,9 @@ export default {
 </script>
 
 <style scoped>
-.step-body { padding: 12px 16px 8px; }
+.step-body {
+	padding: 12px 16px 8px;
+}
 
 .section-divider {
 	display: flex;
@@ -75,6 +82,7 @@ export default {
 	color: rgba(0, 0, 0, 0.38);
 	margin: 10px 0 8px;
 }
+
 .section-divider::before,
 .section-divider::after {
 	content: '';

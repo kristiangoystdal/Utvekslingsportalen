@@ -1,4 +1,4 @@
-import { getDatabase, ref as dbRef, child, get, push, set, remove } from "firebase/database";
+import { getDatabase, ref as dbRef, child, get, push, set, update, remove } from "firebase/database";
 
 const CACHE_KEY = "reports_cache_v1";
 const CACHE_TIME_KEY = "reports_cache_time_v1";
@@ -121,6 +121,28 @@ export async function getReportsByExchangeId(exchangeId) {
   return Object.entries(reports)
     .filter(([, r]) => r.exchangeId === exchangeId)
     .map(([id, r]) => ({ id, ...r }));
+}
+
+export async function syncHomeInfoToUserReports(userId, { homeUniversity, study, studyYear, year, numSemesters }) {
+  const db = getDatabase();
+  const snapshot = await get(child(dbRef(db), "test_reports"));
+  if (!snapshot.exists()) return;
+
+  const updates = {};
+  for (const [id, report] of Object.entries(snapshot.val())) {
+    if (report.authorId === userId) {
+      updates[`test_reports/${id}/homeUniversity`] = homeUniversity ?? null;
+      updates[`test_reports/${id}/study`] = study ?? null;
+      updates[`test_reports/${id}/studyYear`] = studyYear ?? null;
+      updates[`test_reports/${id}/year`] = year ?? null;
+      updates[`test_reports/${id}/numSemesters`] = numSemesters ?? null;
+    }
+  }
+
+  if (Object.keys(updates).length > 0) {
+    await update(dbRef(db), updates);
+    clearCachedReports();
+  }
 }
 
 export async function deleteReport(reportId) {
