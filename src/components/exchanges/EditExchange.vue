@@ -816,6 +816,15 @@ export default {
 				try {
 					this.ensureSemesterCourses(this.semesters);
 
+					// Capture sync values before any reassignment
+					const homeInfoSnapshot = {
+						homeUniversity: this.userExchange.homeUniversity ?? null,
+						study: this.userExchange.study ?? null,
+						studyYear: this.userExchange.studyYear ?? null,
+						year: this.userExchange.year ?? null,
+						numSemesters: this.userExchange.numSemesters ?? null,
+					};
+
 					const cleanPayload = this.buildCleanExchangeForUpload();
 
 					await set(
@@ -828,13 +837,7 @@ export default {
 
 					toast.success(this.$t("notifications.exchangeUpdated"));
 					try {
-						await syncHomeInfoToUserReports(auth.currentUser.uid, {
-							homeUniversity: this.userExchange.homeUniversity ?? null,
-							study: this.userExchange.study ?? null,
-							studyYear: this.userExchange.studyYear ?? null,
-							year: this.userExchange.year ?? null,
-							numSemesters: this.userExchange.numSemesters ?? null,
-						});
+						await syncHomeInfoToUserReports(auth.currentUser.uid, homeInfoSnapshot);
 					} catch (syncError) {
 						console.error("Failed to sync home info to reports:", syncError);
 					}
