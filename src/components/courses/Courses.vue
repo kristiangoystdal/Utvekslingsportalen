@@ -74,7 +74,7 @@
                 <template v-slot:item.report="{ item }">
                   <router-link
                     v-if="item.exchangeID && reportsByExchangeId[item.exchangeID]"
-                    :to="`/rapporter/${reportsByExchangeId[item.exchangeID].id}`"
+                    :to="`/erfaringer/${reportsByExchangeId[item.exchangeID].id}`"
                     class="report-icon-link"
                   >
                     <v-icon small>mdi-file-document-outline</v-icon>
@@ -159,7 +159,7 @@
                     </v-icon>
                   </v-col>
                   <v-col v-if="course.exchangeID && reportsByExchangeId[course.exchangeID]" cols="1" style="margin: auto;">
-                    <router-link :to="`/rapporter/${reportsByExchangeId[course.exchangeID].id}`" class="report-icon-link">
+                    <router-link :to="`/erfaringer/${reportsByExchangeId[course.exchangeID].id}`" class="report-icon-link">
                       <v-icon small>mdi-file-document-outline</v-icon>
                     </router-link>
                   </v-col>

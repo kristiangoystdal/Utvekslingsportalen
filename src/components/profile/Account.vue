@@ -5,7 +5,7 @@
 			<!-- ───── LEFT SIDEBAR ───── -->
 			<div class="sidebar-card">
 				<div class="sidebar-header">
-					<div class="sidebar-avatar">{{ userInitials }}</div>
+					<!-- <div class="sidebar-avatar">{{ userInitials }}</div> -->
 					<div class="sidebar-name">{{ userData.displayName }}</div>
 					<div class="sidebar-email">{{ user.email }}</div>
 					<div v-if="isVerified" class="sidebar-badge sidebar-badge--verified">
@@ -683,7 +683,12 @@ export default {
 			immediate: true,
 		},
 	},
-	mounted() { this.loadData(); },
+	mounted() {
+		this.loadData();
+		if (this.$route.query.newExperience) {
+			this.newReport();
+		}
+	},
 };
 </script>
 
@@ -711,7 +716,7 @@ export default {
 }
 
 .sidebar-header {
-	background: var(--first-color, #112d4e);
+	background: var(--second-color, #112d4e);
 	padding: 28px 24px 24px;
 	text-align: center;
 }
@@ -740,7 +745,7 @@ export default {
 
 .sidebar-email {
 	font-size: 12px;
-	color: rgba(255, 255, 255, 0.6);
+	color: rgba(255, 255, 255, 0.843);
 }
 
 .sidebar-badge {

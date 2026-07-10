@@ -23,7 +23,7 @@
 						</li>
 
 						<li v-if="checkAdminUser()">
-							<router-link to="/rapporter">{{
+							<router-link to="/erfaringer">{{
 								$t("nav.reportsHeader")
 							}}</router-link>
 						</li>

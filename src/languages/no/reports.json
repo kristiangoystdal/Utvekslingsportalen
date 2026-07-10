@@ -1,12 +1,12 @@
 {
-  "pageHeader": "Utvekslingsrapporter",
-  "info": "Les rapporter fra studenter som har vært på utveksling, eller del din egen erfaring.",
+  "pageHeader": "Utvekslingserfaringer",
+  "info": "Les erfaringer fra studenter som har vært på utveksling, eller del din egen erfaring.",
 
   "anonymous": "Send inn anonymt",
   "anonymousLabel": "Anonym",
-  "writeReport": "Skriv en rapport",
-  "editReport": "Rediger rapport",
-  "myReports": "Min rapport",
+  "writeReport": "Skriv en erfaring",
+  "editReport": "Rediger erfaring",
+  "myReports": "Min erfaring",
 
   "title": "Tittel",
   "content": "Din erfaring",
@@ -16,6 +16,8 @@
   "addPro": "Legg til en fordel",
   "addCon": "Legg til en ulempe",
 
+  "destination": "Destinasjon",
+
   "ratings": "Vurderinger",
   "overall": "Helhetlig",
   "academic": "Akademisk",
@@ -23,7 +25,7 @@
   "housing": "Bolig",
   "costOfLiving": "Levekostnader",
 
-  "submit": "Send inn rapport",
+  "submit": "Send inn erfaring",
   "save": "Lagre endringer",
   "saveDraft": "Lagre som utkast",
   "edit": "Rediger",
@@ -51,16 +53,16 @@
   "readMore": "Les mer",
   "viewExchange": "Se utveksling",
   "helpful": "Nyttig",
-  "reportCount": "{count} rapporter",
+  "reportCount": "{count} erfaringer",
 
-  "noReports": "Ingen rapporter ennå. Bli den første til å dele din utvekslingserfaring!",
-  "noReportsForFilter": "Ingen rapporter matcher filtrene dine.",
+  "noReports": "Ingen erfaringer ennå. Bli den første til å dele din utvekslingserfaring!",
+  "noReportsForFilter": "Ingen erfaringer matcher filtrene dine.",
 
-  "confirmDelete": "Slette rapport?",
-  "confirmDeleteBody": "Denne handlingen kan ikke angres. Er du sikker på at du vil slette denne rapporten?",
+  "confirmDelete": "Slette erfaring?",
+  "confirmDeleteBody": "Denne handlingen kan ikke angres. Er du sikker på at du vil slette denne erfaringen?",
 
   "share": "Del",
   "linkCopied": "Lenke kopiert!",
-  "reportNotFound": "Rapporten ble ikke funnet.",
-  "noOwnReports": "Du har ikke skrevet noen rapporter ennå."
+  "reportNotFound": "Erfaringen ble ikke funnet.",
+  "noOwnReports": "Du har ikke skrevet noen erfaringer ennå."
 }

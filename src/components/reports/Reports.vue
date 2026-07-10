@@ -106,7 +106,7 @@
 
 		<!-- FAB for creating a report -->
 		<v-btn v-if="isAuthenticated" class="fab-btn" icon size="large" color="primary"
-			:to="{ name: 'CreateReport' }">
+			to="/profil?newExperience=true">
 			<v-icon>mdi-plus</v-icon>
 		</v-btn>
 
@@ -287,9 +287,9 @@ export default {
 		},
 		selectedReport(report) {
 			if (report) {
-				document.title = report.title || "Rapport";
+				document.title = report.title || "Erfaring";
 			} else {
-				document.title = "Rapporter";
+				document.title = "Erfaringer";
 			}
 		},
 	},

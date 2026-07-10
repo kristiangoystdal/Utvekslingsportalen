@@ -170,7 +170,7 @@
 							<div class="report-link-row">
 								<router-link
 									v-if="reportsByExchangeId[item.id.replace(/new$/, '')]"
-									:to="`/rapporter/${reportsByExchangeId[item.id.replace(/new$/, '')].id}`"
+									:to="`/erfaringer/${reportsByExchangeId[item.id.replace(/new$/, '')].id}`"
 									class="report-chip"
 								>
 									<v-icon size="small">mdi-file-document-outline</v-icon>
@@ -178,7 +178,7 @@
 								</router-link>
 								<router-link
 									v-else-if="user && user.uid === item.id.replace(/new$/, '')"
-									to="/rapporter/ny"
+									to="/profil?newExperience=true"
 									class="report-chip report-chip--write"
 								>
 									<v-icon size="small">mdi-pencil-plus-outline</v-icon>
@@ -285,7 +285,7 @@
 							<div class="report-link-row">
 								<router-link
 									v-if="reportsByExchangeId[item.id.replace(/new$/, '')]"
-									:to="`/rapporter/${reportsByExchangeId[item.id.replace(/new$/, '')].id}`"
+									:to="`/erfaringer/${reportsByExchangeId[item.id.replace(/new$/, '')].id}`"
 									class="report-chip"
 								>
 									<v-icon size="small">mdi-file-document-outline</v-icon>
@@ -293,7 +293,7 @@
 								</router-link>
 								<router-link
 									v-else-if="user && user.uid === item.id.replace(/new$/, '')"
-									to="/rapporter/ny"
+									to="/profil?newExperience=true"
 									class="report-chip report-chip--write"
 								>
 									<v-icon size="small">mdi-pencil-plus-outline</v-icon>

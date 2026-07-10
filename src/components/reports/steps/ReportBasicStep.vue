@@ -15,7 +15,7 @@
 			class="mb-2"
 		/>
 
-		<div class="section-divider"><span>{{ $t('database.destination') }}</span></div>
+		<div class="section-divider"><span>{{ $t('reports.destination') }}</span></div>
 
 		<v-row dense>
 			<v-col cols="12" sm="6">
