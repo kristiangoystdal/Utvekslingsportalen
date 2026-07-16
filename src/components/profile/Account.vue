@@ -27,7 +27,7 @@
 					<v-divider />
 
 					<div class="d-flex flex-column ga-2">
-						<v-btn color="primary" variant="flat" block @click="editProfile">
+						<v-btn color="primary" variant="tonal" block @click="editProfile">
 							<v-icon start size="16">mdi-account-edit</v-icon>
 							{{ $t("auth.editProfile") }}
 						</v-btn>
@@ -47,7 +47,8 @@
 									<v-icon size="15" color="#3f72af">mdi-airplane</v-icon>
 									{{ $t("nav.myexchangeHeader") }}
 								</div>
-								<span :class="hasExchange ? 'activity-chip activity-chip--green' : 'activity-chip activity-chip--warning'">
+								<span
+									:class="hasExchange ? 'activity-chip activity-chip--green' : 'activity-chip activity-chip--warning'">
 									{{ hasExchange ? $t("auth.exchangeRegistered") : $t("auth.exchangeNotRegistered") }}
 								</span>
 							</div>
@@ -56,7 +57,8 @@
 									<v-icon size="15" color="#3f72af">mdi-file-document-outline</v-icon>
 									{{ $t("experiences.myExperiences") }}
 								</div>
-								<span :class="myExperiencesList.length ? 'activity-chip activity-chip--green' : 'activity-chip activity-chip--warning'">
+								<span
+									:class="myExperiencesList.length ? 'activity-chip activity-chip--green' : 'activity-chip activity-chip--warning'">
 									{{ myExperiencesList.length ? $t("auth.exchangeRegistered") : $t("auth.exchangeNotRegistered") }}
 								</span>
 							</div>
@@ -139,7 +141,8 @@
 									<div v-for="(course, j) in sem.courses" :key="j" class="exchange-course-row text-body-2">
 										<v-icon size="14" class="mr-1 text-medium-emphasis">mdi-book-outline</v-icon>
 										{{ course.courseName || course.courseCode || '—' }}
-										<span v-if="course.ECTSPoints" class="text-caption text-medium-emphasis ml-1">({{ course.ECTSPoints }} ECTS)</span>
+										<span v-if="course.ECTSPoints" class="text-caption text-medium-emphasis ml-1">({{ course.ECTSPoints
+											}} ECTS)</span>
 									</div>
 								</div>
 							</div>
@@ -181,26 +184,27 @@
 					<div v-else class="pa-5">
 						<div class="d-flex align-start justify-space-between gap-3 mb-3">
 							<div class="experience-title">{{ myExperiencesList[0].title || '—' }}</div>
-							<v-chip
-								size="x-small"
+							<v-chip size="x-small"
 								:color="myExperiencesList[0].status === 'published' ? 'success' : myExperiencesList[0].status === 'pending' ? 'warning' : 'error'"
-								variant="tonal"
-								class="flex-shrink-0 mt-1"
-							>
+								variant="tonal" class="flex-shrink-0 mt-1">
 								{{ $t(`experiences.${myExperiencesList[0].status}`) }}
 							</v-chip>
 						</div>
 
 						<div class="d-flex flex-wrap ga-2 mb-4">
-							<span v-if="myExperiencesList[0].country" class="meta-chip">{{ $t(`countries.${myExperiencesList[0].country}`) }}</span>
-							<span v-if="myExperiencesList[0].university" class="meta-chip">{{ myExperiencesList[0].university }}</span>
+							<span v-if="myExperiencesList[0].country" class="meta-chip">{{
+								$t(`countries.${myExperiencesList[0].country}`)
+								}}</span>
+							<span v-if="myExperiencesList[0].university" class="meta-chip">{{ myExperiencesList[0].university
+								}}</span>
 							<span v-if="myExperiencesList[0].year" class="meta-chip">{{ myExperiencesList[0].year }}</span>
 							<span v-if="myExperiencesList[0].semester" class="meta-chip">{{ myExperiencesList[0].semester }}</span>
 							<span v-if="myExperiencesList[0].study" class="meta-chip">{{ myExperiencesList[0].study }}</span>
 						</div>
 
 						<div v-if="myExperiencesList[0].ratings?.overall" class="d-flex align-center ga-1 mb-3">
-							<v-rating :model-value="myExperiencesList[0].ratings.overall" color="amber" readonly density="compact" size="16" class="d-flex" />
+							<v-rating :model-value="myExperiencesList[0].ratings.overall" color="amber" readonly density="compact"
+								size="16" class="d-flex" />
 							<span class="text-caption text-medium-emphasis">{{ $t("experiences.overall") }}</span>
 						</div>
 
@@ -287,13 +291,8 @@
 				</div>
 				<v-divider />
 				<v-card-text class="pa-4">
-					<CreateExperience
-						v-if="editExperienceDialog"
-						:prop-experience-id="editingExperienceId"
-						:embedded="true"
-						@saved="finishEditExperience"
-						@cancelled="cancelEditExperience"
-					/>
+					<CreateExperience v-if="editExperienceDialog" :prop-experience-id="editingExperienceId" :embedded="true"
+						@saved="finishEditExperience" @cancelled="cancelEditExperience" />
 				</v-card-text>
 			</v-card>
 		</v-dialog>
@@ -316,7 +315,8 @@
 		</v-dialog>
 
 		<!-- Exchange Detail Modal -->
-		<v-dialog v-if="selectedExchange" :model-value="true" max-width="700" scrollable @update:model-value="selectedExchange = null">
+		<v-dialog v-if="selectedExchange" :model-value="true" max-width="700" scrollable
+			@update:model-value="selectedExchange = null">
 			<v-card rounded="xl">
 				<div class="dialog-header">
 					<div class="min-width-0 flex-grow-1">
@@ -365,8 +365,10 @@
 								<v-icon size="15" class="mr-2 text-medium-emphasis">mdi-book-outline</v-icon>
 								<span>
 									{{ course.courseName || course.courseCode || $t("database.course") }}
-									<span v-if="course.replacedCourseName" class="text-medium-emphasis"> → {{ course.replacedCourseName }}</span>
-									<span v-if="course.ECTSPoints" class="text-caption text-medium-emphasis ml-1">({{ course.ECTSPoints }} ECTS)</span>
+									<span v-if="course.replacedCourseName" class="text-medium-emphasis"> → {{ course.replacedCourseName
+										}}</span>
+									<span v-if="course.ECTSPoints" class="text-caption text-medium-emphasis ml-1">({{ course.ECTSPoints }}
+										ECTS)</span>
 								</span>
 							</div>
 						</div>
@@ -414,7 +416,8 @@
 				</div>
 				<v-divider />
 				<v-card-text class="pa-4">
-					<EditExchange v-if="editExchangeDialog" :compact="true" :embedded="true" @saved="finishExchangeEdit" @cancelled="closeExchangeEdit" />
+					<EditExchange v-if="editExchangeDialog" :compact="true" :embedded="true" @saved="finishExchangeEdit"
+						@cancelled="closeExchangeEdit" />
 				</v-card-text>
 			</v-card>
 		</v-dialog>
@@ -433,8 +436,10 @@
 					<v-form ref="editForm">
 						<v-text-field v-model="localEditData.displayName" :label="$t('auth.name')" required />
 						<v-text-field v-model="localEditData.email" :label="$t('auth.email')" required readonly />
-						<v-autocomplete v-model="localEditData.study" :items="studyNames" :label="$t('database.study')" required @update:modelValue="handleNewStudy" />
-						<v-autocomplete v-model="localEditData.specialization" :items="specializations" :label="$t('database.specialization')" />
+						<v-autocomplete v-model="localEditData.study" :items="studyNames" :label="$t('database.study')" required
+							@update:modelValue="handleNewStudy" />
+						<v-autocomplete v-model="localEditData.specialization" :items="specializations"
+							:label="$t('database.specialization')" />
 					</v-form>
 				</v-card-text>
 				<v-divider />
@@ -702,7 +707,9 @@ export default {
 }
 
 @media (max-width: 960px) {
-	.profile-grid { grid-template-columns: 1fr; }
+	.profile-grid {
+		grid-template-columns: 1fr;
+	}
 }
 
 /* ─── Sidebar ─── */
@@ -780,7 +787,9 @@ export default {
 	flex: 1;
 }
 
-.sidebar-spacer { flex: 1; }
+.sidebar-spacer {
+	flex: 1;
+}
 
 .sidebar-label {
 	font-size: 10px;
@@ -845,7 +854,9 @@ export default {
 	gap: 16px;
 }
 
-.content-card { overflow: hidden; }
+.content-card {
+	overflow: hidden;
+}
 
 .card-header {
 	display: flex;
@@ -977,7 +988,9 @@ export default {
 	font-weight: 500;
 }
 
-.min-width-0 { min-width: 0; }
+.min-width-0 {
+	min-width: 0;
+}
 
 /* ─── Dialog headers ─── */
 .dialog-header {
@@ -996,5 +1009,4 @@ export default {
 	color: rgba(0, 0, 0, 0.87);
 	line-height: 1.3;
 }
-
 </style>
