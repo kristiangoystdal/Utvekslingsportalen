@@ -1,0 +1,30 @@
+name: Unit Tests
+
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    # Firebase is initialized at module import time (src/js/firebaseConfig.js), so
+    # the SDK needs well-formed values even though the tests never hit the network.
+    env:
+      VITE_FIREBASE_API_KEY: fake-api-key-for-tests
+      VITE_FIREBASE_AUTH_DOMAIN: fake.firebaseapp.com
+      VITE_FIREBASE_PROJECT_ID: fake-project
+      VITE_FIREBASE_STORAGE_BUCKET: fake-project.appspot.com
+      VITE_FIREBASE_MESSAGING_SENDER_ID: "000000000000"
+      VITE_FIREBASE_APP_ID: "1:000000000000:web:0000000000000000000000"
+      VITE_FIREBASE_DATABASE_URL: https://fake-project-default-rtdb.firebaseio.com
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js 22.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22.x
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run test:unit
