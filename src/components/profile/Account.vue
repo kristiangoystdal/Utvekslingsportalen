@@ -106,7 +106,7 @@
 						<div v-else-if="hasExchange === false" class="card-actions">
 							<v-btn variant="tonal" color="primary" @click="openExchangeEdit">
 								<v-icon start size="16">mdi-plus</v-icon>
-								{{ $t("myExchange.editMyExchange") }}
+								{{ $t("myExchange.writeMyExchange") }}
 							</v-btn>
 						</div>
 					</div>
