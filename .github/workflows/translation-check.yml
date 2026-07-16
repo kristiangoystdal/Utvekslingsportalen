@@ -58,17 +58,18 @@ jobs:
                 continue
               fi
 
-              # Convert nested key a.b.c → .a.b.c
-              JQ_PATH=".$SUBKEY"
+              # Convert nested key a.b.c → ["a","b","c"] so non-ASCII keys
+              # (e.g. "Høst") don't break jq's identifier syntax
+              JQ_PATH=$(echo "$SUBKEY" | jq -R -c 'split(".")')
 
               # Validate NO key
-              if ! jq -e "$JQ_PATH" "$NO_FILE" >/dev/null 2>&1; then
+              if ! jq -e --argjson path "$JQ_PATH" 'getpath($path) != null' "$NO_FILE" >/dev/null 2>&1; then
                 echo "❌ Missing NO key: $FILE → $SUBKEY"
                 MISSING=1
               fi
 
               # Validate EN key
-              if ! jq -e "$JQ_PATH" "$EN_FILE" >/dev/null 2>&1; then
+              if ! jq -e --argjson path "$JQ_PATH" 'getpath($path) != null' "$EN_FILE" >/dev/null 2>&1; then
                 echo "❌ Missing EN key: $FILE → $SUBKEY"
                 MISSING=1
               fi
