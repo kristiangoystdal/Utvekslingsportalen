@@ -106,7 +106,7 @@ import universitiesData from "../../data/universities.json";
 import { toast } from "vue3-toastify";
 
 import { refreshExchangesData, getExchangesData } from "../../js/exchangesCache";
-import { syncHomeInfoToUserReports } from "../../js/reportsCache";
+import { syncHomeInfoToUserExperiences } from "../../js/experiencesCache";
 
 import BasicInfoStep from "./BasicInfoStep.vue";
 import CoursesStep from "./CoursesStep.vue";
@@ -837,9 +837,9 @@ export default {
 
 					toast.success(this.$t("notifications.exchangeUpdated"));
 					try {
-						await syncHomeInfoToUserReports(auth.currentUser.uid, homeInfoSnapshot);
+						await syncHomeInfoToUserExperiences(auth.currentUser.uid, homeInfoSnapshot);
 					} catch (syncError) {
-						console.error("Failed to sync home info to reports:", syncError);
+						console.error("Failed to sync home info to experiences:", syncError);
 					}
 					if (this.embedded) {
 						this.$emit("saved");

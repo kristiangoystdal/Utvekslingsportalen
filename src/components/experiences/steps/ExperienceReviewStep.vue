@@ -1,20 +1,20 @@
 <template>
 	<div class="step-body">
 		<v-sheet rounded="lg" color="surface-variant" class="pa-5 mb-4">
-			<div class="review-title">{{ report.title || '—' }}</div>
+			<div class="review-title">{{ experience.title || '—' }}</div>
 			<div class="review-meta mt-1">
-				{{ report.university || '—' }}, {{ translatedCountry }}
-				· {{ report.study || '—' }}
-				· {{ report.year || '—' }} {{ report.semester || '' }}
-				<span v-if="report.anonymous"> · {{ $t('reports.anonymousLabel') }}</span>
+				{{ experience.university || '—' }}, {{ translatedCountry }}
+				· {{ experience.study || '—' }}
+				· {{ experience.year || '—' }} {{ experience.semester || '' }}
+				<span v-if="experience.anonymous"> · {{ $t('experiences.anonymousLabel') }}</span>
 			</div>
 
 			<v-divider class="my-3" />
 
 			<div v-if="hasRatings" class="mb-3">
 				<div v-for="key in ratingKeys" :key="'r-' + key" class="d-flex align-center gap-2 mb-1">
-					<span class="review-key">{{ $t(`reports.${key}`) }}</span>
-					<v-rating :model-value="report.ratings[key]" color="amber" readonly density="compact" size="16" />
+					<span class="review-key">{{ $t(`experiences.${key}`) }}</span>
+					<v-rating :model-value="experience.ratings[key]" color="amber" readonly density="compact" size="16" />
 				</div>
 			</div>
 
@@ -22,13 +22,13 @@
 				<v-divider class="mb-3" />
 				<div class="d-flex ga-8 flex-wrap">
 					<div v-if="filteredPros.length">
-						<div class="review-sub-label mb-1">{{ $t('reports.pros') }}</div>
+						<div class="review-sub-label mb-1">{{ $t('experiences.pros') }}</div>
 						<ul class="review-list">
 							<li v-for="(p, i) in filteredPros" :key="i">{{ p }}</li>
 						</ul>
 					</div>
 					<div v-if="filteredCons.length">
-						<div class="review-sub-label mb-1">{{ $t('reports.cons') }}</div>
+						<div class="review-sub-label mb-1">{{ $t('experiences.cons') }}</div>
 						<ul class="review-list">
 							<li v-for="(c, i) in filteredCons" :key="i">{{ c }}</li>
 						</ul>
@@ -36,22 +36,22 @@
 				</div>
 			</template>
 
-			<template v-if="report.content">
+			<template v-if="experience.content">
 				<v-divider class="my-3" />
-				<div class="review-sub-label mb-1">{{ $t('reports.content') }}</div>
-				<p class="review-text">{{ report.content }}</p>
+				<div class="review-sub-label mb-1">{{ $t('experiences.content') }}</div>
+				<p class="review-text">{{ experience.content }}</p>
 			</template>
 
-			<template v-if="report.tips">
-				<div class="review-sub-label mt-3 mb-1">{{ $t('reports.tips') }}</div>
-				<p class="review-text">{{ report.tips }}</p>
+			<template v-if="experience.tips">
+				<div class="review-sub-label mt-3 mb-1">{{ $t('experiences.tips') }}</div>
+				<p class="review-text">{{ experience.tips }}</p>
 			</template>
 		</v-sheet>
 
 		<div v-if="!canSubmit" class="d-flex flex-column ga-1 text-error text-caption">
-			<span v-if="!report.title">· {{ $t('reports.titleRequired') }}</span>
-			<span v-if="!report.ratings?.overall">· {{ $t('reports.ratingRequired') }}</span>
-			<span v-if="!report.content">· {{ $t('reports.contentRequired') }}</span>
+			<span v-if="!experience.title">· {{ $t('experiences.titleRequired') }}</span>
+			<span v-if="!experience.ratings?.overall">· {{ $t('experiences.ratingRequired') }}</span>
+			<span v-if="!experience.content">· {{ $t('experiences.contentRequired') }}</span>
 		</div>
 	</div>
 </template>
@@ -59,7 +59,7 @@
 <script>
 export default {
 	props: {
-		report: { type: Object, required: true },
+		experience: { type: Object, required: true },
 		translatedCountry: { type: String, default: "—" },
 		canSubmit: { type: Boolean, default: false },
 	},
@@ -68,13 +68,13 @@ export default {
 	},
 	computed: {
 		hasRatings() {
-			return this.ratingKeys.some(k => (this.report.ratings?.[k] || 0) > 0);
+			return this.ratingKeys.some(k => (this.experience.ratings?.[k] || 0) > 0);
 		},
 		filteredPros() {
-			return (this.report.pros || []).filter(p => p?.trim());
+			return (this.experience.pros || []).filter(p => p?.trim());
 		},
 		filteredCons() {
-			return (this.report.cons || []).filter(c => c?.trim());
+			return (this.experience.cons || []).filter(c => c?.trim());
 		},
 	},
 };

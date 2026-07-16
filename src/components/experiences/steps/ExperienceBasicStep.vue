@@ -1,37 +1,37 @@
 <template>
 	<div class="step-body">
-		<v-text-field v-model="localReport.title" :label="$t('reports.title')"
-			:error-messages="submitted && !localReport.title ? $t('reports.titleRequired') : ''" variant="outlined"
+		<v-text-field v-model="localExperience.title" :label="$t('experiences.title')"
+			:error-messages="submitted && !localExperience.title ? $t('experiences.titleRequired') : ''" variant="outlined"
 			density="compact" />
-		<v-checkbox v-model="localReport.anonymous" :label="$t('reports.anonymous')" hide-details density="compact"
+		<v-checkbox v-model="localExperience.anonymous" :label="$t('experiences.anonymous')" hide-details density="compact"
 			class="mb-2" />
 
 		<div class="section-divider"><span>{{ $t('wizard.basic.homeInfo') }}</span></div>
 		<br />
 		<HomeInfoSection
-			:homeUniversity="localReport.homeUniversity"
-			:study="localReport.study"
-			:studyYear="localReport.studyYear"
-			:year="localReport.year"
-			@update:homeUniversity="localReport.homeUniversity = $event"
-			@update:study="localReport.study = $event"
-			@update:studyYear="localReport.studyYear = $event"
-			@update:year="localReport.year = $event"
+			:homeUniversity="localExperience.homeUniversity"
+			:study="localExperience.study"
+			:studyYear="localExperience.studyYear"
+			:year="localExperience.year"
+			@update:homeUniversity="localExperience.homeUniversity = $event"
+			@update:study="localExperience.study = $event"
+			@update:studyYear="localExperience.studyYear = $event"
+			@update:year="localExperience.year = $event"
 		/>
 
 		<div class="section-divider"><span>{{ $t('wizard.basic.destination') }}</span></div>
 		<br />
 		<DestinationSection
-			:country="localReport.country"
-			:university="localReport.university"
-			:numSemesters="localReport.numSemesters"
-			:semester="localReport.semester"
+			:country="localExperience.country"
+			:university="localExperience.university"
+			:numSemesters="localExperience.numSemesters"
+			:semester="localExperience.semester"
 			:countryItems="countryNamesTranslated"
 			:universityItems="universityNames"
-			@update:country="localReport.country = $event"
-			@update:university="localReport.university = $event"
-			@update:numSemesters="localReport.numSemesters = $event"
-			@update:semester="localReport.semester = $event"
+			@update:country="localExperience.country = $event"
+			@update:university="localExperience.university = $event"
+			@update:numSemesters="localExperience.numSemesters = $event"
+			@update:semester="localExperience.semester = $event"
 		/>
 	</div>
 </template>
@@ -43,21 +43,21 @@ import DestinationSection from "../../common/DestinationSection.vue";
 export default {
 	components: { HomeInfoSection, DestinationSection },
 	props: {
-		report: { type: Object, required: true },
+		experience: { type: Object, required: true },
 		countryNamesTranslated: { type: Array, default: () => [] },
 		universityNames: { type: Array, default: () => [] },
 		submitted: { type: Boolean, default: false },
 	},
 	emits: ["update"],
 	data() {
-		return { localReport: { ...this.report } };
+		return { localExperience: { ...this.experience } };
 	},
 	watch: {
-		report: {
+		experience: {
 			deep: true,
-			handler(val) { this.localReport = { ...val }; },
+			handler(val) { this.localExperience = { ...val }; },
 		},
-		localReport: {
+		localExperience: {
 			deep: true,
 			handler(val) { this.$emit("update", { ...val }); },
 		},

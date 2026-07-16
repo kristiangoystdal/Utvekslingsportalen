@@ -54,10 +54,10 @@
 							<div class="activity-row">
 								<div class="activity-label">
 									<v-icon size="15" color="#3f72af">mdi-file-document-outline</v-icon>
-									{{ $t("reports.myReports") }}
+									{{ $t("experiences.myExperiences") }}
 								</div>
-								<span :class="myReportsList.length ? 'activity-chip activity-chip--green' : 'activity-chip activity-chip--warning'">
-									{{ myReportsList.length ? $t("auth.exchangeRegistered") : $t("auth.exchangeNotRegistered") }}
+								<span :class="myExperiencesList.length ? 'activity-chip activity-chip--green' : 'activity-chip activity-chip--warning'">
+									{{ myExperiencesList.length ? $t("auth.exchangeRegistered") : $t("auth.exchangeNotRegistered") }}
 								</span>
 							</div>
 							<div class="activity-row">
@@ -147,25 +147,25 @@
 					</div>
 				</v-card>
 
-				<!-- Reports card (one report per user) -->
+				<!-- Experiences card (one experience per user) -->
 				<v-card class="content-card" rounded="xl" elevation="2">
 					<div class="card-header">
 						<div class="card-header-left">
 							<v-icon size="18" color="#3f72af">mdi-file-document-outline</v-icon>
-							<span class="card-title">{{ $t("reports.myReports") }}</span>
+							<span class="card-title">{{ $t("experiences.myExperiences") }}</span>
 						</div>
-						<div v-if="myReportsList.length === 0" class="card-actions">
-							<v-btn variant="tonal" color="primary" @click="newReport">
+						<div v-if="myExperiencesList.length === 0" class="card-actions">
+							<v-btn variant="tonal" color="primary" @click="newExperience">
 								<v-icon start size="16">mdi-plus</v-icon>
-								{{ $t("reports.writeReport") }}
+								{{ $t("experiences.writeExperience") }}
 							</v-btn>
 						</div>
 						<div v-else class="card-actions">
-							<v-btn variant="tonal" color="primary" @click="startEditReport(myReportsList[0])">
+							<v-btn variant="tonal" color="primary" @click="startEditExperience(myExperiencesList[0])">
 								<v-icon start size="16">mdi-pencil-outline</v-icon>
 								{{ $t("actions.edit") }}
 							</v-btn>
-							<v-btn variant="tonal" color="error" class="px-3" @click="deleteReportDialog = true">
+							<v-btn variant="tonal" color="error" class="px-3" @click="deleteExperienceDialog = true">
 								<v-icon size="18">mdi-trash-can-outline</v-icon>
 							</v-btn>
 						</div>
@@ -173,61 +173,61 @@
 
 					<v-divider />
 
-					<div v-if="myReportsList.length === 0" class="empty-state">
+					<div v-if="myExperiencesList.length === 0" class="empty-state">
 						<v-icon size="44" color="primary" class="mb-3">mdi-file-document-plus-outline</v-icon>
-						<div class="text-body-1 font-weight-medium mb-1">{{ $t("reports.noOwnReports") }}</div>
+						<div class="text-body-1 font-weight-medium mb-1">{{ $t("experiences.noOwnExperiences") }}</div>
 					</div>
 
 					<div v-else class="pa-5">
 						<div class="d-flex align-start justify-space-between gap-3 mb-3">
-							<div class="report-title">{{ myReportsList[0].title || '—' }}</div>
+							<div class="experience-title">{{ myExperiencesList[0].title || '—' }}</div>
 							<v-chip
 								size="x-small"
-								:color="myReportsList[0].status === 'published' ? 'success' : myReportsList[0].status === 'pending' ? 'warning' : 'error'"
+								:color="myExperiencesList[0].status === 'published' ? 'success' : myExperiencesList[0].status === 'pending' ? 'warning' : 'error'"
 								variant="tonal"
 								class="flex-shrink-0 mt-1"
 							>
-								{{ $t(`reports.${myReportsList[0].status}`) }}
+								{{ $t(`experiences.${myExperiencesList[0].status}`) }}
 							</v-chip>
 						</div>
 
 						<div class="d-flex flex-wrap ga-2 mb-4">
-							<span v-if="myReportsList[0].country" class="meta-chip">{{ $t(`countries.${myReportsList[0].country}`) }}</span>
-							<span v-if="myReportsList[0].university" class="meta-chip">{{ myReportsList[0].university }}</span>
-							<span v-if="myReportsList[0].year" class="meta-chip">{{ myReportsList[0].year }}</span>
-							<span v-if="myReportsList[0].semester" class="meta-chip">{{ myReportsList[0].semester }}</span>
-							<span v-if="myReportsList[0].study" class="meta-chip">{{ myReportsList[0].study }}</span>
+							<span v-if="myExperiencesList[0].country" class="meta-chip">{{ $t(`countries.${myExperiencesList[0].country}`) }}</span>
+							<span v-if="myExperiencesList[0].university" class="meta-chip">{{ myExperiencesList[0].university }}</span>
+							<span v-if="myExperiencesList[0].year" class="meta-chip">{{ myExperiencesList[0].year }}</span>
+							<span v-if="myExperiencesList[0].semester" class="meta-chip">{{ myExperiencesList[0].semester }}</span>
+							<span v-if="myExperiencesList[0].study" class="meta-chip">{{ myExperiencesList[0].study }}</span>
 						</div>
 
-						<div v-if="myReportsList[0].ratings?.overall" class="d-flex align-center ga-1 mb-3">
-							<v-rating :model-value="myReportsList[0].ratings.overall" color="amber" readonly density="compact" size="16" class="d-flex" />
-							<span class="text-caption text-medium-emphasis">{{ $t("reports.overall") }}</span>
+						<div v-if="myExperiencesList[0].ratings?.overall" class="d-flex align-center ga-1 mb-3">
+							<v-rating :model-value="myExperiencesList[0].ratings.overall" color="amber" readonly density="compact" size="16" class="d-flex" />
+							<span class="text-caption text-medium-emphasis">{{ $t("experiences.overall") }}</span>
 						</div>
 
-						<p v-if="myReportsList[0].content" class="report-content">{{ myReportsList[0].content }}</p>
+						<p v-if="myExperiencesList[0].content" class="experience-content">{{ myExperiencesList[0].content }}</p>
 
 						<template v-if="filteredPros.length || filteredCons.length">
 							<v-divider class="my-3" />
 							<div class="d-flex ga-6 flex-wrap">
 								<div v-if="filteredPros.length">
-									<div class="courses-sem-label mb-1">{{ $t("reports.pros") }}</div>
-									<ul class="report-list">
+									<div class="courses-sem-label mb-1">{{ $t("experiences.pros") }}</div>
+									<ul class="experience-list">
 										<li v-for="(p, i) in filteredPros" :key="i">{{ p }}</li>
 									</ul>
 								</div>
 								<div v-if="filteredCons.length">
-									<div class="courses-sem-label mb-1">{{ $t("reports.cons") }}</div>
-									<ul class="report-list">
+									<div class="courses-sem-label mb-1">{{ $t("experiences.cons") }}</div>
+									<ul class="experience-list">
 										<li v-for="(c, i) in filteredCons" :key="i">{{ c }}</li>
 									</ul>
 								</div>
 							</div>
 						</template>
 
-						<template v-if="myReportsList[0].tips">
+						<template v-if="myExperiencesList[0].tips">
 							<v-divider class="my-3" />
-							<div class="courses-sem-label mb-1">{{ $t("reports.tips") }}</div>
-							<p class="report-content">{{ myReportsList[0].tips }}</p>
+							<div class="courses-sem-label mb-1">{{ $t("experiences.tips") }}</div>
+							<p class="experience-content">{{ myExperiencesList[0].tips }}</p>
 						</template>
 					</div>
 				</v-card>
@@ -274,41 +274,41 @@
 
 		<!-- ───── MODALS ───── -->
 
-		<!-- Report Create / Edit Modal -->
-		<v-dialog v-model="editReportDialog" max-width="860" scrollable persistent>
+		<!-- Experience Create / Edit Modal -->
+		<v-dialog v-model="editExperienceDialog" max-width="860" scrollable persistent>
 			<v-card rounded="xl">
 				<div class="dialog-header">
 					<span class="dialog-title">
-						{{ editingReportId ? $t("reports.editReport") : $t("reports.writeReport") }}
+						{{ editingExperienceId ? $t("experiences.editExperience") : $t("experiences.writeExperience") }}
 					</span>
-					<v-btn icon variant="text" size="small" @click="cancelEditReport">
+					<v-btn icon variant="text" size="small" @click="cancelEditExperience">
 						<v-icon>mdi-close</v-icon>
 					</v-btn>
 				</div>
 				<v-divider />
 				<v-card-text class="pa-4">
-					<CreateReport
-						v-if="editReportDialog"
-						:prop-report-id="editingReportId"
+					<CreateExperience
+						v-if="editExperienceDialog"
+						:prop-experience-id="editingExperienceId"
 						:embedded="true"
-						@saved="finishEditReport"
-						@cancelled="cancelEditReport"
+						@saved="finishEditExperience"
+						@cancelled="cancelEditExperience"
 					/>
 				</v-card-text>
 			</v-card>
 		</v-dialog>
 
-		<!-- Delete Report confirmation -->
-		<v-dialog v-model="deleteReportDialog" max-width="420">
+		<!-- Delete Experience confirmation -->
+		<v-dialog v-model="deleteExperienceDialog" max-width="420">
 			<v-card rounded="xl">
 				<v-card-title class="pa-5 pb-2">{{ $t("actions.confirmDelete") }}</v-card-title>
 				<v-card-text class="pa-5 pt-1 text-medium-emphasis">
-					{{ $t("actions.confirmReportDelete") }}
+					{{ $t("actions.confirmExperienceDelete") }}
 				</v-card-text>
 				<v-card-actions class="pa-4 pt-0 ga-2">
 					<v-spacer />
-					<v-btn variant="text" @click="deleteReportDialog = false">{{ $t("actions.no") }}</v-btn>
-					<v-btn color="error" variant="tonal" :loading="deletingReport" @click="confirmDeleteReport">
+					<v-btn variant="text" @click="deleteExperienceDialog = false">{{ $t("actions.no") }}</v-btn>
+					<v-btn color="error" variant="tonal" :loading="deletingExperience" @click="confirmDeleteExperience">
 						{{ $t("actions.yes") }}
 					</v-btn>
 				</v-card-actions>
@@ -474,13 +474,13 @@ import { ref as dbRef, update, set } from "firebase/database";
 import studiesData from "../../data/studies.json";
 import FavoriteCourses from "./FavoriteCourses.vue";
 import EditExchange from "../exchanges/EditExchange.vue";
-import CreateReport from "../reports/CreateReport.vue";
+import CreateExperience from "../experiences/CreateExperience.vue";
 import { toast } from "vue3-toastify";
-import { getUserReports, deleteReport } from "../../js/reportsCache";
+import { getUserExperiences, deleteExperience } from "../../js/experiencesCache";
 import { getExchangesData, clearCachedExchanges } from "../../js/exchangesCache";
 
 export default {
-	components: { FavoriteCourses, EditExchange, CreateReport },
+	components: { FavoriteCourses, EditExchange, CreateExperience },
 	data() {
 		return {
 			studies: {},
@@ -488,10 +488,10 @@ export default {
 			dialog: false,
 			favoritesCount: 0,
 			hasExchange: null,
-			editReportDialog: false,
-			editingReportId: null,
-			deleteReportDialog: false,
-			deletingReport: false,
+			editExperienceDialog: false,
+			editingExperienceId: null,
+			deleteExperienceDialog: false,
+			deletingExperience: false,
 			editExchangeDialog: false,
 			myExchange: null,
 			selectedExchange: null,
@@ -499,7 +499,7 @@ export default {
 			deletingExchange: false,
 			localEditData: { displayName: "", email: "", study: "", specialization: "" },
 			verificationDialog: false,
-			myReports: {},
+			myExperiences: {},
 		};
 	},
 	computed: {
@@ -517,16 +517,16 @@ export default {
 		isVerified() {
 			return this.user && this.user.emailVerified;
 		},
-		myReportsList() {
-			return Object.entries(this.myReports)
+		myExperiencesList() {
+			return Object.entries(this.myExperiences)
 				.map(([id, r]) => ({ id, ...r }))
 				.sort((a, b) => b.createdAt - a.createdAt);
 		},
 		filteredPros() {
-			return (this.myReportsList[0]?.pros || []).filter(p => p?.trim());
+			return (this.myExperiencesList[0]?.pros || []).filter(p => p?.trim());
 		},
 		filteredCons() {
-			return (this.myReportsList[0]?.cons || []).filter(c => c?.trim());
+			return (this.myExperiencesList[0]?.cons || []).filter(c => c?.trim());
 		},
 		exchangeSemesters() {
 			if (!this.myExchange) return [];
@@ -558,34 +558,34 @@ export default {
 			}
 		},
 		closeDialog() { this.dialog = false; },
-		newReport() {
-			this.editingReportId = null;
-			this.editReportDialog = true;
+		newExperience() {
+			this.editingExperienceId = null;
+			this.editExperienceDialog = true;
 		},
-		startEditReport(report) {
-			this.editingReportId = report.id;
-			this.editReportDialog = true;
+		startEditExperience(experience) {
+			this.editingExperienceId = experience.id;
+			this.editExperienceDialog = true;
 		},
-		async finishEditReport() {
-			this.editReportDialog = false;
-			this.editingReportId = null;
-			if (this.user) this.myReports = await getUserReports(this.user.uid);
+		async finishEditExperience() {
+			this.editExperienceDialog = false;
+			this.editingExperienceId = null;
+			if (this.user) this.myExperiences = await getUserExperiences(this.user.uid);
 		},
-		cancelEditReport() {
-			this.editReportDialog = false;
-			this.editingReportId = null;
+		cancelEditExperience() {
+			this.editExperienceDialog = false;
+			this.editingExperienceId = null;
 		},
-		async confirmDeleteReport() {
-			this.deletingReport = true;
+		async confirmDeleteExperience() {
+			this.deletingExperience = true;
 			try {
-				await deleteReport(this.myReportsList[0].id);
-				this.myReports = {};
-				this.deleteReportDialog = false;
-				toast.success(this.$t("notifications.reportDeleted"));
+				await deleteExperience(this.myExperiencesList[0].id);
+				this.myExperiences = {};
+				this.deleteExperienceDialog = false;
+				toast.success(this.$t("notifications.experienceDeleted"));
 			} catch (e) {
-				toast.error(this.$t("notifications.reportError"));
+				toast.error(this.$t("notifications.experienceError"));
 			} finally {
-				this.deletingReport = false;
+				this.deletingExperience = false;
 			}
 		},
 		openExchangeEdit() { this.editExchangeDialog = true; },
@@ -674,7 +674,7 @@ export default {
 		user: {
 			async handler(val) {
 				if (val) {
-					this.myReports = await getUserReports(val.uid);
+					this.myExperiences = await getUserExperiences(val.uid);
 					const exchanges = await getExchangesData();
 					this.myExchange = exchanges?.[val.uid] ?? null;
 					this.hasExchange = !!this.myExchange;
@@ -686,7 +686,7 @@ export default {
 	mounted() {
 		this.loadData();
 		if (this.$route.query.newExperience) {
-			this.newReport();
+			this.newExperience();
 		}
 	},
 };
@@ -930,20 +930,20 @@ export default {
 	color: rgba(0, 0, 0, 0.75);
 }
 
-/* ─── Report body ─── */
-.report-title {
+/* ─── Experience body ─── */
+.experience-title {
 	font-size: 16px;
 	font-weight: 700;
 	color: var(--first-color, #112d4e);
 	line-height: 1.3;
 }
 
-.report-subtitle {
+.experience-subtitle {
 	font-size: 12px;
 	color: rgba(0, 0, 0, 0.5);
 }
 
-.report-content {
+.experience-content {
 	font-size: 14px;
 	color: rgba(0, 0, 0, 0.7);
 	line-height: 1.6;
@@ -952,7 +952,7 @@ export default {
 	margin: 0;
 }
 
-.report-list {
+.experience-list {
 	margin: 0;
 	padding-left: 18px;
 	font-size: 13px;

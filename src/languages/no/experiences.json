@@ -4,9 +4,9 @@
 
   "anonymous": "Send inn anonymt",
   "anonymousLabel": "Anonym",
-  "writeReport": "Skriv en erfaring",
-  "editReport": "Rediger erfaring",
-  "myReports": "Min erfaring",
+  "writeExperience": "Skriv en erfaring",
+  "editExperience": "Rediger erfaring",
+  "myExperiences": "Min erfaring",
 
   "title": "Tittel",
   "content": "Din erfaring",
@@ -53,16 +53,16 @@
   "readMore": "Les mer",
   "viewExchange": "Se utveksling",
   "helpful": "Nyttig",
-  "reportCount": "{count} erfaringer",
+  "experienceCount": "{count} erfaringer",
 
-  "noReports": "Ingen erfaringer ennå. Bli den første til å dele din utvekslingserfaring!",
-  "noReportsForFilter": "Ingen erfaringer matcher filtrene dine.",
+  "noExperiences": "Ingen erfaringer ennå. Bli den første til å dele din utvekslingserfaring!",
+  "noExperiencesForFilter": "Ingen erfaringer matcher filtrene dine.",
 
   "confirmDelete": "Slette erfaring?",
   "confirmDeleteBody": "Denne handlingen kan ikke angres. Er du sikker på at du vil slette denne erfaringen?",
 
   "share": "Del",
   "linkCopied": "Lenke kopiert!",
-  "reportNotFound": "Erfaringen ble ikke funnet.",
-  "noOwnReports": "Du har ikke skrevet noen erfaringer ennå."
+  "experienceNotFound": "Erfaringen ble ikke funnet.",
+  "noOwnExperiences": "Du har ikke skrevet noen erfaringer ennå."
 }

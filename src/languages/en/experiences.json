@@ -4,9 +4,9 @@
 
   "anonymous": "Submit anonymously",
   "anonymousLabel": "Anonymous",
-  "writeReport": "Write an Experience",
-  "editReport": "Edit Experience",
-  "myReports": "My Experience",
+  "writeExperience": "Write an Experience",
+  "editExperience": "Edit Experience",
+  "myExperiences": "My Experience",
 
   "title": "Title",
   "content": "Your Experience",
@@ -53,16 +53,16 @@
   "readMore": "Read more",
   "viewExchange": "View exchange",
   "helpful": "Helpful",
-  "reportCount": "{count} experiences",
+  "experienceCount": "{count} experiences",
 
-  "noReports": "No experiences yet. Be the first to share your exchange experience!",
-  "noReportsForFilter": "No experiences match your filters.",
+  "noExperiences": "No experiences yet. Be the first to share your exchange experience!",
+  "noExperiencesForFilter": "No experiences match your filters.",
 
   "confirmDelete": "Delete experience?",
   "confirmDeleteBody": "This action cannot be undone. Are you sure you want to delete this experience?",
 
   "share": "Share",
   "linkCopied": "Link copied!",
-  "reportNotFound": "Experience not found.",
-  "noOwnReports": "You haven't written any experiences yet."
+  "experienceNotFound": "Experience not found.",
+  "noOwnExperiences": "You haven't written any experiences yet."
 }

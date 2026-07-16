@@ -1,13 +1,13 @@
 <template>
 	<div>
-		<h2>{{ $t("reports.pageHeader") }}</h2>
-		<p class="page-summary">{{ $t("reports.info") }}</p>
+		<h2>{{ $t("experiences.pageHeader") }}</h2>
+		<p class="page-summary">{{ $t("experiences.info") }}</p>
 
 		<br />
 
 		<!-- Search Summary -->
 		<div class="search-summary">
-			{{ $t("reports.reportCount", { count: filteredReports.length }) }}
+			{{ $t("experiences.experienceCount", { count: filteredExperiences.length }) }}
 		</div>
 
 		<!-- Search Field with Chips -->
@@ -44,7 +44,7 @@
 		<!-- Sort -->
 		<div class="d-flex justify-end mb-4">
 			<v-select v-model="sortBy" :items="sortOptions" item-title="label" item-value="value"
-				:label="$t('reports.sortBy')" density="compact" hide-details style="max-width: 200px" />
+				:label="$t('experiences.sortBy')" density="compact" hide-details style="max-width: 200px" />
 		</div>
 
 		<!-- Loading -->
@@ -53,46 +53,46 @@
 		</div>
 
 		<!-- Empty state -->
-		<div v-else-if="filteredReports.length === 0" class="text-center py-8">
+		<div v-else-if="filteredExperiences.length === 0" class="text-center py-8">
 			<v-icon size="64" color="grey">mdi-file-document-outline</v-icon>
 			<p class="text-medium-emphasis mt-2">
 				{{ searchChips.length > 0
-					? $t("reports.noReportsForFilter")
-					: $t("reports.noReports") }}
+					? $t("experiences.noExperiencesForFilter")
+					: $t("experiences.noExperiences") }}
 			</p>
 		</div>
 
-		<!-- Report Cards -->
-		<div v-else class="reports-grid">
-			<v-card v-for="report in paginatedReports" :key="report.id" class="report-card"
-				variant="outlined" rounded="lg" @click="goToReport(report.id)">
+		<!-- Experience Cards -->
+		<div v-else class="experiences-grid">
+			<v-card v-for="experience in paginatedExperiences" :key="experience.id" class="experience-card"
+				variant="outlined" rounded="lg" @click="goToExperience(experience.id)">
 				<v-card-text>
 					<div class="d-flex align-center ga-2 mb-2">
-						<img v-if="report.country" :src="getFlagUrl(report.country)" alt="" width="24" height="18"
+						<img v-if="experience.country" :src="getFlagUrl(experience.country)" alt="" width="24" height="18"
 							class="flag-img" />
 						<span class="text-caption text-medium-emphasis">
-							{{ report.university || '—' }}
+							{{ experience.university || '—' }}
 						</span>
 					</div>
 
-					<h3 class="report-title">{{ report.title }}</h3>
+					<h3 class="experience-title">{{ experience.title }}</h3>
 
-					<p class="report-excerpt">{{ getExcerpt(report.content) }}</p>
+					<p class="experience-excerpt">{{ getExcerpt(experience.content) }}</p>
 
 					<div class="d-flex align-center ga-2 mt-2">
-						<v-rating :model-value="report.ratings?.overall || 0" color="amber" readonly
+						<v-rating :model-value="experience.ratings?.overall || 0" color="amber" readonly
 							density="compact" size="16" />
 						<span class="text-caption text-medium-emphasis">
-							{{ report.ratings?.overall || 0 }}/5
+							{{ experience.ratings?.overall || 0 }}/5
 						</span>
 					</div>
 
 					<div class="d-flex align-center justify-space-between mt-3">
 						<span class="text-caption text-medium-emphasis">
-							{{ $t("reports.writtenBy") }} {{ report.anonymous ? $t("reports.anonymousLabel") : (report.authorName || '—') }}
+							{{ $t("experiences.writtenBy") }} {{ experience.anonymous ? $t("experiences.anonymousLabel") : (experience.authorName || '—') }}
 						</span>
 						<span class="text-caption text-medium-emphasis">
-							{{ formatDate(report.createdAt) }}
+							{{ formatDate(experience.createdAt) }}
 						</span>
 					</div>
 				</v-card-text>
@@ -104,37 +104,37 @@
 			<v-pagination v-model="page" :length="totalPages" rounded="circle" />
 		</div>
 
-		<!-- FAB for creating a report -->
+		<!-- FAB for creating an experience -->
 		<v-btn v-if="isAuthenticated" class="fab-btn" icon size="large" color="primary"
 			to="/profil?newExperience=true">
 			<v-icon>mdi-plus</v-icon>
 		</v-btn>
 
-		<!-- Report Detail Modal -->
-		<ReportDetail v-if="selectedReport" :report="selectedReport" @close="closeReport" />
+		<!-- Experience Detail Modal -->
+		<ExperienceDetail v-if="selectedExperience" :experience="selectedExperience" @close="closeExperience" />
 
 	</div>
 </template>
 
 <script>
 import { mapGetters } from "vuex";
-import { getReportsData } from "../../js/reportsCache";
+import { getExperiencesData } from "../../js/experiencesCache";
 import universitiesData from "../../data/universities.json";
 import countriesInformation from "../../data/countriesInformation.json";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
-import ReportDetail from "./ReportDetail.vue";
+import ExperienceDetail from "./ExperienceDetail.vue";
 import { encryptId, decryptId, encryptIds } from "../../js/urlCipher";
 import { toast } from "vue3-toastify";
 
 const ITEMS_PER_PAGE = 12;
 
 export default {
-	components: { ReportDetail },
+	components: { ExperienceDetail },
 
 	data() {
 		return {
 			loading: true,
-			reports: {},
+			experiences: {},
 			searchChips: [],
 			searchInput: "",
 			searchFocused: false,
@@ -143,7 +143,7 @@ export default {
 			page: 1,
 			universities: universitiesData.universities || {},
 			countriesInfo: countriesInformation,
-			resolvedReportId: null,
+			resolvedExperienceId: null,
 		};
 	},
 
@@ -156,32 +156,32 @@ export default {
 
 		sortOptions() {
 			return [
-				{ label: this.$t("reports.newest"), value: "newest" },
-				{ label: this.$t("reports.oldest"), value: "oldest" },
-				{ label: this.$t("reports.highestRated"), value: "highestRated" },
+				{ label: this.$t("experiences.newest"), value: "newest" },
+				{ label: this.$t("experiences.oldest"), value: "oldest" },
+				{ label: this.$t("experiences.highestRated"), value: "highestRated" },
 			];
 		},
 
-		reportList() {
-			return Object.entries(this.reports).map(([id, report]) => ({ id, ...report }));
+		experienceList() {
+			return Object.entries(this.experiences).map(([id, experience]) => ({ id, ...experience }));
 		},
 
 		allSuggestions() {
 			const suggestions = [];
 			const added = new Set();
 
-			for (const report of this.reportList) {
-				if (report.country && !added.has(report.country)) {
-					added.add(report.country);
-					const translated = this.$t(`countries.${report.country}`);
+			for (const experience of this.experienceList) {
+				if (experience.country && !added.has(experience.country)) {
+					added.add(experience.country);
+					const translated = this.$t(`countries.${experience.country}`);
 					suggestions.push({ label: translated, type: this.$t("database.country"), icon: "mdi-earth" });
 				}
 			}
 
 			const universityNames = new Set();
-			for (const report of this.reportList) {
-				if (report.university) {
-					const shortName = report.university.split('(')[0].trim();
+			for (const experience of this.experienceList) {
+				if (experience.university) {
+					const shortName = experience.university.split('(')[0].trim();
 					if (!universityNames.has(shortName)) {
 						universityNames.add(shortName);
 						suggestions.push({ label: shortName, type: this.$t("database.university"), icon: "mdi-school" });
@@ -190,10 +190,10 @@ export default {
 			}
 
 			const studies = new Set();
-			for (const report of this.reportList) {
-				if (report.study && !studies.has(report.study)) {
-					studies.add(report.study);
-					suggestions.push({ label: report.study, type: this.$t("database.study"), icon: "mdi-book-open-variant" });
+			for (const experience of this.experienceList) {
+				if (experience.study && !studies.has(experience.study)) {
+					studies.add(experience.study);
+					suggestions.push({ label: experience.study, type: this.$t("database.study"), icon: "mdi-book-open-variant" });
 				}
 			}
 
@@ -212,22 +212,22 @@ export default {
 			return this.searchFocused && this.searchInput.trim().length > 0;
 		},
 
-		filteredReports() {
-			let list = this.reportList;
+		filteredExperiences() {
+			let list = this.experienceList;
 
 			if (this.searchChips.length > 0) {
-				list = list.filter(report => {
+				list = list.filter(experience => {
 					return this.searchChips.every(chip => {
 						const chipLower = chip.toLowerCase();
 						const fields = [
-							report.title,
-							report.content,
-							report.university,
-							report.country,
-							this.$t(`countries.${report.country}`),
-							report.study,
-							report.authorName,
-							report.year != null ? String(report.year) : "",
+							experience.title,
+							experience.content,
+							experience.university,
+							experience.country,
+							this.$t(`countries.${experience.country}`),
+							experience.study,
+							experience.authorName,
+							experience.year != null ? String(experience.year) : "",
 						];
 						return fields.some(f => (f || "").toLowerCase().includes(chipLower));
 					});
@@ -246,19 +246,19 @@ export default {
 		},
 
 		totalPages() {
-			return Math.ceil(this.filteredReports.length / ITEMS_PER_PAGE);
+			return Math.ceil(this.filteredExperiences.length / ITEMS_PER_PAGE);
 		},
 
-		paginatedReports() {
+		paginatedExperiences() {
 			const start = (this.page - 1) * ITEMS_PER_PAGE;
-			return this.filteredReports.slice(start, start + ITEMS_PER_PAGE);
+			return this.filteredExperiences.slice(start, start + ITEMS_PER_PAGE);
 		},
 
-		selectedReport() {
-			if (!this.resolvedReportId) return null;
-			const report = this.reports[this.resolvedReportId];
-			if (!report) return null;
-			return { id: this.resolvedReportId, ...report };
+		selectedExperience() {
+			if (!this.resolvedExperienceId) return null;
+			const experience = this.experiences[this.resolvedExperienceId];
+			if (!experience) return null;
+			return { id: this.resolvedExperienceId, ...experience };
 		},
 	},
 
@@ -270,24 +270,24 @@ export default {
 			immediate: true,
 			async handler(token) {
 				if (!token) {
-					this.resolvedReportId = null;
+					this.resolvedExperienceId = null;
 					return;
 				}
 				try {
 					const id = await decryptId(token);
-					this.resolvedReportId = id;
-					if (!this.loading && id && !this.reports[id]) {
+					this.resolvedExperienceId = id;
+					if (!this.loading && id && !this.experiences[id]) {
 						this.showNotFoundAndRedirect();
 					}
 				} catch {
-					this.resolvedReportId = null;
+					this.resolvedExperienceId = null;
 					this.showNotFoundAndRedirect();
 				}
 			},
 		},
-		selectedReport(report) {
-			if (report) {
-				document.title = report.title || "Erfaring";
+		selectedExperience(experience) {
+			if (experience) {
+				document.title = experience.title || "Erfaring";
 			} else {
 				document.title = "Erfaringer";
 			}
@@ -296,13 +296,13 @@ export default {
 
 	async mounted() {
 		try {
-			this.reports = await getReportsData();
-			const ids = Object.keys(this.reports);
+			this.experiences = await getExperiencesData();
+			const ids = Object.keys(this.experiences);
 			if (ids.length > 0) {
 				encryptIds(ids, "report");
 			}
 		} catch (error) {
-			console.error("Error loading reports:", error);
+			console.error("Error loading experiences:", error);
 		} finally {
 			this.loading = false;
 		}
@@ -335,19 +335,19 @@ export default {
 			return this.countriesInfo.countryCodes.no[translated] || this.countriesInfo.countryCodes.no[country] || "unknown";
 		},
 
-		async goToReport(reportId) {
-			const token = await encryptId(reportId, "report");
-			this.$router.push({ name: "ReportDetail", params: { id: token } });
+		async goToExperience(experienceId) {
+			const token = await encryptId(experienceId, "report");
+			this.$router.push({ name: "ExperienceDetail", params: { id: token } });
 		},
 
-		closeReport() {
-			this.$router.push({ name: "Reports" });
+		closeExperience() {
+			this.$router.push({ name: "Experiences" });
 		},
 
 		showNotFoundAndRedirect() {
-			this.$router.replace({ name: "Reports" });
+			this.$router.replace({ name: "Experiences" });
 			setTimeout(() => {
-				toast.error(this.$t("reports.reportNotFound"));
+				toast.error(this.$t("experiences.experienceNotFound"));
 			}, 100);
 		},
 
@@ -511,30 +511,30 @@ export default {
 	letter-spacing: 0.5px;
 }
 
-.reports-grid {
+.experiences-grid {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
 	gap: 16px;
 }
 
-.report-card {
+.experience-card {
 	cursor: pointer;
 	transition: box-shadow 0.15s ease, transform 0.1s ease;
 }
 
-.report-card:hover {
+.experience-card:hover {
 	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 	transform: translateY(-2px);
 }
 
-.report-title {
+.experience-title {
 	font-size: 1.05rem;
 	font-weight: 700;
 	line-height: 1.3;
 	margin-bottom: 6px;
 }
 
-.report-excerpt {
+.experience-excerpt {
 	font-size: 0.9rem;
 	line-height: 1.5;
 	color: rgba(0, 0, 0, 0.65);
@@ -554,7 +554,7 @@ export default {
 }
 
 @media (max-width: 600px) {
-	.reports-grid {
+	.experiences-grid {
 		grid-template-columns: 1fr;
 	}
 

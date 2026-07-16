@@ -5,28 +5,28 @@
 			<v-card-title class="d-flex align-center pa-4 pa-sm-5 pb-2">
 				<div class="flex-grow-1 min-width-0">
 					<div class="d-flex align-center ga-2 mb-1">
-						<img v-if="report.country" :src="getFlagUrl(report.country)" alt="" width="28" height="21"
+						<img v-if="experience.country" :src="getFlagUrl(experience.country)" alt="" width="28" height="21"
 							class="flag-img" />
 						<span class="text-body-2 text-medium-emphasis text-truncate">
-							{{ report.university || '—' }}
+							{{ experience.university || '—' }}
 						</span>
 					</div>
-					<h2 class="detail-title">{{ report.title }}</h2>
+					<h2 class="detail-title">{{ experience.title }}</h2>
 					<div class="detail-meta mt-1">
 						<span class="text-caption text-medium-emphasis">
-							{{ $t("reports.writtenBy") }}
-							{{ report.anonymous ? $t("reports.anonymousLabel") : (report.authorName || '—') }}
+							{{ $t("experiences.writtenBy") }}
+							{{ experience.anonymous ? $t("experiences.anonymousLabel") : (experience.authorName || '—') }}
 						</span>
 						<span class="text-caption text-medium-emphasis">·</span>
-						<span class="text-caption text-medium-emphasis">{{ formatDate(report.createdAt) }}</span>
-						<template v-if="report.study">
+						<span class="text-caption text-medium-emphasis">{{ formatDate(experience.createdAt) }}</span>
+						<template v-if="experience.study">
 							<span class="text-caption text-medium-emphasis">·</span>
-							<span class="text-caption text-medium-emphasis">{{ report.study }}</span>
+							<span class="text-caption text-medium-emphasis">{{ experience.study }}</span>
 						</template>
-						<template v-if="report.semester || report.year">
+						<template v-if="experience.semester || experience.year">
 							<span class="text-caption text-medium-emphasis">·</span>
 							<span class="text-caption text-medium-emphasis">
-								{{ report.semester }} {{ report.year }}
+								{{ experience.semester }} {{ experience.year }}
 							</span>
 						</template>
 					</div>
@@ -42,19 +42,19 @@
 			<v-card-text class="pa-4 pa-sm-5 detail-body">
 				<!-- Ratings -->
 				<div class="ratings-section mb-5">
-					<h3 class="section-label mb-2">{{ $t("reports.ratings") }}</h3>
+					<h3 class="section-label mb-2">{{ $t("experiences.ratings") }}</h3>
 					<table class="ratings-table ratings-table--desktop">
 						<tr v-for="(_, i) in ratingKeysLeft" :key="i">
-							<td class="rating-label text-body-2">{{ $t(`reports.${ratingKeysLeft[i]}`) }}</td>
+							<td class="rating-label text-body-2">{{ $t(`experiences.${ratingKeysLeft[i]}`) }}</td>
 							<td class="rating-stars-cell">
-								<v-rating :model-value="report.ratings?.[ratingKeysLeft[i]] || 0" color="amber" readonly
+								<v-rating :model-value="experience.ratings?.[ratingKeysLeft[i]] || 0" color="amber" readonly
 									density="compact" size="16" class="d-flex" />
 							</td>
 							<template v-if="ratingKeysRight[i]">
 								<td class="rating-gap"></td>
-								<td class="rating-label text-body-2">{{ $t(`reports.${ratingKeysRight[i]}`) }}</td>
+								<td class="rating-label text-body-2">{{ $t(`experiences.${ratingKeysRight[i]}`) }}</td>
 								<td class="rating-stars-cell">
-									<v-rating :model-value="report.ratings?.[ratingKeysRight[i]] || 0" color="amber" readonly
+									<v-rating :model-value="experience.ratings?.[ratingKeysRight[i]] || 0" color="amber" readonly
 										density="compact" size="16" class="d-flex" />
 								</td>
 							</template>
@@ -62,9 +62,9 @@
 					</table>
 					<table class="ratings-table ratings-table--mobile">
 						<tr v-for="key in ratingKeys" :key="key">
-							<td class="rating-label text-body-2">{{ $t(`reports.${key}`) }}</td>
+							<td class="rating-label text-body-2">{{ $t(`experiences.${key}`) }}</td>
 							<td class="rating-stars-cell">
-								<v-rating :model-value="report.ratings?.[key] || 0" color="amber" readonly density="compact" size="16"
+								<v-rating :model-value="experience.ratings?.[key] || 0" color="amber" readonly density="compact" size="16"
 									class="d-flex" />
 							</td>
 						</tr>
@@ -72,15 +72,15 @@
 				</div>
 
 				<!-- Content -->
-				<div v-if="report.content" class="mb-5">
+				<div v-if="experience.content" class="mb-5">
 					<article class="markdown-body" v-html="renderedContent" />
 				</div>
 
 				<!-- Pros -->
-				<div v-if="report.pros && report.pros.length > 0" class="mb-4">
-					<h3 class="section-label mb-2">{{ $t("reports.pros") }}</h3>
+				<div v-if="experience.pros && experience.pros.length > 0" class="mb-4">
+					<h3 class="section-label mb-2">{{ $t("experiences.pros") }}</h3>
 					<ul class="pro-con-list">
-						<li v-for="(pro, i) in report.pros" :key="'pro-' + i">
+						<li v-for="(pro, i) in experience.pros" :key="'pro-' + i">
 							<v-icon size="18" color="success" class="pro-con-icon">mdi-check-circle</v-icon>
 							<span>{{ pro }}</span>
 						</li>
@@ -88,10 +88,10 @@
 				</div>
 
 				<!-- Cons -->
-				<div v-if="report.cons && report.cons.length > 0" class="mb-4">
-					<h3 class="section-label mb-2">{{ $t("reports.cons") }}</h3>
+				<div v-if="experience.cons && experience.cons.length > 0" class="mb-4">
+					<h3 class="section-label mb-2">{{ $t("experiences.cons") }}</h3>
 					<ul class="pro-con-list">
-						<li v-for="(con, i) in report.cons" :key="'con-' + i">
+						<li v-for="(con, i) in experience.cons" :key="'con-' + i">
 							<v-icon size="18" color="error" class="pro-con-icon">mdi-close-circle</v-icon>
 							<span>{{ con }}</span>
 						</li>
@@ -99,12 +99,12 @@
 				</div>
 
 				<!-- Tips -->
-				<div v-if="report.tips" class="tips-box mb-4">
+				<div v-if="experience.tips" class="tips-box mb-4">
 					<h3 class="section-label mb-2">
 						<v-icon size="20" class="mr-1">mdi-lightbulb-outline</v-icon>
-						{{ $t("reports.tips") }}
+						{{ $t("experiences.tips") }}
 					</h3>
-					<p class="tips-text">{{ report.tips }}</p>
+					<p class="tips-text">{{ experience.tips }}</p>
 				</div>
 			</v-card-text>
 
@@ -112,24 +112,24 @@
 
 			<!-- Footer -->
 			<v-card-actions class="pa-4 pa-sm-5 d-flex flex-wrap ga-3">
-				<v-btn v-if="report.exchangeId && !inline" variant="tonal" color="primary" :to="exchangeLink">
+				<v-btn v-if="experience.exchangeId && !inline" variant="tonal" color="primary" :to="exchangeLink">
 					<v-icon start>mdi-swap-horizontal</v-icon>
-					{{ $t("reports.viewExchange") }}
+					{{ $t("experiences.viewExchange") }}
 				</v-btn>
 				<template v-if="isAuthor">
 					<v-btn variant="tonal" color="secondary" @click="handleEdit">
 						<v-icon start>mdi-pencil-outline</v-icon>
-						{{ $t("reports.edit") }}
+						{{ $t("experiences.edit") }}
 					</v-btn>
 					<v-btn variant="tonal" color="error" @click="deleteDialog = true">
 						<v-icon start>mdi-trash-can-outline</v-icon>
-						{{ $t("reports.delete") }}
+						{{ $t("experiences.delete") }}
 					</v-btn>
 				</template>
 				<v-spacer />
 				<v-btn variant="text" @click="copyLink">
 					<v-icon start>mdi-share-variant</v-icon>
-					{{ copied ? $t("reports.linkCopied") : $t("reports.share") }}
+					{{ copied ? $t("experiences.linkCopied") : $t("experiences.share") }}
 				</v-btn>
 			</v-card-actions>
 		</v-card>
@@ -138,15 +138,15 @@
 	<!-- Delete confirmation dialog -->
 	<v-dialog v-model="deleteDialog" max-width="420">
 		<v-card rounded="xl">
-			<v-card-title class="pa-5 pb-2">{{ $t("reports.confirmDelete") }}</v-card-title>
+			<v-card-title class="pa-5 pb-2">{{ $t("experiences.confirmDelete") }}</v-card-title>
 			<v-card-text class="pa-5 pt-1 text-medium-emphasis">
-				{{ $t("reports.confirmDeleteBody") }}
+				{{ $t("experiences.confirmDeleteBody") }}
 			</v-card-text>
 			<v-card-actions class="pa-4 pt-0 ga-2">
 				<v-spacer />
-				<v-btn variant="text" @click="deleteDialog = false">{{ $t("reports.cancel") }}</v-btn>
+				<v-btn variant="text" @click="deleteDialog = false">{{ $t("experiences.cancel") }}</v-btn>
 				<v-btn color="error" variant="tonal" :loading="deleting" @click="confirmDelete">
-					{{ $t("reports.delete") }}
+					{{ $t("experiences.delete") }}
 				</v-btn>
 			</v-card-actions>
 		</v-card>
@@ -160,7 +160,7 @@ import { mapGetters } from "vuex";
 import countriesInformation from "../../data/countriesInformation.json";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
 import { encryptId } from "../../js/urlCipher";
-import { deleteReport } from "../../js/reportsCache";
+import { deleteExperience } from "../../js/experiencesCache";
 import { toast } from "vue3-toastify";
 
 const md = new MarkdownIt({
@@ -171,10 +171,10 @@ const md = new MarkdownIt({
 });
 
 export default {
-	name: "ReportDetail",
+	name: "ExperienceDetail",
 
 	props: {
-		report: { type: Object, required: true },
+		experience: { type: Object, required: true },
 		// When true: edit button emits 'edit' instead of navigating to edit route
 		inline: { type: Boolean, default: false },
 	},
@@ -201,12 +201,12 @@ export default {
 		},
 
 		isAuthor() {
-			return this.user && this.report.authorId && this.user.uid === this.report.authorId;
+			return this.user && this.experience.authorId && this.user.uid === this.experience.authorId;
 		},
 
 		editLink() {
 			if (!this.editToken) return null;
-			return { name: "EditReport", params: { id: this.editToken } };
+			return { name: "EditExperience", params: { id: this.editToken } };
 		},
 
 		ratingKeysLeft() {
@@ -218,30 +218,30 @@ export default {
 		},
 
 		renderedContent() {
-			if (!this.report.content) return "";
-			return DOMPurify.sanitize(md.render(this.report.content));
+			if (!this.experience.content) return "";
+			return DOMPurify.sanitize(md.render(this.experience.content));
 		},
 
 		exchangeLink() {
 			if (!this.exchangeToken) return null;
-			const search = this.report.university || "";
+			const search = this.experience.university || "";
 			return { path: "/utvekslinger", query: { search, r: this.exchangeToken } };
 		},
 	},
 
 	watch: {
-		"report.exchangeId": {
+		"experience.exchangeId": {
 			immediate: true,
 			async handler(exchangeId) {
 				if (!exchangeId) { this.exchangeToken = null; return; }
 				this.exchangeToken = await encryptId(exchangeId, "exchange");
 			},
 		},
-		"report.id": {
+		"experience.id": {
 			immediate: true,
-			async handler(reportId) {
-				if (!reportId) { this.editToken = null; return; }
-				this.editToken = await encryptId(reportId, "report");
+			async handler(experienceId) {
+				if (!experienceId) { this.editToken = null; return; }
+				this.editToken = await encryptId(experienceId, "report");
 			},
 		},
 	},
@@ -253,7 +253,7 @@ export default {
 
 		handleEdit() {
 			if (this.inline) {
-				this.$emit("edit", this.report);
+				this.$emit("edit", this.experience);
 			} else if (this.editLink) {
 				this.$router.push(this.editLink);
 			}
@@ -262,13 +262,13 @@ export default {
 		async confirmDelete() {
 			this.deleting = true;
 			try {
-				await deleteReport(this.report.id);
-				toast.success(this.$t("notifications.reportDeleted"));
+				await deleteExperience(this.experience.id);
+				toast.success(this.$t("notifications.experienceDeleted"));
 				this.deleteDialog = false;
 				this.$emit("close");
 			} catch (error) {
-				console.error("Error deleting report:", error);
-				toast.error(this.$t("notifications.reportError"));
+				console.error("Error deleting experience:", error);
+				toast.error(this.$t("notifications.experienceError"));
 			} finally {
 				this.deleting = false;
 			}

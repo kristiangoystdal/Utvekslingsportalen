@@ -31,5 +31,5 @@
   "uploadExchange": "Last opp utvekslingsdata",
   "viewExchanges": "Se utvekslinger",
   "yes": "Ja",
-  "confirmReportDelete": "Er du sikker på at du vil slette denne erfaringen? Dette kan ikke angres."
+  "confirmExperienceDelete": "Er du sikker på at du vil slette denne erfaringen? Dette kan ikke angres."
 }

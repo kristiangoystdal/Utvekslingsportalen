@@ -1,19 +1,19 @@
 <template>
 	<div class="step-body">
-		<div class="section-divider"><span>{{ $t('reports.content') }}</span></div>
+		<div class="section-divider"><span>{{ $t('experiences.content') }}</span></div>
 		<v-textarea
 			:model-value="content"
-			:label="$t('reports.content')"
+			:label="$t('experiences.content')"
 			rows="6"
 			variant="outlined"
-			:error-messages="submitted && !content ? $t('reports.contentRequired') : ''"
+			:error-messages="submitted && !content ? $t('experiences.contentRequired') : ''"
 			class="mb-2"
 			@update:model-value="$emit('update:content', $event)"
 		/>
-		<div class="section-divider"><span>{{ $t('reports.tips') }}</span></div>
+		<div class="section-divider"><span>{{ $t('experiences.tips') }}</span></div>
 		<v-textarea
 			:model-value="tips"
-			:label="$t('reports.tips')"
+			:label="$t('experiences.tips')"
 			rows="3"
 			variant="outlined"
 			@update:model-value="$emit('update:tips', $event)"

@@ -68,7 +68,7 @@
 				<div class="profile-content">
 					<router-link v-if="isAdminUser" class="footer-icon" to="/erfaringer" @click="showMenuDropdown = false">
 						<v-icon size="30px">mdi-file-document-outline</v-icon>
-						<span>{{ $t("nav.reportsHeader") }}</span>
+						<span>{{ $t("nav.experiencesHeader") }}</span>
 					</router-link>
 					<router-link class="footer-icon" to="/kurs" @click="showMenuDropdown = false">
 						<v-icon size="30px">mdi-book-education-outline</v-icon>

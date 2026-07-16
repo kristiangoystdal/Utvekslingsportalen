@@ -24,7 +24,7 @@
 
 						<li v-if="checkAdminUser()">
 							<router-link to="/erfaringer">{{
-								$t("nav.reportsHeader")
+								$t("nav.experiencesHeader")
 							}}</router-link>
 						</li>
 

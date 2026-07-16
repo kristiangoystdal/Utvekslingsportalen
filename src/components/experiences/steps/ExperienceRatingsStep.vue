@@ -1,13 +1,13 @@
 <template>
 	<div class="step-body">
-		<div class="section-divider"><span>{{ $t('reports.ratings') }}</span></div>
+		<div class="section-divider"><span>{{ $t('experiences.ratings') }}</span></div>
 		<div v-for="key in ratingKeys" :key="key" class="rating-row">
-			<span class="rating-label">{{ $t(`reports.${key}`) }}</span>
+			<span class="rating-label">{{ $t(`experiences.${key}`) }}</span>
 			<v-rating v-model="localRatings[key]" color="amber" hover length="5" size="24"
 				@update:model-value="emitRatings" />
 		</div>
 
-		<div class="section-divider mt-3"><span>{{ $t('reports.pros') }}</span></div>
+		<div class="section-divider mt-3"><span>{{ $t('experiences.pros') }}</span></div>
 		<br />
 		<div v-for="(_, i) in localPros" :key="'pro-' + i" class="list-row">
 			<v-text-field v-model="localPros[i]" density="compact" variant="outlined" hide-details
@@ -17,10 +17,10 @@
 			</v-btn>
 		</div>
 		<v-btn variant="tonal" color="primary" prepend-icon="mdi-plus" @click="addPro">
-			{{ $t('reports.addPro') }}
+			{{ $t('experiences.addPro') }}
 		</v-btn>
 
-		<div class="section-divider mt-3"><span>{{ $t('reports.cons') }}</span></div>
+		<div class="section-divider mt-3"><span>{{ $t('experiences.cons') }}</span></div>
 		<br />
 		<div v-for="(_, i) in localCons" :key="'con-' + i" class="list-row">
 			<v-text-field v-model="localCons[i]" density="compact" variant="outlined" hide-details
@@ -30,7 +30,7 @@
 			</v-btn>
 		</div>
 		<v-btn variant="tonal" color="primary" prepend-icon="mdi-plus" @click="addCon">
-			{{ $t('reports.addCon') }}
+			{{ $t('experiences.addCon') }}
 		</v-btn>
 	</div>
 </template>

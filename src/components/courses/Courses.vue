@@ -71,11 +71,11 @@
                     mdi-airplane-search
                   </v-icon>
                 </template>
-                <template v-slot:item.report="{ item }">
+                <template v-slot:item.experience="{ item }">
                   <router-link
-                    v-if="item.exchangeID && reportsByExchangeId[item.exchangeID]"
-                    :to="`/erfaringer/${reportsByExchangeId[item.exchangeID].id}`"
-                    class="report-icon-link"
+                    v-if="item.exchangeID && experiencesByExchangeId[item.exchangeID]"
+                    :to="`/erfaringer/${experiencesByExchangeId[item.exchangeID].id}`"
+                    class="experience-icon-link"
                   >
                     <v-icon small>mdi-file-document-outline</v-icon>
                   </router-link>
@@ -158,8 +158,8 @@
                       mdi-airplane-search
                     </v-icon>
                   </v-col>
-                  <v-col v-if="course.exchangeID && reportsByExchangeId[course.exchangeID]" cols="1" style="margin: auto;">
-                    <router-link :to="`/erfaringer/${reportsByExchangeId[course.exchangeID].id}`" class="report-icon-link">
+                  <v-col v-if="course.exchangeID && experiencesByExchangeId[course.exchangeID]" cols="1" style="margin: auto;">
+                    <router-link :to="`/erfaringer/${experiencesByExchangeId[course.exchangeID].id}`" class="experience-icon-link">
                       <v-icon small>mdi-file-document-outline</v-icon>
                     </router-link>
                   </v-col>
@@ -262,7 +262,7 @@ import "vue3-toastify/dist/index.css";
 
 import { getExchangesData } from "../../js/exchangesCache.js";
 import { encryptId } from "../../js/urlCipher";
-import { getReportsData } from "../../js/reportsCache.js";
+import { getExperiencesData } from "../../js/experiencesCache.js";
 
 export default {
   data() {
@@ -284,14 +284,14 @@ export default {
       homeUniversities: [],
       selectedUniversity: "",
       coursetableLoading: false,
-      reports: {},
+      experiences: {},
     };
   },
   async created() {
     await Promise.all([
       this.fetchExchangeData(),
       this.loadFavoriteCourses(),
-      this.loadReports(),
+      this.loadExperiences(),
     ]);
   },
   mounted() {
@@ -398,7 +398,7 @@ export default {
         {
           title: "",
           align: "end",
-          key: "report",
+          key: "experience",
           sortable: false,
         }
       ];
@@ -469,18 +469,18 @@ export default {
         ? this.$t("courses.exchange_one")
         : this.$t("courses.exchange_other");
     },
-    reportsByExchangeId() {
+    experiencesByExchangeId() {
       const map = {};
-      for (const [id, report] of Object.entries(this.reports)) {
-        const key = report.exchangeId;
-        if (key && !map[key]) map[key] = { id, ...report };
+      for (const [id, experience] of Object.entries(this.experiences)) {
+        const key = experience.exchangeId;
+        if (key && !map[key]) map[key] = { id, ...experience };
       }
       return map;
     },
   },
   methods: {
-    async loadReports() {
-      this.reports = await getReportsData();
+    async loadExperiences() {
+      this.experiences = await getExperiencesData();
     },
     updateScreenWidth() {
       this.screenWidth = window.innerWidth;
@@ -782,13 +782,13 @@ export default {
   color: var(--color-text-secondary);
 }
 
-.report-icon-link {
+.experience-icon-link {
   color: var(--second-color, #3f72af);
   display: inline-flex;
   align-items: center;
 }
 
-.report-icon-link:hover .v-icon {
+.experience-icon-link:hover .v-icon {
   opacity: 0.7;
 }
 </style>

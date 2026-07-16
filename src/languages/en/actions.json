@@ -31,5 +31,5 @@
   "uploadExchange": "Upload Exchange Data",
   "viewExchanges": "View Exchanges",
   "yes": "Yes",
-  "confirmReportDelete": "Are you sure you want to delete this experience? This cannot be undone."
+  "confirmExperienceDelete": "Are you sure you want to delete this experience? This cannot be undone."
 }

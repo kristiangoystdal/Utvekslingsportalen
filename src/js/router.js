@@ -11,9 +11,9 @@ const Admin = () => import('../components/admin/Admin.vue');
 const NotFound = () => import('../components/error/NotFound.vue');
 const Courses = () => import('../components/courses/Courses.vue');
 const Legal = () => import('../components/docs/Legal.vue');
-const Reports = () => import('../components/reports/Reports.vue');
-const CreateReport = () => import('../components/reports/CreateReport.vue');
-const EditReport = () => import('../components/reports/CreateReport.vue');
+const Experiences = () => import('../components/experiences/Experiences.vue');
+const CreateExperience = () => import('../components/experiences/CreateExperience.vue');
+const EditExperience = () => import('../components/experiences/CreateExperience.vue');
 
 import store, { authReadyPromise } from './store.js';
 
@@ -97,8 +97,8 @@ const routes = [
 
   {
     path: '/erfaringer',
-    name: 'Reports',
-    component: Reports,
+    name: 'Experiences',
+    component: Experiences,
     meta: {
       title: "Erfaringer",
       description: "Les utvekslingserfaringer fra studenter som har vært på utveksling gjennom NTNU."
@@ -107,8 +107,8 @@ const routes = [
 
   {
     path: '/erfaringer/:id',
-    name: 'ReportDetail',
-    component: Reports,
+    name: 'ExperienceDetail',
+    component: Experiences,
     meta: {
       title: "Erfaring",
       description: "Les en utvekslingserfaring fra en student som har vært på utveksling gjennom NTNU."
@@ -122,8 +122,8 @@ const routes = [
 
   {
     path: '/erfaringer/:id/rediger',
-    name: 'EditReport',
-    component: EditReport,
+    name: 'EditExperience',
+    component: EditExperience,
     meta: {
       requiresAuth: true,
       title: "Rediger erfaring",
@@ -170,8 +170,8 @@ const router = createRouter({
       return false;
     }
 
-    const isReportNav = to.path.startsWith('/erfaringer') && from.path.startsWith('/erfaringer');
-    if (isReportNav) return false;
+    const isExperienceNav = to.path.startsWith('/erfaringer') && from.path.startsWith('/erfaringer');
+    if (isExperienceNav) return false;
 
     return { top: 0 };
   }
@@ -188,8 +188,8 @@ router.beforeEach(async (to, from, next) => {
     return next({ name: 'Home' });
   }
 
-  const isReportsRoute = to.matched.some(record => ['Reports', 'ReportDetail', 'EditReport'].includes(record.name));
-  if (isReportsRoute && (!adminUserId || !isAuthenticated || String(currentUserId) !== String(adminUserId))) {
+  const isExperiencesRoute = to.matched.some(record => ['Experiences', 'ExperienceDetail', 'EditExperience'].includes(record.name));
+  if (isExperiencesRoute && (!adminUserId || !isAuthenticated || String(currentUserId) !== String(adminUserId))) {
     return next({ name: 'Home' });
   }
 
