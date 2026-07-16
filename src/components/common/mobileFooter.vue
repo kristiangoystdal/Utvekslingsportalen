@@ -66,7 +66,7 @@
 		<div v-if="showMenuDropdown">
 			<div class="menu-dropdown">
 				<div class="profile-content">
-					<router-link v-if="isAdminUser" class="footer-icon" to="/erfaringer" @click="showMenuDropdown = false">
+					<router-link class="footer-icon" to="/erfaringer" @click="showMenuDropdown = false">
 						<v-icon size="30px">mdi-file-document-outline</v-icon>
 						<span>{{ $t("nav.experiencesHeader") }}</span>
 					</router-link>
@@ -107,9 +107,6 @@ export default {
 	},
 	computed: {
 		...mapGetters(["isAuthenticated", "user", "userData"]),
-		isAdminUser() {
-			return this.user && this.user.uid === import.meta.env.VITE_ADMIN_USER_ID;
-		},
 	},
 	methods: {
 		toggleProfileDropdown() {

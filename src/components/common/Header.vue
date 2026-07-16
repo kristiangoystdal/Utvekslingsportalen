@@ -22,7 +22,7 @@
 							}}</router-link>
 						</li>
 
-						<li v-if="checkAdminUser()">
+						<li>
 							<router-link to="/erfaringer">{{
 								$t("nav.experiencesHeader")
 							}}</router-link>
