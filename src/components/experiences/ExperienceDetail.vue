@@ -241,7 +241,7 @@ export default {
 			immediate: true,
 			async handler(experienceId) {
 				if (!experienceId) { this.editToken = null; return; }
-				this.editToken = await encryptId(experienceId, "report");
+				this.editToken = await encryptId(experienceId, "experience");
 			},
 		},
 	},

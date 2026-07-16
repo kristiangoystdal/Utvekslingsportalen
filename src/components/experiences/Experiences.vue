@@ -299,7 +299,7 @@ export default {
 			this.experiences = await getExperiencesData();
 			const ids = Object.keys(this.experiences);
 			if (ids.length > 0) {
-				encryptIds(ids, "report");
+				encryptIds(ids, "experience");
 			}
 		} catch (error) {
 			console.error("Error loading experiences:", error);
@@ -336,7 +336,7 @@ export default {
 		},
 
 		async goToExperience(experienceId) {
-			const token = await encryptId(experienceId, "report");
+			const token = await encryptId(experienceId, "experience");
 			this.$router.push({ name: "ExperienceDetail", params: { id: token } });
 		},
 

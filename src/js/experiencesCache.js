@@ -43,7 +43,7 @@ export async function getExperiencesData() {
   if (cached) return cached;
 
   const db = getDatabase();
-  const snapshot = await get(child(dbRef(db), "test_reports"));
+  const snapshot = await get(child(dbRef(db), "experiences"));
 
   if (!snapshot.exists()) return {};
 
@@ -69,13 +69,13 @@ export async function getExperienceById(experienceId) {
   if (cached && cached[experienceId]) return cached[experienceId];
 
   const db = getDatabase();
-  const snapshot = await get(child(dbRef(db), `test_reports/${experienceId}`));
+  const snapshot = await get(child(dbRef(db), `experiences/${experienceId}`));
   return snapshot.exists() ? snapshot.val() : null;
 }
 
 export async function getUserExperiences(userId) {
   const db = getDatabase();
-  const snapshot = await get(child(dbRef(db), "test_reports"));
+  const snapshot = await get(child(dbRef(db), "experiences"));
 
   if (!snapshot.exists()) return {};
 
@@ -90,7 +90,7 @@ export async function getUserExperiences(userId) {
 
 export async function createExperience(experienceData) {
   const db = getDatabase();
-  const newRef = push(dbRef(db, "test_reports"));
+  const newRef = push(dbRef(db, "experiences"));
   const now = Date.now();
 
   await set(newRef, {
@@ -107,7 +107,7 @@ export async function createExperience(experienceData) {
 export async function updateExperience(experienceId, experienceData) {
   const db = getDatabase();
   const existing = await getExperienceById(experienceId);
-  await set(dbRef(db, `test_reports/${experienceId}`), {
+  await set(dbRef(db, `experiences/${experienceId}`), {
     ...experienceData,
     status: existing?.status ?? "published",
     createdAt: existing?.createdAt ?? Date.now(),
@@ -125,17 +125,17 @@ export async function getExperiencesByExchangeId(exchangeId) {
 
 export async function syncHomeInfoToUserExperiences(userId, { homeUniversity, study, studyYear, year, numSemesters }) {
   const db = getDatabase();
-  const snapshot = await get(child(dbRef(db), "test_reports"));
+  const snapshot = await get(child(dbRef(db), "experiences"));
   if (!snapshot.exists()) return;
 
   const updates = {};
   for (const [id, experience] of Object.entries(snapshot.val())) {
     if (experience.authorId === userId) {
-      updates[`test_reports/${id}/homeUniversity`] = homeUniversity ?? null;
-      updates[`test_reports/${id}/study`] = study ?? null;
-      updates[`test_reports/${id}/studyYear`] = studyYear ?? null;
-      updates[`test_reports/${id}/year`] = year ?? null;
-      updates[`test_reports/${id}/numSemesters`] = numSemesters ?? null;
+      updates[`experiences/${id}/homeUniversity`] = homeUniversity ?? null;
+      updates[`experiences/${id}/study`] = study ?? null;
+      updates[`experiences/${id}/studyYear`] = studyYear ?? null;
+      updates[`experiences/${id}/year`] = year ?? null;
+      updates[`experiences/${id}/numSemesters`] = numSemesters ?? null;
     }
   }
 
@@ -147,6 +147,6 @@ export async function syncHomeInfoToUserExperiences(userId, { homeUniversity, st
 
 export async function deleteExperience(experienceId) {
   const db = getDatabase();
-  await remove(dbRef(db, `test_reports/${experienceId}`));
+  await remove(dbRef(db, `experiences/${experienceId}`));
   clearCachedExperiences();
 }

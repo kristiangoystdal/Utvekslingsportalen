@@ -15,8 +15,8 @@ exports.createToken = onCall(async (request) => {
     throw new HttpsError("invalid-argument", "id and type are required");
   }
 
-  if (!["exchange", "report"].includes(type)) {
-    throw new HttpsError("invalid-argument", "type must be exchange or report");
+  if (!["exchange", "experience"].includes(type)) {
+    throw new HttpsError("invalid-argument", "type must be exchange or experience");
   }
 
   const existing = await tokensRef
@@ -61,8 +61,8 @@ exports.createTokenBatch = onCall(async (request) => {
     throw new HttpsError("invalid-argument", "ids (array) and type are required");
   }
 
-  if (!["exchange", "report"].includes(type)) {
-    throw new HttpsError("invalid-argument", "type must be exchange or report");
+  if (!["exchange", "experience"].includes(type)) {
+    throw new HttpsError("invalid-argument", "type must be exchange or experience");
   }
 
   const results = {};
