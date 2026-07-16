@@ -12,7 +12,7 @@
 					}}</v-btn>
 				</v-col>
 				<v-col cols="12" md="6">
-					<v-btn class="btn btn-third" @click="goToRoute('/min_utveksling')">{{ $t("actions.createExchange")
+					<v-btn class="btn btn-third" @click="goToRoute('/profil?tab=exchange')">{{ $t("actions.createExchange")
 					}}</v-btn>
 				</v-col>
 			</v-row>

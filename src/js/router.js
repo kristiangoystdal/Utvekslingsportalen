@@ -3,7 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../components/home/Home.vue';
 
 const Exchanges = () => import('../components/exchanges/Exchanges.vue');
-const EditExchange = () => import('../components/exchanges/EditExchange.vue');
 const Contact = () => import('../components/windows/Contact.vue');
 const Account = () => import('../components/profile/Account.vue');
 const Login = () => import('../components/profile/Login.vue');
@@ -12,8 +11,9 @@ const Admin = () => import('../components/admin/Admin.vue');
 const NotFound = () => import('../components/error/NotFound.vue');
 const Courses = () => import('../components/courses/Courses.vue');
 const Legal = () => import('../components/docs/Legal.vue');
-const Reports = () => import('../components/reports/Reports.vue');
-const CreateReport = () => import('../components/reports/CreateReport.vue');
+const Experiences = () => import('../components/experiences/Experiences.vue');
+const CreateExperience = () => import('../components/experiences/CreateExperience.vue');
+const EditExperience = () => import('../components/experiences/CreateExperience.vue');
 
 import store, { authReadyPromise } from './store.js';
 
@@ -34,18 +34,13 @@ const routes = [
     component: Exchanges,
     meta: {
       title: "Utvekslinger",
-      description: "Les detaljerte utvekslingsrapporter, fagvalg, vurderinger og anbefalinger fra studenter som har reist ut gjennom NTNU."
+      description: "Les detaljerte utvekslingserfaringer, fagvalg, vurderinger og anbefalinger fra studenter som har reist ut gjennom NTNU."
     }
   },
 
   {
     path: '/min_utveksling',
-    name: 'EditExchange',
-    component: EditExchange,
-    meta: {
-      title: "Min utveksling",
-      description: "Rediger din utvekslingsrapport og del verdifulle erfaringer for å hjelpe kommende studenter."
-    }
+    redirect: { path: '/profil', query: { tab: 'exchange' } },
   },
 
   {
@@ -54,7 +49,7 @@ const routes = [
     component: Contact,
     meta: {
       title: "Kontakt oss",
-      description: "Ta kontakt for spørsmål, tilbakemeldinger eller hjelp relatert til utvekslingsrapporter og portalen."
+      description: "Ta kontakt for spørsmål, tilbakemeldinger eller hjelp relatert til utvekslingserfaringer og portalen."
     }
   },
 
@@ -75,7 +70,7 @@ const routes = [
     component: Login,
     meta: {
       title: "Logg inn",
-      description: "Logg inn for å administrere din profil, legge inn erfaringer eller redigere utvekslingsrapporter."
+      description: "Logg inn for å administrere din profil, legge inn eller redigere dine utvekslingserfaringer."
     }
   },
 
@@ -96,38 +91,43 @@ const routes = [
     component: FAQ,
     meta: {
       title: "FAQ",
-      description: "Finn svar på vanlige spørsmål om utveksling, fagvalg, innsendte rapporter og bruk av portalen."
+      description: "Finn svar på vanlige spørsmål om utveksling, fagvalg, innsendte erfaringer og bruk av portalen."
     }
   },
 
   {
-    path: '/rapporter',
-    name: 'Reports',
-    component: Reports,
+    path: '/erfaringer',
+    name: 'Experiences',
+    component: Experiences,
     meta: {
-      title: "Rapporter",
-      description: "Les utvekslingsrapporter fra studenter som har vært på utveksling gjennom NTNU."
+      title: "Erfaringer",
+      description: "Les utvekslingserfaringer fra studenter som har vært på utveksling gjennom NTNU."
     }
   },
 
   {
-    path: '/rapporter/:id',
-    name: 'ReportDetail',
-    component: Reports,
+    path: '/erfaringer/:id',
+    name: 'ExperienceDetail',
+    component: Experiences,
     meta: {
-      title: "Rapport",
-      description: "Les en utvekslingsrapport fra en student som har vært på utveksling gjennom NTNU."
+      title: "Erfaring",
+      description: "Les en utvekslingserfaring fra en student som har vært på utveksling gjennom NTNU."
     }
   },
 
   {
-    path: '/rapporter/ny',
-    name: 'CreateReport',
-    component: CreateReport,
+    path: '/erfaringer/ny',
+    redirect: '/profil',
+  },
+
+  {
+    path: '/erfaringer/:id/rediger',
+    name: 'EditExperience',
+    component: EditExperience,
     meta: {
       requiresAuth: true,
-      title: "Skriv rapport",
-      description: "Del din utvekslingserfaring og hjelp andre studenter med å velge riktig universitet."
+      title: "Rediger erfaring",
+      description: "Rediger din utvekslingserfaring."
     }
   },
 
@@ -170,8 +170,8 @@ const router = createRouter({
       return false;
     }
 
-    const isReportNav = to.path.startsWith('/rapporter') && from.path.startsWith('/rapporter');
-    if (isReportNav) return false;
+    const isExperienceNav = to.path.startsWith('/erfaringer') && from.path.startsWith('/erfaringer');
+    if (isExperienceNav) return false;
 
     return { top: 0 };
   }
@@ -185,11 +185,6 @@ router.beforeEach(async (to, from, next) => {
   const currentUserId = store.getters.user?.uid;
 
   if (to.name === 'Admin' && (!adminUserId || !isAuthenticated || String(currentUserId) !== String(adminUserId))) {
-    return next({ name: 'Home' });
-  }
-
-  const isReportsRoute = to.matched.some(record => ['Reports', 'ReportDetail', 'CreateReport'].includes(record.name));
-  if (isReportsRoute && (!adminUserId || !isAuthenticated || String(currentUserId) !== String(adminUserId))) {
     return next({ name: 'Home' });
   }
 

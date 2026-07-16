@@ -2,7 +2,10 @@
   "basic": {
     "title": "Basic Information",
     "info": "Fill in basic information about your exchange here.",
-    "next": "Go to Course Information"
+    "next": "Go to Course Information",
+    "homeInfo": "Your Information",
+    "destination": "Exchange Destination",
+    "next": "Next"
   },
   "courses": {
     "title": "Course Information",

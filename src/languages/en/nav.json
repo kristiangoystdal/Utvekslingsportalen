@@ -7,9 +7,10 @@
   "homeHeader": "Home",
   "legalHeader": "Legal",
   "loginHeader": "Login",
+  "favoritesTab": "Favorites",
   "myexchangeHeader": "My Exchange",
   "profile": "My Profile",
   "profileHeader": "Profile",
   "programHeader": "Exchanges",
-  "reportsHeader": "Reports"
+  "experiencesHeader": "Experiences"
 }

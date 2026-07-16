@@ -26,7 +26,6 @@ export default {
 		links: [
 			{ name: "nav.homeHeader", link: "/" },
 			{ name: "nav.programHeader", link: "/utvekslinger" },
-			{ name: "nav.myexchangeHeader", link: "/min_utveksling" },
 			{ name: "nav.profileHeader", link: "/profil" },
 			{ name: "nav.loginHeader", link: "/logg_inn" },
 			{ name: "nav.contactHeader", link: "/kontakt" },

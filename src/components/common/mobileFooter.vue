@@ -10,66 +10,18 @@
 			<a class="footer-icon" @click="toggleMenu">
 				<v-icon size="30px">mdi-menu</v-icon>
 			</a>
-			<router-link class="footer-icon" to="/min_utveksling" @click="removeDropdowns">
-				<v-icon size="30px">mdi-airplane-edit</v-icon>
+			<router-link class="footer-icon" to="/erfaringer" @click="removeDropdowns">
+				<v-icon size="30px">mdi-file-document-outline</v-icon>
 			</router-link>
-			<a class="footer-icon" @click="toggleProfileDropdown">
+			<router-link class="footer-icon" to="/profil" @click="removeDropdowns">
 				<v-icon size="30px">mdi-account</v-icon>
-			</a>
-		</div>
-
-		<!-- Profile Dropdown -->
-		<div v-if="showProfileDropDown" class="profile-dropdown">
-			<div class="profile-content">
-				<div v-if="user != null">
-					<div class=" username">{{ userData.displayName }}</div>
-					<v-btn @click="goToProfile" class="btn btn-primary" :style="{ width: '100% !important' }">
-						{{ $t("nav.profile") }}
-					</v-btn>
-					<v-btn @click="signOut" class="btn btn-danger" :style="{ width: '100% !important' }">
-						{{ $t("actions.signOut") }}
-					</v-btn>
-				</div>
-				<div v-else>
-					<div class="username">{{ $t("actions.signIn") }}</div>
-					<v-btn class="btn btn-primary" @click="goToLogin" :style="{ width: '100% !important', marginBottom: '10px' }">
-						<v-icon left class="icon-spacing" style="
-								display: inline-flex;
-								vertical-align: middle;
-								margin-right: 8px;
-							">mdi-email</v-icon>
-						<span style="
-								display: inline-flex;
-								align-items: center;
-								vertical-align: middle;
-								padding-top: 1px;
-							">{{ $t("actions.loginWithEmailButton") }}</span>
-					</v-btn>
-					<v-btn class="btn btn-third" @click="loginWithGoogle" :style="{ width: '100% !important' }">
-						<v-icon left class="icon-spacing" style="
-								display: inline-flex;
-								vertical-align: middle;
-								margin-right: 8px;
-							">mdi-google</v-icon>
-						<span style="
-								display: inline-flex;
-								align-items: center;
-								vertical-align: middle;
-								padding-top: 1px;
-							">{{ $t("actions.loginWithGoogleButton") }}</span>
-					</v-btn>
-				</div>
-			</div>
+			</router-link>
 		</div>
 
 		<!-- Menu Dropdown -->
 		<div v-if="showMenuDropdown">
 			<div class="menu-dropdown">
 				<div class="profile-content">
-					<router-link v-if="isAdminUser" class="footer-icon" to="/rapporter" @click="showMenuDropdown = false">
-						<v-icon size="30px">mdi-file-document-outline</v-icon>
-						<span>{{ $t("nav.reportsHeader") }}</span>
-					</router-link>
 					<router-link class="footer-icon" to="/kurs" @click="showMenuDropdown = false">
 						<v-icon size="30px">mdi-book-education-outline</v-icon>
 						<span>{{ $t("nav.coursesHeader") }}</span>
@@ -93,65 +45,19 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { auth, provider } from "../../js/firebaseConfig";
-import { signOut, signInWithPopup } from "firebase/auth";
-
 export default {
 	name: "MobileFooter",
 	data() {
 		return {
-			showProfileDropDown: false,
 			showMenuDropdown: false,
 		};
 	},
-	computed: {
-		...mapGetters(["isAuthenticated", "user", "userData"]),
-		isAdminUser() {
-			return this.user && this.user.uid === import.meta.env.VITE_ADMIN_USER_ID;
-		},
-	},
 	methods: {
-		toggleProfileDropdown() {
-			if (this.showMenuDropdown) {
-				this.showMenuDropdown = false;
-			}
-			this.showProfileDropDown = !this.showProfileDropDown;
-		},
 		toggleMenu() {
-			if (this.showProfileDropDown) {
-				this.showProfileDropDown = false;
-			}
 			this.showMenuDropdown = !this.showMenuDropdown;
 		},
 		removeDropdowns() {
-			this.showProfileDropDown = false;
 			this.showMenuDropdown = false;
-		},
-		async signOut() {
-			try {
-				await signOut(auth);
-				this.$router.go();
-			} catch (error) {
-				console.error("Error signing out: ", error);
-			}
-		},
-		async loginWithGoogle() {
-			try {
-				await signInWithPopup(auth, provider);
-				this.showProfileDropDown = false;
-				this.$router.go();
-			} catch (error) {
-				console.error("Error during sign-in:", error);
-			}
-		},
-		goToLogin() {
-			this.showProfileDropDown = false;
-			this.$router.push({ name: "Login" });
-		},
-		goToProfile() {
-			this.showProfileDropDown = false;
-			this.$router.push({ name: "Account" });
 		},
 	},
 };
@@ -188,28 +94,11 @@ export default {
 	margin-left: 10px;
 }
 
-.profile-dropdown {
-	position: fixed;
-	bottom: 11vh;
-	right: 10px;
-	background-color: white;
-	box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-	border-radius: 8px;
-	z-index: 1001;
-	padding: 10px;
-	width: 50vw;
-}
-
 .profile-content {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-}
-
-.username {
-	font-weight: bold;
-	margin-bottom: 10px;
 }
 
 .menu-dropdown {

@@ -22,20 +22,15 @@
 							}}</router-link>
 						</li>
 
-						<li v-if="checkAdminUser()">
-							<router-link to="/rapporter">{{
-								$t("nav.reportsHeader")
+						<li>
+							<router-link to="/erfaringer">{{
+								$t("nav.experiencesHeader")
 							}}</router-link>
 						</li>
 
 						<li>
 							<router-link to="/kurs">{{
 								$t("nav.coursesHeader")
-							}}</router-link>
-						</li>
-						<li>
-							<router-link to="/min_utveksling">{{
-								$t("nav.myexchangeHeader")
 							}}</router-link>
 						</li>
 						<li ref="profileSwitcher">

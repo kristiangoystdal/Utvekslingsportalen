@@ -167,22 +167,22 @@
 									</v-data-table-virtual>
 								</template>
 							</template>
-							<div class="report-link-row">
+							<div class="experience-link-row">
 								<router-link
-									v-if="reportsByExchangeId[item.id.replace(/new$/, '')]"
-									:to="`/rapporter/${reportsByExchangeId[item.id.replace(/new$/, '')].id}`"
-									class="report-chip"
+									v-if="experiencesByExchangeId[item.id.replace(/new$/, '')]"
+									:to="`/erfaringer/${experiencesByExchangeId[item.id.replace(/new$/, '')].id}`"
+									class="experience-chip"
 								>
 									<v-icon size="small">mdi-file-document-outline</v-icon>
-									{{ $t("reports.readMore") }}
+									{{ $t("experiences.readMore") }}
 								</router-link>
 								<router-link
 									v-else-if="user && user.uid === item.id.replace(/new$/, '')"
-									to="/rapporter/ny"
-									class="report-chip report-chip--write"
+									to="/profil?newExperience=true"
+									class="experience-chip experience-chip--write"
 								>
 									<v-icon size="small">mdi-pencil-plus-outline</v-icon>
-									{{ $t("reports.writeReport") }}
+									{{ $t("experiences.writeExperience") }}
 								</router-link>
 							</div>
 						</div>
@@ -282,22 +282,22 @@
 									</div>
 								</div>
 							</template>
-							<div class="report-link-row">
+							<div class="experience-link-row">
 								<router-link
-									v-if="reportsByExchangeId[item.id.replace(/new$/, '')]"
-									:to="`/rapporter/${reportsByExchangeId[item.id.replace(/new$/, '')].id}`"
-									class="report-chip"
+									v-if="experiencesByExchangeId[item.id.replace(/new$/, '')]"
+									:to="`/erfaringer/${experiencesByExchangeId[item.id.replace(/new$/, '')].id}`"
+									class="experience-chip"
 								>
 									<v-icon size="small">mdi-file-document-outline</v-icon>
-									{{ $t("reports.readMore") }}
+									{{ $t("experiences.readMore") }}
 								</router-link>
 								<router-link
 									v-else-if="user && user.uid === item.id.replace(/new$/, '')"
-									to="/rapporter/ny"
-									class="report-chip report-chip--write"
+									to="/profil?newExperience=true"
+									class="experience-chip experience-chip--write"
 								>
 									<v-icon size="small">mdi-pencil-plus-outline</v-icon>
-									{{ $t("reports.writeReport") }}
+									{{ $t("experiences.writeExperience") }}
 								</router-link>
 							</div>
 						</div>
@@ -400,7 +400,7 @@ import countriesNameNo from "../../languages/no/countries.json";
 import universitiesInformation from "../../data/universities.json";
 
 import { getExchangesData } from "../../js/exchangesCache";
-import { getReportsData } from "../../js/reportsCache";
+import { getExperiencesData } from "../../js/experiencesCache";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
 import { encryptId, decryptId, encryptIds } from "../../js/urlCipher";
 
@@ -444,7 +444,7 @@ export default {
 			exchangesPerPage: 10,
 			currentPage: 1,
 			datatableLoading: false,
-			reports: {},
+			experiences: {},
 		};
 	},
 	async created() {
@@ -453,7 +453,7 @@ export default {
 			this.fetchExchangeData(),
 			this.getValuesFromDatabase(),
 			this.loadFavoriteCourses(),
-			this.loadReports(),
+			this.loadExperiences(),
 		]);
 	},
 	mounted() {
@@ -708,18 +708,18 @@ export default {
 		showSuggestions() {
 			return this.searchFocused && this.searchInput.trim().length > 0;
 		},
-		reportsByExchangeId() {
+		experiencesByExchangeId() {
 			const map = {};
-			for (const [id, report] of Object.entries(this.reports)) {
-				const key = report.exchangeId;
-				if (key && !map[key]) map[key] = { id, ...report };
+			for (const [id, experience] of Object.entries(this.experiences)) {
+				const key = experience.exchangeId;
+				if (key && !map[key]) map[key] = { id, ...experience };
 			}
 			return map;
 		},
 	},
 	methods: {
-		async loadReports() {
-			this.reports = await getReportsData();
+		async loadExperiences() {
+			this.experiences = await getExperiencesData();
 		},
 		async loadExchangeData() {
 			this.exchanges = await getExchangesData();
@@ -1786,11 +1786,11 @@ body {
 	}
 }
 
-.report-link-row {
+.experience-link-row {
 	padding: 12px 8px 4px;
 }
 
-.report-chip {
+.experience-chip {
 	display: inline-flex;
 	align-items: center;
 	gap: 6px;
@@ -1804,18 +1804,18 @@ body {
 	transition: background-color 0.15s;
 }
 
-.report-chip:hover {
+.experience-chip:hover {
 	background-color: var(--second-color, #3f72af);
 	color: white;
 }
 
-.report-chip--write {
+.experience-chip--write {
 	background-color: transparent;
 	border: 1.5px dashed var(--second-color, #3f72af);
 	color: var(--second-color, #3f72af);
 }
 
-.report-chip--write:hover {
+.experience-chip--write:hover {
 	background-color: var(--second-color, #3f72af);
 	color: white;
 }

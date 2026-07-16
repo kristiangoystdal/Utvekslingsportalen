@@ -2,7 +2,10 @@
   "basic": {
     "title": "Grunnleggende informasjon",
     "info": "Fyll inn grunnleggende informasjon om din utveksling her.",
-    "next": "Gå til faginformasjon"
+    "next": "Gå til faginformasjon",
+    "homeInfo": "Din informasjon",
+    "destination": "Utvekslingsdestinasjon",
+    "next": "Neste"
   },
   "courses": {
     "title": "Faginformasjon",

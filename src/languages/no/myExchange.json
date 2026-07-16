@@ -1,5 +1,7 @@
 {
   "pageHeader": "Din utveksling:",
+  "missingExchangePrompt": "Du har ikke lagt inn din utveksling ennå.",
+  "clickToAdd": "Klikk for å legge til informasjon om din utveksling.",
   "info": "Opprett eller endre din oversikt over fagene du har tatt på utveksling. \n\nFagnavn og antall ECTS poeng er påkrevd, hvor ECTS poengene skal være konvertert fra universitetes lokale enhet. \n\nHvis ditt studieprogram eller spesialisering ikke finnes i listen, vennligst kontakt oss.",
   "missingData": "Manglende data på",
   "unsavedChanges": "Du har ulagret data. Husk å oppdatere.",
@@ -28,6 +30,7 @@
   "loginToEdit": "Du må være logget inn for å legge til eller endre utvekslingen din",
   "editExchangeInfo": "Du kan nå endre informasjonen om din utveksling.",
   "editMyExchange": "Endre min utveksling",
+  "writeMyExchange": "Skriv inn utveksling",
   "deleteMyExchange": "Slett min utveksling",
   "coursesMissingData": "Noen fag mangler nødvendig informasjon",
   "leaveWithUnsavedChanges": "Du har ulagret data. Husk å oppdatere.",

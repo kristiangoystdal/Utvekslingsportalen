@@ -1,0 +1,51 @@
+{
+  "exchange1": {
+    "university": "University of Amsterdam",
+    "country": "netherlands",
+    "homeUniversity": "NTNU",
+    "courses": {
+      "Høst": {
+        "course1": {
+          "courseCode": "AMS101",
+          "courseName": "Introduction to Amsterdam Studies",
+          "replacedCourseCode": "TDT4100",
+          "replacedCourseName": "Programmering",
+          "ECTSPoints": 7.5
+        }
+      },
+      "Vår": {
+        "course2": {
+          "courseCode": "AMS201",
+          "courseName": "Advanced Amsterdam Studies",
+          "replacedCourseCode": "TDT4120",
+          "replacedCourseName": "Algoritmer og datastrukturer",
+          "ECTSPoints": 7.5
+        }
+      }
+    }
+  },
+  "exchange2": {
+    "university": "National University of Singapore",
+    "country": "singapore",
+    "homeUniversity": "NTNU",
+    "courses": {
+      "Høst": {
+        "course1": {
+          "courseCode": "CS101",
+          "courseName": "Introduction to Computer Science",
+          "replacedCourseCode": "TDT4100",
+          "replacedCourseName": "Programmering",
+          "ECTSPoints": 5
+        },
+        "course2": {
+          "courseCode": "CS201",
+          "courseName": "Data Structures",
+          "replacedCourseCode": "",
+          "replacedCourseName": "",
+          "ECTSPoints": 5
+        }
+      },
+      "Vår": {}
+    }
+  }
+}
