@@ -178,6 +178,15 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from, next) => {
+  const needsAuthState = to.name === 'Admin' || to.name === 'Login' || to.matched.some(record => record.meta.requiresAuth);
+
+  // Public routes (e.g. Home) don't need to wait on Firebase auth to resolve
+  // before rendering — only routes whose navigation outcome depends on auth
+  // state (protected routes, Admin, Login) do.
+  if (!needsAuthState) {
+    return next();
+  }
+
   await authReadyPromise;
 
   const isAuthenticated = store.getters.isAuthenticated;
