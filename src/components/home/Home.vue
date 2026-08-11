@@ -46,13 +46,15 @@
 </template>
 
 <script>
-import WorldMap from "./WorldMap.vue";
-import BarChart from "./BarChart.vue";
+import { defineAsyncComponent } from "vue";
 import countriesInformation from "../../data/countriesInformation.json";
 import { db, auth } from "../../js/firebaseConfig.js";
 import { getFlagUrl } from '../../js/i18nHelpers';
 
 import { getExchangesData } from "../../js/exchangesCache";
+
+const WorldMap = defineAsyncComponent(() => import("./WorldMap.vue"));
+const BarChart = defineAsyncComponent(() => import("./BarChart.vue"));
 
 export default {
 	name: "App",
@@ -185,7 +187,11 @@ export default {
 .box-countries {
 	width: 100%;
 	height: 100%;
-	/* Ensure this has height */
+	/* Matches WorldMap's own aspect-ratio so this reserves its final height
+	   immediately, before the async WorldMap chunk loads and mounts —
+	   otherwise the box collapses to 0 height and reflows everything below
+	   it once the map appears. */
+	aspect-ratio: 16 / 9;
 }
 
 .top-countries-and-top-study-programs {
@@ -201,6 +207,9 @@ export default {
 	padding: 10px 0 20px 0;
 	/* minimal padding */
 
+	/* Reserves space for the async BarChart (400px chart + heading) so
+	   the page doesn't reflow once that chunk loads and mounts. */
+	min-height: 460px;
 }
 
 
