@@ -22,7 +22,9 @@
 
 
 <script>
-import * as d3 from "d3";
+import { select } from "d3-selection";
+import { geoMercator, geoPath } from "d3-geo";
+import { zoom as d3zoom } from "d3-zoom";
 import * as topojson from "topojson-client";
 import worldData from "../../data/countries-110m.json";
 
@@ -78,11 +80,10 @@ export default {
 			const tooltip = this.ensureTooltip();
 
 			// Clear previous SVG
-			d3.select(container).selectAll("*").remove();
+			select(container).selectAll("*").remove();
 
 			// Build SVG
-			const svg = d3
-				.select(container)
+			const svg = select(container)
 				.append("svg")
 				.attr("width", "100%")
 				.attr("height", "100%")
@@ -103,12 +104,11 @@ export default {
 			const g = svg.append("g").attr("clip-path", "url(#map-clip)");
 
 			// Projection + path
-			const projection = d3
-				.geoMercator()
+			const projection = geoMercator()
 				.scale(width / 6.5)
 				.translate([width / 2, height / 1.5]);
 
-			const path = d3.geoPath().projection(projection);
+			const path = geoPath().projection(projection);
 
 			// Highlight list
 			const highlightedCountryNames = (this.countries || []).map((c) => c.name);
@@ -158,7 +158,7 @@ export default {
 				.on("mouseover", (event, d) => {
 					if (!adjustedSet.has(d.properties.name)) return;
 
-					d3.select(event.currentTarget).style("opacity", 0.85);
+					select(event.currentTarget).style("opacity", 0.85);
 
 					const key = topoNameToKey.get(d.properties.name) || d.properties.name;
 					tooltip.style("opacity", 1).text(this.$t(`countries.${key}`));
@@ -177,13 +177,12 @@ export default {
 				.on("mouseout", (event, d) => {
 					if (!adjustedSet.has(d.properties.name)) return;
 
-					d3.select(event.currentTarget).style("opacity", 1);
+					select(event.currentTarget).style("opacity", 1);
 					tooltip.style("opacity", 0);
 				});
 
 			// Zoom/pan constrained to viewport
-			const zoom = d3
-				.zoom()
+			const zoomBehavior = d3zoom()
 				.scaleExtent([1, 6])
 				.translateExtent([
 					[0, 0],
@@ -198,15 +197,14 @@ export default {
 					this.hideZoomHint();
 				});
 
-			svg.call(zoom);
+			svg.call(zoomBehavior);
 		},
 		ensureTooltip() {
 			const id = "worldmap-tooltip";
-			let tooltip = d3.select("body").select(`#${id}`);
+			let tooltip = select("body").select(`#${id}`);
 
 			if (tooltip.empty()) {
-				tooltip = d3
-					.select("body")
+				tooltip = select("body")
 					.append("div")
 					.attr("id", id)
 					.style("position", "absolute")
@@ -224,7 +222,7 @@ export default {
 			return tooltip;
 		},
 		removeTooltip() {
-			d3.select("body").select("#worldmap-tooltip").remove();
+			select("body").select("#worldmap-tooltip").remove();
 		},
 		hideZoomHint() {
 			if (!this.showZoomHint) return;
