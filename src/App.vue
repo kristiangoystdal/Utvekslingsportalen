@@ -164,9 +164,11 @@ header {
 	.mobile-disclaimer {
 		text-align: center;
 		font-size: 0.65rem;
-		opacity: 0.75;
 		padding: 6px 10px;
 		margin-top: 4px;
+		/* Full-opacity --second-color gives ~4.96:1 contrast against the
+		   white background, clearing the WCAG AA 4.5:1 minimum for small
+		   text — the old opacity: 0.75 dropped it below that. */
 		color: var(--second-color);
 	}
 }
