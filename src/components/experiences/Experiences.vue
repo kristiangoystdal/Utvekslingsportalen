@@ -277,9 +277,11 @@ export default {
 					const id = await decryptId(token);
 					this.resolvedExperienceId = id;
 					if (!this.loading && id && !this.experiences[id]) {
+						console.warn(`Experience not found: id "${id}" (token "${token}") not present in loaded experiences`);
 						this.showNotFoundAndRedirect();
 					}
-				} catch {
+				} catch (error) {
+					console.warn(`Experience not found: failed to resolve token "${token}"`, error);
 					this.resolvedExperienceId = null;
 					this.showNotFoundAndRedirect();
 				}

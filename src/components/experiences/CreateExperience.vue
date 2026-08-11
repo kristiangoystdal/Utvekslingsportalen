@@ -165,6 +165,7 @@ export default {
 	props: {
 		propExperienceId: { type: String, default: null },
 		embedded: { type: Boolean, default: false },
+		adminMode: { type: Boolean, default: false },
 	},
 
 	emits: ["saved", "cancelled"],
@@ -175,6 +176,9 @@ export default {
 			submitted: false,
 			saving: false,
 			editExperienceId: null,
+			originalAuthorId: null,
+			originalAuthorName: null,
+			originalAnonymous: null,
 			universities: {},
 			experience: {
 				title: "",
@@ -283,11 +287,14 @@ export default {
 		async loadExistingExperience(experienceId) {
 			try {
 				const existing = await getExperienceById(experienceId);
-				if (!existing || existing.authorId !== auth.currentUser?.uid) {
+				if (!existing || (!this.adminMode && existing.authorId !== auth.currentUser?.uid)) {
 					if (!this.embedded) this.$router.replace({ name: "Experiences" });
 					return;
 				}
 				this.editExperienceId = experienceId;
+				this.originalAuthorId = existing.authorId;
+				this.originalAuthorName = existing.authorName;
+				this.originalAnonymous = existing.anonymous;
 				this.experience.title = existing.title || "";
 				this.experience.anonymous = existing.anonymous || false;
 				this.experience.country = existing.country || null;
@@ -340,10 +347,12 @@ export default {
 			this.saving = true;
 			try {
 				const experienceData = {
-					authorId: auth.currentUser.uid,
-					authorName: this.experience.anonymous ? "" : (this.userData?.displayName || auth.currentUser?.displayName || ""),
-					anonymous: this.experience.anonymous,
-					exchangeId: auth.currentUser.uid,
+					authorId: this.adminMode ? this.originalAuthorId : auth.currentUser.uid,
+					authorName: this.adminMode
+						? this.originalAuthorName
+						: (this.experience.anonymous ? "" : (this.userData?.displayName || auth.currentUser?.displayName || "")),
+					anonymous: this.adminMode ? this.originalAnonymous : this.experience.anonymous,
+					exchangeId: this.adminMode ? this.originalAuthorId : auth.currentUser.uid,
 					homeUniversity: this.experience.homeUniversity,
 					study: this.experience.study,
 					studyYear: this.experience.studyYear,
@@ -368,13 +377,17 @@ export default {
 					toast.success(this.$t("notifications.experienceCreated"));
 				}
 
-				await update(dbRef(db, `exchanges/${auth.currentUser.uid}`), {
-					homeUniversity: this.experience.homeUniversity ?? null,
-					study: this.experience.study ?? null,
-					studyYear: this.experience.studyYear ?? null,
-					year: this.experience.year ?? null,
-					numSemesters: this.experience.numSemesters ?? null,
-				}).catch(() => {});
+				// Admin-mode edits belong to another user's report — don't sync this
+				// data onto the admin's own exchange record.
+				if (!this.adminMode) {
+					await update(dbRef(db, `exchanges/${auth.currentUser.uid}`), {
+						homeUniversity: this.experience.homeUniversity ?? null,
+						study: this.experience.study ?? null,
+						studyYear: this.experience.studyYear ?? null,
+						year: this.experience.year ?? null,
+						numSemesters: this.experience.numSemesters ?? null,
+					}).catch(() => {});
+				}
 
 				if (this.embedded) this.$emit("saved");
 				else this.$router.push({ name: "Account", query: { tab: "experiences" } });

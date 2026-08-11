@@ -168,14 +168,14 @@
 								</template>
 							</template>
 							<div class="experience-link-row">
-								<router-link
-									v-if="experiencesByExchangeId[item.id.replace(/new$/, '')]"
-									:to="`/erfaringer/${experiencesByExchangeId[item.id.replace(/new$/, '')].id}`"
+								<a
+									v-if="findExperienceForExchange(item.id.replace(/new$/, ''))"
 									class="experience-chip"
+									@click="openExperienceFromExchange(findExperienceForExchange(item.id.replace(/new$/, '')).id)"
 								>
 									<v-icon size="small">mdi-file-document-outline</v-icon>
 									{{ $t("experiences.readMore") }}
-								</router-link>
+								</a>
 								<router-link
 									v-else-if="user && user.uid === item.id.replace(/new$/, '')"
 									to="/profil?newExperience=true"
@@ -283,14 +283,14 @@
 								</div>
 							</template>
 							<div class="experience-link-row">
-								<router-link
-									v-if="experiencesByExchangeId[item.id.replace(/new$/, '')]"
-									:to="`/erfaringer/${experiencesByExchangeId[item.id.replace(/new$/, '')].id}`"
+								<a
+									v-if="findExperienceForExchange(item.id.replace(/new$/, ''))"
 									class="experience-chip"
+									@click="openExperienceFromExchange(findExperienceForExchange(item.id.replace(/new$/, '')).id)"
 								>
 									<v-icon size="small">mdi-file-document-outline</v-icon>
 									{{ $t("experiences.readMore") }}
-								</router-link>
+								</a>
 								<router-link
 									v-else-if="user && user.uid === item.id.replace(/new$/, '')"
 									to="/profil?newExperience=true"
@@ -711,7 +711,10 @@ export default {
 		experiencesByExchangeId() {
 			const map = {};
 			for (const [id, experience] of Object.entries(this.experiences)) {
-				const key = experience.exchangeId;
+				// Match on authorId (who actually wrote it), not exchangeId —
+				// exchange keys aren't always the owner's uid (e.g. admin-added
+				// exchanges use a timestamp id), so exchangeId alone can miss.
+				const key = experience.authorId;
 				if (key && !map[key]) map[key] = { id, ...experience };
 			}
 			return map;
@@ -720,6 +723,26 @@ export default {
 	methods: {
 		async loadExperiences() {
 			this.experiences = await getExperiencesData();
+		},
+		findExperienceForExchange(exchangeUserId) {
+			const match = this.experiencesByExchangeId[exchangeUserId];
+			if (!match) {
+				console.error("No experience matched for exchange", {
+					exchangeUserId,
+					availableExperienceAuthorIds: Object.keys(this.experiencesByExchangeId),
+					totalExperiences: Object.keys(this.experiences).length,
+					experiences: Object.entries(this.experiences).map(([id, e]) => ({
+						id,
+						authorId: e.authorId,
+						exchangeId: e.exchangeId,
+					})),
+				});
+			}
+			return match;
+		},
+		async openExperienceFromExchange(experienceId) {
+			const token = await encryptId(experienceId, "experience");
+			this.$router.push({ name: "ExperienceDetail", params: { id: token } });
 		},
 		async loadExchangeData() {
 			this.exchanges = await getExchangesData();
@@ -1801,6 +1824,7 @@ body {
 	font-size: 13px;
 	font-weight: 500;
 	text-decoration: none;
+	cursor: pointer;
 	transition: background-color 0.15s;
 }
 

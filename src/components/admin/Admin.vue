@@ -74,6 +74,42 @@
 			<v-btn class="btn-primary" @click="openFaqDialog">{{ $t("admin.addFAQTitle") }}</v-btn>
 		</v-card>
 
+		<br>
+		<!-- Report List -->
+		<v-card style="padding: 20px ;">
+			<h3>{{ $t("admin.reportListTitle") }} ({{ reports.length }})</h3>
+			<v-text-field v-model="reportSearch" :label="$t('admin.search')" prepend-inner-icon="mdi-magnify" variant="outlined"
+				hide-details single-line density="compact"
+				style="width: 95%; margin: 10px auto; border-radius: 5px;"></v-text-field>
+			<v-data-table :headers="reportHeaders" :items="reports" :items-per-page="5" :search="reportSearch"
+				:custom-filter="makeRowFilter(reportHeaders)" density="compact" item-key="id">
+				<template v-slot:item.status="{ item }">
+					<v-chip :color="reportStatusColor(item.status)" size="small" variant="tonal">
+						{{ reportStatusLabel(item.status) }}
+					</v-chip>
+				</template>
+				<template v-slot:item.actions="{ item }">
+					<v-icon v-if="item.status !== 'published'" color="success" @click="approveReport(item)">mdi-check</v-icon>
+					<v-icon v-if="item.status !== 'rejected'" color="error" @click="rejectReport(item)">mdi-close</v-icon>
+					<v-icon @click="editReport(item)">mdi-pencil</v-icon>
+					<v-icon @click="deleteReport(item)">mdi-delete</v-icon>
+				</template>
+			</v-data-table>
+		</v-card>
+
+		<!-- Edit Report Dialog -->
+		<v-dialog v-model="reportDialog" max-width="80%" scrollable>
+			<v-card>
+				<v-card-title>
+					<span class="headline">{{ $t("admin.editReportTitle") }}</span>
+				</v-card-title>
+				<v-card-text>
+					<CreateExperience v-if="reportDialog" :propExperienceId="editingReportId" :embedded="true" :adminMode="true"
+						@saved="onReportSaved" @cancelled="closeReportDialog" />
+				</v-card-text>
+			</v-card>
+		</v-dialog>
+
 		<!-- Edit FAQ Dialog -->
 		<v-dialog v-model="faqDialog" max-width="500px">
 			<v-card class="mb-4">
@@ -128,6 +164,9 @@
 		:message="localExchangeData.id != '' ? localExchangeData.id + ': ' + localExchangeData.country + ' - ' + localExchangeData.university : $t('admin.undefined')"
 		@yes="onExchangeConfirmYes" @no="onExchangeConfirmNo" />
 
+	<Confirmation ref="reportConfirmationDialog" :value="reportConfirmation" :title="$t('admin.deleteReportConfirmation')"
+		:message="localReportData.title || $t('admin.undefined')" @yes="onReportConfirmYes" @no="onReportConfirmNo" />
+
 </template>
 
 <script>
@@ -139,11 +178,13 @@ import { toast } from "vue3-toastify";
 import Confirmation from "../common/Confirmation.vue";
 
 import { getExchangesData, refreshExchangesData } from "../../js/exchangesCache";
+import { getAllExperiences, updateExperienceStatus, deleteExperience } from "../../js/experiencesCache";
 
 const EditExchange = defineAsyncComponent(() => import("../exchanges/EditExchange.vue"));
+const CreateExperience = defineAsyncComponent(() => import("../experiences/CreateExperience.vue"));
 
 export default {
-	components: { Confirmation, EditExchange },
+	components: { Confirmation, EditExchange, CreateExperience },
 	data() {
 		return {
 			headers: [
@@ -221,6 +262,20 @@ export default {
 				{ title: "", value: 'actions', sortable: false, width: '5%', align: 'end' },
 			],
 			courseData: [],
+			reports: [],
+			reportHeaders: [
+				{ title: this.$t("admin.title"), value: 'title', width: '25%' },
+				{ title: this.$t("admin.author"), value: 'authorName', width: '20%' },
+				{ title: this.$t("database.university"), value: 'university', width: '20%' },
+				{ title: this.$t("admin.date"), value: 'date', width: '10%' },
+				{ title: this.$t("admin.status"), value: 'status', width: '10%' },
+				{ title: "", value: 'actions', sortable: false, width: '15%', align: 'end' },
+			],
+			reportSearch: '',
+			reportDialog: false,
+			editingReportId: null,
+			localReportData: {},
+			reportConfirmation: false,
 		};
 	},
 	computed: {
@@ -238,6 +293,7 @@ export default {
 					this.loadFAQData();
 					this.loadExchangeData();
 					this.fetchCourseData();
+					this.loadReportsData();
 				} else {
 					this.users = [];
 					try {
@@ -551,6 +607,82 @@ export default {
 			} catch (error) {
 				console.error("Error fetching course data:", error);
 			}
+		},
+		async loadReportsData() {
+			try {
+				const all = await getAllExperiences();
+				this.reports = Object.entries(all).map(([id, report]) => ({
+					id,
+					title: report.title ?? "",
+					authorName: report.anonymous ? this.$t("admin.undefined") : (report.authorName || this.$t("admin.undefined")),
+					university: report.university ?? "",
+					date: report.createdAt ? new Date(report.createdAt).toLocaleDateString() : "",
+					status: report.status ?? "pending",
+				}));
+			} catch (error) {
+				console.error("Error loading reports data:", error);
+			}
+		},
+		reportStatusColor(status) {
+			if (status === "published") return "success";
+			if (status === "rejected") return "error";
+			return "warning";
+		},
+		reportStatusLabel(status) {
+			if (status === "published") return this.$t("admin.statusPublished");
+			if (status === "rejected") return this.$t("admin.statusRejected");
+			return this.$t("admin.statusPending");
+		},
+		async approveReport(report) {
+			try {
+				await updateExperienceStatus(report.id, "published");
+				await this.loadReportsData();
+				toast.success(this.$t("notifications.reportApproved"));
+			} catch (error) {
+				console.error("Error approving report:", error);
+				toast.error(this.$t("notifications.reportStatusUpdateFailure"));
+			}
+		},
+		async rejectReport(report) {
+			try {
+				await updateExperienceStatus(report.id, "rejected");
+				await this.loadReportsData();
+				toast.success(this.$t("notifications.reportRejected"));
+			} catch (error) {
+				console.error("Error rejecting report:", error);
+				toast.error(this.$t("notifications.reportStatusUpdateFailure"));
+			}
+		},
+		editReport(report) {
+			this.editingReportId = report.id;
+			this.reportDialog = true;
+		},
+		closeReportDialog() {
+			this.reportDialog = false;
+			this.editingReportId = null;
+		},
+		async onReportSaved() {
+			this.closeReportDialog();
+			await this.loadReportsData();
+		},
+		deleteReport(report) {
+			this.localReportData = { ...report };
+			this.$refs.reportConfirmationDialog.dialog = true;
+		},
+		async onReportConfirmYes() {
+			try {
+				await deleteExperience(this.localReportData.id);
+				await this.loadReportsData();
+				toast.success(this.$t("notifications.experienceDeleted"));
+			} catch (error) {
+				console.error("Error deleting report:", error);
+				toast.error(this.$t("notifications.reportStatusUpdateFailure"));
+			}
+			this.$refs.reportConfirmationDialog.dialog = false;
+		},
+		onReportConfirmNo() {
+			this.localReportData = {};
+			this.$refs.reportConfirmationDialog.dialog = false;
 		},
 		// Turns any value into searchable text
 		toSearchText(v) {
