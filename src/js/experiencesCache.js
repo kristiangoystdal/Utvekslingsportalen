@@ -145,6 +145,21 @@ export async function syncHomeInfoToUserExperiences(userId, { homeUniversity, st
   }
 }
 
+export async function getAllExperiences() {
+  const db = getDatabase();
+  const snapshot = await get(child(dbRef(db), "experiences"));
+  return snapshot.exists() ? snapshot.val() : {};
+}
+
+export async function updateExperienceStatus(experienceId, status) {
+  const db = getDatabase();
+  await update(dbRef(db, `experiences/${experienceId}`), {
+    status,
+    updatedAt: Date.now(),
+  });
+  clearCachedExperiences();
+}
+
 export async function deleteExperience(experienceId) {
   const db = getDatabase();
   await remove(dbRef(db, `experiences/${experienceId}`));
