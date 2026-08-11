@@ -1,19 +1,19 @@
 <template>
 	<div>
 		<div class="footer-icons">
-			<router-link class="footer-icon" to="/" @click="removeDropdowns">
+			<router-link class="footer-icon" to="/" :aria-label="$t('nav.homeHeader')" @click="removeDropdowns">
 				<v-icon size="30px">mdi-home</v-icon>
 			</router-link>
-			<router-link class="footer-icon" to="/utvekslinger" @click="removeDropdowns">
+			<router-link class="footer-icon" to="/utvekslinger" :aria-label="$t('nav.programHeader')" @click="removeDropdowns">
 				<v-icon size="30px">mdi-airplane-search</v-icon>
 			</router-link>
-			<a class="footer-icon" @click="toggleMenu">
+			<a class="footer-icon" :aria-label="$t('nav.menuHeader')" @click="toggleMenu">
 				<v-icon size="30px">mdi-menu</v-icon>
 			</a>
-			<router-link class="footer-icon" to="/erfaringer" @click="removeDropdowns">
+			<router-link class="footer-icon" to="/erfaringer" :aria-label="$t('nav.experiencesHeader')" @click="removeDropdowns">
 				<v-icon size="30px">mdi-file-document-outline</v-icon>
 			</router-link>
-			<router-link class="footer-icon" to="/profil" @click="removeDropdowns">
+			<router-link class="footer-icon" to="/profil" :aria-label="$t('nav.profileHeader')" @click="removeDropdowns">
 				<v-icon size="30px">mdi-account</v-icon>
 			</router-link>
 		</div>
