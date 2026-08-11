@@ -472,17 +472,19 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from "vue";
 import { mapGetters } from "vuex";
 import { auth, db } from "../../js/firebaseConfig";
 import { signOut, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 import { ref as dbRef, update, set } from "firebase/database";
 import studiesData from "../../data/studies.json";
 import FavoriteCourses from "./FavoriteCourses.vue";
-import EditExchange from "../exchanges/EditExchange.vue";
-import CreateExperience from "../experiences/CreateExperience.vue";
 import { toast } from "vue3-toastify";
 import { getUserExperiences, deleteExperience } from "../../js/experiencesCache";
 import { getExchangesData, clearCachedExchanges } from "../../js/exchangesCache";
+
+const EditExchange = defineAsyncComponent(() => import("../exchanges/EditExchange.vue"));
+const CreateExperience = defineAsyncComponent(() => import("../experiences/CreateExperience.vue"));
 
 export default {
 	components: { FavoriteCourses, EditExchange, CreateExperience },

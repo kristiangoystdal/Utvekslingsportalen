@@ -131,14 +131,16 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from "vue";
 import { mapGetters } from "vuex";
 import { db } from "../../js/firebaseConfig";
 import { ref as dbRef, get, set, update } from "firebase/database";
 import { toast } from "vue3-toastify";
 import Confirmation from "../common/Confirmation.vue";
-import EditExchange from "../exchanges/EditExchange.vue";
 
 import { getExchangesData, refreshExchangesData } from "../../js/exchangesCache";
+
+const EditExchange = defineAsyncComponent(() => import("../exchanges/EditExchange.vue"));
 
 export default {
 	components: { Confirmation, EditExchange },
