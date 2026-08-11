@@ -34,6 +34,7 @@ export default defineConfig({
         manualChunks: {
           'firebase': ['firebase/app', 'firebase/auth', 'firebase/database', 'firebase/storage', 'firebase/functions'],
           'vendor': ['vue', 'vue-router', 'vuex', 'vue-i18n'],
+          'vuetify': ['vuetify'],
         },
       },
     },
