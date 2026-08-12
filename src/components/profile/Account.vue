@@ -476,12 +476,13 @@ import { defineAsyncComponent } from "vue";
 import { mapGetters } from "vuex";
 import { auth, db } from "../../js/firebaseConfig";
 import { signOut, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
-import { ref as dbRef, update, set } from "firebase/database";
+import { ref as dbRef, update } from "firebase/database";
 import studiesData from "../../data/studies.json";
 import FavoriteCourses from "./FavoriteCourses.vue";
 import { toast } from "vue3-toastify";
 import { getUserExperiences, deleteExperience } from "../../js/experiencesCache";
 import { getExchangesData, clearCachedExchanges } from "../../js/exchangesCache";
+import { getCoursesForExchange, clearCachedCourses } from "../../js/coursesCache";
 
 const EditExchange = defineAsyncComponent(() => import("../exchanges/EditExchange.vue"));
 const CreateExperience = defineAsyncComponent(() => import("../experiences/CreateExperience.vue"));
@@ -606,6 +607,9 @@ export default {
 				clearCachedExchanges();
 				const exchanges = await getExchangesData();
 				this.myExchange = exchanges?.[this.user.uid] ?? null;
+				if (this.myExchange) {
+					this.myExchange.courses = await getCoursesForExchange(this.user.uid);
+				}
 				this.hasExchange = !!this.myExchange;
 			}
 		},
@@ -613,8 +617,13 @@ export default {
 		async confirmDeleteExchange() {
 			this.deletingExchange = true;
 			try {
-				await set(dbRef(db, `exchanges/${this.user.uid}`), null);
+				const uid = this.user.uid;
+				await update(dbRef(db), {
+					[`exchanges/${uid}`]: null,
+					[`courses/${uid}`]: null,
+				});
 				clearCachedExchanges();
+				clearCachedCourses();
 				this.myExchange = null;
 				this.hasExchange = false;
 				this.deleteExchangeDialog = false;
@@ -684,6 +693,9 @@ export default {
 					this.myExperiences = await getUserExperiences(val.uid);
 					const exchanges = await getExchangesData();
 					this.myExchange = exchanges?.[val.uid] ?? null;
+					if (this.myExchange) {
+						this.myExchange.courses = await getCoursesForExchange(val.uid);
+					}
 					this.hasExchange = !!this.myExchange;
 				}
 			},

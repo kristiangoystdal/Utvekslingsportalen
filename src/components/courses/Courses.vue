@@ -261,7 +261,7 @@ import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
 import { getExchangesData } from "../../js/exchangesCache.js";
-import { encryptId } from "../../js/urlCipher";
+import { getCoursesData } from "../../js/coursesCache.js";
 import { getExperiencesData } from "../../js/experiencesCache.js";
 
 export default {
@@ -492,7 +492,10 @@ export default {
       try {
         this.coursetableLoading = true;
 
-        const exchanges = await getExchangesData();
+        const [exchanges, coursesByExchangeId] = await Promise.all([
+          getExchangesData(),
+          getCoursesData(),
+        ]);
         if (!exchanges) {
           console.error("No data available");
           return;
@@ -508,11 +511,12 @@ export default {
 
         for (const exchangeKey in exchanges) {
           const exchange = exchanges[exchangeKey];
-          if (!exchange.courses) continue;
+          const courses = coursesByExchangeId[exchangeKey];
+          if (!courses) continue;
 
           // Convert Høst and Vår to arrays
-          const host = toArray(exchange.courses.Høst);
-          const vaar = toArray(exchange.courses.Vår);
+          const host = toArray(courses.Høst);
+          const vaar = toArray(courses.Vår);
 
           const allCourses = [...host, ...vaar];
 
@@ -729,7 +733,7 @@ export default {
       // Every word in the search must appear somewhere in the row text
       return words.every((word) => rowText.includes(word));
     },
-    async routeToExchange(item) {
+    routeToExchange(item) {
       if (!item.exchangeID || !this.exchanges || !this.exchanges[item.exchangeID]) {
         console.error("routeToExchange: exchange not found for course", item);
         return;
@@ -740,11 +744,7 @@ export default {
 
       const searchString = translatedCountry + " " + exchange.university + " " + exchange.homeUniversity + " " + exchange.study + " " + exchange.studyYear + " " + exchange.year;
 
-      const hiddenId = await encryptId(item.exchangeID, "exchange");
-
-      if (exchange) {
-        this.$router.push({ name: "Exchanges", query: { search: searchString, r: hiddenId } });
-      }
+      this.$router.push({ name: "Exchanges", query: { search: searchString, r: item.exchangeID } });
     },
     toggleChip(university) {
       if (this.selectedUniversity === university) {

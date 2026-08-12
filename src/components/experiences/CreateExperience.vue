@@ -149,10 +149,10 @@ import { mapGetters } from "vuex";
 import { db, auth } from "../../js/firebaseConfig";
 import { ref as dbRef, update } from "firebase/database";
 import { getExchangesData } from "../../js/exchangesCache";
+import { getCoursesForExchange } from "../../js/coursesCache";
 import { createExperience, updateExperience, getExperienceById } from "../../js/experiencesCache";
 import universitiesData from "../../data/universities.json";
 import { toast } from "vue3-toastify";
-import { decryptId } from "../../js/urlCipher";
 
 import ExperienceBasicStep from "./steps/ExperienceBasicStep.vue";
 import ExperienceRatingsStep from "./steps/ExperienceRatingsStep.vue";
@@ -269,14 +269,9 @@ export default {
 		this.universities = universitiesData.universities || {};
 
 		if (!this.propExperienceId) {
-			const token = this.$route?.params?.id;
-			if (token) {
-				try {
-					const experienceId = await decryptId(token);
-					await this.loadExistingExperience(experienceId);
-				} catch {
-					this.$router.replace({ name: "Experiences" });
-				}
+			const experienceId = this.$route?.params?.id;
+			if (experienceId) {
+				await this.loadExistingExperience(experienceId);
 			} else {
 				await this.prefillFromExchange();
 			}
@@ -315,7 +310,8 @@ export default {
 				this.experience.numSemesters = existing.numSemesters ?? exchange.numSemesters ?? null;
 				this.experience.year = existing.year || exchange.year || null;
 				if (!this.experience.semester && exchange.numSemesters === 1) {
-					const hasFall = exchange.courses?.["Høst"] && Object.keys(exchange.courses["Høst"]).length > 0;
+					const courses = await getCoursesForExchange(auth.currentUser?.uid);
+					const hasFall = courses?.["Høst"] && Object.keys(courses["Høst"]).length > 0;
 					this.experience.semester = hasFall ? "Høst" : "Vår";
 				}
 			} catch {
@@ -336,7 +332,8 @@ export default {
 			this.experience.numSemesters = exchange.numSemesters || null;
 			this.experience.year = exchange.year || null;
 			if (exchange.numSemesters === 1) {
-				const hasFall = exchange.courses?.["Høst"] && Object.keys(exchange.courses["Høst"]).length > 0;
+				const courses = await getCoursesForExchange(auth.currentUser.uid);
+				const hasFall = courses?.["Høst"] && Object.keys(courses["Høst"]).length > 0;
 				this.experience.semester = hasFall ? "Høst" : "Vår";
 			}
 		},
