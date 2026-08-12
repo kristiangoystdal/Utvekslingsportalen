@@ -123,7 +123,6 @@ import universitiesData from "../../data/universities.json";
 import countriesInformation from "../../data/countriesInformation.json";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
 import ExperienceDetail from "./ExperienceDetail.vue";
-import { encryptId, decryptId, encryptIds } from "../../js/urlCipher";
 import { toast } from "vue3-toastify";
 
 const ITEMS_PER_PAGE = 12;
@@ -268,21 +267,10 @@ export default {
 		sortBy() { this.page = 1; },
 		"$route.params.id": {
 			immediate: true,
-			async handler(token) {
-				if (!token) {
-					this.resolvedExperienceId = null;
-					return;
-				}
-				try {
-					const id = await decryptId(token);
-					this.resolvedExperienceId = id;
-					if (!this.loading && id && !this.experiences[id]) {
-						console.warn(`Experience not found: id "${id}" (token "${token}") not present in loaded experiences`);
-						this.showNotFoundAndRedirect();
-					}
-				} catch (error) {
-					console.warn(`Experience not found: failed to resolve token "${token}"`, error);
-					this.resolvedExperienceId = null;
+			handler(id) {
+				this.resolvedExperienceId = id || null;
+				if (!this.loading && id && !this.experiences[id]) {
+					console.warn(`Experience not found: id "${id}" not present in loaded experiences`);
 					this.showNotFoundAndRedirect();
 				}
 			},
@@ -299,10 +287,6 @@ export default {
 	async mounted() {
 		try {
 			this.experiences = await getExperiencesData();
-			const ids = Object.keys(this.experiences);
-			if (ids.length > 0) {
-				encryptIds(ids, "experience");
-			}
 		} catch (error) {
 			console.error("Error loading experiences:", error);
 		} finally {
@@ -337,9 +321,8 @@ export default {
 			return this.countriesInfo.countryCodes.no[translated] || this.countriesInfo.countryCodes.no[country] || "unknown";
 		},
 
-		async goToExperience(experienceId) {
-			const token = await encryptId(experienceId, "experience");
-			this.$router.push({ name: "ExperienceDetail", params: { id: token } });
+		goToExperience(experienceId) {
+			this.$router.push({ name: "ExperienceDetail", params: { id: experienceId } });
 		},
 
 		closeExperience() {

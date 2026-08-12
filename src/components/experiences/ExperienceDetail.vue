@@ -159,7 +159,6 @@ import DOMPurify from "dompurify";
 import { mapGetters } from "vuex";
 import countriesInformation from "../../data/countriesInformation.json";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
-import { encryptId } from "../../js/urlCipher";
 import { deleteExperience } from "../../js/experiencesCache";
 import { toast } from "vue3-toastify";
 
@@ -188,8 +187,6 @@ export default {
 			deleting: false,
 			countriesInfo: countriesInformation,
 			ratingKeys: ["overall", "academic", "social", "housing", "costOfLiving"],
-			exchangeToken: null,
-			editToken: null,
 		};
 	},
 
@@ -205,8 +202,8 @@ export default {
 		},
 
 		editLink() {
-			if (!this.editToken) return null;
-			return { name: "EditExperience", params: { id: this.editToken } };
+			if (!this.experience.id) return null;
+			return { name: "EditExperience", params: { id: this.experience.id } };
 		},
 
 		ratingKeysLeft() {
@@ -223,26 +220,9 @@ export default {
 		},
 
 		exchangeLink() {
-			if (!this.exchangeToken) return null;
+			if (!this.experience.exchangeId) return null;
 			const search = this.experience.university || "";
-			return { path: "/utvekslinger", query: { search, r: this.exchangeToken } };
-		},
-	},
-
-	watch: {
-		"experience.exchangeId": {
-			immediate: true,
-			async handler(exchangeId) {
-				if (!exchangeId) { this.exchangeToken = null; return; }
-				this.exchangeToken = await encryptId(exchangeId, "exchange");
-			},
-		},
-		"experience.id": {
-			immediate: true,
-			async handler(experienceId) {
-				if (!experienceId) { this.editToken = null; return; }
-				this.editToken = await encryptId(experienceId, "experience");
-			},
+			return { path: "/utvekslinger", query: { search, r: this.experience.exchangeId } };
 		},
 	},
 

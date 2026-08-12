@@ -98,7 +98,6 @@ import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
 import { getExchangesData } from "../../js/exchangesCache";
-import { encryptId } from "../../js/urlCipher";
 
 export default {
   name: "FavoriteCourses",
@@ -373,7 +372,7 @@ export default {
         });
       }
     },
-    async routeToExchange(item) {
+    routeToExchange(item) {
       if (!this.exchanges || Object.keys(this.exchanges).length === 0) return;
 
       const exchangeId = item.exchangeID;
@@ -406,8 +405,7 @@ export default {
         .filter(Boolean)
         .join(" ");
 
-      const hiddenId = await encryptId(exchangeId, "exchange");
-      this.$router.push({ name: "Exchanges", query: { search: searchString, r: hiddenId } });
+      this.$router.push({ name: "Exchanges", query: { search: searchString, r: exchangeId } });
     },
     isUniSelected(uni) {
       return this.selectedUnis.includes(uni);

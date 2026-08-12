@@ -152,7 +152,6 @@ import { getExchangesData } from "../../js/exchangesCache";
 import { createExperience, updateExperience, getExperienceById } from "../../js/experiencesCache";
 import universitiesData from "../../data/universities.json";
 import { toast } from "vue3-toastify";
-import { decryptId } from "../../js/urlCipher";
 
 import ExperienceBasicStep from "./steps/ExperienceBasicStep.vue";
 import ExperienceRatingsStep from "./steps/ExperienceRatingsStep.vue";
@@ -269,14 +268,9 @@ export default {
 		this.universities = universitiesData.universities || {};
 
 		if (!this.propExperienceId) {
-			const token = this.$route?.params?.id;
-			if (token) {
-				try {
-					const experienceId = await decryptId(token);
-					await this.loadExistingExperience(experienceId);
-				} catch {
-					this.$router.replace({ name: "Experiences" });
-				}
+			const experienceId = this.$route?.params?.id;
+			if (experienceId) {
+				await this.loadExistingExperience(experienceId);
 			} else {
 				await this.prefillFromExchange();
 			}

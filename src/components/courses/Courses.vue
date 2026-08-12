@@ -261,7 +261,6 @@ import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
 import { getExchangesData } from "../../js/exchangesCache.js";
-import { encryptId } from "../../js/urlCipher";
 import { getExperiencesData } from "../../js/experiencesCache.js";
 
 export default {
@@ -729,7 +728,7 @@ export default {
       // Every word in the search must appear somewhere in the row text
       return words.every((word) => rowText.includes(word));
     },
-    async routeToExchange(item) {
+    routeToExchange(item) {
       if (!item.exchangeID || !this.exchanges || !this.exchanges[item.exchangeID]) {
         console.error("routeToExchange: exchange not found for course", item);
         return;
@@ -740,11 +739,7 @@ export default {
 
       const searchString = translatedCountry + " " + exchange.university + " " + exchange.homeUniversity + " " + exchange.study + " " + exchange.studyYear + " " + exchange.year;
 
-      const hiddenId = await encryptId(item.exchangeID, "exchange");
-
-      if (exchange) {
-        this.$router.push({ name: "Exchanges", query: { search: searchString, r: hiddenId } });
-      }
+      this.$router.push({ name: "Exchanges", query: { search: searchString, r: item.exchangeID } });
     },
     toggleChip(university) {
       if (this.selectedUniversity === university) {

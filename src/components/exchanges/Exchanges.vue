@@ -402,7 +402,6 @@ import universitiesInformation from "../../data/universities.json";
 import { getExchangesData } from "../../js/exchangesCache";
 import { getExperiencesData } from "../../js/experiencesCache";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
-import { encryptId, decryptId, encryptIds } from "../../js/urlCipher";
 
 export default {
 	setup() {
@@ -473,8 +472,7 @@ export default {
 		},
 		async expanded(newVal, oldVal) {
 			if (newVal != null && newVal.length != oldVal.length && newVal.length > 0) {
-				const tokens = await encryptIds(newVal, "exchange");
-				const exchangesString = newVal.map((id) => tokens[id]).join(",");
+				const exchangesString = newVal.join(",");
 				this.$router.replace({ query: { ...this.$route.query, r: exchangesString } });
 			} else {
 				const query = { ...this.$route.query };
@@ -740,16 +738,11 @@ export default {
 			}
 			return match;
 		},
-		async openExperienceFromExchange(experienceId) {
-			const token = await encryptId(experienceId, "experience");
-			this.$router.push({ name: "ExperienceDetail", params: { id: token } });
+		openExperienceFromExchange(experienceId) {
+			this.$router.push({ name: "ExperienceDetail", params: { id: experienceId } });
 		},
 		async loadExchangeData() {
 			this.exchanges = await getExchangesData();
-			const ids = Object.keys(this.exchanges);
-			if (ids.length > 0) {
-				encryptIds(ids, "exchange");
-			}
 		},
 		updateScreenWidth() {
 			this.screenWidth = window.innerWidth;
@@ -1258,17 +1251,10 @@ export default {
 
 			const exchangeId = this.$route.query.r;
 			if (exchangeId) {
-				const exchangeIds = exchangeId.split(",").filter(Boolean);
-				const decoded = [];
-				for (const token of exchangeIds) {
-					try {
-						const realId = await decryptId(token);
-						decoded.push(realId);
-						if (!this.expanded.includes(realId)) {
-							this.expanded.push(realId);
-						}
-					} catch {
-						// invalid token, skip
+				const decoded = exchangeId.split(",").filter(Boolean);
+				for (const realId of decoded) {
+					if (!this.expanded.includes(realId)) {
+						this.expanded.push(realId);
 					}
 				}
 
