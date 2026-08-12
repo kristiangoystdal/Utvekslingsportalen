@@ -400,6 +400,7 @@ import countriesNameNo from "../../languages/no/countries.json";
 import universitiesInformation from "../../data/universities.json";
 
 import { getExchangesData } from "../../js/exchangesCache";
+import { getCoursesData } from "../../js/coursesCache";
 import { getExperiencesData } from "../../js/experiencesCache";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
 
@@ -742,7 +743,15 @@ export default {
 			this.$router.push({ name: "ExperienceDetail", params: { id: experienceId } });
 		},
 		async loadExchangeData() {
-			this.exchanges = await getExchangesData();
+			const [exchanges, coursesByExchangeId] = await Promise.all([
+				getExchangesData(),
+				getCoursesData(),
+			]);
+			for (const key in exchanges) {
+				const courses = coursesByExchangeId[key];
+				if (courses) exchanges[key].courses = courses;
+			}
+			this.exchanges = exchanges;
 		},
 		updateScreenWidth() {
 			this.screenWidth = window.innerWidth;

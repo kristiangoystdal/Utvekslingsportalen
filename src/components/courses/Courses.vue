@@ -261,6 +261,7 @@ import { toast } from "vue3-toastify";
 import "vue3-toastify/dist/index.css";
 
 import { getExchangesData } from "../../js/exchangesCache.js";
+import { getCoursesData } from "../../js/coursesCache.js";
 import { getExperiencesData } from "../../js/experiencesCache.js";
 
 export default {
@@ -491,7 +492,10 @@ export default {
       try {
         this.coursetableLoading = true;
 
-        const exchanges = await getExchangesData();
+        const [exchanges, coursesByExchangeId] = await Promise.all([
+          getExchangesData(),
+          getCoursesData(),
+        ]);
         if (!exchanges) {
           console.error("No data available");
           return;
@@ -507,11 +511,12 @@ export default {
 
         for (const exchangeKey in exchanges) {
           const exchange = exchanges[exchangeKey];
-          if (!exchange.courses) continue;
+          const courses = coursesByExchangeId[exchangeKey];
+          if (!courses) continue;
 
           // Convert Høst and Vår to arrays
-          const host = toArray(exchange.courses.Høst);
-          const vaar = toArray(exchange.courses.Vår);
+          const host = toArray(courses.Høst);
+          const vaar = toArray(courses.Vår);
 
           const allCourses = [...host, ...vaar];
 

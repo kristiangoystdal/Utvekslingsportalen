@@ -178,6 +178,7 @@ import { toast } from "vue3-toastify";
 import Confirmation from "../common/Confirmation.vue";
 
 import { getExchangesData, refreshExchangesData } from "../../js/exchangesCache";
+import { getCoursesData, clearCachedCourses } from "../../js/coursesCache";
 import { getAllExperiences, updateExperienceStatus, deleteExperience } from "../../js/experiencesCache";
 
 const EditExchange = defineAsyncComponent(() => import("../exchanges/EditExchange.vue"));
@@ -238,6 +239,7 @@ export default {
 				courses: {
 					Høst: {},
 					Vår: {},
+					Sommer: {},
 				},
 				sameUniversity: true,
 				secondUniversity: "null",
@@ -413,9 +415,16 @@ export default {
 		},
 		async loadExchangeData() {
 			try {
-				const exchanges = await getExchangesData();
+				const [exchanges, coursesByExchangeId] = await Promise.all([
+					getExchangesData(),
+					getCoursesData(),
+				]);
 				if (exchanges) {
-					this.exchanges = exchanges ? Object.keys(exchanges).map(id => ({ id, ...exchanges[id] })) : [];
+					this.exchanges = Object.keys(exchanges).map(id => ({
+						id,
+						...exchanges[id],
+						courses: coursesByExchangeId[id] || exchanges[id].courses,
+					}));
 				}
 			} catch (error) {
 				console.error("Error loading exchange data:", error);
@@ -434,6 +443,7 @@ export default {
 				courses: {
 					Høst: {},
 					Vår: {},
+					Sommer: {},
 				},
 				sameUniversity: true,
 				secondUniversity: "null",
@@ -463,8 +473,13 @@ export default {
 					// New exchange, generate an ID
 					exchangeData.id = Date.now().toString();
 				}
-				const exchangeRef = dbRef(db, `exchanges/${exchangeData.id}`);
-				await update(exchangeRef, exchangeData);
+				const { courses, ...exchangeMeta } = exchangeData;
+				const multiPathUpdate = { [`courses/${exchangeData.id}`]: courses ?? null };
+				for (const [key, value] of Object.entries(exchangeMeta)) {
+					multiPathUpdate[`exchanges/${exchangeData.id}/${key}`] = value;
+				}
+				await update(dbRef(db), multiPathUpdate);
+				clearCachedCourses();
 				await this.loadExchangeData(); // Reload exchange data after saving
 				await this.fetchCourseData(); // Refresh course data
 				this.closeExchangeDialog(); // Close the dialog
@@ -485,8 +500,12 @@ export default {
 		async onExchangeConfirmYes() {
 			// Implement exchange deletion confirmation logic here
 			try {
-				const exchangeRef = dbRef(db, `exchanges/${this.localExchangeData.id}`);
-				await set(exchangeRef, null); // Delete the exchange
+				const id = this.localExchangeData.id;
+				await update(dbRef(db), {
+					[`exchanges/${id}`]: null,
+					[`courses/${id}`]: null,
+				});
+				clearCachedCourses();
 				await this.loadExchangeData(); // Reload exchanges after deletion
 				toast.success(this.$t("notifications.exchangeDeleted"));
 			} catch (error) {
@@ -516,6 +535,7 @@ export default {
 				courses: {
 					Høst: {},
 					Vår: {},
+					Sommer: {},
 				},
 				sameUniversity: true,
 				secondUniversity: "null",
@@ -524,9 +544,12 @@ export default {
 		},
 		async fetchCourseData() {
 			try {
-				const exchanges = await getExchangesData();
-				if (!exchanges) {
-					console.error("No exchange data available");
+				const [exchanges, coursesByExchangeId] = await Promise.all([
+					getExchangesData(),
+					getCoursesData(),
+				]);
+				if (!coursesByExchangeId || !exchanges) {
+					console.error("No course data available");
 					return;
 				}
 
@@ -535,21 +558,21 @@ export default {
 				const toArray = (obj) =>
 					Array.isArray(obj) ? obj : Object.values(obj || {});
 
-				for (const exchangeID in exchanges) {
-					const exchange = exchanges[exchangeID];
+				for (const exchangeID in coursesByExchangeId) {
+					const courses = coursesByExchangeId[exchangeID];
 
-					if (!exchange.courses) continue;
+					if (!courses) continue;
 
 					// Convert Høst and Vår to arrays AND FILTER OUT INVALID ITEMS
-					const host = toArray(exchange.courses.Høst).filter(
+					const host = toArray(courses.Høst).filter(
 						c => c && typeof c === "object"
 					);
 
-					const vaar = toArray(exchange.courses.Vår).filter(
+					const vaar = toArray(courses.Vår).filter(
 						c => c && typeof c === "object"
 					);
 
-					const sommer = toArray(exchange.courses.Sommer).filter(
+					const sommer = toArray(courses.Sommer).filter(
 						c => c && typeof c === "object"
 					);
 
@@ -560,8 +583,8 @@ export default {
 						let semester = "";
 
 						// Check if course is inside Høst
-						if (exchange.courses.Høst) {
-							const hostList = toArray(exchange.courses.Høst);
+						if (courses.Høst) {
+							const hostList = toArray(courses.Høst);
 							if (hostList.some(c => JSON.stringify(c) === JSON.stringify(course))) {
 								semester = "Høst";
 							}
@@ -569,16 +592,16 @@ export default {
 						}
 
 						// Check if course is inside Vår
-						if (!semester && exchange.courses.Vår) {
-							const vaarList = toArray(exchange.courses.Vår);
+						if (!semester && courses.Vår) {
+							const vaarList = toArray(courses.Vår);
 							if (vaarList.some(c => JSON.stringify(c) === JSON.stringify(course))) {
 								semester = "Vår";
 							}
 						}
 
 						// Check if semester is inside Sommer
-						if (!semester && exchange.courses.Sommer) {
-							const sommerList = toArray(exchange.courses.Sommer);
+						if (!semester && courses.Sommer) {
+							const sommerList = toArray(courses.Sommer);
 							if (sommerList.some(c => JSON.stringify(c) === JSON.stringify(course))) {
 								semester = "Sommer";
 							}
@@ -590,7 +613,7 @@ export default {
 							name: course.courseName ?? "",
 							replacedCourseCode: course.replacedCourseCode ?? "",
 							replacedCourseName: course.replacedCourseName ?? "",
-							university: exchange.university ?? "",
+							university: exchanges[exchangeID]?.university ?? "",
 							semester,
 							year: course.year ?? "",
 							ECTSPoints: course.ECTSPoints ?? "",

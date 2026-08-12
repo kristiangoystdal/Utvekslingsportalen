@@ -104,21 +104,10 @@ export default {
 				for (const exchangeKey in exchanges) {
 					const exchange = exchanges[exchangeKey];
 
-					const autumnCourses = Array.isArray(exchange.courses?.Høst)
-						? exchange.courses.Høst
-						: Object.values(exchange.courses?.Høst || {});
-
-					const springCourses = Array.isArray(exchange.courses?.Vår)
-						? exchange.courses.Vår
-						: Object.values(exchange.courses?.Vår || {});
-
-					const summerCourses = Array.isArray(exchange.courses?.Sommer)
-						? exchange.courses.Sommer
-						: Object.values(exchange.courses?.Sommer || {});
-
-					const hasAutumnCourses = autumnCourses.length > 0;
-					const hasSpringCourses = springCourses.length > 0;
-					const hasSummerCourses = summerCourses.length > 0;
+					const semesters = exchange.semesters || [];
+					const hasAutumnCourses = semesters.includes("Høst");
+					const hasSpringCourses = semesters.includes("Vår");
+					const hasSummerCourses = semesters.includes("Sommer");
 
 					const hasMultipleSemesters =
 						[hasAutumnCourses, hasSpringCourses, hasSummerCourses].filter(Boolean).length >= 2;

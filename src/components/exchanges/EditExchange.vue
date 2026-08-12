@@ -101,11 +101,12 @@
 <script>
 import { mapGetters } from "vuex";
 import { db, auth } from "../../js/firebaseConfig";
-import { ref as dbRef, set } from "firebase/database";
+import { ref as dbRef, get, update } from "firebase/database";
 import universitiesData from "../../data/universities.json";
 import { toast } from "vue3-toastify";
 
-import { refreshExchangesData, getExchangesData } from "../../js/exchangesCache";
+import { refreshExchangesData } from "../../js/exchangesCache";
+import { getCoursesForExchange, clearCachedCourses } from "../../js/coursesCache";
 import { syncHomeInfoToUserExperiences } from "../../js/experiencesCache";
 
 import BasicInfoStep from "./BasicInfoStep.vue";
@@ -509,14 +510,15 @@ export default {
 		async retriveUserExchange() {
 			if (auth.currentUser) {
 
-				const exchanges = await getExchangesData();
-				if (!exchanges || Object.keys(exchanges).length === 0) {
-					console.error("No data available");
-					return;
-				}
+				const uid = auth.currentUser.uid;
+				const [exchangeSnapshot, courses] = await Promise.all([
+					get(dbRef(db, `exchanges/${uid}`)),
+					getCoursesForExchange(uid),
+				]);
 
-				// Get the user's exchange data 
-				const userExchange = exchanges[auth.currentUser.uid];
+				// Get the user's exchange data
+				const userExchange = exchangeSnapshot.exists() ? exchangeSnapshot.val() : null;
+				if (userExchange && courses) userExchange.courses = courses;
 
 				// If the user exists, set the userData object
 				if (userExchange && typeof userExchange === "object") {
@@ -764,7 +766,11 @@ export default {
 				}
 			}
 
-			payload.courses = cleanedCourses;
+			// semesters is derived from what's actually being saved, not the
+			// wizard's raw step-1 selection — the two can drift otherwise.
+			const semesterOrder = ["Høst", "Vår", "Sommer"];
+			payload.semesters = semesterOrder.filter((s) => cleanedCourses[s]);
+			delete payload.courses;
 
 			// Recursive cleanup for the rest of the object
 			const cleanObject = (obj) => {
@@ -799,7 +805,10 @@ export default {
 				return obj;
 			};
 
-			return cleanObject(payload);
+			return {
+				exchangeMeta: cleanObject(payload),
+				courses: cleanObject(cleanedCourses),
+			};
 		},
 		async updateExchange() {
 			this.saving = true;
@@ -807,8 +816,8 @@ export default {
 			this.ensureSemesterCourses(this.semesters);
 
 			if (this.adminMode) {
-				const payload = JSON.parse(JSON.stringify(this.userExchange));
-				this.$emit("save", payload);
+				const { exchangeMeta, courses } = this.buildCleanExchangeForUpload();
+				this.$emit("save", { ...exchangeMeta, courses });
 				return;
 			}
 
@@ -825,13 +834,16 @@ export default {
 						numSemesters: this.userExchange.numSemesters ?? null,
 					};
 
-					const cleanPayload = this.buildCleanExchangeForUpload();
+					const { exchangeMeta, courses } = this.buildCleanExchangeForUpload();
+					const uid = auth.currentUser.uid;
 
-					await set(
-						dbRef(db, `exchanges/${auth.currentUser.uid}`),
-						cleanPayload
-					);
+					await update(dbRef(db), {
+						[`exchanges/${uid}`]: exchangeMeta,
+						[`courses/${uid}`]: courses ?? null,
+					});
+					clearCachedCourses();
 
+					const cleanPayload = { ...exchangeMeta, courses };
 					this.remoteExchange = JSON.parse(JSON.stringify(cleanPayload));
 					this.userExchange = JSON.parse(JSON.stringify(cleanPayload));
 
@@ -924,7 +936,12 @@ export default {
 			this.toggleExchangeDialog();
 			if (auth.currentUser) {
 				try {
-					await set(dbRef(db, `exchanges/${auth.currentUser.uid}`), null);
+					const uid = auth.currentUser.uid;
+					await update(dbRef(db), {
+						[`exchanges/${uid}`]: null,
+						[`courses/${uid}`]: null,
+					});
+					clearCachedCourses();
 					this.userExchange = {
 						university: null,
 						country: null,
