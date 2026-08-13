@@ -16,7 +16,7 @@
 
 				<v-card-text>
 					<v-form v-if="login" @submit.prevent="loginWithEmail">
-						<v-text-field label="Email" v-model="email" type="email" required outlined hide-details></v-text-field>
+						<v-text-field :label="$t('auth.email')" v-model="email" type="email" required outlined hide-details></v-text-field>
 						<br />
 						<v-text-field :label="$t('auth.password')" v-model="password" type="password" required outlined
 							hide-details></v-text-field>
@@ -35,7 +35,7 @@
 						<v-text-field :label="$t('auth.name')" v-model="name" type="text" required outlined hide-details
 							autocomplete="name" />
 						<br />
-						<v-text-field label="Email" v-model="email" type="email" required outlined hide-details
+						<v-text-field :label="$t('auth.email')" v-model="email" type="email" required outlined hide-details
 							autocomplete="username" />
 						<br />
 						<v-text-field :label="$t('auth.password')" v-model="password" type="password" required outlined hide-details

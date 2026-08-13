@@ -47,9 +47,17 @@ export default {
 		};
 	},
 	computed: {
+		localizedFaqs() {
+			const locale = this.$i18n.locale;
+			return this.faqs.map((faq) => ({
+				id: faq.id,
+				question: (locale === "en" ? faq.questionEn : faq.questionNo) || faq.questionNo || faq.questionEn,
+				answer: (locale === "en" ? faq.answerEn : faq.answerNo) || faq.answerNo || faq.answerEn,
+			}));
+		},
 		filteredFaqs() {
-			if (!this.searchQuery) return this.faqs;
-			return this.faqs.filter((faq) =>
+			if (!this.searchQuery) return this.localizedFaqs;
+			return this.localizedFaqs.filter((faq) =>
 				faq.question.toLowerCase().includes(this.searchQuery.toLowerCase())
 			);
 		},
@@ -71,7 +79,10 @@ export default {
 					const data = snapshot.val();
 					this.faqs = Object.keys(data).map((key) => ({
 						id: key,
-						...data[key],
+						questionNo: data[key].questionNo,
+						questionEn: data[key].questionEn,
+						answerNo: data[key].answerNo,
+						answerEn: data[key].answerEn,
 					}));
 				} else {
 					console.error("No FAQs available.");

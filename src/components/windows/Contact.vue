@@ -7,13 +7,13 @@
 		<v-container style="padding: 20px; max-width: 80%; margin: 10px auto">
 			<form @submit.prevent="submit">
 				<v-text-field v-model="form.name" :counter="50" :error-messages="errors.name" :label="$t('contact.name')"
-					helper-text="Enter your full name (at least 2 characters)."></v-text-field>
+					:hint="$t('contact.nameHint')" persistent-hint></v-text-field>
 
 				<v-text-field v-model="form.email" :error-messages="errors.email" :label="$t('contact.email')"
-					helper-text="Enter a valid email address."></v-text-field>
+					:hint="$t('contact.emailHint')" persistent-hint></v-text-field>
 
 				<v-textarea v-model="form.message" :counter="500" :error-messages="errors.message"
-					:label="$t('contact.message')" helper-text="Enter the issue you want help with (at least 10 characters)."
+					:label="$t('contact.message')" :hint="$t('contact.messageHint')" persistent-hint
 					rows="5"></v-textarea>
 
 				<v-btn class="me-4" style="background-color: var(--second-color); color: white" :loading="isSubmitting"

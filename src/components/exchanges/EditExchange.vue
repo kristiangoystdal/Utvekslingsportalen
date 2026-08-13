@@ -3,7 +3,9 @@
 		<!-- ── Standalone header (non-embedded, non-admin) ── -->
 		<template v-if="!adminMode && !compact && !embedded">
 			<h2 class="text-h5 font-weight-bold mb-1">{{ $t("myExchange.pageHeader") }}</h2>
-			<p class="text-medium-emphasis mb-4">{{ $t("myExchange.info") }}</p>
+		</template>
+		<p v-if="!adminMode" class="text-medium-emphasis mb-4">{{ $t("myExchange.info") }}</p>
+		<template v-if="!adminMode && !compact && !embedded">
 			<v-btn variant="tonal" class="mb-4" @click="toggleUploadModal">
 				{{ $t("myExchange.uploadLearningAgreement") }}
 			</v-btn>
@@ -148,7 +150,7 @@ export default {
 		}
 
 		const answer = window.confirm(
-			this.$t("myExchange.leaveWithUnsavedChanges")
+			this.$t("actions.confirmLeavePage")
 		)
 
 		if (answer) {
@@ -413,7 +415,7 @@ export default {
 				}
 
 				if (missingFields.length > 0) {
-					return string + missingFields.join(" og ");
+					return string + missingFields.join(` ${this.$t("actions.and")} `);
 				}
 			};
 		},
