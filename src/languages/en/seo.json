@@ -1,0 +1,32 @@
+{
+  "pageTitles": {
+    "Home": "Utvekslingsportalen",
+    "Exchanges": "Exchanges",
+    "Contact": "Contact us",
+    "Account": "My profile",
+    "Login": "Log in",
+    "Admin": "Admin panel",
+    "FAQ": "FAQ",
+    "Experiences": "Experiences",
+    "ExperienceDetail": "Experience",
+    "EditExperience": "Edit experience",
+    "Courses": "Courses",
+    "Terms and Conditions": "Legal information",
+    "NotFound": "404 - Page not found"
+  },
+  "pageDescriptions": {
+    "Home": "Find real experiences from Norwegian students who have been on exchange. Search by country, university, course and study program.",
+    "Exchanges": "Read detailed exchange experiences, course choices, ratings and recommendations from Norwegian students who have studied abroad.",
+    "Contact": "Get in touch with questions, feedback or help related to exchange experiences and the portal.",
+    "Account": "View and manage account information, settings and your exchange data.",
+    "Login": "Log in to manage your profile, add or edit your exchange experiences.",
+    "Admin": "Manage exchange data, users and content. Only available to administrators.",
+    "FAQ": "Find answers to common questions about exchange, course choices, submitted experiences and using the portal.",
+    "Experiences": "Read exchange experiences from Norwegian students who have been on exchange.",
+    "ExperienceDetail": "Read an exchange experience from a Norwegian student who has been on exchange.",
+    "EditExperience": "Edit your exchange experience.",
+    "Courses": "Explore courses Norwegian students have taken while on exchange, and see which subjects can be credited.",
+    "Terms and Conditions": "Read legal information and terms of use for Utvekslingsportalen.",
+    "NotFound": "The page you're trying to open doesn't exist. Go back to the homepage."
+  }
+}

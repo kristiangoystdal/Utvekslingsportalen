@@ -6,23 +6,9 @@
   "missingData": "Missing data on",
   "unsavedChanges": "You have unsaved data. Remember to update.",
   "noChanges": "All data is saved and the exchange is updated.",
-  "basisInformation": {
-    "basisInformationTitle": "Basic Information",
-    "fillExchangeInfo": "Fill in information about your exchange",
-    "allDataFilled": "All data is filled in"
-  },
   "courseInformation": {
     "courseFallTitle": "Courses for Fall Semester",
-    "courseSpringTitle": "Courses for Spring Semester",
-    "fillSemesterInfo": "Fill in the information for the courses",
-    "someCoursesMissing": "Some courses are missing necessary information",
-    "allCoursesFilled": "All courses have sufficient information",
-    "addCourse": "Add Course",
-    "newCourse": "New Course",
-    "fillCoursesInfo": "Fill in the information for your course",
-    "enoughCourseDataFilled": "Sufficient information about the course is filled in",
-    "numCoursesText": "courses",
-    "courseYear": "Year"
+    "courseSpringTitle": "Courses for Spring Semester"
   },
   "semestersLocation": "Is the exchange in the same university both semesters?",
   "locationQuestion": "What is the university and country for the second semester?",
@@ -33,7 +19,6 @@
   "writeMyExchange": "Write My Exchange",
   "deleteMyExchange": "Delete My Exchange",
   "coursesMissingData": "Some courses are missing necessary information",
-  "leaveWithUnsavedChanges": "You have unsaved data. Remember to update.",
   "uploadLearningAgreement": "Upload Learning Agreement",
   "courseFormTitle": "Add/Edit Course"
 }

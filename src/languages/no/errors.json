@@ -3,10 +3,7 @@
   "contactMessage": "Meldingen må være minst 10 karakterer",
   "contactName": "Navnet må være minst 2 karakterer.",
   "couldNotFindExchange": "Kunne ikke finne utveksling for dette kurset.",
-  "courseNotFound": "Fag ikke funnet",
   "emailConfigMissing": "E-postkonfigurasjon mangler. Vennligst kontakt administratoren.",
-  "exchangeNotFound": "Utveksling ikke funnet",
-  "faqNotFound": "FAQ ikke funnet",
   "missingPageButton": "Dra hjem",
   "missingPageText": "Oops! Du prøver å reise til et sted som ikke finnes. Kanskje på tide å for å revurdere valgene dine?",
   "missingPageTitle": "404 - Destinasjonen finnes ikke",
@@ -18,6 +15,5 @@
   "registerFailure": "Registrering mislyktes",
   "selectUniversityForPDF": "Vennligst velg minst ett universitet for å eksportere som PDF.",
   "fileTooLarge": "Filen er for stor. Maksimal størrelse er 10 MB.",
-  "fileTypeNotAllowed": "Filtypen er ikke tillatt. Vennligst last opp en PDF, PNG eller JPEG.",
-  "uploadFileRequired": "En fil må lastes opp for å fortsette."
+  "fileTypeNotAllowed": "Filtypen er ikke tillatt. Vennligst last opp en PDF, PNG eller JPEG."
 }

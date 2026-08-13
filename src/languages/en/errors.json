@@ -3,10 +3,7 @@
   "contactMessage": "The message must be at least 10 characters.",
   "contactName": "The name must be at least 2 characters.",
   "couldNotFindExchange": "Could not find exchange for this course.",
-  "courseNotFound": "Course not found",
   "emailConfigMissing": "Email configuration missing. Please contact the administrator.",
-  "exchangeNotFound": "Exchange not found",
-  "faqNotFound": "FAQ not found",
   "missingPageButton": "Head home",
   "missingPageText": "Oops! You are trying to travel to a place that does not exist. Maybe it's time to rethink your choices?",
   "missingPageTitle": "404 - Destination doesn't exist",
@@ -18,6 +15,5 @@
   "registerFailure": "Registration failed",
   "selectUniversityForPDF": "Please select at least one university to export as PDF.",
   "fileTooLarge": "File is too large. Maximum size is 10 MB.",
-  "fileTypeNotAllowed": "File type not allowed. Please upload a PDF, PNG, or JPEG.",
-  "uploadFileRequired": "A file must be uploaded to proceed."
+  "fileTypeNotAllowed": "File type not allowed. Please upload a PDF, PNG, or JPEG."
 }

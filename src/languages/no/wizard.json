@@ -1,30 +1,21 @@
 {
   "basic": {
     "title": "Grunnleggende informasjon",
-    "info": "Fyll inn grunnleggende informasjon om din utveksling her.",
-    "next": "Gå til faginformasjon",
     "homeInfo": "Din informasjon",
     "destination": "Utvekslingsdestinasjon",
     "next": "Neste"
   },
   "courses": {
     "title": "Faginformasjon",
-    "info": "Fyll inn informasjon om fagene du tok på utveksling her. ECTS poeng og fagnavn er påkrevd for hvert fag.",
     "courses": "Fag",
     "addCourse": "Legg til fag",
     "newCourse": "Nytt fag",
     "missingFields": "Manglende felt",
-    "previous": "Tilbake",
-    "next": "Gå til gjennomgang",
-    "incompleteCourse": "Ufullstendig fag",
-    "noCourses": "Ingen fag lagt til ennå."
+    "previous": "Tilbake"
   },
   "review": {
     "title": "Gjennomgå utveksling",
-    "info": "Se gjennom informasjonen du har fylt inn før du sender inn utvekslingen din.",
     "basic": "Grunnleggende informasjon",
-    "courses": "Faginformasjon",
-    "previous": "Tilbake",
     "Høst": "Høst",
     "Vår": "Vår",
     "submit": "Send inn utveksling",
