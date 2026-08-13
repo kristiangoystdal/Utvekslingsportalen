@@ -16,26 +16,21 @@ const CreateExperience = () => import('../components/experiences/CreateExperienc
 const EditExperience = () => import('../components/experiences/CreateExperience.vue');
 
 import store, { authReadyPromise } from './store.js';
+import { updatePageMeta } from './pageMeta.js';
 
+// Page title/description text lives in seo.json (no/en), keyed by route
+// name, and is applied locale-aware in router.afterEach — see pageMeta.js.
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: Home,
-    meta: {
-      title: "Utvekslingsportalen",
-      description: "Finn ekte erfaringer fra NTNU-studenter som har vært på utveksling. Søk etter land, universitet, fag og studieprogram."
-    }
   },
 
   {
     path: '/utvekslinger',
     name: 'Exchanges',
     component: Exchanges,
-    meta: {
-      title: "Utvekslinger",
-      description: "Les detaljerte utvekslingserfaringer, fagvalg, vurderinger og anbefalinger fra studenter som har reist ut gjennom NTNU."
-    }
   },
 
   {
@@ -47,10 +42,6 @@ const routes = [
     path: '/kontakt',
     name: 'Contact',
     component: Contact,
-    meta: {
-      title: "Kontakt oss",
-      description: "Ta kontakt for spørsmål, tilbakemeldinger eller hjelp relatert til utvekslingserfaringer og portalen."
-    }
   },
 
   {
@@ -59,8 +50,6 @@ const routes = [
     component: Account,
     meta: {
       requiresAuth: true,
-      title: "Min profil",
-      description: "Se og administrer kontoinformasjon, innstillinger og dine utvekslingsdata."
     }
   },
 
@@ -68,10 +57,6 @@ const routes = [
     path: '/logg_inn',
     name: 'Login',
     component: Login,
-    meta: {
-      title: "Logg inn",
-      description: "Logg inn for å administrere din profil, legge inn eller redigere dine utvekslingserfaringer."
-    }
   },
 
   {
@@ -80,8 +65,6 @@ const routes = [
     component: Admin,
     meta: {
       requiresAuth: true,
-      title: "Adminpanel",
-      description: "Administrer utvekslingsdata, brukere og innhold. Kun tilgjengelig for administratorer."
     }
   },
 
@@ -89,30 +72,18 @@ const routes = [
     path: '/faq',
     name: 'FAQ',
     component: FAQ,
-    meta: {
-      title: "FAQ",
-      description: "Finn svar på vanlige spørsmål om utveksling, fagvalg, innsendte erfaringer og bruk av portalen."
-    }
   },
 
   {
     path: '/erfaringer',
     name: 'Experiences',
     component: Experiences,
-    meta: {
-      title: "Erfaringer",
-      description: "Les utvekslingserfaringer fra studenter som har vært på utveksling gjennom NTNU."
-    }
   },
 
   {
     path: '/erfaringer/:id',
     name: 'ExperienceDetail',
     component: Experiences,
-    meta: {
-      title: "Erfaring",
-      description: "Les en utvekslingserfaring fra en student som har vært på utveksling gjennom NTNU."
-    }
   },
 
   {
@@ -126,8 +97,6 @@ const routes = [
     component: EditExperience,
     meta: {
       requiresAuth: true,
-      title: "Rediger erfaring",
-      description: "Rediger din utvekslingserfaring."
     }
   },
 
@@ -135,29 +104,17 @@ const routes = [
     path: '/kurs',
     name: 'Courses',
     component: Courses,
-    meta: {
-      title: "Kurs",
-      description: "Utforsk fag NTNU-studenter har tatt på utveksling, og se hvilke emner som kan godkjennes."
-    }
   },
   {
     path: '/terms_and_conditions',
     name: 'Terms and Conditions',
     component: Legal,
-    meta: {
-      title: "Juridisk informasjon",
-      description: "Les juridisk informasjon og bruksvilkår for Utvekslingsportalen."
-    }
   },
 
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
     component: NotFound,
-    meta: {
-      title: "404 - Siden finnes ikke",
-      description: "Siden du prøver å åpne eksisterer ikke. Gå tilbake til forsiden."
-    }
   }
 ];
 
@@ -209,28 +166,14 @@ router.beforeEach(async (to, from, next) => {
 });
 
 router.afterEach((to) => {
+  updatePageMeta(to.name);
+
   // ---- Google Analytics ----
   if (typeof window.gtag === "function") {
     window.gtag("event", "page_view", {
       page_path: to.fullPath,
-      page_title: to.meta?.title || document.title,
+      page_title: document.title,
     });
-  }
-
-  // ---- Title ----
-  if (to.meta?.title) {
-    document.title = to.meta.title;
-  }
-
-  // ---- Description ----
-  if (to.meta?.description) {
-    let desc = document.querySelector("meta[name='description']");
-    if (!desc) {
-      desc = document.createElement("meta");
-      desc.setAttribute("name", "description");
-      document.head.appendChild(desc);
-    }
-    desc.setAttribute("content", to.meta.description);
   }
 });
 

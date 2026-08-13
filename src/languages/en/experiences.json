@@ -1,13 +1,12 @@
 {
   "pageHeader": "Exchange Experiences",
   "info": "Read experiences from students who have been on exchange, or share your own experience.",
-
+  "writeExperienceInfo": "Fill in the form below to share your exchange experience. Rate your exchange, add pros and cons, and write about your experience to help future students.",
   "anonymous": "Submit anonymously",
   "anonymousLabel": "Anonymous",
   "writeExperience": "Write an Experience",
   "editExperience": "Edit Experience",
   "myExperiences": "My Experience",
-
   "title": "Title",
   "content": "Your Experience",
   "pros": "Pros",
@@ -15,52 +14,35 @@
   "tips": "Tips for Future Students",
   "addPro": "Add a pro",
   "addCon": "Add a con",
-
-  "destination": "Destination",
-
   "ratings": "Ratings",
   "overall": "Overall",
   "academic": "Academic",
   "social": "Social Life",
   "housing": "Housing",
   "costOfLiving": "Cost of Living",
-
   "submit": "Submit Experience",
   "save": "Save Changes",
-  "saveDraft": "Save as Draft",
   "edit": "Edit",
   "delete": "Delete",
   "cancel": "Cancel",
-
   "published": "Published",
   "pending": "Pending",
   "rejected": "Rejected",
-
   "titleRequired": "A title is required.",
   "contentRequired": "Please write about your experience.",
   "ratingRequired": "Please provide an overall rating.",
-
-  "filterByCountry": "Filter by country",
-  "filterByUniversity": "Filter by university",
-  "filterByStudy": "Filter by study program",
   "sortBy": "Sort by",
   "newest": "Newest",
   "oldest": "Oldest",
   "highestRated": "Highest rated",
-
   "writtenBy": "Written by",
-  "exchangeAt": "Exchange at",
   "readMore": "Read more",
   "viewExchange": "View exchange",
-  "helpful": "Helpful",
   "experienceCount": "{count} experiences",
-
   "noExperiences": "No experiences yet. Be the first to share your exchange experience!",
   "noExperiencesForFilter": "No experiences match your filters.",
-
   "confirmDelete": "Delete experience?",
   "confirmDeleteBody": "This action cannot be undone. Are you sure you want to delete this experience?",
-
   "share": "Share",
   "linkCopied": "Link copied!",
   "experienceNotFound": "Experience not found.",

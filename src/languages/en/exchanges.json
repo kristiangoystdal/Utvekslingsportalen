@@ -9,14 +9,11 @@
   "errorSavingFavorites": "An error occurred while saving favorites. Please contact us if the problem persists.",
   "exchange_one": "exchange",
   "exchange_other": "exchanges",
-  "hideFilter": "Hide Filter",
   "info": "Here you can explore the exchange courses taken by previous students. \n\nYou can see which universities they have attended, which countries they have visited, and which courses they have taken. \nCompare with others in your study and create your own plan.",
   "loginToFavorite": "You need to be logged in to add or edit favorites",
   "noComments": "The student has not added any comments for this course.",
   "pageHeader": "Previous Exchanges:",
   "pageText": "Exchanges per page",
   "search": "Search for country, university or study program",
-  "searchInfo": "Search among {groups} {groupWord} in {location} {locationWord}",
-  "showFilter": "Show Filter",
-  "updateTable": "Update"
+  "searchInfo": "Search among {groups} {groupWord} in {location} {locationWord}"
 }

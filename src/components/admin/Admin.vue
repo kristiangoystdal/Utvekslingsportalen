@@ -120,10 +120,16 @@
 					<v-container>
 						<v-row>
 							<v-col cols="12">
-								<v-text-field v-model="localFaqData.question" :label="$t('admin.question')"></v-text-field>
+								<v-text-field v-model="localFaqData.questionNo" :label="$t('admin.questionNo')"></v-text-field>
 							</v-col>
 							<v-col cols="12">
-								<v-text-field v-model="localFaqData.answer" :label="$t('admin.answer')"></v-text-field>
+								<v-text-field v-model="localFaqData.questionEn" :label="$t('admin.questionEn')"></v-text-field>
+							</v-col>
+							<v-col cols="12">
+								<v-text-field v-model="localFaqData.answerNo" :label="$t('admin.answerNo')"></v-text-field>
+							</v-col>
+							<v-col cols="12">
+								<v-text-field v-model="localFaqData.answerEn" :label="$t('admin.answerEn')"></v-text-field>
 							</v-col>
 						</v-row>
 					</v-container>
@@ -156,11 +162,11 @@
 		@no="onUserConfirmNo" />
 
 	<Confirmation ref="faqConfirmationDialog" :value="faqConfirmation" :title="$t('admin.deleteFAQConfirmation')"
-		:message="localFaqData.question != '' ? localFaqData.question : $t('admin.undefined')" @yes="onFaqConfirmYes"
+		:message="localFaqData.questionNo != '' ? localFaqData.questionNo : $t('admin.undefined')" @yes="onFaqConfirmYes"
 		@no="onFaqConfirmNo" />
 
 	<Confirmation ref="exchangeConfirmationDialog" :value="exchangeConfirmation"
-		:title="$t('admin.deleteExchangeConfirmation')"
+		:title="$t('actions.confirmExchangeDelete')"
 		:message="localExchangeData.id != '' ? localExchangeData.id + ': ' + localExchangeData.country + ' - ' + localExchangeData.university : $t('admin.undefined')"
 		@yes="onExchangeConfirmYes" @no="onExchangeConfirmNo" />
 
@@ -207,12 +213,14 @@ export default {
 			faqDialog: false,
 			faqDialogTitle: '',
 			localFaqData: {
-				question: '',
-				answer: '',
+				questionNo: '',
+				questionEn: '',
+				answerNo: '',
+				answerEn: '',
 			},
 			faqHeaders: [
-				{ title: this.$t("admin.question"), value: 'question', width: '35%' },
-				{ title: this.$t("admin.answer"), value: 'answer', width: '55%' },
+				{ title: this.$t("admin.questionNo"), value: 'questionNo', width: '35%' },
+				{ title: this.$t("admin.answerNo"), value: 'answerNo', width: '55%' },
 				{ title: "", value: 'actions', sortable: false, width: '10%', align: 'end' },
 			],
 			faqSearch: '',
@@ -343,11 +351,13 @@ export default {
 				const faqSnapshot = await get(faqRef);
 				if (faqSnapshot.exists()) {
 					const faqData = faqSnapshot.val();
-					// Map data into an array of FAQs with id, question, and answer
+					// Map data into an array of FAQs with id, question, and answer per locale
 					this.faqs = Object.entries(faqData).map(([id, faq]) => ({
 						id,
-						question: faq.question,
-						answer: faq.answer,
+						questionNo: faq.questionNo,
+						questionEn: faq.questionEn,
+						answerNo: faq.answerNo,
+						answerEn: faq.answerEn,
 					}));
 				} else {
 					this.faqs = []; // If no data exists, set an empty array
@@ -386,8 +396,10 @@ export default {
 			try {
 				const faqRef = dbRef(db, `faq/${this.localFaqData.id || Date.now()}`); // Use id if exists, otherwise generate one
 				await set(faqRef, {
-					question: this.localFaqData.question,
-					answer: this.localFaqData.answer,
+					questionNo: this.localFaqData.questionNo,
+					questionEn: this.localFaqData.questionEn,
+					answerNo: this.localFaqData.answerNo,
+					answerEn: this.localFaqData.answerEn,
 				});
 				this.loadFAQData(); // Reload FAQ data after saving
 				this.closeFaqDialog(); // Close the dialog
@@ -398,7 +410,7 @@ export default {
 			}
 		},
 		openFaqDialog() {
-			this.localFaqData = { question: '', answer: '' }; // Reset to empty data
+			this.localFaqData = { questionNo: '', questionEn: '', answerNo: '', answerEn: '' }; // Reset to empty data
 			this.faqDialogTitle = this.$t("admin.addFAQTitle");
 			this.faqDialog = true;
 		},

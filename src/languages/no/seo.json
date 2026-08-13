@@ -1,0 +1,32 @@
+{
+  "pageTitles": {
+    "Home": "Utvekslingsportalen",
+    "Exchanges": "Utvekslinger",
+    "Contact": "Kontakt oss",
+    "Account": "Min profil",
+    "Login": "Logg inn",
+    "Admin": "Adminpanel",
+    "FAQ": "FAQ",
+    "Experiences": "Erfaringer",
+    "ExperienceDetail": "Erfaring",
+    "EditExperience": "Rediger erfaring",
+    "Courses": "Kurs",
+    "Terms and Conditions": "Juridisk informasjon",
+    "NotFound": "404 - Siden finnes ikke"
+  },
+  "pageDescriptions": {
+    "Home": "Finn ekte erfaringer fra norske studenter som har vært på utveksling. Søk etter land, universitet, fag og studieprogram.",
+    "Exchanges": "Les detaljerte utvekslingserfaringer, fagvalg, vurderinger og anbefalinger fra norske studenter som har reist på utveksling.",
+    "Contact": "Ta kontakt for spørsmål, tilbakemeldinger eller hjelp relatert til utvekslingserfaringer og portalen.",
+    "Account": "Se og administrer kontoinformasjon, innstillinger og dine utvekslingsdata.",
+    "Login": "Logg inn for å administrere din profil, legge inn eller redigere dine utvekslingserfaringer.",
+    "Admin": "Administrer utvekslingsdata, brukere og innhold. Kun tilgjengelig for administratorer.",
+    "FAQ": "Finn svar på vanlige spørsmål om utveksling, fagvalg, innsendte erfaringer og bruk av portalen.",
+    "Experiences": "Les utvekslingserfaringer fra norske studenter som har vært på utveksling.",
+    "ExperienceDetail": "Les en utvekslingserfaring fra en norsk student som har vært på utveksling.",
+    "EditExperience": "Rediger din utvekslingserfaring.",
+    "Courses": "Utforsk fag norske studenter har tatt på utveksling, og se hvilke emner som kan godkjennes.",
+    "Terms and Conditions": "Les juridisk informasjon og bruksvilkår for Utvekslingsportalen.",
+    "NotFound": "Siden du prøver å åpne eksisterer ikke. Gå tilbake til forsiden."
+  }
+}

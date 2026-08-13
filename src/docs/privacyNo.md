@@ -4,7 +4,7 @@
 
 Denne personvernerklæringen forklarer hvilke data Utvekslingsportalen samler inn, hvordan dataene brukes, og hvilke rettigheter du har som bruker.
 
-Utvekslingsportalen er et studentdrevet, ikke-kommersielt prosjekt og er **ikke en offisiell NTNU-tjeneste**.
+Utvekslingsportalen er et studentdrevet, ikke-kommersielt prosjekt og er **ikke en offisiell tjeneste tilhørende noe universitet**.
 
 ## 2. Hvilke data vi samler inn
 

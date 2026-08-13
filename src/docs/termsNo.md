@@ -4,9 +4,9 @@
 
 Utvekslingsportalen tilbyr informasjonsinnhold basert på brukerinnsendte utvekslingserfaringer. Tjenesten er ment som et støtteverktøy og er **ikke en autoritativ kilde**.
 
-## 2. Ikke en offisiell NTNU-tjeneste
+## 2. Ikke en offisiell universitetstjeneste
 
-Utvekslingsportalen er et studentdrevet, ikke-kommersielt prosjekt og er **ikke tilknyttet eller godkjent av NTNU**.
+Utvekslingsportalen er et studentdrevet, ikke-kommersielt prosjekt og er **ikke tilknyttet eller godkjent av noe universitet**.
 
 ## 3. Brukerens ansvar
 

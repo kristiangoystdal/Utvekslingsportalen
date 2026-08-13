@@ -75,6 +75,7 @@ import { mapGetters } from "vuex";
 import { VIcon } from "vuetify/components";
 import { auth, provider } from "../../js/firebaseConfig";
 import { signOut, signInWithPopup } from "firebase/auth";
+import { updatePageMeta } from "../../js/pageMeta";
 
 
 export default {
@@ -109,6 +110,7 @@ export default {
 			this.$i18n.locale = lang;
 			document.cookie = `locale=${encodeURIComponent(lang)}; Path=/; Max-Age=31536000; SameSite=Lax`;
 			this.showLanguageDropdown = false;
+			updatePageMeta(this.$route?.name);
 		},
 		handleClickOutside(event) {
 			if (

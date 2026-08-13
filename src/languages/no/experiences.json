@@ -1,13 +1,12 @@
 {
   "pageHeader": "Utvekslingserfaringer",
   "info": "Les erfaringer fra studenter som har vært på utveksling, eller del din egen erfaring.",
-
+  "writeExperienceInfo": "Fyll ut skjemaet under for å dele din utvekslingserfaring. Gi en vurdering, legg til fordeler og ulemper, og skriv om opplevelsen din for å hjelpe fremtidige studenter.",
   "anonymous": "Send inn anonymt",
   "anonymousLabel": "Anonym",
   "writeExperience": "Skriv en erfaring",
   "editExperience": "Rediger erfaring",
   "myExperiences": "Min erfaring",
-
   "title": "Tittel",
   "content": "Din erfaring",
   "pros": "Fordeler",
@@ -15,52 +14,35 @@
   "tips": "Tips til fremtidige studenter",
   "addPro": "Legg til en fordel",
   "addCon": "Legg til en ulempe",
-
-  "destination": "Destinasjon",
-
   "ratings": "Vurderinger",
   "overall": "Helhetlig",
   "academic": "Akademisk",
   "social": "Sosialt",
   "housing": "Bolig",
   "costOfLiving": "Levekostnader",
-
   "submit": "Send inn erfaring",
   "save": "Lagre endringer",
-  "saveDraft": "Lagre som utkast",
   "edit": "Rediger",
   "delete": "Slett",
   "cancel": "Avbryt",
-
   "published": "Publisert",
   "pending": "Venter",
   "rejected": "Avvist",
-
   "titleRequired": "En tittel er påkrevd.",
   "contentRequired": "Vennligst skriv om din erfaring.",
   "ratingRequired": "Vennligst gi en helhetlig vurdering.",
-
-  "filterByCountry": "Filtrer etter land",
-  "filterByUniversity": "Filtrer etter universitet",
-  "filterByStudy": "Filtrer etter studieprogram",
   "sortBy": "Sorter etter",
   "newest": "Nyeste",
   "oldest": "Eldste",
   "highestRated": "Høyest vurdert",
-
   "writtenBy": "Skrevet av",
-  "exchangeAt": "Utveksling ved",
   "readMore": "Les mer",
   "viewExchange": "Se utveksling",
-  "helpful": "Nyttig",
   "experienceCount": "{count} erfaringer",
-
   "noExperiences": "Ingen erfaringer ennå. Bli den første til å dele din utvekslingserfaring!",
   "noExperiencesForFilter": "Ingen erfaringer matcher filtrene dine.",
-
   "confirmDelete": "Slette erfaring?",
   "confirmDeleteBody": "Denne handlingen kan ikke angres. Er du sikker på at du vil slette denne erfaringen?",
-
   "share": "Del",
   "linkCopied": "Lenke kopiert!",
   "experienceNotFound": "Erfaringen ble ikke funnet.",

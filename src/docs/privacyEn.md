@@ -4,7 +4,7 @@
 
 This Privacy Policy explains what data Utvekslingsportalen collects, how it is used, and your rights as a user.
 
-Utvekslingsportalen is a student-driven, non-commercial project and is **not an official NTNU service**.
+Utvekslingsportalen is a student-driven, non-commercial project and is **not an official service of any university**.
 
 ## 2. Data we collect
 

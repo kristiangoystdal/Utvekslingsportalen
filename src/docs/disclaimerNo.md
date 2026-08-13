@@ -1,6 +1,6 @@
 # Ansvarsfraskrivelse
 
-Utvekslingsportalen er et **studentinitiert, ikke-kommersielt prosjekt** og er **ikke en offisiell NTNU-tjeneste**.
+Utvekslingsportalen er et **studentinitiert, ikke-kommersielt prosjekt** og er **ikke en offisiell tjeneste tilhørende noe universitet**.
 
 All informasjon gis kun for **informasjonsformål** og kan være ufullstendig eller utdatert.
 

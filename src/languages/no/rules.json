@@ -1,7 +1,4 @@
 {
   "min3Chars": "Min 3 karakterer",
-  "required": "Dette feltet er påkrevd",
-  "validEcts": "Må være et gyldig ECTS-poeng (0-60)",
-  "validNumber": "Må være et tall",
-  "yearFormat": "Må være et gyldig årstall"
+  "validEcts": "Må være et gyldig ECTS-poeng (0-60)"
 }

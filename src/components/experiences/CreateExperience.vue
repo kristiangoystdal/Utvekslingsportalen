@@ -3,7 +3,7 @@
 		<h2 v-if="!embedded" class="text-h5 font-weight-bold mb-1">
 			{{ editMode ? $t("experiences.editExperience") : $t("experiences.writeExperience") }}
 		</h2>
-		<p v-if="!embedded" class="text-medium-emphasis mb-6">{{ $t("experiences.info") }}</p>
+		<p class="text-medium-emphasis mb-6">{{ $t("experiences.writeExperienceInfo") }}</p>
 
 		<!-- ── Creation: guided stepper ── -->
 		<v-stepper v-if="!editMode" v-model="step" elevation="0" class="form-stepper">
@@ -262,7 +262,7 @@ export default {
 
 	beforeRouteLeave(to, from, next) {
 		if (this.embedded || !this.hasUnsavedChanges) { next(); return; }
-		window.confirm(this.$t("myExchange.leaveWithUnsavedChanges")) ? next() : next(false);
+		window.confirm(this.$t("actions.confirmLeavePage")) ? next() : next(false);
 	},
 
 	async mounted() {

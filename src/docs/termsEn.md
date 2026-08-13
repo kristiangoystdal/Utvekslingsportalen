@@ -4,9 +4,9 @@
 
 Utvekslingsportalen provides informational content based on user-submitted exchange experiences. It is intended as a support tool and is **not an authoritative source**.
 
-## 2. Not an official NTNU service
+## 2. Not an official university service
 
-Utvekslingsportalen is a student-driven, non-commercial project and is **not affiliated with or endorsed by NTNU**.
+Utvekslingsportalen is a student-driven, non-commercial project and is **not affiliated with or endorsed by any university**.
 
 ## 3. User responsibilities
 

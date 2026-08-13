@@ -277,9 +277,9 @@ export default {
 		},
 		selectedExperience(experience) {
 			if (experience) {
-				document.title = experience.title || "Erfaring";
+				document.title = experience.title || this.$t("seo.pageTitles.ExperienceDetail");
 			} else {
-				document.title = "Erfaringer";
+				document.title = this.$t("seo.pageTitles.Experiences");
 			}
 		},
 	},
