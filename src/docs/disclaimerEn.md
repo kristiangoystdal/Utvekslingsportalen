@@ -1,6 +1,6 @@
 # Disclaimer
 
-Utvekslingsportalen is a **student-initiated, non-commercial project** and is **not an official NTNU service**.
+Utvekslingsportalen is a **student-initiated, non-commercial project** and is **not an official service of any university**.
 
 All information is provided for **informational purposes only** and may be incomplete or outdated.
 
