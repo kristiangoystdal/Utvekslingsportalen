@@ -7,7 +7,7 @@
 
 		<!-- Search Summary -->
 		<div class="search-summary">
-			{{ $t("experiences.experienceCount", { count: filteredExperiences.length }) }}
+			{{ $t("experiences.searchInfo", { n: filteredExperiences.length, word: experienceWord }) }}
 		</div>
 
 		<!-- Search Field with Chips -->
@@ -55,7 +55,7 @@
 		<!-- Empty state -->
 		<div v-else-if="filteredExperiences.length === 0" class="text-center py-8">
 			<v-icon size="64" color="grey">mdi-file-document-outline</v-icon>
-			<p class="text-medium-emphasis mt-2">
+			<p class="search-summary mt-2">
 				{{ searchChips.length > 0
 					? $t("experiences.noExperiencesForFilter")
 					: $t("experiences.noExperiences") }}
@@ -242,6 +242,12 @@ export default {
 			}
 
 			return list;
+		},
+
+		experienceWord() {
+			return this.filteredExperiences.length === 1
+				? this.$t("experiences.experience_one")
+				: this.$t("experiences.experience_other");
 		},
 
 		totalPages() {
