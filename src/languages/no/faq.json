@@ -1,5 +1,9 @@
 {
   "info": "Her finner du svar på de mest stilte spørsmålene. \n\nHar du et spørsmål som ikke er besvart her? Send oss en melding på kontaktsiden.",
   "pageHeader": "Ofte stilte spørsmål",
-  "search": "Søk for et spørsmål"
+  "search": "Søk for et spørsmål",
+  "noResults": "Ingen spørsmål matcher søket ditt.",
+  "searchInfo": "Søk blant {n} {word}",
+  "question_one": "spørsmål",
+  "question_other": "spørsmål"
 }
