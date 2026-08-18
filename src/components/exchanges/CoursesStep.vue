@@ -46,8 +46,8 @@
 						</div>
 					</v-expansion-panel-title>
 					<v-expansion-panel-text>
-						<CourseForm :course="course" :unsavedChanges="true"
-							@submit-course="updateCourse(semester, index, $event)" />
+						<CourseForm :course="course" :unsavedChanges="true" :homeUniversity="userExchange.homeUniversity"
+							:university="userExchange.university" @submit-course="updateCourse(semester, index, $event)" />
 					</v-expansion-panel-text>
 				</v-expansion-panel>
 			</v-expansion-panels>
