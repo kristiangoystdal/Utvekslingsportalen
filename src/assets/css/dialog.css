@@ -3,6 +3,16 @@
   margin: 0 auto;
 }
 
+/* Popup modals should only ever scroll vertically, never sideways. */
+.v-overlay__content > .v-card {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.v-overlay__content .v-card-text {
+  overflow-x: hidden;
+}
+
 .dialog .v-card {
   border-radius: 30px;
   overflow: hidden;

@@ -1,25 +1,25 @@
 <template>
-	<v-row>
-		<v-col cols="12" md="6">
+	<v-row no-gutters>
+		<v-col cols="12" md="6" class="pa-1">
 			<v-autocomplete :model-value="homeUniversity" :items="homeUniversities"
 				:label="$t('database.homeUniversity')" variant="outlined" density="compact" clearable
 				:hint="$t('hints.homeUniversity')" persistent-hint autocomplete="off"
 				@update:model-value="onHomeUniversityChange" />
 		</v-col>
-		<v-col cols="12" md="6">
+		<v-col cols="12" md="6" class="pa-1">
 			<v-autocomplete :model-value="study" :items="availableStudies" :label="$t('database.study')"
 				variant="outlined" density="compact" clearable :disabled="!homeUniversity"
 				:hint="!homeUniversity ? $t('hints.selectHomeUniversityFirst') : $t('hints.study')"
 				persistent-hint autocomplete="off"
 				@update:model-value="$emit('update:study', $event)" />
 		</v-col>
-		<v-col cols="12" md="6">
+		<v-col cols="12" md="6" class="pa-1">
 			<v-autocomplete :model-value="studyYear" :items="['1.', '2.', '3.', '4.', '5.']"
 				:label="$t('database.studyYear')" variant="outlined" density="compact" clearable
 				:hint="$t('hints.studyYear')" persistent-hint autocomplete="off"
 				@update:model-value="$emit('update:studyYear', $event)" />
 		</v-col>
-		<v-col cols="12" md="6">
+		<v-col cols="12" md="6" class="pa-1">
 			<v-text-field :model-value="year" type="number" :label="$t('database.year')" variant="outlined"
 				density="compact" clearable :hint="$t('hints.year')" persistent-hint autocomplete="off"
 				@update:model-value="$emit('update:year', $event)" />
