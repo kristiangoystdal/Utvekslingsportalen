@@ -1,37 +1,54 @@
 <template>
-	<h2>{{ $t("faq.pageHeader") }}</h2>
-	<p class="page-summary">
-		{{ $t("faq.info") }}
-	</p>
+	<div>
+		<h2>{{ $t("faq.pageHeader") }}</h2>
+		<p class="page-summary">{{ $t("faq.info") }}</p>
 
-	<v-container style="padding: 20px; max-width: 80%; margin: 10px auto">
-		<v-text-field v-model="searchQuery" :label="$t('faq.search')" append-icon="mdi-magnify"
-			class="mb-2"></v-text-field>
+		<br />
 
-		<v-row>
-			<v-col cols="12" v-for="faq in filteredFaqs" :key="faq.id">
-				<v-card class="mb-4">
-					<v-card-title @click="toggleExpand(faq.id)">
-						<div class="d-flex justify-space-between align-center">
-							<span class="faq-title-text">
-								{{ faq.question }}
-							</span>
-							<v-icon>
-								{{
-									expanded.includes(faq.id)
-										? "mdi-chevron-up"
-										: "mdi-chevron-down"
-								}}
-							</v-icon>
-						</div>
-					</v-card-title>
-					<v-card-text v-show="expanded.includes(faq.id)">
-						<p>{{ faq.answer }}</p>
-					</v-card-text>
-				</v-card>
-			</v-col>
-		</v-row>
-	</v-container>
+		<div class="search-summary">
+			{{ $t("faq.searchInfo", { n: filteredFaqs.length, word: questionWord }) }}
+		</div>
+
+		<div class="search-wrap">
+			<div class="search-chip-container" :class="{ focused: searchFocused }" @click="$refs.searchInput?.focus()">
+				<v-icon class="search-icon">mdi-magnify</v-icon>
+				<div class="search-input-wrap">
+					<input ref="searchInput" v-model="searchQuery" :placeholder="$t('faq.search')" class="chip-search-input"
+						@focus="searchFocused = true" @blur="searchFocused = false" />
+				</div>
+				<v-icon v-if="searchQuery" class="search-clear" @click.stop="searchQuery = ''">mdi-close</v-icon>
+			</div>
+		</div>
+
+		<!-- Loading state -->
+		<div v-if="loading" class="text-center py-8">
+			<v-progress-circular indeterminate color="primary" />
+		</div>
+
+		<!-- Empty state -->
+		<div v-else-if="!filteredFaqs.length" class="text-center py-8">
+			<v-icon size="64" color="grey">mdi-help-circle-outline</v-icon>
+			<p class="search-summary mt-2">{{ $t("faq.noResults") }}</p>
+		</div>
+
+		<!-- FAQ Cards -->
+		<div v-else class="faq-grid">
+			<v-card v-for="faq in filteredFaqs" :key="faq.id" class="faq-card" rounded="lg"
+				@click="toggleExpand(faq.id)">
+				<v-card-text>
+					<div class="d-flex align-center justify-space-between ga-2">
+						<h3 class="faq-question">{{ faq.question }}</h3>
+						<v-icon class="faq-chevron">
+							{{ expanded.includes(faq.id) ? "mdi-chevron-up" : "mdi-chevron-down" }}
+						</v-icon>
+					</div>
+					<v-expand-transition>
+						<p v-show="expanded.includes(faq.id)" class="faq-answer">{{ faq.answer }}</p>
+					</v-expand-transition>
+				</v-card-text>
+			</v-card>
+		</div>
+	</div>
 </template>
 
 <script>
@@ -42,8 +59,10 @@ export default {
 	data() {
 		return {
 			searchQuery: "",
+			searchFocused: false,
 			expanded: [],
 			faqs: [],
+			loading: true,
 		};
 	},
 	computed: {
@@ -57,9 +76,13 @@ export default {
 		},
 		filteredFaqs() {
 			if (!this.searchQuery) return this.localizedFaqs;
-			return this.localizedFaqs.filter((faq) =>
-				faq.question.toLowerCase().includes(this.searchQuery.toLowerCase())
+			const query = this.searchQuery.toLowerCase();
+			return this.localizedFaqs.filter(
+				(faq) => faq.question.toLowerCase().includes(query) || faq.answer.toLowerCase().includes(query)
 			);
+		},
+		questionWord() {
+			return this.filteredFaqs.length === 1 ? this.$t("faq.question_one") : this.$t("faq.question_other");
 		},
 	},
 	methods: {
@@ -89,6 +112,8 @@ export default {
 				}
 			} catch (error) {
 				console.error("Error fetching FAQs:", error);
+			} finally {
+				this.loading = false;
 			}
 		},
 	},
@@ -99,83 +124,113 @@ export default {
 </script>
 
 <style scoped>
-h2 {
-	color: var(--color-text-primary);
+.search-wrap {
+	margin: 10px auto 18px;
 }
 
-p {
-	margin-bottom: 1rem;
+.search-chip-container {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 16px;
+	border-radius: 999px;
+	background: rgba(255, 255, 255, 0.85);
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+	transition: box-shadow 180ms ease, background 180ms ease;
+	cursor: text;
+	min-height: 48px;
 }
 
-.v-card-title {
-	cursor: pointer;
-	padding: 16px 20px !important;
+.search-chip-container:hover {
+	box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+	background: rgba(255, 255, 255, 0.92);
 }
 
-.v-card-text {
-	padding: 0 20px 16px 20px !important;
-	line-height: 1.5;
-	font-size: 0.95rem;
+.search-chip-container.focused {
+	box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.18), 0 10px 24px rgba(0, 0, 0, 0.12);
 }
 
-.v-card-text {
-	transition: all 0.2s ease;
+.search-icon {
+	color: #9ca3af;
+	flex-shrink: 0;
 }
 
-.faq-title-text {
-	flex: 1 1 auto;
-	min-width: 0;
-
-	display: block;
-	white-space: normal !important;
-	word-break: keep-all;
-	overflow-wrap: normal;
+.search-input-wrap {
+	flex: 1;
+	min-width: 120px;
+	position: relative;
 }
 
-.v-card-title>.d-flex {
+.chip-search-input {
 	width: 100%;
+	border: none;
+	outline: none;
+	background: transparent;
+	font-size: 16px;
+	padding: 4px 0;
+	color: var(--first-color, #112d4e);
 }
 
+.chip-search-input::placeholder {
+	color: #9ca3af;
+}
 
-/* -----------------------------------------
-   MOBILE OPTIMIZATIONS
------------------------------------------- */
+.search-clear {
+	color: #9ca3af;
+	flex-shrink: 0;
+	cursor: pointer;
+}
+
+.search-summary {
+	font-size: 14px;
+	color: #6b7280;
+	margin-bottom: 8px;
+}
+
+.faq-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+	gap: 16px;
+}
+
+.faq-card {
+	cursor: pointer;
+	background-color: var(--color-bg-card);
+	border: 1px solid var(--third-color);
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+	transition: box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+.faq-card:hover {
+	box-shadow: 0 6px 22px rgba(0, 0, 0, 0.14);
+	transform: translateY(-2px);
+}
+
+.faq-question {
+	font-size: 1.05rem;
+	font-weight: 700;
+	line-height: 1.3;
+	margin: 0;
+}
+
+.faq-chevron {
+	flex-shrink: 0;
+	color: var(--second-color);
+}
+
+.faq-answer {
+	font-size: 0.9rem;
+	line-height: 1.5;
+	color: rgba(0, 0, 0, 0.65);
+	white-space: pre-line;
+	margin: 10px 0 0;
+	padding: 0;
+}
+
 @media (max-width: 600px) {
-	.v-container {
-		padding: 12px !important;
-		max-width: 100% !important;
-		margin-top: 0;
-	}
-
-	.v-text-field {
-		font-size: 1rem !important;
-	}
-
-	.v-card {
-		border-radius: 10px;
-		margin-bottom: 14px;
-	}
-
-	.v-card-title {
-		font-size: 1rem !important;
-		padding: 14px 16px !important;
-		line-height: 1.3;
-	}
-
-	.v-card-text {
-		font-size: 0.85rem !important;
-		padding: 0 16px 14px 16px !important;
-	}
-
-	.v-icon {
-		font-size: 20px !important;
-	}
-
-	.v-card-title>div {
-		display: flex;
-		width: 100%;
-		align-items: center;
-		justify-content: space-between;
+	.faq-grid {
+		grid-template-columns: 1fr;
 	}
 }
 </style>

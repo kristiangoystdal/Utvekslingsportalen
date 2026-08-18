@@ -1,5 +1,9 @@
 {
   "info": "Here you can find answers to frequently asked questions. \n\nIf you do not find the answer to your question, you can contact us through the contact page.",
   "pageHeader": "Frequently Asked Questions",
-  "search": "Search for a question"
+  "search": "Search for a question",
+  "noResults": "No questions match your search.",
+  "searchInfo": "Search among {n} {word}",
+  "question_one": "question",
+  "question_other": "questions"
 }

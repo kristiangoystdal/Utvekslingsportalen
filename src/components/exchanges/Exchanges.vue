@@ -1692,6 +1692,12 @@ body {
 	margin: 10px auto 18px;
 }
 
+.search-summary {
+	font-size: 14px;
+	color: #6b7280;
+	margin-bottom: 8px;
+}
+
 /* Base */
 .search-field .v-field {
 	border-radius: 999px;

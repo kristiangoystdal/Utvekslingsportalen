@@ -777,9 +777,9 @@ export default {
 }
 
 .search-summary {
-  margin: var(--space-sm) 0 var(--space-sm);
-  font-size: var(--text-sm);
-  color: var(--color-text-secondary);
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 8px;
 }
 
 .experience-icon-link {
