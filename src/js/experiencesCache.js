@@ -165,3 +165,25 @@ export async function deleteExperience(experienceId) {
   await remove(dbRef(db, `experiences/${experienceId}`));
   clearCachedExperiences();
 }
+
+// Toggles the current user's "was this helpful?" vote on an experience,
+// keeping the denormalized helpfulCount in sync in the same update() call.
+// Returns the new voted state (true = vote was just added).
+export async function toggleHelpfulVote(experienceId, userId) {
+  const db = getDatabase();
+  const experienceSnapshot = await get(dbRef(db, `experiences/${experienceId}`));
+  const experience = experienceSnapshot.val() || {};
+  const hasVoted = !!experience.helpfulVotes?.[userId];
+  const currentCount = experience.helpfulCount || 0;
+
+  const updates = {
+    [`experiences/${experienceId}/helpfulVotes/${userId}`]: hasVoted ? null : true,
+    [`experiences/${experienceId}/helpfulCount`]: hasVoted
+      ? Math.max(0, currentCount - 1)
+      : currentCount + 1,
+  };
+
+  await update(dbRef(db), updates);
+  clearCachedExperiences();
+  return !hasVoted;
+}
