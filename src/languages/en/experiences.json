@@ -35,6 +35,7 @@
   "newest": "Newest",
   "oldest": "Oldest",
   "highestRated": "Highest rated",
+  "mostHelpful": "Most helpful",
   "writtenBy": "Written by",
   "readMore": "Read more",
   "viewExchange": "View exchange",
@@ -48,5 +49,7 @@
   "share": "Share",
   "linkCopied": "Link copied!",
   "experienceNotFound": "Experience not found.",
-  "noOwnExperiences": "You haven't written any experiences yet."
+  "noOwnExperiences": "You haven't written any experiences yet.",
+  "wasThisHelpful": "Was this helpful?",
+  "loginToVote": "You need to be logged in to vote"
 }
