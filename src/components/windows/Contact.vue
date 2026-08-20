@@ -28,7 +28,7 @@
 							{{ $t("contact.submit") }}
 						</v-btn>
 
-						<v-btn class="action-btn" variant="outlined" rounded="lg" :disabled="isSubmitting"
+						<v-btn class="action-btn" variant="tonal" color="error" rounded="lg" :disabled="isSubmitting"
 							@click="handleReset">
 							{{ $t("contact.clear") }}
 						</v-btn>
