@@ -1046,8 +1046,7 @@ export default {
 
 	.edit-btn {
 		min-width: 0;
-		aspect-ratio: 1;
-		padding: 0;
+		padding: 0 18px;
 	}
 
 	.edit-btn-label {
