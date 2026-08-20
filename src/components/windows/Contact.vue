@@ -4,26 +4,38 @@
 		<p class="page-summary">
 			{{ $t("contact.info") }}
 		</p>
-		<v-container style="padding: 20px; max-width: 80%; margin: 10px auto">
-			<form @submit.prevent="submit">
-				<v-text-field v-model="form.name" :counter="50" :error-messages="errors.name" :label="$t('contact.name')"
-					:hint="$t('contact.nameHint')" persistent-hint></v-text-field>
 
-				<v-text-field v-model="form.email" :error-messages="errors.email" :label="$t('contact.email')"
-					:hint="$t('contact.emailHint')" persistent-hint></v-text-field>
+		<br />
 
-				<v-textarea v-model="form.message" :counter="500" :error-messages="errors.message"
-					:label="$t('contact.message')" :hint="$t('contact.messageHint')" persistent-hint
-					rows="5"></v-textarea>
+		<v-card class="contact-card" rounded="lg">
+			<v-card-text class="pa-6">
+				<v-form @submit.prevent="submit">
+					<v-text-field v-model="form.name" :counter="50" :error-messages="errors.name"
+						:label="$t('contact.name')" :hint="$t('contact.nameHint')" persistent-hint
+						prepend-inner-icon="mdi-account-outline" variant="outlined" density="comfortable" class="mb-3" />
 
-				<v-btn class="me-4" style="background-color: var(--second-color); color: white" :loading="isSubmitting"
-					:disabled="isSubmitting" type="submit">
-					{{ $t("contact.submit") }}
-				</v-btn>
+					<v-text-field v-model="form.email" :error-messages="errors.email" :rules="emailRules"
+						:label="$t('contact.email')" :hint="$t('contact.emailHint')" persistent-hint
+						prepend-inner-icon="mdi-email-outline" variant="outlined" density="comfortable" class="mb-3" />
 
-				<v-btn @click="handleReset">{{ $t("contact.clear") }}</v-btn>
-			</form>
-		</v-container>
+					<v-textarea v-model="form.message" :counter="500" :error-messages="errors.message"
+						:label="$t('contact.message')" :hint="$t('contact.messageHint')" persistent-hint
+						prepend-inner-icon="mdi-message-text-outline" variant="outlined" rows="5" class="mb-2" />
+
+					<div class="contact-actions">
+						<v-btn class="action-btn" color="primary" :loading="isSubmitting" :disabled="isSubmitting"
+							type="submit" rounded="lg">
+							{{ $t("contact.submit") }}
+						</v-btn>
+
+						<v-btn class="action-btn" variant="tonal" color="error" rounded="lg" :disabled="isSubmitting"
+							@click="handleReset">
+							{{ $t("contact.clear") }}
+						</v-btn>
+					</div>
+				</v-form>
+			</v-card-text>
+		</v-card>
 	</div>
 </template>
 
@@ -56,6 +68,9 @@ export default {
 		},
 		validMessage() {
 			return this.form.message.length > 10;
+		},
+		emailRules() {
+			return [(v) => !v || EMAIL_REGEX.test(v) || this.$t("errors.contactEmail")];
 		},
 	},
 	methods: {
@@ -127,5 +142,30 @@ export default {
 </script>
 
 <style scoped>
-/* Add any specific styles for the form */
+.contact-card {
+	background-color: var(--color-bg-card);
+	border: 1px solid var(--third-color);
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.contact-actions {
+	display: flex;
+	gap: 12px;
+	margin-top: 8px;
+}
+
+.action-btn {
+	text-transform: none;
+	font-size: 16px;
+}
+
+@media (max-width: 600px) {
+	.contact-actions {
+		flex-direction: column;
+	}
+
+	.action-btn {
+		width: 100%;
+	}
+}
 </style>
