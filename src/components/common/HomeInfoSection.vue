@@ -29,11 +29,7 @@
 
 <script>
 import homeUniversityJson from "../../data/homeUniversities.json";
-import ntnu_studies from "../../data/studies/ntnu.json";
-import uio_studies from "../../data/studies/uio.json";
-import uib_studies from "../../data/studies/uib.json";
-import uit_studies from "../../data/studies/uit.json";
-import uis_studies from "../../data/studies/uis.json";
+import { getStudiesForHomeUniversity } from "../../js/homeStudiesData.js";
 
 export default {
 	props: {
@@ -43,18 +39,27 @@ export default {
 		year: { type: [String, Number], default: null },
 	},
 	emits: ["update:homeUniversity", "update:study", "update:studyYear", "update:year"],
+	data() {
+		return {
+			availableStudies: [],
+		};
+	},
 	computed: {
 		homeUniversities() {
 			return Object.values(homeUniversityJson || {});
 		},
-		availableStudies() {
-			if (!this.homeUniversity) return [];
-			if (this.homeUniversity === homeUniversityJson["NTNU"]) return Object.keys(ntnu_studies?.studies || {});
-			if (this.homeUniversity === homeUniversityJson["UiO"]) return Object.keys(uio_studies?.studies || {});
-			if (this.homeUniversity === homeUniversityJson["UiB"]) return Object.keys(uib_studies?.studies || {});
-			if (this.homeUniversity === homeUniversityJson["UiT"]) return Object.keys(uit_studies?.studies || {});
-			if (this.homeUniversity === homeUniversityJson["UiS"]) return Object.keys(uis_studies?.studies || {});
-			return [];
+	},
+	watch: {
+		homeUniversity: {
+			immediate: true,
+			async handler(val) {
+				try {
+					this.availableStudies = await getStudiesForHomeUniversity(val);
+				} catch (error) {
+					console.error("Error loading studies for home university:", error);
+					this.availableStudies = [];
+				}
+			},
 		},
 	},
 	methods: {
