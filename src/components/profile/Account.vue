@@ -97,9 +97,9 @@
 							<span class="card-title">{{ $t("nav.myexchangeHeader") }}</span>
 						</div>
 						<div v-if="myExchange" class="card-actions">
-							<v-btn variant="tonal" color="primary" @click="startExchangeEdit">
-								<v-icon start size="16">mdi-pencil-outline</v-icon>
-								{{ $t("actions.edit") }}
+							<v-btn variant="tonal" color="primary" class="edit-btn" @click="startExchangeEdit">
+								<v-icon size="16" class="edit-btn-icon">mdi-pencil-outline</v-icon>
+								<span class="edit-btn-label">{{ $t("actions.edit") }}</span>
 							</v-btn>
 							<v-btn variant="tonal" color="error" class="px-3" @click="deleteExchangeDialog = true">
 								<v-icon size="18">mdi-trash-can-outline</v-icon>
@@ -164,9 +164,9 @@
 							</v-btn>
 						</div>
 						<div v-else class="card-actions">
-							<v-btn variant="tonal" color="primary" @click="startEditExperience(myExperiencesList[0])">
-								<v-icon start size="16">mdi-pencil-outline</v-icon>
-								{{ $t("actions.edit") }}
+							<v-btn variant="tonal" color="primary" class="edit-btn" @click="startEditExperience(myExperiencesList[0])">
+								<v-icon size="16" class="edit-btn-icon">mdi-pencil-outline</v-icon>
+								<span class="edit-btn-label">{{ $t("actions.edit") }}</span>
 							</v-btn>
 							<v-btn variant="tonal" color="error" class="px-3" @click="deleteExperienceDialog = true">
 								<v-icon size="18">mdi-trash-can-outline</v-icon>
@@ -334,24 +334,25 @@
 				</div>
 				<v-divider />
 				<v-card-text class="pa-4 pa-sm-5">
-					<v-row dense class="mb-2">
-						<v-col cols="6" sm="4">
+					<v-row no-gutters dense class="mb-2">
+						<v-col cols="6" sm="4" class="pa-1">
 							<div class="exchange-stat-label">{{ $t("database.study") }}</div>
 							<div class="exchange-stat-value">{{ selectedExchange.study || '—' }}</div>
 						</v-col>
-						<v-col cols="6" sm="4">
+						<v-col cols="6" sm="4" class="pa-1">
 							<div class="exchange-stat-label">{{ $t("database.numSemesters") }}</div>
 							<div class="exchange-stat-value">{{ selectedExchange.numSemesters || '—' }}</div>
 						</v-col>
-						<v-col v-if="exchangeSemesters.length" cols="6" sm="4">
+						<v-col v-if="exchangeSemesters.length" cols="6" sm="4" class="pa-1">
 							<div class="exchange-stat-label">{{ $t("database.semester") }}</div>
 							<div class="exchange-stat-value">{{ exchangeSemesters.join(" + ") }}</div>
 						</v-col>
-						<v-col cols="6" sm="4">
+						<v-col cols="6" sm="4" class="pa-1">
 							<div class="exchange-stat-label">{{ $t("database.year") }}</div>
 							<div class="exchange-stat-value">{{ selectedExchange.year || '—' }}</div>
 						</v-col>
-						<v-col v-if="!selectedExchange.sameUniversity && selectedExchange.secondUniversity" cols="12" sm="8">
+						<v-col v-if="!selectedExchange.sameUniversity && selectedExchange.secondUniversity" cols="12" sm="8"
+							class="pa-1">
 							<div class="exchange-stat-label">{{ $t("database.university") }} 2</div>
 							<div class="exchange-stat-value">{{ selectedExchange.secondUniversity }}</div>
 						</v-col>
@@ -376,9 +377,9 @@
 				</v-card-text>
 				<v-divider />
 				<v-card-actions class="pa-4 pa-sm-5 ga-3">
-					<v-btn variant="tonal" color="primary" @click="startExchangeEdit">
-						<v-icon start>mdi-pencil-outline</v-icon>
-						{{ $t("actions.edit") }}
+					<v-btn variant="tonal" color="primary" class="edit-btn" @click="startExchangeEdit">
+						<v-icon class="edit-btn-icon">mdi-pencil-outline</v-icon>
+						<span class="edit-btn-label">{{ $t("actions.edit") }}</span>
 					</v-btn>
 					<v-btn variant="tonal" color="error" @click="deleteExchangeDialog = true">
 						<v-icon start>mdi-trash-can-outline</v-icon>
@@ -1022,5 +1023,38 @@ export default {
 	font-weight: 700;
 	color: rgba(0, 0, 0, 0.87);
 	line-height: 1.3;
+}
+
+/* ─── Mobile ─── */
+@media (max-width: 600px) {
+	.card-header {
+		flex-wrap: wrap;
+		height: auto;
+		min-height: 52px;
+		padding: 10px 16px;
+	}
+
+	.card-actions {
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.v-card-actions {
+		flex-wrap: wrap;
+		row-gap: 8px;
+	}
+
+	.edit-btn {
+		min-width: 0;
+		padding: 0 18px;
+	}
+
+	.edit-btn-label {
+		display: none;
+	}
+
+	.edit-btn-icon {
+		margin-inline-end: 0 !important;
+	}
 }
 </style>
