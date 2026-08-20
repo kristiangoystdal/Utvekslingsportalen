@@ -69,6 +69,7 @@ export default {
 			allExchangeCourseOptions: [],
 			dbHomeCourseOptions: [],
 			allDbHomeCourseOptions: [],
+			fileHomeCourseOptions: [],
 			courseNameRules: [
 				(v) => (v && v.length >= 3) || this.$t("rules.min3Chars"),
 			],
@@ -87,11 +88,8 @@ export default {
 			return [...new Set(this.exchangeCourseOptions.map((c) => c.code).filter(Boolean))].sort();
 		},
 		// Home-university courses come primarily from the static per-university
-		// files; only fall back to the courses database when the file has no
-		// entries for this university.
-		fileHomeCourseOptions() {
-			return getHomeCoursesForUniversity(this.homeUniversity);
-		},
+		// files (loaded on demand in loadHomeCourses); only fall back to the
+		// courses database when the file has no entries for this university.
 		homeCourseOptions() {
 			return this.fileHomeCourseOptions.length ? this.fileHomeCourseOptions : this.dbHomeCourseOptions;
 		},
@@ -104,6 +102,7 @@ export default {
 	},
 	mounted() {
 		this.loadSuggestions();
+		this.loadHomeCourses();
 	},
 	watch: {
 		localCourse: {
@@ -118,9 +117,17 @@ export default {
 		},
 		homeUniversity() {
 			this.loadSuggestions();
+			this.loadHomeCourses();
 		},
 	},
 	methods: {
+		async loadHomeCourses() {
+			try {
+				this.fileHomeCourseOptions = await getHomeCoursesForUniversity(this.homeUniversity);
+			} catch (error) {
+				console.error("Error loading home university courses:", error);
+			}
+		},
 		async loadSuggestions() {
 			try {
 				// Scoped lists (matching this exchange's university) drive the

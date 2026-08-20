@@ -1,25 +1,35 @@
 import homeUniversityJson from "../data/homeUniversities.json";
-import ntnu from "../data/homeCourses/ntnu.json";
-import uio from "../data/homeCourses/uio.json";
-import uib from "../data/homeCourses/uib.json";
-import uit from "../data/homeCourses/uit.json";
-import uis from "../data/homeCourses/uis.json";
 
-const coursesByKey = { NTNU: ntnu, UiO: uio, UiB: uib, UiT: uit, UiS: uis };
+const loaders = {
+  NTNU: () => import("../data/homeCourses/ntnu.json"),
+  UiO: () => import("../data/homeCourses/uio.json"),
+  UiB: () => import("../data/homeCourses/uib.json"),
+  UiT: () => import("../data/homeCourses/uit.json"),
+  UiS: () => import("../data/homeCourses/uis.json"),
+};
+
+const moduleCache = {};
 
 // Home-university courses are stored as static files (see src/data/homeCourses/),
 // one per university, keyed the same way as homeUniversities.json. This is the
 // primary/authoritative source for "replaced course" autocomplete suggestions;
 // callers should only fall back to the courses database when a university has
-// no file entries.
-export function getHomeCoursesForUniversity(homeUniversity) {
+// no file entries. Each university's file is only fetched on demand (and then
+// cached) so the edit-exchange form doesn't have to bundle every university's
+// course list up front.
+export async function getHomeCoursesForUniversity(homeUniversity) {
   if (!homeUniversity) return [];
 
   const key = Object.keys(homeUniversityJson).find(
     (k) => homeUniversityJson[k] === homeUniversity || k === homeUniversity
   );
-  if (!key) return [];
+  if (!key || !loaders[key]) return [];
 
-  const courses = coursesByKey[key]?.courses || {};
+  if (!moduleCache[key]) {
+    moduleCache[key] = loaders[key]().then((m) => m.default || m);
+  }
+
+  const data = await moduleCache[key];
+  const courses = data?.courses || {};
   return Object.entries(courses).map(([code, name]) => ({ code, name }));
 }
