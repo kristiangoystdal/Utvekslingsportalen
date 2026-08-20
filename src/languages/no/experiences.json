@@ -35,6 +35,7 @@
   "newest": "Nyeste",
   "oldest": "Eldste",
   "highestRated": "Høyest vurdert",
+  "mostHelpful": "Mest nyttig",
   "writtenBy": "Skrevet av",
   "readMore": "Les mer",
   "viewExchange": "Se utveksling",
@@ -48,5 +49,7 @@
   "share": "Del",
   "linkCopied": "Lenke kopiert!",
   "experienceNotFound": "Erfaringen ble ikke funnet.",
-  "noOwnExperiences": "Du har ikke skrevet noen erfaringer ennå."
+  "noOwnExperiences": "Du har ikke skrevet noen erfaringer ennå.",
+  "wasThisHelpful": "Var dette nyttig?",
+  "loginToVote": "Du må være logget inn for å stemme"
 }

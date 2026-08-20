@@ -112,6 +112,12 @@
 
 			<!-- Footer -->
 			<v-card-actions class="pa-4 pa-sm-5 d-flex flex-wrap ga-3">
+				<v-btn :variant="hasVoted ? 'flat' : 'tonal'" :color="hasVoted ? 'primary' : undefined"
+					@click="handleVote">
+					<v-icon start>{{ hasVoted ? 'mdi-thumb-up' : 'mdi-thumb-up-outline' }}</v-icon>
+					{{ $t("experiences.wasThisHelpful") }}
+					<span v-if="helpfulCount > 0" class="ml-1">({{ helpfulCount }})</span>
+				</v-btn>
 				<v-btn v-if="experience.exchangeId && !inline" variant="tonal" color="primary" :to="exchangeLink">
 					<v-icon start>mdi-swap-horizontal</v-icon>
 					{{ $t("experiences.viewExchange") }}
@@ -159,7 +165,7 @@ import DOMPurify from "dompurify";
 import { mapGetters } from "vuex";
 import countriesInformation from "../../data/countriesInformation.json";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
-import { deleteExperience } from "../../js/experiencesCache";
+import { deleteExperience, toggleHelpfulVote } from "../../js/experiencesCache";
 import { toast } from "vue3-toastify";
 
 const md = new MarkdownIt({
@@ -178,13 +184,14 @@ export default {
 		inline: { type: Boolean, default: false },
 	},
 
-	emits: ["close", "edit"],
+	emits: ["close", "edit", "voted"],
 
 	data() {
 		return {
 			copied: false,
 			deleteDialog: false,
 			deleting: false,
+			voting: false,
 			countriesInfo: countriesInformation,
 			ratingKeys: ["overall", "academic", "social", "housing", "costOfLiving"],
 		};
@@ -199,6 +206,14 @@ export default {
 
 		isAuthor() {
 			return this.user && this.experience.authorId && this.user.uid === this.experience.authorId;
+		},
+
+		helpfulCount() {
+			return this.experience.helpfulCount || 0;
+		},
+
+		hasVoted() {
+			return !!(this.user && this.experience.helpfulVotes?.[this.user.uid]);
 		},
 
 		editLink() {
@@ -236,6 +251,24 @@ export default {
 				this.$emit("edit", this.experience);
 			} else if (this.editLink) {
 				this.$router.push(this.editLink);
+			}
+		},
+
+		async handleVote() {
+			if (!this.user) {
+				toast.warning(this.$t("experiences.loginToVote"));
+				return;
+			}
+			if (this.voting) return;
+			this.voting = true;
+			try {
+				const voted = await toggleHelpfulVote(this.experience.id, this.user.uid);
+				this.$emit("voted", { experienceId: this.experience.id, voted });
+			} catch (error) {
+				console.error("Error voting on experience:", error);
+				toast.error(this.$t("notifications.experienceError"));
+			} finally {
+				this.voting = false;
 			}
 		},
 

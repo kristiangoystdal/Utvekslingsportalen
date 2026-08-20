@@ -79,12 +79,18 @@
 
 					<p class="experience-excerpt">{{ getExcerpt(experience.content) }}</p>
 
-					<div class="d-flex align-center ga-2 mt-2">
-						<v-rating :model-value="experience.ratings?.overall || 0" color="amber" readonly
-							density="compact" size="16" />
-						<span class="text-caption text-medium-emphasis">
-							{{ experience.ratings?.overall || 0 }}/5
-						</span>
+					<div class="d-flex align-center justify-space-between mt-2">
+						<div class="d-flex align-center ga-2">
+							<v-rating :model-value="experience.ratings?.overall || 0" color="amber" readonly
+								density="compact" size="16" />
+							<span class="text-caption text-medium-emphasis">
+								{{ experience.ratings?.overall || 0 }}/5
+							</span>
+						</div>
+						<div v-if="experience.helpfulCount" class="d-flex align-center ga-1">
+							<v-icon size="14" color="grey-darken-1">mdi-thumb-up-outline</v-icon>
+							<span class="text-caption text-medium-emphasis">{{ experience.helpfulCount }}</span>
+						</div>
 					</div>
 
 					<div class="d-flex align-center justify-space-between mt-3">
@@ -111,7 +117,8 @@
 		</v-btn>
 
 		<!-- Experience Detail Modal -->
-		<ExperienceDetail v-if="selectedExperience" :experience="selectedExperience" @close="closeExperience" />
+		<ExperienceDetail v-if="selectedExperience" :experience="selectedExperience" @close="closeExperience"
+			@voted="onVoted" />
 
 	</div>
 </template>
@@ -158,6 +165,7 @@ export default {
 				{ label: this.$t("experiences.newest"), value: "newest" },
 				{ label: this.$t("experiences.oldest"), value: "oldest" },
 				{ label: this.$t("experiences.highestRated"), value: "highestRated" },
+				{ label: this.$t("experiences.mostHelpful"), value: "mostHelpful" },
 			];
 		},
 
@@ -239,6 +247,8 @@ export default {
 				list = [...list].sort((a, b) => (a.createdAt || 0) - (b.createdAt || 0));
 			} else if (this.sortBy === "highestRated") {
 				list = [...list].sort((a, b) => (b.ratings?.overall || 0) - (a.ratings?.overall || 0));
+			} else if (this.sortBy === "mostHelpful") {
+				list = [...list].sort((a, b) => (b.helpfulCount || 0) - (a.helpfulCount || 0));
 			}
 
 			return list;
@@ -333,6 +343,27 @@ export default {
 
 		closeExperience() {
 			this.$router.push({ name: "Experiences" });
+		},
+
+		onVoted({ experienceId, voted }) {
+			const experience = this.experiences[experienceId];
+			if (!experience || !this.user) return;
+
+			const helpfulVotes = { ...(experience.helpfulVotes || {}) };
+			if (voted) {
+				helpfulVotes[this.user.uid] = true;
+			} else {
+				delete helpfulVotes[this.user.uid];
+			}
+
+			this.experiences = {
+				...this.experiences,
+				[experienceId]: {
+					...experience,
+					helpfulVotes,
+					helpfulCount: (experience.helpfulCount || 0) + (voted ? 1 : -1),
+				},
+			};
 		},
 
 		showNotFoundAndRedirect() {
