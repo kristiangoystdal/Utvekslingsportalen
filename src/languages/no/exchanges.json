@@ -12,7 +12,7 @@
   "info": "Her kan du utforske utvekslingsfagene til tidligere studenter. \n\nDu kan se hvilke universiteter de har vært på, hvilke land de har besøkt, og hvilke fag de har tatt. \nSammenlign med andre på ditt studie og sett sammen din egen plan.",
   "loginToFavorite": "Du må være logget inn for å legge til eller endre favoritter",
   "noComments": "Studenten har ikke lagt inn noen kommentarer til dette faget.",
-  "pageHeader": "Tidligere utvekslinger:",
+  "pageHeader": "Tidligere utvekslinger",
   "pageText": "Utvekslinger per side",
   "search": "Søk etter land, universitet eller studieprogram",
   "searchInfo": "Søk blant {groups} {groupWord} i {location} {locationWord}"

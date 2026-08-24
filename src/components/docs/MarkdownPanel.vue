@@ -1,7 +1,5 @@
 <template>
-  <v-card variant="tonal" rounded="xl" class="pa-5 pa-sm-6 mt-4">
-    <article class="markdown-body" v-html="html" @click="onClick" />
-  </v-card>
+  <article class="markdown-body" v-html="html" @click="onClick" />
 </template>
 
 <script>
@@ -51,10 +49,8 @@ export default {
 </script>
 
 <style scoped>
-/* Readable line length + slightly softer text */
 .markdown-body {
-  max-width: 76ch;
-  margin: 0 auto;
+  margin: 20px 32px 0;
   color: rgba(0, 0, 0, 0.84);
 }
 

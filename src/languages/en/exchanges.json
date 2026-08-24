@@ -12,7 +12,7 @@
   "info": "Here you can explore the exchange courses taken by previous students. \n\nYou can see which universities they have attended, which countries they have visited, and which courses they have taken. \nCompare with others in your study and create your own plan.",
   "loginToFavorite": "You need to be logged in to add or edit favorites",
   "noComments": "The student has not added any comments for this course.",
-  "pageHeader": "Previous Exchanges:",
+  "pageHeader": "Previous Exchanges",
   "pageText": "Exchanges per page",
   "search": "Search for country, university or study program",
   "searchInfo": "Search among {groups} {groupWord} in {location} {locationWord}"
