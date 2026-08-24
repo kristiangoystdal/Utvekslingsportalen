@@ -1,58 +1,65 @@
 <template>
-  <v-container class="py-10" max-width="1100">
-    <v-row justify="center">
-      <v-col cols="12">
-        <v-card elevation="6" rounded="xl" class="pa-4 pa-sm-6">
-          <!-- Header -->
-          <div class="d-flex align-center justify-space-between flex-wrap mb-4">
-            <div>
-              <div class="text-h4 font-weight-bold">{{ $t("legal.legalPageTitle") }}</div>
-              <div class="text-body-2 text-medium-emphasis">
-                {{ $t("legal.legalPageDescription") }}
-              </div>
-            </div>
+  <div>
+    <h2>{{ $t("legal.legalPageTitle") }}</h2>
+    <p class="page-summary mb-1">
+      {{ $t("legal.legalPageDescription") }}
+    </p>
+    <p class="text-caption text-medium-emphasis updated-caption">
+      <v-icon size="14" class="mr-1">mdi-clock-outline</v-icon>
+      {{ $t("legal.updatedDate") }} 19-01-2026
+    </p>
 
-            <v-chip size="small" variant="tonal" color="primary">
-              {{ $t("legal.updatedDate") }} 19-01-2026
-            </v-chip>
-          </div>
+    <br />
 
-          <!-- Tabs -->
-          <v-tabs v-model="tab" color="primary" grow>
-            <v-tab value="overview">{{ $t("legal.overviewTab") }}</v-tab>
-            <v-tab value="privacy">{{ $t("legal.privacyTab") }}</v-tab>
-            <v-tab value="terms">{{ $t("legal.termsTab") }}</v-tab>
-            <v-tab value="disclaimer">{{ $t("legal.disclaimerTab") }}</v-tab>
-          </v-tabs>
+    <v-card class="legal-card" rounded="lg">
+      <v-card-text class="pa-4 pa-sm-6">
+        <!-- Tabs -->
+        <v-tabs v-model="tab" color="primary" grow>
+          <v-tab value="overview">
+            <v-icon start size="18">mdi-file-document-outline</v-icon>
+            {{ $t("legal.overviewTab") }}
+          </v-tab>
+          <v-tab value="privacy">
+            <v-icon start size="18">mdi-shield-lock-outline</v-icon>
+            {{ $t("legal.privacyTab") }}
+          </v-tab>
+          <v-tab value="terms">
+            <v-icon start size="18">mdi-gavel</v-icon>
+            {{ $t("legal.termsTab") }}
+          </v-tab>
+          <v-tab value="disclaimer">
+            <v-icon start size="18">mdi-alert-circle-outline</v-icon>
+            {{ $t("legal.disclaimerTab") }}
+          </v-tab>
+        </v-tabs>
 
-          <v-divider class="my-4" />
+        <v-divider class="my-4" />
 
-          <!-- Tab content -->
-          <v-window v-model="tab">
-            <v-window-item value="overview">
-              <MarkdownPanel v-if="this.$i18n.locale === 'en'" :content="overviewMdEn" @navigate="onNavigate" />
-              <MarkdownPanel v-else :content="overviewMdNo" @navigate="onNavigate" />
-            </v-window-item>
+        <!-- Tab content -->
+        <v-window v-model="tab">
+          <v-window-item value="overview">
+            <MarkdownPanel v-if="this.$i18n.locale === 'en'" :content="overviewMdEn" @navigate="onNavigate" />
+            <MarkdownPanel v-else :content="overviewMdNo" @navigate="onNavigate" />
+          </v-window-item>
 
-            <v-window-item value="privacy">
-              <MarkdownPanel v-if="this.$i18n.locale === 'en'" :content="privacyMdEn" @navigate="onNavigate" />
-              <MarkdownPanel v-else :content="privacyMdNo" @navigate="onNavigate" />
-            </v-window-item>
+          <v-window-item value="privacy">
+            <MarkdownPanel v-if="this.$i18n.locale === 'en'" :content="privacyMdEn" @navigate="onNavigate" />
+            <MarkdownPanel v-else :content="privacyMdNo" @navigate="onNavigate" />
+          </v-window-item>
 
-            <v-window-item value="terms">
-              <MarkdownPanel v-if="this.$i18n.locale === 'en'" :content="termsMdEn" @navigate="onNavigate" />
-              <MarkdownPanel v-else :content="termsMdNo" @navigate="onNavigate" />
-            </v-window-item>
+          <v-window-item value="terms">
+            <MarkdownPanel v-if="this.$i18n.locale === 'en'" :content="termsMdEn" @navigate="onNavigate" />
+            <MarkdownPanel v-else :content="termsMdNo" @navigate="onNavigate" />
+          </v-window-item>
 
-            <v-window-item value="disclaimer">
-              <MarkdownPanel v-if="this.$i18n.locale === 'en'" :content="disclaimerMdEn" @navigate="onNavigate" />
-              <MarkdownPanel v-else :content="disclaimerMdNo" @navigate="onNavigate" />
-            </v-window-item>
-          </v-window>
-        </v-card>
-      </v-col>
-    </v-row>
-  </v-container>
+          <v-window-item value="disclaimer">
+            <MarkdownPanel v-if="this.$i18n.locale === 'en'" :content="disclaimerMdEn" @navigate="onNavigate" />
+            <MarkdownPanel v-else :content="disclaimerMdNo" @navigate="onNavigate" />
+          </v-window-item>
+        </v-window>
+      </v-card-text>
+    </v-card>
+  </div>
 </template>
 
 <script>
@@ -129,3 +136,17 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.legal-card {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--third-color);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+}
+
+.updated-caption {
+  display: flex;
+  align-items: center;
+  margin: 0;
+}
+</style>
