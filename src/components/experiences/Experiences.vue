@@ -131,6 +131,7 @@ import countriesInformation from "../../data/countriesInformation.json";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
 import ExperienceDetail from "./ExperienceDetail.vue";
 import { toast } from "vue3-toastify";
+import { fuzzyMatch } from "../../js/fuzzyMatch.js";
 
 const ITEMS_PER_PAGE = 12;
 
@@ -236,7 +237,7 @@ export default {
 							experience.authorName,
 							experience.year != null ? String(experience.year) : "",
 						];
-						return fields.some(f => (f || "").toLowerCase().includes(chipLower));
+						return fields.some(f => fuzzyMatch((f || "").toLowerCase(), chipLower));
 					});
 				});
 			}
