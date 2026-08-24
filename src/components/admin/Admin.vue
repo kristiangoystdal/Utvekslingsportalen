@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h2>{{ $t("admin.pageHeader") }}:</h2>
+		<h2>{{ $t("admin.pageHeader") }}</h2>
 	</div>
 	<br />
 	<v-container>

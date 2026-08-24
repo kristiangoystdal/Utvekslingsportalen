@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<h2 v-if="login" class="sr-only">{{ $t("auth.loginTitle") }}:</h2>
-		<h2 v-else class="sr-only">{{ $t("auth.registerTitle") }}:</h2>
+		<h2 v-if="login" class="sr-only">{{ $t("auth.loginTitle") }}</h2>
+		<h2 v-else class="sr-only">{{ $t("auth.registerTitle") }}</h2>
 		<br />
 		<div class="login-container">
 			<v-card class="auth-card" elevation="1">
