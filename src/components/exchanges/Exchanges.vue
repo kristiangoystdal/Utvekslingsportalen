@@ -403,6 +403,7 @@ import { getExchangesData } from "../../js/exchangesCache";
 import { getCoursesData } from "../../js/coursesCache";
 import { getExperiencesData } from "../../js/experiencesCache";
 import placeholderFlag from "../../assets/images/placeholder_flag.png";
+import { fuzzyMatch } from "../../js/fuzzyMatch.js";
 
 export default {
 	setup() {
@@ -662,7 +663,7 @@ export default {
 						.map(key => (item[key] != null ? String(item[key]) : ""))
 						.join(" ")
 						.toLowerCase();
-					return rowText.includes(chipLower);
+					return fuzzyMatch(rowText, chipLower);
 				});
 			});
 		},

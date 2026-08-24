@@ -263,6 +263,7 @@ import "vue3-toastify/dist/index.css";
 import { getExchangesData } from "../../js/exchangesCache.js";
 import { getCoursesData } from "../../js/coursesCache.js";
 import { getExperiencesData } from "../../js/experiencesCache.js";
+import { fuzzyMatch } from "../../js/fuzzyMatch.js";
 
 export default {
   data() {
@@ -731,7 +732,7 @@ export default {
         .toLowerCase();
 
       // Every word in the search must appear somewhere in the row text
-      return words.every((word) => rowText.includes(word));
+      return words.every((word) => fuzzyMatch(rowText, word));
     },
     routeToExchange(item) {
       if (!item.exchangeID || !this.exchanges || !this.exchanges[item.exchangeID]) {

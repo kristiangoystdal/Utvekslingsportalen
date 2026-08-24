@@ -54,6 +54,7 @@
 <script>
 import { db } from "../../js/firebaseConfig.js";
 import { get, child, ref as dbRef } from "firebase/database";
+import { fuzzyMatch } from "../../js/fuzzyMatch.js";
 
 export default {
 	data() {
@@ -78,7 +79,7 @@ export default {
 			if (!this.searchQuery) return this.localizedFaqs;
 			const query = this.searchQuery.toLowerCase();
 			return this.localizedFaqs.filter(
-				(faq) => faq.question.toLowerCase().includes(query) || faq.answer.toLowerCase().includes(query)
+				(faq) => fuzzyMatch(faq.question.toLowerCase(), query) || fuzzyMatch(faq.answer.toLowerCase(), query)
 			);
 		},
 		questionWord() {
