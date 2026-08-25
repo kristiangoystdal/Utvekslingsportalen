@@ -43,32 +43,20 @@
 				<!-- Ratings -->
 				<div class="ratings-section mb-5">
 					<h3 class="section-label mb-2">{{ $t("experiences.ratings") }}</h3>
-					<table class="ratings-table ratings-table--desktop">
-						<tr v-for="(_, i) in ratingKeysLeft" :key="i">
-							<td class="rating-label text-body-2">{{ $t(`experiences.${ratingKeysLeft[i]}`) }}</td>
-							<td class="rating-stars-cell">
-								<v-rating :model-value="experience.ratings?.[ratingKeysLeft[i]] || 0" color="amber" readonly
-									density="compact" size="16" class="d-flex" />
-							</td>
-							<template v-if="ratingKeysRight[i]">
-								<td class="rating-gap"></td>
-								<td class="rating-label text-body-2">{{ $t(`experiences.${ratingKeysRight[i]}`) }}</td>
-								<td class="rating-stars-cell">
-									<v-rating :model-value="experience.ratings?.[ratingKeysRight[i]] || 0" color="amber" readonly
-										density="compact" size="16" class="d-flex" />
-								</td>
-							</template>
-						</tr>
-					</table>
-					<table class="ratings-table ratings-table--mobile">
-						<tr v-for="key in ratingKeys" :key="key">
-							<td class="rating-label text-body-2">{{ $t(`experiences.${key}`) }}</td>
-							<td class="rating-stars-cell">
-								<v-rating :model-value="experience.ratings?.[key] || 0" color="amber" readonly density="compact" size="16"
-									class="d-flex" />
-							</td>
-						</tr>
-					</table>
+					<div class="ratings-grid">
+						<div v-for="key in ratingKeys" :key="key" class="rating-row">
+							<div class="rating-label">
+								<v-icon size="18" class="rating-icon">{{ ratingIcons[key] }}</v-icon>
+								<span class="text-body-2">{{ $t(`experiences.${key}`) }}</span>
+							</div>
+							<div class="star-row">
+								<v-icon v-for="n in 5" :key="n" size="24"
+									:color="n <= (experience.ratings?.[key] || 0) ? 'amber' : 'grey-lighten-1'">
+									{{ n <= (experience.ratings?.[key] || 0) ? 'mdi-star' : 'mdi-star-outline' }}
+								</v-icon>
+							</div>
+						</div>
+					</div>
 				</div>
 
 				<!-- Content -->
@@ -196,6 +184,13 @@ export default {
 			voting: false,
 			countriesInfo: countriesInformation,
 			ratingKeys: ["overall", "academic", "social", "housing", "costOfLiving"],
+			ratingIcons: {
+				overall: "mdi-star-outline",
+				academic: "mdi-school-outline",
+				social: "mdi-account-group-outline",
+				housing: "mdi-home-outline",
+				costOfLiving: "mdi-cash-multiple",
+			},
 		};
 	},
 
@@ -221,14 +216,6 @@ export default {
 		editLink() {
 			if (!this.experience.id) return null;
 			return { name: "EditExperience", params: { id: this.experience.id } };
-		},
-
-		ratingKeysLeft() {
-			return this.ratingKeys.slice(0, Math.ceil(this.ratingKeys.length / 2));
-		},
-
-		ratingKeysRight() {
-			return this.ratingKeys.slice(Math.ceil(this.ratingKeys.length / 2));
 		},
 
 		renderedContent() {
@@ -363,41 +350,50 @@ export default {
 }
 
 /* Ratings */
-.ratings-table {
-	border-collapse: collapse;
+.ratings-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	column-gap: 32px;
+	row-gap: 10px;
 }
 
-.ratings-table td {
-	padding: 4px 0;
-	vertical-align: middle;
-}
-
-.ratings-table .rating-label {
-	padding-right: 8px;
-	white-space: nowrap;
-}
-
-.ratings-table .rating-stars-cell {
-	white-space: nowrap;
-}
-
-.ratings-table .rating-gap {
-	width: 24px;
-}
-
-.ratings-table--mobile {
-	display: none;
-}
-
-.ratings-table :deep(.v-rating) {
+.rating-row {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
 	line-height: 1;
-	position: relative;
-	top: -11px;
 }
 
-.ratings-table :deep(.v-rating .v-btn) {
-	height: 16px;
-	width: 16px;
+.rating-label {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	min-width: 0;
+	white-space: nowrap;
+	flex-shrink: 0;
+	line-height: 1;
+}
+
+.rating-label span {
+	line-height: 1;
+}
+
+.rating-icon {
+	color: rgb(var(--v-theme-primary));
+	flex-shrink: 0;
+}
+
+.star-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	line-height: 1;
+}
+
+.star-row :deep(.v-icon) {
+	display: inline-flex;
+	align-items: center;
 }
 
 /* Pros / Cons */
@@ -517,21 +513,12 @@ export default {
 		font-size: 1.1rem;
 	}
 
-	.ratings-table--desktop {
-		display: none;
+	.ratings-grid {
+		grid-template-columns: 1fr;
 	}
 
-	.ratings-table--mobile {
-		display: table;
-	}
-
-	.ratings-table .rating-label {
+	.rating-label {
 		font-size: 0.85rem;
-	}
-
-	.ratings-table :deep(.v-rating .v-btn) {
-		height: 14px;
-		width: 14px;
 	}
 
 	.pro-con-grid {
