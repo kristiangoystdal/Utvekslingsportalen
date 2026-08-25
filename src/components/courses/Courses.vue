@@ -25,7 +25,7 @@
   </div>
 
   <!-- University Chips -->
-  <div>
+  <div class="mt-4">
     <v-chip v-for="university in this.homeUniversities" size="large" class="mr-2" @click="toggleChip(university)"
       :class="selectedUniversity === university ? 'selected' : ''">
       {{ university.split('(')[1].split(')')[0] }}
@@ -36,7 +36,8 @@
   <div v-if="!isMobile">
     <v-data-table v-model:expanded="expanded" :headers="translatedHeaders" :items="filteredCourseList" item-value="id"
       show-expand class="main-table dense-table" id="main-table-width" :search="courseSearch"
-      :custom-filter="rowSearchFilter" :items-per-page-text="this.$t('courses.pageText')" :loading="coursetableLoading">
+      :custom-filter="rowSearchFilter" :items-per-page-text="this.$t('courses.pageText')"
+      :items-per-page-options="[10, 25, 50, 100]" :loading="coursetableLoading">
 
       <template v-slot:loading>
         <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
@@ -93,7 +94,8 @@
     <v-data-table :headers="translatedMobileHeaders" v-model:expanded="expanded" :items="filteredCourseList"
       item-value="id" show-expand class="main-table fixed-table" id="main-table-width" :fixed-header="false"
       :style="{ width: '100%' }" item-class="custom-item-class" header-class="custom-header-class"
-      :search="courseSearch" :items-per-page-text="this.$t('courses.pageText')" :loading="coursetableLoading"
+      :search="courseSearch" :items-per-page-text="this.$t('courses.pageText')"
+      :items-per-page-options="[10, 25, 50, 100]" :loading="coursetableLoading"
       :custom-filter="rowSearchFilter">
 
       <template v-slot:loading>
