@@ -36,6 +36,7 @@
   <div v-if="!isMobile">
     <v-data-table v-model:expanded="expanded" :headers="translatedHeaders" :items="filteredCourseList" item-value="id"
       show-expand class="main-table dense-table" id="main-table-width" :search="courseSearch"
+      :sort-by="[{ key: 'count', order: 'desc' }]"
       :custom-filter="rowSearchFilter" :items-per-page-text="this.$t('courses.pageText')"
       :items-per-page-options="[10, 25, 50, 100]" :loading="coursetableLoading">
 
@@ -96,7 +97,7 @@
       :style="{ width: '100%' }" item-class="custom-item-class" header-class="custom-header-class"
       :search="courseSearch" :items-per-page-text="this.$t('courses.pageText')"
       :items-per-page-options="[10, 25, 50, 100]" :loading="coursetableLoading"
-      :custom-filter="rowSearchFilter">
+      :sort-by="[{ key: 'count', order: 'desc' }]" :custom-filter="rowSearchFilter">
 
       <template v-slot:loading>
         <v-skeleton-loader type="table-row@10"></v-skeleton-loader>
@@ -602,8 +603,9 @@ export default {
         this.courseList = Object.values(grouped);
         this.filteredCourseList = this.courseList;
 
-        // Sort by course code
+        // Sort by most common course first (highest count), then alphabetically by course code
         this.filteredCourseList.sort((a, b) => {
+          if (b.count !== a.count) return b.count - a.count;
           if (a.courseCode < b.courseCode) return -1;
           if (a.courseCode > b.courseCode) return 1;
           return 0;
