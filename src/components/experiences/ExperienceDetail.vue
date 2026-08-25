@@ -76,26 +76,28 @@
 					<article class="markdown-body" v-html="renderedContent" />
 				</div>
 
-				<!-- Pros -->
-				<div v-if="experience.pros && experience.pros.length > 0" class="mb-4">
-					<h3 class="section-label mb-2">{{ $t("experiences.pros") }}</h3>
-					<ul class="pro-con-list">
-						<li v-for="(pro, i) in experience.pros" :key="'pro-' + i">
-							<v-icon size="18" color="success" class="pro-con-icon">mdi-check-circle</v-icon>
-							<span>{{ pro }}</span>
-						</li>
-					</ul>
-				</div>
+				<!-- Pros / Cons -->
+				<div v-if="(experience.pros && experience.pros.length > 0) || (experience.cons && experience.cons.length > 0)"
+					class="pro-con-grid mb-4">
+					<div v-if="experience.pros && experience.pros.length > 0">
+						<h3 class="section-label mb-2">{{ $t("experiences.pros") }}</h3>
+						<ul class="pro-con-list">
+							<li v-for="(pro, i) in experience.pros" :key="'pro-' + i">
+								<v-icon size="18" color="success" class="pro-con-icon">mdi-check-circle</v-icon>
+								<span>{{ pro }}</span>
+							</li>
+						</ul>
+					</div>
 
-				<!-- Cons -->
-				<div v-if="experience.cons && experience.cons.length > 0" class="mb-4">
-					<h3 class="section-label mb-2">{{ $t("experiences.cons") }}</h3>
-					<ul class="pro-con-list">
-						<li v-for="(con, i) in experience.cons" :key="'con-' + i">
-							<v-icon size="18" color="error" class="pro-con-icon">mdi-close-circle</v-icon>
-							<span>{{ con }}</span>
-						</li>
-					</ul>
+					<div v-if="experience.cons && experience.cons.length > 0">
+						<h3 class="section-label mb-2">{{ $t("experiences.cons") }}</h3>
+						<ul class="pro-con-list">
+							<li v-for="(con, i) in experience.cons" :key="'con-' + i">
+								<v-icon size="18" color="error" class="pro-con-icon">mdi-close-circle</v-icon>
+								<span>{{ con }}</span>
+							</li>
+						</ul>
+					</div>
 				</div>
 
 				<!-- Tips -->
@@ -399,6 +401,12 @@ export default {
 }
 
 /* Pros / Cons */
+.pro-con-grid {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 0 24px;
+}
+
 .pro-con-list {
 	list-style: none;
 	padding: 0;
@@ -524,6 +532,11 @@ export default {
 	.ratings-table :deep(.v-rating .v-btn) {
 		height: 14px;
 		width: 14px;
+	}
+
+	.pro-con-grid {
+		grid-template-columns: 1fr;
+		gap: 16px 0;
 	}
 }
 </style>
