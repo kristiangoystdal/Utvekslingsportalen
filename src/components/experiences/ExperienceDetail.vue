@@ -289,7 +289,12 @@ export default {
 
 		formatDate(timestamp) {
 			if (!timestamp) return "";
-			return new Date(timestamp).toLocaleDateString();
+			const localeCode = this.locale === "no" ? "nb-NO" : "en-GB";
+			return new Date(timestamp).toLocaleDateString(localeCode, {
+				day: "2-digit",
+				month: "2-digit",
+				year: "numeric",
+			});
 		},
 
 		getFlagUrl(country) {

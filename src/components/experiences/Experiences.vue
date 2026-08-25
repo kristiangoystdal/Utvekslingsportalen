@@ -67,12 +67,17 @@
 			<v-card v-for="experience in paginatedExperiences" :key="experience.id" class="experience-card"
 				variant="outlined" rounded="lg" @click="goToExperience(experience.id)">
 				<v-card-text>
-					<div class="d-flex align-center ga-2 mb-2">
-						<img v-if="experience.country" :src="getFlagUrl(experience.country)" alt="" width="24" height="18"
-							class="flag-img" />
-						<span class="text-caption text-medium-emphasis">
-							{{ experience.university || '—' }}
-						</span>
+					<div class="d-flex align-center justify-space-between ga-2 mb-2">
+						<div class="d-flex align-center ga-2">
+							<img v-if="experience.country" :src="getFlagUrl(experience.country)" alt="" width="24" height="18"
+								class="flag-img" />
+							<span class="text-caption text-medium-emphasis">
+								{{ experience.university || '—' }}
+							</span>
+						</div>
+						<v-chip v-if="experience.studyYear" size="x-small" variant="tonal" color="primary">
+							{{ experience.studyYear }} {{ $t('database.studyYear') }}
+						</v-chip>
 					</div>
 
 					<h3 class="experience-title">{{ experience.title }}</h3>
@@ -320,7 +325,12 @@ export default {
 
 		formatDate(timestamp) {
 			if (!timestamp) return "";
-			return new Date(timestamp).toLocaleDateString();
+			const localeCode = this.locale === "no" ? "nb-NO" : "en-GB";
+			return new Date(timestamp).toLocaleDateString(localeCode, {
+				day: "2-digit",
+				month: "2-digit",
+				year: "numeric",
+			});
 		},
 
 		getFlagUrl(country) {
