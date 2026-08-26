@@ -952,7 +952,7 @@
         "english_city": "Turku"
       },
       "Oulun yliopisto": {
-        "original_name": "Oulun yliopisto ",
+        "original_name": "Oulun yliopisto",
         "english_name": "University of Oulu",
         "abbreviation": "UOulu",
         "original_city": "Oulu",
@@ -1092,7 +1092,7 @@
         "original_city": "Dijon",
         "english_city": "Dijon"
       },
-      "Ecole centrale de Lyon": {
+      "École centrale de Lyon": {
         "original_name": "École centrale de Lyon",
         "english_name": "Central School of Lyon",
         "abbreviation": "ECL",
@@ -1137,7 +1137,13 @@
         "original_city": "Grenoble",
         "english_city": "Grenoble"
       },
-      "Université Joseph Fourier": {},
+      "Université Joseph Fourier": {
+        "original_name": "Université Joseph Fourier",
+        "english_name": "Joseph Fourier University",
+        "abbreviation": "UJF",
+        "original_city": "Grenoble",
+        "english_city": "Grenoble"
+      },
       "Ecole d'Ingénieurs en Génie des Systèmes industriels": {
         "original_name": "Ecole d'Ingénieurs en Génie des Systèmes industriels",
         "english_name": "Engineering School of Industrial Systems Engineering",
@@ -1808,14 +1814,14 @@
         "original_city": "Bangalore",
         "english_city": "Bangalore"
       },
-      "Indian Institute of Technology Madras": {
+      "Indian Institute of Technology, Madras": {
         "original_name": "Indian Institute of Technology, Madras",
         "english_name": "Indian Institute of Technology, Madras",
         "abbreviation": "IIT Madras",
         "original_city": "Chennai",
         "english_city": "Chennai"
       },
-      "Indian Institute of Technology Mandi": {
+      "Indian Institute of Technology, Mandi": {
         "original_name": "Indian Institute of Technology, Mandi",
         "english_name": "Indian Institute of Technology, Mandi",
         "abbreviation": "IIT Mandi",
@@ -3271,7 +3277,7 @@
         "original_city": "Porto",
         "english_city": "Porto"
       },
-      "P.PORTO - Politécnico do Porto": {
+      "Politécnico do Porto": {
         "original_name": "Politécnico do Porto",
         "english_name": "Polytechnic of Porto",
         "abbreviation": "P.PORTO",
@@ -3777,11 +3783,11 @@
         "original_city": "Tarragona",
         "english_city": "Tarragona"
       },
-      "Universidad Politécnica de Valencia": {
-        "original_name": "Universidad Politécnica de Valencia",
+      "Universitat Politècnica de València": {
+        "original_name": "Universitat Politècnica de València",
         "english_name": "Polytechnic University of Valencia",
         "abbreviation": "UPV",
-        "original_city": "Valencia",
+        "original_city": "València",
         "english_city": "Valencia"
       },
       "Universitat de València": {
