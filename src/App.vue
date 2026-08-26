@@ -2,6 +2,7 @@
 	<div class="background-container">
 		<div class="background-image"></div>
 		<div class="content-container">
+			<DisclaimerBanner></DisclaimerBanner>
 			<header>
 				<Header></Header>
 			</header>
@@ -9,9 +10,6 @@
 				<router-view></router-view>
 			</div>
 			<div v-if="!isDesktop">
-				<div class="mobile-disclaimer">
-					{{ $t("homepage.disclaimer") }}
-				</div>
 				<br><br>
 				<MobileFooter></MobileFooter>
 			</div>
@@ -28,6 +26,7 @@ import { useStore } from "vuex";
 import Header from "./components/common/Header.vue";
 import MobileFooter from "./components/common/mobileFooter.vue";
 import Footer from "./components/common/Footer.vue";
+import DisclaimerBanner from "./components/common/DisclaimerBanner.vue";
 
 const store = useStore();
 const isDesktop = ref(window.innerWidth >= 769);
@@ -159,18 +158,6 @@ header {
 	#app {
 		margin-bottom: 10vh;
 		padding: 0;
-	}
-
-
-	.mobile-disclaimer {
-		text-align: center;
-		font-size: 0.65rem;
-		padding: 6px 10px;
-		margin-top: 4px;
-		/* Full-opacity --second-color gives ~4.96:1 contrast against the
-		   white background, clearing the WCAG AA 4.5:1 minimum for small
-		   text — the old opacity: 0.75 dropped it below that. */
-		color: var(--second-color);
 	}
 }
 </style>
