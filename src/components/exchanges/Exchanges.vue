@@ -31,8 +31,9 @@
 				color="primary"
 				variant="tonal"
 				size="small"
+				:prepend-icon="chipIcon(chip.field)"
 				@click:close="removeChip(index)"
-			>{{ chip }}</v-chip>
+			>{{ chip.label }}</v-chip>
 			<div class="search-input-wrap">
 				<input
 					ref="searchInput"
@@ -652,19 +653,48 @@ export default {
 		},
 		filteredExchangeList() {
 			if (this.searchChips.length === 0) return this.exchangeList;
+
+			// Country/university chips only match their own field (not
+			// secondCountry, study, etc.) and OR together within their own
+			// type, so picking several countries or universities broadens
+			// the results instead of matching nothing. Every other chip
+			// (typed free text, study names) keeps the old AND-narrowing
+			// fuzzy match across the row.
+			const groups = { country: [], university: [], text: [] };
+			for (const chip of this.searchChips) {
+				const bucket = groups[chip.field] ? chip.field : "text";
+				groups[bucket].push(chip.label.toLowerCase());
+			}
+
 			return this.exchangeList.filter(item => {
-				return this.searchChips.every(chip => {
-					const chipLower = chip.toLowerCase();
+				if (groups.country.length > 0) {
+					const itemCountry = (item.country || "").toLowerCase();
+					if (!groups.country.includes(itemCountry)) return false;
+				}
+
+				if (groups.university.length > 0) {
+					const itemUniversity = (item.university || "").toLowerCase();
+					const shortName = itemUniversity.split("(")[0].trim();
+					const matches = groups.university.some(
+						u => shortName === u || itemUniversity.includes(u)
+					);
+					if (!matches) return false;
+				}
+
+				if (groups.text.length > 0) {
 					const fieldsToSearch = [
-						"country", "secondCountry", "university",
+						"country", "university",
 						"study", "studyYear", "year", "homeUniversity",
 					];
 					const rowText = fieldsToSearch
 						.map(key => (item[key] != null ? String(item[key]) : ""))
 						.join(" ")
 						.toLowerCase();
-					return fuzzyMatch(rowText, chipLower);
-				});
+					const allMatch = groups.text.every(t => fuzzyMatch(rowText, t));
+					if (!allMatch) return false;
+				}
+
+				return true;
 			});
 		},
 		allSuggestions() {
@@ -674,7 +704,7 @@ export default {
 			for (const country of this.countryList) {
 				if (!added.has(country)) {
 					added.add(country);
-					suggestions.push({ label: country, type: this.$t("database.country"), icon: "mdi-earth" });
+					suggestions.push({ label: country, type: this.$t("database.country"), icon: "mdi-earth", field: "country" });
 				}
 			}
 
@@ -684,7 +714,7 @@ export default {
 					const shortName = exchange.university.split('(')[0].trim();
 					if (!universityNames.has(shortName)) {
 						universityNames.add(shortName);
-						suggestions.push({ label: shortName, type: this.$t("database.university"), icon: "mdi-school" });
+						suggestions.push({ label: shortName, type: this.$t("database.university"), icon: "mdi-school", field: "university" });
 					}
 				}
 			}
@@ -692,7 +722,7 @@ export default {
 			for (const study of this.studyList) {
 				if (!added.has(study)) {
 					added.add(study);
-					suggestions.push({ label: study, type: this.$t("database.study"), icon: "mdi-book-open-variant" });
+					suggestions.push({ label: study, type: this.$t("database.study"), icon: "mdi-book-open-variant", field: "text" });
 				}
 			}
 
@@ -702,7 +732,7 @@ export default {
 			const input = this.searchInput.trim().toLowerCase();
 			if (!input) return [];
 			return this.allSuggestions
-				.filter(s => s.label.toLowerCase().includes(input) && !this.searchChips.includes(s.label))
+				.filter(s => s.label.toLowerCase().includes(input) && !this.searchChips.some(chip => chip.label === s.label))
 				.slice(0, 8);
 		},
 		showSuggestions() {
@@ -824,16 +854,47 @@ export default {
 				return;
 			}
 			const input = this.searchInput.trim();
-			if (input && !this.searchChips.includes(input)) {
-				this.searchChips.push(input);
+			if (input) {
+				const countryLabel = this.resolveCountryFromInput(input);
+				const label = countryLabel || input;
+				const field = countryLabel ? "country" : this.resolveChipField(input);
+				if (!this.searchChips.some(chip => chip.label === label)) {
+					this.searchChips.push({ label, field });
+				}
 				this.searchInput = "";
 				this.highlightedIndex = -1;
 				this.updateSearchQuery();
 			}
 		},
+		// Recognizes a country name typed in either English or Norwegian
+		// (including multi-word names like "South Korea") and returns it
+		// translated into the current locale, or null if `input` isn't a
+		// country name at all.
+		resolveCountryFromInput(input) {
+			const words = input.split(/\s+/);
+			for (const [index, word] of words.entries()) {
+				if (!isNaN(word) || word.length <= 3) continue;
+				const current_word = this.normalizeCountrySearchWord(words, index);
+				const canonicalKey = this.getCountryKeyFromUserInput(current_word);
+				if (canonicalKey) {
+					return this.$t(`countries.${canonicalKey}`);
+				}
+			}
+			return null;
+		},
+		resolveChipField(label) {
+			const lower = label.toLowerCase();
+			const match = this.allSuggestions.find(s => s.label.toLowerCase() === lower);
+			return match ? match.field : "text";
+		},
+		chipIcon(field) {
+			if (field === "country") return "mdi-earth";
+			if (field === "university") return "mdi-school";
+			return undefined;
+		},
 		selectSuggestion(suggestion) {
-			if (!this.searchChips.includes(suggestion.label)) {
-				this.searchChips.push(suggestion.label);
+			if (!this.searchChips.some(chip => chip.label === suggestion.label)) {
+				this.searchChips.push({ label: suggestion.label, field: suggestion.field });
 			}
 			this.searchInput = "";
 			this.highlightedIndex = -1;
@@ -1241,19 +1302,11 @@ export default {
 			if (search) {
 				const chips = search.split(',').map(s => s.trim()).filter(Boolean);
 				for (const chip of chips) {
-					const words = chip.split(/\s+/);
-					let resolved = chip;
-					for (const [index, word] of words.entries()) {
-						if (!isNaN(word) || word.length <= 3) continue;
-						let current_word = this.normalizeCountrySearchWord(words, index);
-						const canonicalKey = this.getCountryKeyFromUserInput(current_word);
-						if (canonicalKey) {
-							resolved = this.$t(`countries.${canonicalKey}`);
-							break;
-						}
-					}
-					if (!this.searchChips.includes(resolved)) {
-						this.searchChips.push(resolved);
+					const countryLabel = this.resolveCountryFromInput(chip);
+					const resolved = countryLabel || chip;
+					const field = countryLabel ? "country" : this.resolveChipField(resolved);
+					if (!this.searchChips.some(existing => existing.label === resolved)) {
+						this.searchChips.push({ label: resolved, field });
 					}
 				}
 				this.updateSearchQuery();
@@ -1281,7 +1334,7 @@ export default {
 		updateSearchQuery() {
 			if (!this.$route || !this.$route.query) return;
 			const r = this.$route.query.r;
-			const searchParam = this.searchChips.length > 0 ? this.searchChips.join(',') : undefined;
+			const searchParam = this.searchChips.length > 0 ? this.searchChips.map(chip => chip.label).join(',') : undefined;
 			const query = { ...this.$route.query };
 			if (searchParam) {
 				query.search = searchParam;
