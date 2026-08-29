@@ -21,6 +21,7 @@
 			<div style="display: inline-flex; gap: 10px; margin-top: 10px;">
 				<v-btn class="btn-primary" @click="openExchangeDialog">{{ $t("admin.addExchangeTitle") }}</v-btn>
 				<v-btn class="btn-third" @click="refreshExchangesData">{{ $t("admin.refreshExchangeData") }}</v-btn>
+				<v-btn class="btn-third" @click="migrateEmbeddedCourses">{{ $t("admin.migrateEmbeddedCourses") }}</v-btn>
 			</div>
 		</v-card>
 
@@ -443,6 +444,49 @@ export default {
 				toast.error(this.$t("notifications.exchangeLoadFailure"));
 			}
 		},
+		async migrateEmbeddedCourses() {
+			// One-off migration: move courses embedded under exchanges/{id}/courses
+			// (legacy schema) to the top-level courses/{id} node, then strip the
+			// courses field off the exchange record. See issue #269.
+			try {
+				const exchangesSnapshot = await get(dbRef(db, "exchanges"));
+				const exchanges = exchangesSnapshot.val();
+				if (!exchanges) {
+					toast.info(this.$t("admin.migrateEmbeddedCoursesNone"));
+					return;
+				}
+
+				const coursesSnapshot = await get(dbRef(db, "courses"));
+				const coursesByExchangeId = coursesSnapshot.val() || {};
+
+				const multiPathUpdate = {};
+				let migratedCount = 0;
+
+				for (const [id, exchange] of Object.entries(exchanges)) {
+					if (!exchange.courses) continue;
+
+					if (!coursesByExchangeId[id]) {
+						multiPathUpdate[`courses/${id}`] = exchange.courses;
+					}
+					multiPathUpdate[`exchanges/${id}/courses`] = null;
+					migratedCount++;
+				}
+
+				if (migratedCount === 0) {
+					toast.info(this.$t("admin.migrateEmbeddedCoursesNone"));
+					return;
+				}
+
+				await update(dbRef(db), multiPathUpdate);
+				clearCachedCourses();
+				await this.loadExchangeData();
+				await this.fetchCourseData();
+				toast.success(this.$t("admin.migrateEmbeddedCoursesSuccess", { count: migratedCount }));
+			} catch (error) {
+				console.error("Error migrating embedded courses:", error);
+				toast.error(this.$t("admin.migrateEmbeddedCoursesFailure"));
+			}
+		},
 		async addExchange() {
 			// Implement exchange adding logic here
 			this.localUserExchange = {
@@ -570,8 +614,8 @@ export default {
 				const toArray = (obj) =>
 					Array.isArray(obj) ? obj : Object.values(obj || {});
 
-				for (const exchangeID in coursesByExchangeId) {
-					const courses = coursesByExchangeId[exchangeID];
+				for (const exchangeID in exchanges) {
+					const courses = coursesByExchangeId[exchangeID] || exchanges[exchangeID].courses;
 
 					if (!courses) continue;
 
