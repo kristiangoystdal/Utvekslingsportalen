@@ -40,7 +40,7 @@
 				</template>
 			</v-data-table>
 			<div style="display: inline-flex; gap: 10px; margin-top: 10px;">
-				<v-btn class="btn-third" @click="refreshExchangesData">{{ $t("admin.refreshCourseData") }}</v-btn>
+				<v-btn class="btn-third" @click="refreshCourseData">{{ $t("admin.refreshCourseData") }}</v-btn>
 			</div>
 		</v-card>
 
@@ -424,6 +424,14 @@ export default {
 				await this.loadExchangeData();
 			} catch (error) {
 				console.error("Error refreshing exchange data:", error);
+			}
+		},
+		async refreshCourseData() {
+			try {
+				clearCachedCourses();
+				await this.fetchCourseData();
+			} catch (error) {
+				console.error("Error refreshing course data:", error);
 			}
 		},
 		async loadExchangeData() {
