@@ -1,16 +1,20 @@
-<!-- src/components/BarChart.vue -->
+<!-- Horizontal bar list. Each bar links to the exchange search for that item. -->
 <template>
-  <div ref="chartContainer" class="bar-chart-container"></div>
+  <ol class="bar-chart">
+    <li v-for="item in items" :key="item.name">
+      <router-link class="bar-row" :to="{ name: 'Exchanges', query: { search: item.name } }"
+        :title="`${item.name}: ${item.count}`">
+        <span class="bar-label">{{ item.name }}</span>
+        <span class="bar-track">
+          <span class="bar-fill" :style="{ width: barWidth(item.count) }"></span>
+        </span>
+        <span class="bar-count">{{ item.count }}</span>
+      </router-link>
+    </li>
+  </ol>
 </template>
 
 <script>
-import * as echarts from "echarts/core";
-import { BarChart as EBarChart } from "echarts/charts";
-import { GridComponent, TooltipComponent } from "echarts/components";
-import { CanvasRenderer } from "echarts/renderers";
-
-echarts.use([EBarChart, GridComponent, TooltipComponent, CanvasRenderer]);
-
 export default {
   name: "BarChart",
   props: {
@@ -18,140 +22,89 @@ export default {
       type: Array,
       required: true,
     },
-    title: {
-      type: String,
-      required: false,
-    },
   },
-  data() {
-    return {
-      chart: null,
-    };
-  },
-  mounted() {
-    this.initChart();
-    window.addEventListener("resize", this.handleResize);
-  },
-  beforeUnmount() {
-    window.removeEventListener("resize", this.handleResize);
-    if (this.chart) this.chart.dispose();
-  },
-  watch: {
-    items: {
-      deep: true,
-      handler() {
-        this.updateChart();
-      },
+  computed: {
+    max() {
+      return Math.max(1, ...this.items.map((i) => i.count));
     },
   },
   methods: {
-    initChart() {
-      const container = this.$refs.chartContainer;
-      if (!container) return;
-
-      this.chart = echarts.init(container);
-
-      this.chart.on("click", (params) => {
-        if (!params || params.componentType !== "series") return;
-
-
-        const name = params.name;
-        const index = params.dataIndex;
-
-        // Show tooltip
-        this.chart.dispatchAction({
-          type: "showTip",
-          seriesIndex: 0,
-          dataIndex: index,
-        });
-
-        this.routeToCountry(name);
-      });
-
-
-      this.updateChart();
-    },
-
-    updateChart() {
-      if (!this.chart || !this.items || !this.items.length) return;
-
-      const labels = this.items.map((i) => i.name);
-      const values = this.items.map((i) => i.count);
-
-      const option = {
-        grid: {
-          left: "3%",
-          right: "8%",
-          bottom: "3%",
-          top: 20,
-          containLabel: true,
-        },
-        tooltip: {
-          trigger: "item",
-          confine: true,
-          formatter: (params) =>
-            `${params.name}<br/>${this.$t("homepage.count")}: ${params.value}`,
-        },
-        xAxis: { type: "value" },
-        yAxis: {
-          type: "category",
-          data: labels,
-          axisLabel: {
-            fontSize: 12,
-            formatter: (value) => {
-              const maxCharsPerLine = 20;     // adjust as needed
-              const words = value.split(" ");
-              let lines = [""];
-              let currentLine = 0;
-              for (let word of words) {
-                if ((lines[currentLine] + " " + word).trim().length <= maxCharsPerLine) {
-                  lines[currentLine] += (lines[currentLine] ? " " : "") + word;
-                } else {
-                  currentLine++;
-                  if (currentLine > 1) break; // stop after 3 lines
-                  lines[currentLine] = word;
-                }
-              }
-              // If text was too long for 3 lines → add ellipsis to last line
-              if (currentLine > 1) {
-                lines[1] += " ...";
-              }
-              return lines.join("\n");
-            }
-          },
-          inverse: true,
-        },
-        series: [
-          {
-            type: "bar",
-            data: values,
-            itemStyle: {
-              cursor: "pointer",
-            },
-          },
-        ],
-      };
-
-      this.chart.setOption(option);
-    },
-
-    handleResize() {
-      if (this.chart) {
-        this.chart.resize();
-      }
-    },
-
-    routeToCountry(name) {
-      this.$router.push({ name: "Exchanges", query: { search: name } });
+    barWidth(count) {
+      return `${Math.max(2, (count / this.max) * 100)}%`;
     },
   },
 };
 </script>
 
 <style scoped>
-.bar-chart-container {
+.bar-chart {
+  list-style: none;
   width: 100%;
-  height: 400px;
-  min-height: 300px;
+  max-width: 760px;
+  padding: 0;
+  margin: 0.5rem auto 1.5rem;
+  text-align: left;
+}
+
+.bar-row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 14rem) 1fr 2.5rem;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 8px;
+  color: inherit;
+  text-decoration: none;
+}
+
+.bar-row:hover,
+.bar-row:focus-visible {
+  background: rgba(var(--v-theme-primary), 0.08);
+}
+
+.bar-row:focus-visible {
+  outline: 2px solid rgb(var(--v-theme-primary));
+  outline-offset: 1px;
+}
+
+.bar-label {
+  font-size: 0.9rem;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.bar-track {
+  height: 0.9rem;
+  border-radius: 999px;
+  background: rgba(var(--v-theme-primary), 0.1);
+  overflow: hidden;
+}
+
+.bar-fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: rgb(var(--v-theme-primary));
+  transition: width 0.4s ease;
+}
+
+.bar-count {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  text-align: right;
+}
+
+@media (max-width: 600px) {
+  .bar-row {
+    grid-template-columns: 1fr 2.5rem;
+    row-gap: 0.25rem;
+  }
+
+  .bar-label {
+    grid-column: 1 / -1;
+  }
 }
 </style>
