@@ -1,8 +1,15 @@
 {
   "count": "Count",
   "disclaimer": "The Exchange Portal is not operated by any university. The information is based on student experiences and may be outdated or contain errors. Always verify with your university before finalizing your plans.",
+  "mapLegendFew": "Few exchanges",
+  "mapLegendMany": "Many",
+  "mapTooltipCount": "{count} exchanges",
   "newFeature": "Support for UiO (Oslo), UiB (Bergen), UiS (Stavanger), and UiT (Tromsø) is now added! \nSelect your university when you create your exchange.",
   "siteDescription": "This site is a tool for students across Norway to plan and document their exchange studies. \n\n Here you can see which courses other students have taken during their exchange, and you can create your own plan for your exchange.",
+  "statCountries": "countries",
+  "statExchanges": "exchanges",
+  "statStudyPrograms": "study programs",
+  "statUniversities": "universities",
   "topCountries": "Top 10 Destination Countries",
   "topStudyPrograms": "Top 10 Study Programs",
   "welcome": "Welcome to Utvekslingsportalen!"
