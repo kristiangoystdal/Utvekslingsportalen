@@ -437,10 +437,13 @@
 					<v-form ref="editForm">
 						<v-text-field v-model="localEditData.displayName" :label="$t('auth.name')" required />
 						<v-text-field v-model="localEditData.email" :label="$t('auth.email')" required readonly />
-						<v-autocomplete v-model="localEditData.study" :items="studyNames" :label="$t('database.study')" required
-							@update:modelValue="handleNewStudy" />
-						<v-autocomplete v-model="localEditData.specialization" :items="specializations"
-							:label="$t('database.specialization')" />
+						<v-autocomplete v-model="localEditData.homeUniversity" :items="homeUniversities"
+							:label="$t('database.homeUniversity')" clearable autocomplete="off"
+							@update:model-value="onHomeUniversityChange" />
+						<v-autocomplete v-model="localEditData.study" :items="studies" :label="$t('database.study')"
+							:disabled="!localEditData.homeUniversity" clearable autocomplete="off"
+							:hint="!localEditData.homeUniversity ? $t('hints.selectHomeUniversityFirst') : ''"
+							persistent-hint required />
 					</v-form>
 				</v-card-text>
 				<v-divider />
@@ -478,7 +481,8 @@ import { mapGetters } from "vuex";
 import { auth, db } from "../../js/firebaseConfig";
 import { signOut, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 import { ref as dbRef, update } from "firebase/database";
-import studiesData from "../../data/studies.json";
+import homeUniversityJson from "../../data/homeUniversities.json";
+import { getStudiesForHomeUniversity } from "../../js/homeStudiesData.js";
 import FavoriteCourses from "./FavoriteCourses.vue";
 import { toast } from "vue3-toastify";
 import { getUserExperiences, deleteExperience } from "../../js/experiencesCache";
@@ -492,7 +496,7 @@ export default {
 	components: { FavoriteCourses, EditExchange, CreateExperience },
 	data() {
 		return {
-			studies: {},
+			studies: [],
 			loading: true,
 			dialog: false,
 			favoritesCount: 0,
@@ -506,7 +510,7 @@ export default {
 			selectedExchange: null,
 			deleteExchangeDialog: false,
 			deletingExchange: false,
-			localEditData: { displayName: "", email: "", study: "", specialization: "" },
+			localEditData: { displayName: "", email: "", homeUniversity: null, study: "" },
 			verificationDialog: false,
 			myExperiences: {},
 		};
@@ -517,14 +521,11 @@ export default {
 			const name = this.userData?.displayName || "";
 			return name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2) || "?";
 		},
-		studyNames() {
-			return Object.keys(this.studies);
-		},
-		specializations() {
-			return this.localEditData.study ? this.studies[this.localEditData.study] : [];
-		},
 		isVerified() {
 			return this.user && this.user.emailVerified;
+		},
+		homeUniversities() {
+			return Object.values(homeUniversityJson);
 		},
 		myExperiencesList() {
 			return Object.entries(this.myExperiences)
@@ -557,12 +558,13 @@ export default {
 		},
 	},
 	methods: {
-		loadData() {
-			try { this.studies = studiesData.studies; } catch (e) { console.error(e); }
-		},
 		editProfile() {
 			if (this.user && this.userData) {
-				this.localEditData = { ...this.userData };
+				this.localEditData = {
+					...this.userData,
+					homeUniversity: this.userData.homeUniversity || this.myExchange?.homeUniversity || null,
+				};
+				this.loadStudies(this.localEditData.homeUniversity);
 				this.dialog = true;
 			}
 		},
@@ -642,8 +644,8 @@ export default {
 					const updatedData = {
 						displayName: this.localEditData.displayName,
 						email: this.localEditData.email,
-						study: this.localEditData.study,
-						specialization: this.localEditData.specialization,
+						homeUniversity: this.localEditData.homeUniversity || null,
+						study: this.localEditData.study || null,
 					};
 					await update(dbRef(db, `users/${this.user.uid}`), updatedData);
 					this.$store.commit("setUserData", { ...this.localEditData });
@@ -661,9 +663,20 @@ export default {
 			} catch (e) { console.error(e); }
 		},
 		loadLocalData() {
-			this.localEditData = this.userData ? { ...this.userData } : { displayName: "", email: "", study: "", specialization: "" };
+			this.localEditData = this.userData ? { ...this.userData } : { displayName: "", email: "", homeUniversity: null, study: "" };
 		},
-		handleNewStudy() { this.localEditData.specialization = ""; },
+		async loadStudies(homeUniversity) {
+			try {
+				this.studies = await getStudiesForHomeUniversity(homeUniversity);
+			} catch (e) {
+				console.error(e);
+				this.studies = [];
+			}
+		},
+		onHomeUniversityChange(val) {
+			this.localEditData.study = null;
+			this.loadStudies(val);
+		},
 		toggleVerificationDialog() { this.verificationDialog = !this.verificationDialog; },
 		sendVerificationEmail() {
 			if (auth.currentUser) {
@@ -704,7 +717,6 @@ export default {
 		},
 	},
 	mounted() {
-		this.loadData();
 		if (this.$route.query.newExperience) {
 			this.newExperience();
 		}
