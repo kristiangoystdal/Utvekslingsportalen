@@ -27,5 +27,5 @@ export async function getStudiesForHomeUniversity(homeUniversity) {
   }
 
   const data = await moduleCache[key];
-  return Object.keys(data?.studies || {});
+  return data?.studies || [];
 }

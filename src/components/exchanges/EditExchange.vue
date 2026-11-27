@@ -181,7 +181,6 @@ export default {
 				studyYear: null,
 				year: null,
 				study: null,
-				specialization: null,
 				numSemesters: null,
 				courses: {
 					Høst: {},
@@ -199,7 +198,6 @@ export default {
 				studyYear: null,
 				year: null,
 				study: null,
-				specialization: null,
 				numSemesters: null,
 				courses: {
 					Høst: {},
@@ -369,9 +367,6 @@ export default {
 			}
 			if (this.userExchange.study == null) {
 				missingFields.push(this.$t("database.study").toLowerCase());
-			}
-			if (this.userExchange.specialization == null) {
-				missingFields.push(this.$t("database.specialization").toLowerCase());
 			}
 			if (this.userExchange.studyYear == null) {
 				missingFields.push(this.$t("database.studyYear").toLowerCase());
@@ -577,7 +572,6 @@ export default {
 						studyYear: null,
 						year: null,
 						study: null,
-						specialization: null,
 						numSemesters: null,
 						courses: {
 							Høst: {},
@@ -949,7 +943,6 @@ export default {
 						country: null,
 						studyYear: null,
 						study: null,
-						specialization: null,
 						numSemesters: null,
 						courses: {
 							Høst: {},

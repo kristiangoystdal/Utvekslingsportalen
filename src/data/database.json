@@ -3,8 +3,7 @@
     "userID": {
       "displayName": "Ola Nordmann",
       "email": "ola.nordmann@gmail.com",
-      "study": "Informatikk",
-      "specialization": "Programmering"
+      "study": "Informatikk"
     }
   },
   "exchanges": {
@@ -12,7 +11,6 @@
     "country": "USA",
     "studyYear": 3,
     "study": "user.study",
-    "specialization": "user.specialization",
     "numSemesters": 2,
     "courses": {
       "Høst": {

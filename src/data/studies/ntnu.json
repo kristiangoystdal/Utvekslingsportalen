@@ -1,957 +1,286 @@
 {
-  "studies": {
-    "Arkitektur (Master 5 år)": [
-      "Ingen spesialisering"
-    ],
-    "Bioteknologi (Master 5 år)": [
-      "Biokjemi og biopolymerkjemi",
-      "Molekylærbiologi",
-      "Systembiologi",
-      "Ingen spesialisering"
-    ],
-    "Bygg- og miljøteknikk (Master 5 år)": [
-      "Bygg og anlegg",
-      "Konstruksjon",
-      "Kyst og arktisk",
-      "Vann og miljø",
-      "Veg, transport og geomatikk",
-      "Ingen spesialisering"
-    ],
-    "Cybersikkerhet og datakommunikasjon (Master 5 år)": [
-      "Nettverksteknologi",
-      "Design av sikre systemer",
-      "Nettsikkerhet",
-      "Kryptografisk ingeniørvitenskap",
-      "Digital økonomi og regulering",
-      "Menneskesentrert cybersikkerhet og datakommunikasjon",
-      "Ingen spesialisering"
-    ],
-    "Datateknologi (Master 5 år)": [
-      "Algoritmer og datamaskiner",
-      "Databaser og søk",
-      "Effektive datasystemer",
-      "Kunstig intelligens",
-      "Programvaresystemer",
-      "Visuell databehandling",
-      "Ingen spesialisering"
-    ],
-    "Elektronisk systemdesign og innovasjon (Master 5 år)": [
-      "Akustikk for kommunikasjon, miljø og fjernmåling",
-      "Analog kretsdesign og radioteknikk",
-      "Design av digitale og innvevde system",
-      "Nanoelektronikk og fotonikk",
-      "Romsystemer",
-      "Signalbehandling og kommunikasjon",
-      "Ingen spesialisering"
-    ],
-    "Energi og miljø (Master 5 år)": [
-      "Elektrisk energiteknikk og smarte nett",
-      "Energi- og prosessteknikk",
-      "Energiplanlegging og miljøanalyse",
-      "Ingen spesialisering"
-    ],
-    "Fysikk og matematikk (Master 5 år)": [
-      "Biofysikk og medisinsk teknologi",
-      "Industriell matematikk",
-      "Teknisk fysikk",
-      "Ingen spesialisering"
-    ],
-    "Georessurser og geoteknologi (Master 5 år)": [
-      "Anvendt geofysikk",
-      "Mineralproduksjon",
-      "Petroleums- og reservoarteknologi",
-      "Ressursgeologi",
-      "Ingen spesialisering"
-    ],
-    "Industriell design (Master 5 år)": [
-      "Interaksjonsdesign",
-      "Produktdesign",
-      "Ingen spesialisering"
-    ],
-    "Industriell kjemi og bioteknologi (Master 5 år)": [
-      "Bioteknologi",
-      "Kjemi",
-      "Kjemisk prosessteknologi",
-      "Materialkjemi og energiteknologi",
-      "Ingen spesialisering"
-    ],
-    "Industriell økonomi og teknologiledelse (Master 5 år)": [
-      "Kunstig intelligens",
-      "Programvaresystemer",
-      "Ingen spesialisering"
-    ],
-    "Ingeniørvitenskap og IKT (Master 5 år)": [
-      "Geomatikk",
-      "IKT og konstruksjonsteknikk",
-      "IKT og marin teknikk",
-      "IKT og petroleumsfag",
-      "IKT og produksjonsledelse",
-      "IKT og maskinteknikk",
-      "Ingen spesialisering"
-    ],
-    "Kybernetikk og robotikk (Master 5 år)": [
-      "Tilpassede datasystemer",
-      "Energi og prosesstyring",
-      "Roboter og fartøystyring",
-      "Medisinske og biologiske systemer",
-      "Ingen spesialisering"
-    ],
-    "Grunnskolelærerutdanning 1.-7. trinn (Master 5 år)": [
-      "Ingen spesialisering"
-    ],
-    "Grunnskolelærerutdanning 5.-10. trinn (Master 5 år)": [
-      "Ingen spesialisering"
-    ],
-    "Lektorutdanning i realfag for trinn 8-13 (Master 5 år)": [
-      "Matematikk og fysikk",
-      "Kjemi og biologi",
-      "Matematikk og kjemi",
-      "Matematikk og informatikk",
-      "Matematikk og biologi",
-      "Ingen spesialisering"
-    ],
-    "Lektorutdanning i samfunnsfag for trinn 8-13 (Master 5 år)": [
-      "Historie og filosofi",
-      "Samfunnsgeografi og økonomi",
-      "Sosiologi og politikk",
-      "Ingen spesialisering"
-    ],
-    "Lektorutdanning i språkfag for trinn 8-13 (Master 5 år)": [
-      "Engelsk og tysk",
-      "Engelsk og fransk",
-      "Engelsk og spansk",
-      "Tysk og fransk",
-      "Tysk og spansk",
-      "Fransk og spansk",
-      "Ingen spesialisering"
-    ],
-    "Lektorutdanning i kroppsøving og idrettsfag for trinn 8-13 (Master 5 år)": [
-      "Kroppsøving og idrettsfag",
-      "Kroppsøving og matematikk",
-      "Kroppsøving og naturfag",
-      "Kroppsøving og samfunnsfag",
-      "Ingen spesialisering"
-    ],
-    "Lektorutdanning i geografi for trinn 8-13 (Master 5 år)": [
-      "Ingen spesialisering"
-    ],
-    "Lektorutdanning i historie for trinn 8-13 (Master 5 år)": [
-      "Ingen spesialisering"
-    ],
-    "Marin teknikk (Master 5 år)": [
-      "Marin konstruksjonsteknikk",
-      "Marin kybernetikk",
-      "Marin hydrodynamikk",
-      "Marint maskineri",
-      "Marin prosjektering og logistikk",
-      "Ingen spesialisering"
-    ],
-    "Maskin- og energiteknologi (Master 5 år)": [
-      "Energi i vind og vann",
-      "Industriell mekanikk",
-      "Inneklima og energi for bygninger",
-      "Ledelse og systemfag",
-      "Materialer og produktintegritet",
-      "Miljøanalyse for maskinteknologi",
-      "Produktutvikling og produksjon​",
-      "Prosess- og energiteknikk",
-      "Robotteknikk og automatisering",
-      "Ingen spesialisering"
-    ],
-    "Materialteknologi (Master 5 år)": [
-      "Materialutvikling og -bruk",
-      "Materialer for energiteknologi",
-      "Ressurser, energi og miljø",
-      "Ingen spesialisering"
-    ],
-    "Medisin (Profesjonsstudium)": [
-      "Ingen spesialisering"
-    ],
-    "Nanoteknologi (Master 5 år)": [
-      "Bionanoteknologi",
-      "Nanoelektronikk",
-      "Nanoteknologi for materialer, energi og miljø",
-      "Ingen spesialisering"
-    ],
-    "Psykologutdanning (Profesjonsstudium)": [
-      "Ingen spesialisering"
-    ],
-    "Samfunnsøkonomi - integrert master (Master 5 år)": [
-      "Ingen spesialisering"
-    ],
-    "Økonomi og administrasjon (Master 5 år)": [
-      "Business Analytics",
-      "Finansiering og investering",
-      "Markedsføring",
-      "Strategi, organisasjon og ledelse",
-      "Økonomistyring",
-      "Ingen spesialisering"
-    ],
-    "Allmenn litteraturvitenskap (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Antikkens kultur og klassiske fag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Arkeologi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Arkiv, museum og dokumentasjonsforvaltning (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Audiologi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Automatisering og intelligente systemer - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Barnevern (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Bevegelsesvitenskap (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Billedkunst (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Bioingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Biologi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Biomarin innovasjon (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Bioteknologi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Biovitenskap og laboratorieteknologi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Bygg - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Byggkonstruksjoner - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Data - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Digital forretningsutvikling (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Digital infrastruktur og cybersikkerhet (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Drama og teater (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Elektrifisering og digitalisering (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Elektrifisering og digitalisering - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Elektro - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Elektronisk systemingeniør - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Engelsk (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Ergoterapi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Europastudier (Bachelor)": [
-      "Europastudier med statsvitenskap",
-      "Europastudier med engelsk",
-      "Europastudier med fransk",
-      "Europastudier med spansk",
-      "Europastudier med tysk",
-      "Ingen spesialisering"
-    ],
-    "Film- og videoproduksjon (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Filmvitenskap (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Filosofi og etikk (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Flyingeniør - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Fornybar energi - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Fransk (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Fremmedspråk (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Fysikk (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Fysioterapi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Geografi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Geologi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Geomatikk - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Grafisk design (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Havbruk - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Historie (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Informasjonsbehandling (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Informatikk (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Interaksjonsdesign (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Kjemi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Kjemi - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Kjemi og materialteknologi - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Kulturminneforvaltning og museum (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Kunsthistorie (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Logistikk - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Logistikkledelse (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Markedsføring, innovasjon og ledelse (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Maskin - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Matematiske fag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Matematiske fag (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Materialteknologi - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Matvitenskap, teknologi og bærekraft (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Medievitenskap (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Mekatronikk og produktdesign - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Musikk, utøvende (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Musikk, utøvende - jazz (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Musikkteknologi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Musikkvitenskap (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Nautikk (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Nordisk og litteraturvitenskap (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Nordisk språk og litteratur (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Nordisk språk og litteratur og norsk som andrespråk (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Norsk tegnspråk (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Paramedisin (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Pedagogikk (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Produksjon og produktutvikling - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Produktdesign og teknologi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Programmering (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Psykologi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Radiografi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Religionsvitenskap (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Rådgivning og voksnes læring (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Samfunns- og idrettsvitenskap (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Samfunnsøkonomi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Shipping management (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Skipsingeniør - Ingeniørfag (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Sosialantropologi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Sosialt arbeid (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Sosiologi (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Spansk (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Statsvitenskap (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Sykepleie (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Tradisjonelt bygghandverk (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Tysk (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Vernepleie (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Webutvikling (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Yrkesfaglærerutdanning (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Økonomi og administrasjon (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Økonomi og ledelse (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Økonomi, administrasjon og internasjonal business (Bachelor)": [
-      "Ingen spesialisering"
-    ],
-    "Allmenn litteraturvitenskap (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Anvendt teater og dramaturgi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Applied Computer Science (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Arbeids- og organisasjonspsykologi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Arkeologi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Arkitektur (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Arkiv og dokumentasjonsforvaltning (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Barnevern (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Barnevernsarbeid (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Biology (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Biology and Sustainability (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Biotechnology (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Bygg og infrastruktur (Master 5 år)": [
-      "Ingen spesialisering"
-    ],
-    "Bygg og infrastruktur (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Bygningsinformatikk og trekonstruksjoner (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Byplanlegging (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Bærekrafts-, arbeidsmiljø- og sikkerhetsledelse (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Chemistry (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Chemistry and Ecotoxicology (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Childhood Studies (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Coastal and Marine Engineering and Management (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Cold Climate Engineering (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Coordinated Humanitarian Response, Health and Displacement (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Creative Music Technology (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Cybersecurity and Assurance (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Dance Knowledge, Practice and Heritage (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Datateknologi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Design av tjenester, teknologi og samhandling (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Digital Infrastructure and Cyber Security (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Digital transformasjon (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Eiendomsutvikling og -forvaltning (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Eiendomsutvikling og -forvaltning - erfaringsbasert (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Electric Power Engineering (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Electronic Systems Design (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Energi og miljø (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Engelsk (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "English Linguistics and Language Acquisition (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Entrepreneurship (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Entreprenørskap (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Environmental Contamination and Toxicology + One Health (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Environmental Engineering (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Litteraturvitenskap": [
-      "Ingen spesialisering"
-    ],
-    "Etikk (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "European Studies (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Fagdidaktikk (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Farmasi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Film- og medievitenskap (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Film- og videoproduksjon (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Filosofi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Filosofi og etikk (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Finansiell økonomi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Fine Art (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Folkehelse (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Fransk (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Funksjonshemming og samfunn (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Fysisk planlegging (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Generell psykologi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Geografi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Geologi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Geotechnics and Geohazards (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Geovitenskap og -ressurser (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Global Health (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Global Manufacturing Management (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Globalisation and Sustainable Development (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Health Management in Aquaculture (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Helseinformatikk - erfaringsbasert (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Helseledelse (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Helsesykepleie (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Historie (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Hydrogen Systems and Enabling Technologies (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Hydropower Development (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Idrettsvitenskap (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Industrial Design (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Industrial Ecology (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Industriell kybernetikk (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Informatics (To-årig Master)": [
-      "Artificial Intelligence",
-      "Databases and Search",
-      "Interaction Design, Game and Learning Technology",
-      "Software",
-      "Ingen spesialisering"
-    ],
-    "Information Security (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Information Security - erfaringsbasert (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Innovasjon og bærekraftig samfunnsutvikling (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Interaction Design (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "International Business and Marketing (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Jordmorfag (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Klassiske fag (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Klinisk helsevitenskap (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Klinisk sykepleie (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Kreftsykepleie (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Krig og samfunn (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Kulturminneforvaltning (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Kunnskap, teknologi og samfunn (STS) (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Kunsthistorie (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Kybernetikk og robotikk (To-årig Master)": [
-      "Industriell kybernetikk",
-      "Ingen spesialisering"
-    ],
-    "Ledelse av innovasjon og digital sikkerhet (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Ledelse av teknologi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Likestilling og mangfold (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Logopedi - erfaringsbasert (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Lærerspesialist - erfaringsbasert (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Læring i arbeidsliv og samfunn (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Management of Innovation and Sustainable Business Development (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Marin teknikk (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Marine Technology (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Marine and Maritime Intelligent Robotics (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Maritime Engineering (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Master i spesialsykepleie (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Master med integrert praktisk-pedagogisk utdanning (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Master of Science in Manufacturing 4.0 (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Materials Science and Chemical Engineering (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Materials Science and Engineering (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Mathematical Sciences (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Matvitenskap, teknologi og bærekraft (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Mechatronics and Automation (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Medier, kommunikasjon og informasjonsteknologi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Medisinsk bildeteknologi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Molecular Medicine (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Music Performance (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Musikkvitenskap (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "NTNUs Entreprenørskole (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Natural Resources Management (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Naval Architecture (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Neuroscience (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Nordisk språk og litteratur (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Ocean Resources (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Operativ maritim ledelse (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Organisasjon, digitalisering, administrasjon og arbeid (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Pedagogikk (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Petroleum Engineering (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Physical Activity and Health (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Physics (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Product and System Engineering (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Produksjon og produktutvikling (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Produktutvikling og produksjon (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Project Management (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Psykologi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Psykologisk vitenskap og teknologi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Regnskap og revisjon (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Reliability, Availability, Maintainability and Safety (RAMS) (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Religionsvitenskap (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Rådgivningsvitenskap (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Samfunns-, helse- og miljøpsykologi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Samfunnsøkonomi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Sosialantropologi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Sosialt arbeid (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Sosiologi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Sound and Vibration (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Spesialpedagogikk (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Språk og kommunikasjon i profesjoner (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Statsvitenskap (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Sustainable Architecture (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Sustainable Chemical and Biochemical Engineering (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Sustainable Energy (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Sustainable Manufacturing (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Treningsfysiologi og bevegelsesvitenskap (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Tysk (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Undervannsteknologi (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Urban Ecological Planning (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Utdanning og oppvekst (To-årig Master)": [
-      "Ingen spesialisering"
-    ],
-    "Økonomi og administrasjon (To-årig Master)": [
-      "Ingen spesialisering"
-    ]
-  }
+  "studies": [
+    "Arkitektur (Master 5 år)",
+    "Bioteknologi (Master 5 år)",
+    "Bygg- og miljøteknikk (Master 5 år)",
+    "Cybersikkerhet og datakommunikasjon (Master 5 år)",
+    "Datateknologi (Master 5 år)",
+    "Elektronisk systemdesign og innovasjon (Master 5 år)",
+    "Energi og miljø (Master 5 år)",
+    "Fysikk og matematikk (Master 5 år)",
+    "Georessurser og geoteknologi (Master 5 år)",
+    "Industriell design (Master 5 år)",
+    "Industriell kjemi og bioteknologi (Master 5 år)",
+    "Industriell økonomi og teknologiledelse (Master 5 år)",
+    "Ingeniørvitenskap og IKT (Master 5 år)",
+    "Kybernetikk og robotikk (Master 5 år)",
+    "Grunnskolelærerutdanning 1.-7. trinn (Master 5 år)",
+    "Grunnskolelærerutdanning 5.-10. trinn (Master 5 år)",
+    "Lektorutdanning i realfag for trinn 8-13 (Master 5 år)",
+    "Lektorutdanning i samfunnsfag for trinn 8-13 (Master 5 år)",
+    "Lektorutdanning i språkfag for trinn 8-13 (Master 5 år)",
+    "Lektorutdanning i kroppsøving og idrettsfag for trinn 8-13 (Master 5 år)",
+    "Lektorutdanning i geografi for trinn 8-13 (Master 5 år)",
+    "Lektorutdanning i historie for trinn 8-13 (Master 5 år)",
+    "Marin teknikk (Master 5 år)",
+    "Maskin- og energiteknologi (Master 5 år)",
+    "Materialteknologi (Master 5 år)",
+    "Medisin (Profesjonsstudium)",
+    "Nanoteknologi (Master 5 år)",
+    "Psykologutdanning (Profesjonsstudium)",
+    "Samfunnsøkonomi - integrert master (Master 5 år)",
+    "Økonomi og administrasjon (Master 5 år)",
+    "Allmenn litteraturvitenskap (Bachelor)",
+    "Antikkens kultur og klassiske fag (Bachelor)",
+    "Arkeologi (Bachelor)",
+    "Arkiv, museum og dokumentasjonsforvaltning (Bachelor)",
+    "Audiologi (Bachelor)",
+    "Automatisering og intelligente systemer - Ingeniørfag (Bachelor)",
+    "Barnevern (Bachelor)",
+    "Bevegelsesvitenskap (Bachelor)",
+    "Billedkunst (Bachelor)",
+    "Bioingeniørfag (Bachelor)",
+    "Biologi (Bachelor)",
+    "Biomarin innovasjon (Bachelor)",
+    "Bioteknologi (Bachelor)",
+    "Biovitenskap og laboratorieteknologi (Bachelor)",
+    "Bygg - Ingeniørfag (Bachelor)",
+    "Byggkonstruksjoner - Ingeniørfag (Bachelor)",
+    "Data - Ingeniørfag (Bachelor)",
+    "Digital forretningsutvikling (Bachelor)",
+    "Digital infrastruktur og cybersikkerhet (Bachelor)",
+    "Drama og teater (Bachelor)",
+    "Elektrifisering og digitalisering (Bachelor)",
+    "Elektrifisering og digitalisering - Ingeniørfag (Bachelor)",
+    "Elektro - Ingeniørfag (Bachelor)",
+    "Elektronisk systemingeniør - Ingeniørfag (Bachelor)",
+    "Engelsk (Bachelor)",
+    "Ergoterapi (Bachelor)",
+    "Europastudier (Bachelor)",
+    "Film- og videoproduksjon (Bachelor)",
+    "Filmvitenskap (Bachelor)",
+    "Filosofi og etikk (Bachelor)",
+    "Flyingeniør - Ingeniørfag (Bachelor)",
+    "Fornybar energi - Ingeniørfag (Bachelor)",
+    "Fransk (Bachelor)",
+    "Fremmedspråk (Bachelor)",
+    "Fysikk (Bachelor)",
+    "Fysioterapi (Bachelor)",
+    "Geografi (Bachelor)",
+    "Geologi (Bachelor)",
+    "Geomatikk - Ingeniørfag (Bachelor)",
+    "Grafisk design (Bachelor)",
+    "Havbruk - Ingeniørfag (Bachelor)",
+    "Historie (Bachelor)",
+    "Informasjonsbehandling (Bachelor)",
+    "Informatikk (Bachelor)",
+    "Interaksjonsdesign (Bachelor)",
+    "Kjemi (Bachelor)",
+    "Kjemi - Ingeniørfag (Bachelor)",
+    "Kjemi og materialteknologi - Ingeniørfag (Bachelor)",
+    "Kulturminneforvaltning og museum (Bachelor)",
+    "Kunsthistorie (Bachelor)",
+    "Logistikk - Ingeniørfag (Bachelor)",
+    "Logistikkledelse (Bachelor)",
+    "Markedsføring, innovasjon og ledelse (Bachelor)",
+    "Maskin - Ingeniørfag (Bachelor)",
+    "Matematiske fag (Bachelor)",
+    "Matematiske fag (To-årig Master)",
+    "Materialteknologi - Ingeniørfag (Bachelor)",
+    "Matvitenskap, teknologi og bærekraft (Bachelor)",
+    "Medievitenskap (Bachelor)",
+    "Mekatronikk og produktdesign - Ingeniørfag (Bachelor)",
+    "Musikk, utøvende (Bachelor)",
+    "Musikk, utøvende - jazz (Bachelor)",
+    "Musikkteknologi (Bachelor)",
+    "Musikkvitenskap (Bachelor)",
+    "Nautikk (Bachelor)",
+    "Nordisk og litteraturvitenskap (Bachelor)",
+    "Nordisk språk og litteratur (Bachelor)",
+    "Nordisk språk og litteratur og norsk som andrespråk (Bachelor)",
+    "Norsk tegnspråk (Bachelor)",
+    "Paramedisin (Bachelor)",
+    "Pedagogikk (Bachelor)",
+    "Produksjon og produktutvikling - Ingeniørfag (Bachelor)",
+    "Produktdesign og teknologi (Bachelor)",
+    "Programmering (Bachelor)",
+    "Psykologi (Bachelor)",
+    "Radiografi (Bachelor)",
+    "Religionsvitenskap (Bachelor)",
+    "Rådgivning og voksnes læring (Bachelor)",
+    "Samfunns- og idrettsvitenskap (Bachelor)",
+    "Samfunnsøkonomi (Bachelor)",
+    "Shipping management (Bachelor)",
+    "Skipsingeniør - Ingeniørfag (Bachelor)",
+    "Sosialantropologi (Bachelor)",
+    "Sosialt arbeid (Bachelor)",
+    "Sosiologi (Bachelor)",
+    "Spansk (Bachelor)",
+    "Statsvitenskap (Bachelor)",
+    "Sykepleie (Bachelor)",
+    "Tradisjonelt bygghandverk (Bachelor)",
+    "Tysk (Bachelor)",
+    "Vernepleie (Bachelor)",
+    "Webutvikling (Bachelor)",
+    "Yrkesfaglærerutdanning (Bachelor)",
+    "Økonomi og administrasjon (Bachelor)",
+    "Økonomi og ledelse (Bachelor)",
+    "Økonomi, administrasjon og internasjonal business (Bachelor)",
+    "Allmenn litteraturvitenskap (To-årig Master)",
+    "Anvendt teater og dramaturgi (To-årig Master)",
+    "Applied Computer Science (To-årig Master)",
+    "Arbeids- og organisasjonspsykologi (To-årig Master)",
+    "Arkeologi (To-årig Master)",
+    "Arkitektur (To-årig Master)",
+    "Arkiv og dokumentasjonsforvaltning (To-årig Master)",
+    "Barnevern (To-årig Master)",
+    "Barnevernsarbeid (To-årig Master)",
+    "Biology (To-årig Master)",
+    "Biology and Sustainability (To-årig Master)",
+    "Biotechnology (To-årig Master)",
+    "Bygg og infrastruktur (Master 5 år)",
+    "Bygg og infrastruktur (To-årig Master)",
+    "Bygningsinformatikk og trekonstruksjoner (To-årig Master)",
+    "Byplanlegging (To-årig Master)",
+    "Bærekrafts-, arbeidsmiljø- og sikkerhetsledelse (To-årig Master)",
+    "Chemistry (To-årig Master)",
+    "Chemistry and Ecotoxicology (To-årig Master)",
+    "Childhood Studies (To-årig Master)",
+    "Coastal and Marine Engineering and Management (To-årig Master)",
+    "Cold Climate Engineering (To-årig Master)",
+    "Coordinated Humanitarian Response, Health and Displacement (To-årig Master)",
+    "Creative Music Technology (To-årig Master)",
+    "Cybersecurity and Assurance (To-årig Master)",
+    "Dance Knowledge, Practice and Heritage (To-årig Master)",
+    "Datateknologi (To-årig Master)",
+    "Design av tjenester, teknologi og samhandling (To-årig Master)",
+    "Digital Infrastructure and Cyber Security (To-årig Master)",
+    "Digital transformasjon (To-årig Master)",
+    "Eiendomsutvikling og -forvaltning (To-årig Master)",
+    "Eiendomsutvikling og -forvaltning - erfaringsbasert (To-årig Master)",
+    "Electric Power Engineering (To-årig Master)",
+    "Electronic Systems Design (To-årig Master)",
+    "Energi og miljø (To-årig Master)",
+    "Engelsk (To-årig Master)",
+    "English Linguistics and Language Acquisition (To-årig Master)",
+    "Entrepreneurship (To-årig Master)",
+    "Entreprenørskap (To-årig Master)",
+    "Environmental Contamination and Toxicology + One Health (To-årig Master)",
+    "Environmental Engineering (To-årig Master)",
+    "Litteraturvitenskap",
+    "Etikk (To-årig Master)",
+    "European Studies (To-årig Master)",
+    "Fagdidaktikk (To-årig Master)",
+    "Farmasi (To-årig Master)",
+    "Film- og medievitenskap (To-årig Master)",
+    "Film- og videoproduksjon (To-årig Master)",
+    "Filosofi (To-årig Master)",
+    "Filosofi og etikk (To-årig Master)",
+    "Finansiell økonomi (To-årig Master)",
+    "Fine Art (To-årig Master)",
+    "Folkehelse (To-årig Master)",
+    "Fransk (To-årig Master)",
+    "Funksjonshemming og samfunn (To-årig Master)",
+    "Fysisk planlegging (To-årig Master)",
+    "Generell psykologi (To-årig Master)",
+    "Geografi (To-årig Master)",
+    "Geologi (To-årig Master)",
+    "Geotechnics and Geohazards (To-årig Master)",
+    "Geovitenskap og -ressurser (To-årig Master)",
+    "Global Health (To-årig Master)",
+    "Global Manufacturing Management (To-årig Master)",
+    "Globalisation and Sustainable Development (To-årig Master)",
+    "Health Management in Aquaculture (To-årig Master)",
+    "Helseinformatikk - erfaringsbasert (To-årig Master)",
+    "Helseledelse (To-årig Master)",
+    "Helsesykepleie (To-årig Master)",
+    "Historie (To-årig Master)",
+    "Hydrogen Systems and Enabling Technologies (To-årig Master)",
+    "Hydropower Development (To-årig Master)",
+    "Idrettsvitenskap (To-årig Master)",
+    "Industrial Design (To-årig Master)",
+    "Industrial Ecology (To-årig Master)",
+    "Industriell kybernetikk (To-årig Master)",
+    "Informatics (To-årig Master)",
+    "Information Security (To-årig Master)",
+    "Information Security - erfaringsbasert (To-årig Master)",
+    "Innovasjon og bærekraftig samfunnsutvikling (To-årig Master)",
+    "Interaction Design (To-årig Master)",
+    "International Business and Marketing (To-årig Master)",
+    "Jordmorfag (To-årig Master)",
+    "Klassiske fag (To-årig Master)",
+    "Klinisk helsevitenskap (To-årig Master)",
+    "Klinisk sykepleie (To-årig Master)",
+    "Kreftsykepleie (To-årig Master)",
+    "Krig og samfunn (To-årig Master)",
+    "Kulturminneforvaltning (To-årig Master)",
+    "Kunnskap, teknologi og samfunn (STS) (To-årig Master)",
+    "Kunsthistorie (To-årig Master)",
+    "Kybernetikk og robotikk (To-årig Master)",
+    "Ledelse av innovasjon og digital sikkerhet (To-årig Master)",
+    "Ledelse av teknologi (To-årig Master)",
+    "Likestilling og mangfold (To-årig Master)",
+    "Logopedi - erfaringsbasert (To-årig Master)",
+    "Lærerspesialist - erfaringsbasert (To-årig Master)",
+    "Læring i arbeidsliv og samfunn (To-årig Master)",
+    "Management of Innovation and Sustainable Business Development (To-årig Master)",
+    "Marin teknikk (To-årig Master)",
+    "Marine Technology (To-årig Master)",
+    "Marine and Maritime Intelligent Robotics (To-årig Master)",
+    "Maritime Engineering (To-årig Master)",
+    "Master i spesialsykepleie (To-årig Master)",
+    "Master med integrert praktisk-pedagogisk utdanning (To-årig Master)",
+    "Master of Science in Manufacturing 4.0 (To-årig Master)",
+    "Materials Science and Chemical Engineering (To-årig Master)",
+    "Materials Science and Engineering (To-årig Master)",
+    "Mathematical Sciences (To-årig Master)",
+    "Matvitenskap, teknologi og bærekraft (To-årig Master)",
+    "Mechatronics and Automation (To-årig Master)",
+    "Medier, kommunikasjon og informasjonsteknologi (To-årig Master)",
+    "Medisinsk bildeteknologi (To-årig Master)",
+    "Molecular Medicine (To-årig Master)",
+    "Music Performance (To-årig Master)",
+    "Musikkvitenskap (To-årig Master)",
+    "NTNUs Entreprenørskole (To-årig Master)",
+    "Natural Resources Management (To-årig Master)",
+    "Naval Architecture (To-årig Master)",
+    "Neuroscience (To-årig Master)",
+    "Nordisk språk og litteratur (To-årig Master)",
+    "Ocean Resources (To-årig Master)",
+    "Operativ maritim ledelse (To-årig Master)",
+    "Organisasjon, digitalisering, administrasjon og arbeid (To-årig Master)",
+    "Pedagogikk (To-årig Master)",
+    "Petroleum Engineering (To-årig Master)",
+    "Physical Activity and Health (To-årig Master)",
+    "Physics (To-årig Master)",
+    "Product and System Engineering (To-årig Master)",
+    "Produksjon og produktutvikling (To-årig Master)",
+    "Produktutvikling og produksjon (To-årig Master)",
+    "Project Management (To-årig Master)",
+    "Psykologi (To-årig Master)",
+    "Psykologisk vitenskap og teknologi (To-årig Master)",
+    "Regnskap og revisjon (To-årig Master)",
+    "Reliability, Availability, Maintainability and Safety (RAMS) (To-årig Master)",
+    "Religionsvitenskap (To-årig Master)",
+    "Rådgivningsvitenskap (To-årig Master)",
+    "Samfunns-, helse- og miljøpsykologi (To-årig Master)",
+    "Samfunnsøkonomi (To-årig Master)",
+    "Sosialantropologi (To-årig Master)",
+    "Sosialt arbeid (To-årig Master)",
+    "Sosiologi (To-årig Master)",
+    "Sound and Vibration (To-årig Master)",
+    "Spesialpedagogikk (To-årig Master)",
+    "Språk og kommunikasjon i profesjoner (To-årig Master)",
+    "Statsvitenskap (To-årig Master)",
+    "Sustainable Architecture (To-årig Master)",
+    "Sustainable Chemical and Biochemical Engineering (To-årig Master)",
+    "Sustainable Energy (To-årig Master)",
+    "Sustainable Manufacturing (To-årig Master)",
+    "Treningsfysiologi og bevegelsesvitenskap (To-årig Master)",
+    "Tysk (To-årig Master)",
+    "Undervannsteknologi (To-årig Master)",
+    "Urban Ecological Planning (To-årig Master)",
+    "Utdanning og oppvekst (To-årig Master)",
+    "Økonomi og administrasjon (To-årig Master)"
+  ]
 }
