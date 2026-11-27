@@ -18,30 +18,29 @@
 			</v-row>
 		</div>
 
-		<!-- <p class="box box-success preserve-whitespace text-center">
-			{{ $t("homepage.newFeature") }}
-		</p> -->
-
+		<!-- Key numbers -->
+		<ul v-if="stats" class="stats">
+			<li v-for="stat in statItems" :key="stat.label" class="stat">
+				<span class="stat-value">{{ stat.value.toLocaleString(locale) }}</span>
+				<span class="stat-label">{{ stat.label }}</span>
+			</li>
+		</ul>
 
 		<div class="box box-countries">
 			<WorldMap :countries="countriesToHighlight" />
 		</div>
 
-		<br />
-		<v-divider />
-		<br />
+		<div class="top-lists">
+			<div class="top-countries-and-top-study-programs">
+				<h3>{{ $t("homepage.topCountries") }}</h3>
+				<BarChart :items="topCountriesTranslated" />
+			</div>
 
-		<div class="top-countries-and-top-study-programs">
-			<h3>{{ $t("homepage.topCountries") }}</h3>
-			<BarChart :items="topCountriesTranslated" />
+			<div class="top-countries-and-top-study-programs">
+				<h3>{{ $t("homepage.topStudyPrograms") }}</h3>
+				<BarChart :items="topStudyPrograms" />
+			</div>
 		</div>
-
-		<div class="top-countries-and-top-study-programs">
-			<h3>{{ $t("homepage.topStudyPrograms") }}</h3>
-			<BarChart :items="topStudyPrograms" />
-		</div>
-
-
 	</div>
 </template>
 
@@ -52,6 +51,23 @@ import { db, auth } from "../../js/firebaseConfig.js";
 import { getFlagUrl } from '../../js/i18nHelpers';
 
 import { getExchangesData } from "../../js/exchangesCache";
+
+// Destination universities of an exchange (two when the semesters were split).
+function destinationUniversities(exchange) {
+	const unis = [];
+	if (exchange.university) unis.push(exchange.university);
+	if (exchange.sameUniversity === false && exchange.secondUniversity && exchange.secondUniversity !== "null") {
+		unis.push(exchange.secondUniversity);
+	}
+	return unis;
+}
+
+function topN(counts, n) {
+	return Object.entries(counts)
+		.sort((a, b) => b[1] - a[1])
+		.slice(0, n)
+		.map(([name, count]) => ({ name, count }));
+}
 
 const WorldMap = defineAsyncComponent(() => import("./WorldMap.vue"));
 const BarChart = defineAsyncComponent(() => import("./BarChart.vue"));
@@ -69,6 +85,7 @@ export default {
 	data() {
 		return {
 			countriesToHighlight: [],
+			stats: null,
 			topCountries: [],
 			topStudyPrograms: [],
 			countriesInfo: countriesInformation,
@@ -78,6 +95,17 @@ export default {
 		this.getValuesFromDatabase();
 	},
 	computed: {
+		locale() {
+			return this.$i18n.locale === "en" ? "en-GB" : "nb-NO";
+		},
+		statItems() {
+			return [
+				{ value: this.stats.exchanges, label: this.$t("homepage.statExchanges") },
+				{ value: this.stats.countries, label: this.$t("homepage.statCountries") },
+				{ value: this.stats.universities, label: this.$t("homepage.statUniversities") },
+				{ value: this.stats.studyPrograms, label: this.$t("homepage.statStudyPrograms") },
+			];
+		},
 		topCountriesTranslated() {
 			return this.topCountries.map((country) => {
 				return {
@@ -100,9 +128,15 @@ export default {
 				const countriesSet = new Set();
 				const countriesCount = {};
 				const studyProgramsCount = {};
+				const allCountries = new Set();
+				const allUniversities = new Set();
 
-				for (const exchangeKey in exchanges) {
-					const exchange = exchanges[exchangeKey];
+				const exchangesList = Object.values(exchanges);
+
+				for (const exchange of exchangesList) {
+					if (exchange.country) allCountries.add(exchange.country);
+					if (exchange.secondCountry && exchange.secondCountry !== "null") allCountries.add(exchange.secondCountry);
+					destinationUniversities(exchange).forEach((uni) => allUniversities.add(uni));
 
 					const semesters = exchange.semesters || [];
 					const hasAutumnCourses = semesters.includes("Høst");
@@ -137,18 +171,19 @@ export default {
 					}
 				}
 
-				this.topCountries = Object.entries(countriesCount)
-					.sort((a, b) => b[1] - a[1])
-					.slice(0, 10)
-					.map(([name, count]) => ({ name, count }));
+				this.stats = {
+					exchanges: exchangesList.length,
+					countries: allCountries.size,
+					universities: allUniversities.size,
+					studyPrograms: Object.keys(studyProgramsCount).length,
+				};
 
-				this.topStudyPrograms = Object.entries(studyProgramsCount)
-					.sort((a, b) => b[1] - a[1])
-					.slice(0, 10)
-					.map(([name, count]) => ({ name, count }));
+				this.topCountries = topN(countriesCount, 10);
+				this.topStudyPrograms = topN(studyProgramsCount, 10);
 
 				this.countriesToHighlight = Array.from(countriesSet).map((countryName) => ({
 					name: countryName,
+					count: countriesCount[countryName],
 				}));
 			} catch (error) {
 				console.error("Error fetching values from database:", error);
@@ -218,6 +253,66 @@ export default {
 
 	.top-countries-and-top-study-programs h3 {
 		font-size: 1.3rem;
+	}
+}
+
+/* Key numbers */
+.stats {
+	list-style: none;
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	gap: 12px;
+	max-width: 900px;
+	margin: 10px auto 24px;
+	padding: 0;
+}
+
+.stat {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 14px 8px;
+	border-radius: 12px;
+	background: rgba(var(--third-color-rgb), 0.6);
+}
+
+.stat-value {
+	font-size: 1.8rem;
+	font-weight: 700;
+	line-height: 1.1;
+	color: var(--first-color);
+	font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+	font-size: 0.9rem;
+	color: var(--second-color);
+}
+
+/* Top lists side by side on wide screens */
+.top-lists {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 24px;
+	max-width: 1200px;
+	margin: 0 auto;
+}
+
+@media (max-width: 960px) {
+	.top-lists {
+		grid-template-columns: 1fr;
+		gap: 0;
+	}
+}
+
+@media (max-width: 600px) {
+	.stats {
+		grid-template-columns: repeat(2, 1fr);
+		gap: 8px;
+	}
+
+	.stat-value {
+		font-size: 1.4rem;
 	}
 }
 </style>

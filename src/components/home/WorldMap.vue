@@ -2,6 +2,12 @@
 	<div ref="mapContainer" class="map-container">
 		<div ref="svgHost" class="svg-host"></div>
 
+		<div v-if="maxCount > 1" class="map-legend" aria-hidden="true">
+			<span>{{ $t("homepage.mapLegendFew") }}</span>
+			<span class="map-legend-scale" :style="{ background: legendGradient }"></span>
+			<span>{{ $t("homepage.mapLegendMany") }}</span>
+		</div>
+
 		<v-fade-transition>
 			<v-card v-if="showZoomHint" class="zoom-hint" density="compact" elevation="6" rounded="lg">
 				<v-card-text class="pa-3">
@@ -28,10 +34,19 @@ import { zoom as d3zoom } from "d3-zoom";
 import * as topojson from "topojson-client";
 import worldData from "../../data/countries-110m.json";
 
+// Countries are shaded from LIGHT (one exchange) to DARK (the most exchanges).
+const LIGHT = [199, 214, 234];
+const DARK = [17, 45, 78]; // --first-color
+
+function mix(t) {
+	const c = LIGHT.map((l, i) => Math.round(l + (DARK[i] - l) * t));
+	return `rgb(${c.join(",")})`;
+}
+
 export default {
 	name: "WorldMap",
 	props: {
-		// Example: [{ name: "Norway" }, { name: "USA" }]
+		// Example: [{ name: "Norway", count: 12 }, { name: "USA", count: 40 }]
 		countries: {
 			type: Array,
 			required: true,
@@ -42,6 +57,14 @@ export default {
 			resizeTimeout: null,
 			showZoomHint: true,
 		};
+	},
+	computed: {
+		maxCount() {
+			return Math.max(1, ...(this.countries || []).map((c) => c.count || 1));
+		},
+		legendGradient() {
+			return `linear-gradient(to right, ${mix(0)}, ${mix(0.5)}, ${mix(1)})`;
+		},
 	},
 	mounted() {
 		this.createMap();
@@ -119,11 +142,27 @@ export default {
 			const adjustedSet = new Set(adjustedCountryNames);
 
 			const topoNameToKey = new Map();
+			const topoNameToCount = new Map();
 
 			(this.countries || []).forEach((c) => {
 				const topoName = c.name === "USA" ? "United States of America" : c.name;
 				topoNameToKey.set(topoName, c.name); // e.g. "United States of America" -> "USA"
+				topoNameToCount.set(topoName, c.count || 1);
 			});
+
+			// Log scale, so a few very popular countries don't wash out the rest.
+			const logMax = Math.log1p(this.maxCount);
+			const fillFor = (topoName) => {
+				const count = topoNameToCount.get(topoName);
+				if (!count) return "lightgray";
+				return logMax > Math.log1p(1) ? mix(Math.log1p(count) / logMax) : mix(1);
+			};
+			const tooltipText = (topoName) => {
+				const key = topoNameToKey.get(topoName) || topoName;
+				const count = topoNameToCount.get(topoName);
+				const name = this.$t(`countries.${key}`);
+				return count ? `${name} · ${this.$t("homepage.mapTooltipCount", { count })}` : name;
+			};
 
 			// TopoJSON -> GeoJSON
 			const mapCountries = topojson.feature(
@@ -142,11 +181,7 @@ export default {
 						? "highlighted"
 						: "country"
 				)
-				.style("fill", (d) =>
-					adjustedCountryNames.includes(d.properties.name)
-						? "var(--second-color)"
-						: "lightgray"
-				)
+				.style("fill", (d) => fillFor(d.properties.name))
 				.style("stroke", "#fff")
 				.style("stroke-width", "0.5px")
 				.style("cursor", (d) => (adjustedSet.has(d.properties.name) ? "pointer" : "default"))
@@ -160,8 +195,7 @@ export default {
 
 					select(event.currentTarget).style("opacity", 0.85);
 
-					const key = topoNameToKey.get(d.properties.name) || d.properties.name;
-					tooltip.style("opacity", 1).text(this.$t(`countries.${key}`));
+					tooltip.style("opacity", 1).text(tooltipText(d.properties.name));
 
 					tooltip
 						.style("left", `${event.pageX + 12}px`)
@@ -286,5 +320,27 @@ export default {
 .svg-host svg {
 	width: 100%;
 	height: 100%;
+}
+
+.map-legend {
+	position: absolute;
+	left: 14px;
+	bottom: 12px;
+	display: flex;
+	align-items: center;
+	gap: 6px;
+	padding: 4px 8px;
+	border-radius: 8px;
+	background: rgba(255, 255, 255, 0.85);
+	font-size: 11px;
+	color: var(--first-color);
+	pointer-events: none;
+}
+
+.map-legend-scale {
+	display: inline-block;
+	width: 64px;
+	height: 8px;
+	border-radius: 4px;
 }
 </style>
