@@ -6,6 +6,17 @@ const loaders = {
   UiB: () => import("../data/homeCourses/uib.json"),
   UiT: () => import("../data/homeCourses/uit.json"),
   UiS: () => import("../data/homeCourses/uis.json"),
+  UiA: () => import("../data/homeCourses/uia.json"),
+  HVL: () => import("../data/homeCourses/hvl.json"),
+  OsloMet: () => import("../data/homeCourses/oslomet.json"),
+  NMBU: () => import("../data/homeCourses/nmbu.json"),
+  USN: () => import("../data/homeCourses/usn.json"),
+  Nord: () => import("../data/homeCourses/nord.json"),
+  INN: () => import("../data/homeCourses/inn.json"),
+  NHH: () => import("../data/homeCourses/nhh.json"),
+  BI: () => import("../data/homeCourses/bi.json"),
+  HiØ: () => import("../data/homeCourses/hiof.json"),
+  Kristiania: () => import("../data/homeCourses/kristiania.json"),
 };
 
 const moduleCache = {};

@@ -398,7 +398,6 @@ export default {
         translatedCountry,
         exchange.university,
         exchange.study,
-        exchange.specialization,
         exchange.studyYear,
         exchange.year,
       ]

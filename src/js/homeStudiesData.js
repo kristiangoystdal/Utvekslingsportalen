@@ -6,6 +6,17 @@ const loaders = {
   UiB: () => import("../data/studies/uib.json"),
   UiT: () => import("../data/studies/uit.json"),
   UiS: () => import("../data/studies/uis.json"),
+  UiA: () => import("../data/studies/uia.json"),
+  HVL: () => import("../data/studies/hvl.json"),
+  OsloMet: () => import("../data/studies/oslomet.json"),
+  NMBU: () => import("../data/studies/nmbu.json"),
+  USN: () => import("../data/studies/usn.json"),
+  Nord: () => import("../data/studies/nord.json"),
+  INN: () => import("../data/studies/inn.json"),
+  NHH: () => import("../data/studies/nhh.json"),
+  BI: () => import("../data/studies/bi.json"),
+  HiØ: () => import("../data/studies/hiof.json"),
+  Kristiania: () => import("../data/studies/kristiania.json"),
 };
 
 const moduleCache = {};
@@ -27,5 +38,5 @@ export async function getStudiesForHomeUniversity(homeUniversity) {
   }
 
   const data = await moduleCache[key];
-  return Object.keys(data?.studies || {});
+  return data?.studies || [];
 }

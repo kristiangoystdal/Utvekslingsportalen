@@ -242,7 +242,6 @@ export default {
 				country: null,
 				studyYear: null,
 				study: null,
-				specialization: null,
 				numSemesters: null,
 				semesters: [],
 				courses: {
