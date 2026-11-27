@@ -44,3 +44,14 @@ coverage
 # Firebase
 *.firebase
 utvekslingsportalen.no_*.report.html
+
+# Brag skill output
+brag-output/
+
+# Agent
+.agents/
+
+# Claude Code skills
+.claude/skills/
+.agents/skills/
+skills-lock.json
